@@ -2,4 +2,6 @@
     <string name="app_name">GroupUp</string>
     <string name="left">left</string>
     <string name="right">right</string>
+    <string name="description">description</string>
+
 </resources>
