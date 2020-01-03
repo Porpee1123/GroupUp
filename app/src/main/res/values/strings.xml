@@ -3,5 +3,7 @@
     <string name="left">left</string>
     <string name="right">right</string>
     <string name="description">description</string>
+    <string name="detail_customer">Detail_customer</string>
+    <string name="signout">signout</string>
 
 </resources>
