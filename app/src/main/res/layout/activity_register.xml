@@ -19,7 +19,7 @@
 
             <View
                 android:id="@+id/view4"
-                android:layout_width="20"
+                android:layout_width="20dp"
                 android:layout_height="match_parent" />
 
             <ImageButton
@@ -41,7 +41,7 @@
 
             <View
                 android:id="@+id/view5"
-                android:layout_width="20"
+                android:layout_width="20dp"
                 android:layout_height="match_parent" />
         </LinearLayout>
 
