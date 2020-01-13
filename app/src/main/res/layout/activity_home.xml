@@ -25,14 +25,14 @@
                 android:layout_height="match_parent" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/home_menuBar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="#34558b"
                 android:src="@drawable/ic_dehaze_black_24dp" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/home"
                 style="@style/Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                 android:text="GroupUP" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/home_search"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="#34558b"
@@ -54,7 +54,7 @@
                 android:layout_height="match_parent" />
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/home_newGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="#34558b"
