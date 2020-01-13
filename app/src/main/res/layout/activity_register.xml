@@ -55,7 +55,8 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <Button
+
+            <ImageButton
                 android:id="@+id/addPicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,8 +65,9 @@
                 android:background="@drawable/button_img"
                 android:fontFamily="@font/pridi_extralight"
                 android:gravity="center"
+                android:src="@drawable/ic_add_black_24dp"
                 android:text="@string/addImg"
-                android:textColor="#ECEEF0"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
             <LinearLayout
@@ -76,7 +78,7 @@
 
 
                 <EditText
-                    android:id="@+id/Name"
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
