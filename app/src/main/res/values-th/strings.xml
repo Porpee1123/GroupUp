@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">GroupUp</string>
+    <string name="left">ซ้าย</string>
+    <string name="right">ขวา</string>
+    <string name="description">รายละเอียด</string>
+    <string name="detail_customer">รายละเอียดลูกค้า</string>
+    <string name="signout">ลงชื่อออก</string>
+    <string name="account">จัดการบัญชี</string>
+    <string name="addImg">+ เพิ่มรูปภาพ</string>
+    <string name="name">ชื่อ  :</string>
+    <string name="email">อีเมล  :</string>
+    <string name="id">ID  :</string>
+    <string name="btn">ยืนยัน</string>
+
+</resources>

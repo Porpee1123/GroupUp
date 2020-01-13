@@ -5,6 +5,11 @@
     <string name="description">description</string>
     <string name="detail_customer">Detail_customer</string>
     <string name="signout">signout</string>
-    <string name="exit">exit</string>
+    <string name="account">Manage Account</string>
+    <string name="addImg">+ Add Picture</string>
+    <string name="name">name  :</string>
+    <string name="email">E-mail  :</string>
+    <string name="id">ID  :</string>
+    <string name="btn">Confirm</string>
 
 </resources>

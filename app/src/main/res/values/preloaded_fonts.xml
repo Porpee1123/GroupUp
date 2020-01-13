@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/actor</item>
+        <item>@font/kanit_thin</item>
+        <item>@font/overpass_mono_bold</item>
+        <item>@font/pridi_extralight</item>
+        <item>@font/roboto_mono_bold</item>
+        <item>@font/sarala</item>
+        <item>@font/text_me_one</item>
+    </array>
+</resources>

@@ -44,5 +44,12 @@
             android:layout_gravity="center"
             android:onClick="onClick"
             android:text="@string/signout" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="skip Next"
+            android:onClick="skipbutton"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
