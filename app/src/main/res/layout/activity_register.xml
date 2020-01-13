@@ -8,7 +8,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#009C27B0"
         android:orientation="vertical"
         >
 
@@ -18,13 +17,15 @@
             android:background="#34558b"
             android:orientation="horizontal">
 
+            <View
+                android:id="@+id/view4"
+                android:layout_width="20"
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_height="match_parent"
                 android:background="#34558b"
                 android:src="@drawable/ic_dehaze_black_24dp" />
 
@@ -34,9 +35,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="#34558b"
+                android:layout_weight="3"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/account" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="20"
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <!--        <ImageButton-->
@@ -71,7 +77,7 @@
                 android:gravity="center"
                 android:text="@string/addImg"
                 android:textColor="#ECEEF0"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -85,15 +91,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/pridi_extralight"
-                    android:gravity="center"
-                    android:text="@string/name" />
+                    android:gravity="center" />
 
                 <EditText
                     android:id="@+id/editText1"
-                    android:layout_width="225dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="1"
-                    android:ems="10"
+                    android:ems="15"
+                    android:gravity="center"
+                    android:hint="@string/name"
                     android:inputType="textPersonName" />
 
             </LinearLayout>
@@ -110,15 +118,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pridi_extralight"
-                    android:gravity="center"
-                    android:text="@string/email" />
+                    android:gravity="center" />
 
                 <EditText
                     android:id="@+id/editText2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:ems="15"
+                    android:gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/email" />
             </LinearLayout>
 
             <LinearLayout
@@ -133,16 +142,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/pridi_extralight"
-                    android:gravity="center"
-                    android:text="@string/id" />
+                    android:gravity="center" />
 
                 <EditText
                     android:id="@+id/editText3"
-                    android:layout_width="226dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:ems="15"
+                    android:gravity="center"
+                    android:inputType="textPersonName"
+                    android:hint="@string/id" />
 
             </LinearLayout>
 
@@ -151,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="100dp"
                 android:background="#34558b"
                 android:fontFamily="@font/pridi_extralight"
                 android:text="@string/btn"

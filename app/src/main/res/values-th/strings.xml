@@ -7,9 +7,9 @@
     <string name="signout">ลงชื่อออก</string>
     <string name="account">จัดการบัญชี</string>
     <string name="addImg">+ เพิ่มรูปภาพ</string>
-    <string name="name">ชื่อ  :</string>
-    <string name="email">อีเมล  :</string>
-    <string name="id">ID  :</string>
+    <string name="name">ชื่อ</string>
+    <string name="email">อีเมล</string>
+    <string name="id">ID</string>
     <string name="btn">ยืนยัน</string>
 
 </resources>

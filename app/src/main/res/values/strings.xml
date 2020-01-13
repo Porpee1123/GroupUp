@@ -7,9 +7,9 @@
     <string name="signout">signout</string>
     <string name="account">Manage Account</string>
     <string name="addImg">+ Add Picture</string>
-    <string name="name">name  :</string>
-    <string name="email">E-mail  :</string>
-    <string name="id">ID  :</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="id">ID</string>
     <string name="btn">Confirm</string>
 
 </resources>
