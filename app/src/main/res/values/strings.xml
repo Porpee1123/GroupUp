@@ -10,6 +10,13 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="id">ID</string>
+    <string name="colon">:</string>
+    <string name="status">Status :</string>
     <string name="btn">Confirm</string>
+    <string name="inviteFriends">Invite Friends</string>
+    <string name="addFriends">Add Friends</string>
+    <string name="search_friends">Search with ID</string>
+    <string name="type_friends">Friends type</string>
+
 
 </resources>

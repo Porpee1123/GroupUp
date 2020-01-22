@@ -10,6 +10,12 @@
     <string name="name">ชื่อ</string>
     <string name="email">อีเมล</string>
     <string name="id">ID</string>
+    <string name="colon">:</string>
+    <string name="status">สถานะ :</string>
     <string name="btn">ยืนยัน</string>
+    <string name="inviteFriends">เชิญเพื่อน</string>
+    <string name="addFriends">เพิ่มเพื่อน</string>
+    <string name="search_friends">ค้นหาด้วย ID</string>
+    <string name="type_friends">ประเภทเพื่อน</string>
 
 </resources>

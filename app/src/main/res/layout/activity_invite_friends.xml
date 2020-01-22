@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home">
-
+    tools:context=".inviteFriends">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,16 +30,6 @@
                 android:background="#34558b"
                 android:src="@drawable/ic_dehaze_black_24dp" />
 
-            <View
-                android:id="@+id/view2"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-            <View
-                android:id="@+id/view3"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
             <TextView
                 android:id="@+id/home"
                 style="@style/Style"
@@ -49,7 +38,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="3"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="GroupUP" />
+                android:text="@string/inviteFriends" />
 
             <ImageButton
                 android:id="@+id/home_search"
@@ -59,21 +48,10 @@
                 android:src="@drawable/ic_search_black_24dp" />
 
             <View
-                android:id="@+id/view4"
+                android:id="@+id/view3"
                 android:layout_width="20dp"
                 android:layout_height="match_parent" />
 
-            <ImageButton
-                android:id="@+id/home_newGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#34558b"
-                android:src="@drawable/ic_group_add_black_24dp" />
-
-            <View
-                android:id="@+id/view5"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
 
         </LinearLayout>
     </LinearLayout>
