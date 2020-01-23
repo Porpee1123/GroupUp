@@ -17,6 +17,9 @@
     <string name="addFriends">Add Friends</string>
     <string name="search_friends">Search with ID</string>
     <string name="type_friends">Friends type</string>
+    <string name="title_activity_invite_friends">inviteFriends</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 
 
 </resources>

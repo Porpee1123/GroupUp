@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,8 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".addFriends"></activity>
-        <activity android:name=".inviteFriends" />
+        <activity
+            android:name=".inviteFriends"
+            android:label="@string/title_activity_invite_friends"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".addFriends" />
         <activity android:name=".createGroup" />
         <activity android:name=".register" />
         <activity android:name=".home" />
