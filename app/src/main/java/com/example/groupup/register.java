@@ -1,9 +1,12 @@
 package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,6 +19,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +41,7 @@ import org.json.JSONObject;
 import java.io.FileOutputStream;
 
 public class register extends AppCompatActivity {
-
+    final int PIC_CROP = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,8 @@ public class register extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+
                 startActivityForResult(intent, 2);
             }
         });
@@ -61,6 +67,7 @@ public class register extends AppCompatActivity {
             try {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
                 Cursor cursor = getContentResolver().query(selectedImage,
 
                         filePathColumn, null, null, null);
@@ -70,14 +77,48 @@ public class register extends AppCompatActivity {
                 String imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
                 Bitmap bmpPic = BitmapFactory.decodeFile(imgDecodableString);
+                Bitmap dstBmp;
+                if (bmpPic.getWidth() >= bmpPic.getHeight()){
+
+                    dstBmp = Bitmap.createBitmap(
+                            bmpPic,
+                            bmpPic.getWidth()/2 - bmpPic.getHeight()/2,
+                            0,
+                            bmpPic.getHeight(),
+                            bmpPic.getHeight()
+                    );
+
+                }else{
+
+                    dstBmp = Bitmap.createBitmap(
+                            bmpPic,
+                            0,
+                            bmpPic.getHeight()/2 - bmpPic.getWidth()/2,
+                            bmpPic.getWidth(),
+                            bmpPic.getWidth()
+                    );
+                }
+                Bitmap lbp =scaleDown(dstBmp,300,false);
                 ImageButton img = findViewById(R.id.addPicture);
-                img.setImageBitmap(bmpPic);
+                img.setImageBitmap(lbp);
 
             } catch (Exception e) {
                 Log.e("Log", "Error from Gallery Activity");
             }
 
         }
+    }
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
+                                   boolean filter) {
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
     }
     public boolean SaveData(){
         final EditText txtName = (EditText)findViewById(R.id.name);
