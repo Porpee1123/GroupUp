@@ -68,11 +68,6 @@ public class register extends AppCompatActivity {
                 Uri selectedImage = data.getData();
 
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-<<<<<<< Updated upstream
-
-=======
-//                Log.d("p5465", filePathColumn[0]+""+filePathColumn[1]);
->>>>>>> Stashed changes
                 Cursor cursor = getContentResolver().query(selectedImage,
 
                         filePathColumn, null, null, null);
