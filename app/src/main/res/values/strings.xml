@@ -20,4 +20,7 @@
     <string name="title_activity_invite_friends">Invite Friends</string>
     <string name="tab_text_1">Head</string>
     <string name="tab_text_2">Attendant</string>
+    <string name="home">home</string>
+    <string name="manage_friend">Manage Friend</string>
+    <string name="manage_calendar">Manage calendar</string>
 </resources>

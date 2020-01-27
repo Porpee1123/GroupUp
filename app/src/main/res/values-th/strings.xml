@@ -20,4 +20,7 @@
     <string name="title_activity_invite_friends">เพิ่มสมาชิก</string>
     <string name="tab_text_1">แม่งาน</string>
     <string name="tab_text_2">ผู้เข้าร่วมงาน</string>
+    <string name="home">หน้าหลัก</string>
+    <string name="manage_friend">จัดการเพื่อน</string>
+    <string name="manage_calendar">จัดการปฏิทิน</string>
 </resources>
