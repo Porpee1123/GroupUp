@@ -13,10 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".createPlace"></activity>
+        <activity android:name=".place" />
         <activity
             android:name=".inviteFriends"
             android:label="@string/title_activity_invite_friends"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".addFriends" />
         <activity android:name=".createGroup" />
         <activity android:name=".register" />

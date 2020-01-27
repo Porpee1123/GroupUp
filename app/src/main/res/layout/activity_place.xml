@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".place">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="411dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#34558b"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:id="@+id/home_menuBar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#34558b"
+                android:src="@drawable/ic_dehaze_black_24dp" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/home"
+                style="@style/Style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="My Place" />
+
+            <ImageButton
+                android:id="@+id/home_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#34558b"
+                android:src="@drawable/ic_search_black_24dp" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:id="@+id/home_newGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#34558b"
+                android:src="@drawable/ic_add_black_24dp" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
