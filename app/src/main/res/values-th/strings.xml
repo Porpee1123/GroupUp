@@ -23,4 +23,13 @@
     <string name="home">หน้าหลัก</string>
     <string name="manage_friend">จัดการเพื่อน</string>
     <string name="manage_calendar">จัดการปฏิทิน</string>
+    <string name="facility">สิ่งอำนวยความสะดวก :</string>
+    <string name="parking">ที่จอดรถ</string>
+    <string name="wifi">Wi-Fi</string>
+    <string name="credit">รับบัตรเครดิต</string>
+    <string name="kids">มีของเล่นเด็ก</string>
+    <string name="air">มีเครื่องปรับอากาศ</string>
+    <string name="room">ห้องส่วนตัว</string>
+    <string name="bts">ใกล้ BTS</string>
+    <string name="mrt">ใกล้ MRT</string>
 </resources>
