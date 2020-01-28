@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/button_img"
+                android:background="@drawable/button_big"
                 android:fontFamily="@font/pridi_extralight"
                 android:gravity="center"
                 android:src="@drawable/ic_add_black_24dp"
