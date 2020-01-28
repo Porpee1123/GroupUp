@@ -23,4 +23,14 @@
     <string name="home">home</string>
     <string name="manage_friend">Manage Friend</string>
     <string name="manage_calendar">Manage calendar</string>
+    <string name="facility">Facility :</string>
+    <string name="parking">Parking</string>
+    <string name="wifi">Wi-Fi</string>
+    <string name="credit">Credit Card</string>
+    <string name="kids">Good for Kids</string>
+    <string name="air">Air conditioning</string>
+    <string name="room">Private Room</string>
+    <string name="bts">Near BTS</string>
+    <string name="mrt">Near MRT</string>
+
 </resources>
