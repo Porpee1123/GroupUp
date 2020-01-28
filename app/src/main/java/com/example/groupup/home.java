@@ -25,7 +25,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(home.this);
+        navigationView.bringToFront();
 
     }
     public void setHumburgerButton(){
@@ -44,6 +45,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.d(TAG, "Hello item");
         item.setChecked(true);
         switch (item.getItemId()){
             case R.id.menu_home:
@@ -56,6 +58,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 Log.d(TAG, "onNavigationItemSelected calendar: " + item.getTitle());
                 break;
             case R.id.menu_friend:
+                goToManageFriend();
                 Log.d(TAG, "onNavigationItemSelected friend: " + item.getTitle());
                 break;
             case R.id.menu_signout:
@@ -63,6 +66,13 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
         }
         drawerLayout.closeDrawers();
-        return true;
+        return false;
     }
+    public void goToManageAccount(){}
+    public void goToCalendar(){}
+    public void goToManageFriend(){
+        Intent intent = new Intent(home.this,addFriends.class);
+        startActivity(intent);
+    }
+    public void signout(){}
 }
