@@ -68,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="#34558b"
+                android:onClick="addplace"
                 android:src="@drawable/ic_add_black_24dp" />
 
             <View

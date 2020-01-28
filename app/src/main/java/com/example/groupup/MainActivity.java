@@ -162,5 +162,9 @@ public class MainActivity extends AppCompatActivity {
         Intent in = new Intent(this,register.class);
         startActivity(in);
     }
+    public void skipPlace(View v){
+        Intent in = new Intent(this,place.class);
+        startActivity(in);
+    }
 
 }
