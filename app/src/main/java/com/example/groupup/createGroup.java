@@ -31,7 +31,7 @@ public class createGroup extends AppCompatActivity {
 
     }
     public void inviteFriend(View v){
-        Intent intent = new Intent(createGroup.this,inviteFriends.class);
+        Intent intent = new Intent(createGroup.this,invite.class);
         startActivity(intent);
     }
 

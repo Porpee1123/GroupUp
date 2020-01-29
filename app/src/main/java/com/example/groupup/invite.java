@@ -1,31 +1,47 @@
 package com.example.groupup;
 
+import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.LocalActivityManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TabHost;
 
-import androidx.fragment.app.Fragment;
+public class invite extends AppCompatActivity {
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class invite extends Fragment {
-
-
-    public invite() {
-        // Required empty public constructor
-    }
-
+    LocalActivityManager mLocalActivityManager;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_invite, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_invite);
+        mLocalActivityManager = new LocalActivityManager(this, false);
+        mLocalActivityManager.dispatchCreate(savedInstanceState);
+
+        TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
+        tabHost.setup(mLocalActivityManager);
+
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
+                .setIndicator("Header")
+                .setContent(new Intent(this, invite_head.class));
+        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
+                .setIndicator("attendant")
+                .setContent(new Intent(this, invite_attendant.class));
+
+        tabHost.addTab(tabSpec);
+        tabHost.addTab(tabSpec2);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mLocalActivityManager.dispatchPause(!isFinishing());
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mLocalActivityManager.dispatchResume();
+    }
 }
