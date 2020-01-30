@@ -32,5 +32,24 @@
     <string name="room">Private Room</string>
     <string name="bts">Near BTS</string>
     <string name="mrt">Near MRT</string>
+    <string name="nameFriends">Name Friends</string>
+    <string name="newGroup">New Group</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
+    <string name="stMonth">Start Month</string>
+    <string name="endMonth">End Month</string>
+    <string name="select_friend">select friend</string>
+    <string name="waitTime">Wait Time</string>
+    <string name="day">Day</string>
+    <string name="newPlace">New Place</string>
+    <string name="details">Details</string>
+    <string name="priceRange">Price range</string>
+    <string name="bath">Bath</string>
+    <string name="phone">Phone</string>
+    <string name="select_theme">select theme</string>
+    <string name="numberOfSeats">Nuber of seats</string>
+    <string name="seats">seats</string>
+    <string name="deposite">Deposite</string>
+    <string name="myPlace">My Place</string>
 
 </resources>

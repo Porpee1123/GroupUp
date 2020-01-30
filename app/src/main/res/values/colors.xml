@@ -11,4 +11,6 @@
     <color name="black_de">#DE000000</color>
     <color name="color_primary">#009B4C</color>
     <color name="transparent">#00000000</color>
+    <color name="classicBlue">#34558b</color>
+    <color name="blueWhite">#BCD0ED</color>
 </resources>
