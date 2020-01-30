@@ -22,10 +22,10 @@ public class invite extends AppCompatActivity {
         tabHost.setup(mLocalActivityManager);
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
-                .setIndicator("Header")
+                .setIndicator("แม่งาน")
                 .setContent(new Intent(this, invite_head.class));
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
-                .setIndicator("attendant")
+                .setIndicator("ผู้เข้าร่วมงาน")
                 .setContent(new Intent(this, invite_attendant.class));
 
         tabHost.addTab(tabSpec);
