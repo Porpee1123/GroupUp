@@ -64,7 +64,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
         }
         drawerLayout.closeDrawers();
-        return false;
+        return true;
     }
     public void goToManageAccount(){}
     public void goToCalendar(){}
