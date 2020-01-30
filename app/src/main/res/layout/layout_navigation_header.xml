@@ -3,26 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#2196F3"
+    android:background="@color/classicBlue"
     android:orientation="vertical"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:gravity="bottom">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:background="#00BCD4"
-        android:backgroundTint="#08FFFFFF"
-        android:src="@drawable/button_big" />
+        android:background="@color/blueWhite"
+        android:backgroundTint="@color/classicBlue"
+        android:src="@drawable/button_small" />
 
     <TextView
         android:id="@+id/menu_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="@font/pridi_extralight"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -30,7 +33,10 @@
         android:id="@+id/menu_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="@font/pridi_extralight"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
 </LinearLayout>

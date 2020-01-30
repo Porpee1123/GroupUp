@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#34558b"
+            android:background="@color/classicBlue"
             android:orientation="horizontal">
 
             <View
@@ -26,7 +26,7 @@
                 android:id="@+id/account_backHome"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="#34558b"
+                android:background="@color/classicBlue"
                 android:src="@drawable/ic_chevron_left_black_24dp" />
 
             <TextView
@@ -57,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:background="#022196F3"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -73,7 +72,6 @@
                 android:gravity="center"
                 android:src="@drawable/ic_add_black_24dp"
                 android:text="@string/addImg"
-                android:textColor="#000000"
                 android:textSize="18sp" />
 
             <LinearLayout
@@ -146,7 +144,7 @@
 
                 <TextView
                     android:id="@+id/textView5"
-                    android:layout_width="39dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/pridi_extralight"
@@ -154,6 +152,11 @@
                     android:text="@string/id"
                     android:textSize="18sp"
                     android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/view6"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent" />
 
                 <EditText
                     android:id="@+id/id"
@@ -174,10 +177,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
-                android:background="#34558b"
+                android:background="@color/classicBlue"
                 android:fontFamily="@font/pridi_extralight"
                 android:text="@string/btn"
-                android:textColor="#ECEEF0" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </LinearLayout>

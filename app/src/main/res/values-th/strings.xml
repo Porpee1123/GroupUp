@@ -32,4 +32,24 @@
     <string name="room">ห้องส่วนตัว</string>
     <string name="bts">ใกล้ BTS</string>
     <string name="mrt">ใกล้ MRT</string>
+    <string name="nameFriends">ชื่อเพื่อน</string>
+    <string name="newGroup">สร้างกลุ่ม</string>
+    <string name="title">ชื่อกลุ่ม</string>
+    <string name="note">รายละเอียด</string>
+    <string name="stMonth">เดือนเริ่มต้น</string>
+    <string name="endMonth">เดือนสิ้นสุด</string>
+    <string name="select_friend">เลือกเพื่อน</string>
+    <string name="waitTime">เวลารอโหวต</string>
+    <string name="day">วัน</string>
+    <string name="newPlace">สร้างสถานที่</string>
+    <string name="details">รายละเอียด</string>
+    <string name="priceRange">ราคาเฉลี่ยต่อคน</string>
+    <string name="bath">บาท</string>
+    <string name="phone">เบอร์โทรศัพท์</string>
+    <string name="select_theme">เลือกธีมงาน</string>
+    <string name="numberOfSeats">จำนวนลูกค้าที่รองรับได้</string>
+    <string name="seats">ที่นั่ง</string>
+    <string name="deposite">มัดจำล่วงหน้า</string>
+    <string name="myPlace">สถานที่ของฉัน</string>
+
 </resources>

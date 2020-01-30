@@ -23,4 +23,6 @@
     <color name="dateTimeRangePickerRangeTextColorActive">@android:color/white</color>
     <color name="dateTimeRangePickerRangeTextColorInactive">#B9B9B9</color>
 
+    <color name="classicBlue">#34558b</color>
+    <color name="blueWhite">#BCD0ED</color>
 </resources>
