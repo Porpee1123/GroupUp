@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".invite_attendant"/>
+        <activity android:name=".recommend_calendar" />
+        <activity android:name=".Manage_calendar" />
+        <activity android:name=".invite_attendant" />
         <activity android:name=".invite_head" />
         <activity android:name=".invite" />
         <activity android:name=".createPlace" />
