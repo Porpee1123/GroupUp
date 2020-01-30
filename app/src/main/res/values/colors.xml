@@ -11,4 +11,16 @@
     <color name="black_de">#DE000000</color>
     <color name="color_primary">#009B4C</color>
     <color name="transparent">#00000000</color>
+    <color name="color_5_appcolorblue">#009CFF</color>
+    <color name="color_6_blue">#015D98</color>
+    <color name="color_1_yellow">#F9CA03</color>
+
+    <color name="dateTimeRangePickerStateDefault">@color/color_5_appcolorblue</color>
+    <color name="dateTimeRangePickerStateNonSelectable">#FFFFFF</color>
+    <color name="dateTimeRangePickerStateToday">@color/color_5_appcolorblue</color>
+    <color name="dateTimeRangePickerHeaderTextColor">@android:color/black</color>
+    <color name="dateTimeRangePickerTitleTextColor">@android:color/black</color>
+    <color name="dateTimeRangePickerRangeTextColorActive">@android:color/white</color>
+    <color name="dateTimeRangePickerRangeTextColorInactive">#B9B9B9</color>
+
 </resources>

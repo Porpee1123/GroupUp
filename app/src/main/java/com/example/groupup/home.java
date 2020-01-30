@@ -53,6 +53,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 Log.d(TAG, "onNavigationItemSelected account: " + item.getTitle());
                 break;
             case R.id.menu_calendar:
+                goToCalendar();
                 Log.d(TAG, "onNavigationItemSelected calendar: " + item.getTitle());
                 break;
             case R.id.menu_friend:
@@ -67,7 +68,10 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
     public void goToManageAccount(){}
-    public void goToCalendar(){}
+    public void goToCalendar(){
+        Intent intent = new Intent(home.this,Manage_calendar.class);
+        startActivity(intent);
+    }
     public void goToManageFriend(){
         Intent intent = new Intent(home.this,addFriends.class);
         startActivity(intent);
