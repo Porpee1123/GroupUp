@@ -52,5 +52,10 @@
     <string name="deposite">มัดจำล่วงหน้า</string>
     <string name="myPlace">สถานที่ของฉัน</string>
     <string name="import_calendar">นำเข้าข้อมูลจากปฏิทิน</string>
-
+    <string name="err_title">มีข้อผิดพลาด</string>
+    <string name="err_input_name">กรุณากรอกชื่อ</string>
+    <string name="err_input_email">กรุณากรอกอีเมล</string>
+    <string name="err_input_id">กรุณากรอกไอดีส่วนตัว</string>
+    <string name="submit_title">ผลการบันทึก</string>
+    <string name="submit_result">บันทึกสำเร็จ</string>
 </resources>

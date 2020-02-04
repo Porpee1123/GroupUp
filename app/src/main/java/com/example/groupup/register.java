@@ -3,6 +3,7 @@ package com.example.groupup;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -64,10 +66,25 @@ public class register extends AppCompatActivity {
         bcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(register.this,home.class);
-                startActivity(intent);
+                if(SaveData()) {
+                    Intent intent = new Intent(register.this, home.class);
+                    startActivity(intent);
+                }
             }
         });
+//        final ImageButton btn = (ImageButton) findViewById(R.id.button);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if(SaveData()){
+//                    if (v != null) {
+//                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                        final EditText txtMsg = (EditText)findViewById(R.id.msg);
+//                        txtMsg.requestFocus();
+//                    }
+//                }
+//            }
+//        });
 
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,33 +150,34 @@ public class register extends AppCompatActivity {
         final EditText txtName = (EditText)findViewById(R.id.name);
         final EditText txtEmail = (EditText)findViewById(R.id.email);
         final EditText txtId = (EditText)findViewById(R.id.id);
-        final EditText txtPhoto = (EditText)findViewById(R.id.id);
+        final ImageButton txtImage = (ImageButton)findViewById(R.id.addPicture);
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-//        dialog.setTitle(R.string.err_title);
-//        dialog.setIcon(android.R.drawable.btn_star_big_on);
-//        dialog.setPositiveButton("Close", null);
-//        if(txtName.getText().length() == 0){
-//            dialog.setMessage(R.string.input_name);
-//            dialog.show();
-//            txtName.requestFocus();
-//            return false;
-//        }
-//        if(txtMsg.getText().length() == 0){
-//            dialog.setMessage(R.string.input_msg);
-//            dialog.show();
-//            txtMsg.requestFocus();
-//            return false;
-//        }
-//        if(txtAmt.getText().length() == 0) {
-//            dialog.setMessage(R.string.input_amt);
-//            dialog.show();
-//            txtAmt.requestFocus();
-//            return false;
-//        }
-        String url = "http://www.groupupdb.com/android/register.php";
+        dialog.setTitle(R.string.err_title);
+        dialog.setIcon(android.R.drawable.btn_star_big_on);
+        dialog.setPositiveButton("Close", null);
+        if(txtName.getText().length() == 0){
+            dialog.setMessage(R.string.err_input_name);
+            dialog.show();
+            txtName.requestFocus();
+            return false;
+        }
+        if(txtEmail.getText().length() == 0){
+            dialog.setMessage(R.string.err_input_email);
+            dialog.show();
+            txtEmail.requestFocus();
+            return false;
+        }
+        if(txtId.getText().length() == 0) {
+            dialog.setMessage(R.string.err_input_id);
+            dialog.show();
+            txtId.requestFocus();
+            return false;
+        }
+        String url = "http://www.groupupddb.com/android/register.php";
         url += "?sName=" + txtName.getText().toString();
         url += "&sMsg=" + txtEmail.getText().toString();
         url += "&sAmt=" + txtId.getText().toString();
+        url += "&sNote=" + txtImage.getBackground().toString();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -180,13 +198,13 @@ public class register extends AppCompatActivity {
                                 dialog.setMessage(strError);
                                 dialog.show();
                             } else {
-//                                dialog.setTitle(R.string.submit_title);
-//                                dialog.setMessage(R.string.submit_result);
+                                dialog.setTitle(R.string.submit_title);
+                                dialog.setMessage(R.string.submit_result);
                                 dialog.show();
                                 txtName.setText("");
                                 txtEmail.setText("");
                                 txtId.setText("");
-//                                txtNote.setText("");
+                                txtImage.setBackground(null);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

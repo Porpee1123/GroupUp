@@ -52,5 +52,10 @@
     <string name="deposite">Deposite</string>
     <string name="myPlace">My Place</string>
     <string name="import_calendar">import calendar event</string>
-
+    <string name="err_title">error</string>
+    <string name="err_input_name">please input name</string>
+    <string name="err_input_email">please input email</string>
+    <string name="err_input_id">please input id</string>
+    <string name="submit_title">save result</string>
+    <string name="submit_result">Save complete</string>
 </resources>
