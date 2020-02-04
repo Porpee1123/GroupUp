@@ -16,6 +16,8 @@
     <string name="inviteFriends">เชิญเพื่อน</string>
     <string name="addFriends">เพิ่มเพื่อน</string>
     <string name="search_friends">ค้นหาด้วย ID</string>
+    <string name="search">ค้นหา</string>
+    <string name="search_theme">ค้นหาธีมร้านอาหาร</string>
     <string name="type_friends">ประเภทเพื่อน</string>
     <string name="title_activity_invite_friends">เพิ่มสมาชิก</string>
     <string name="tab_text_1">แม่งาน</string>
@@ -29,7 +31,7 @@
     <string name="credit">รับบัตรเครดิต</string>
     <string name="kids">มีของเล่นเด็ก</string>
     <string name="air">มีเครื่องปรับอากาศ</string>
-    <string name="room">ห้องส่วนตัว</string>
+    <string name="room">มีห้องส่วนตัว</string>
     <string name="bts">ใกล้ BTS</string>
     <string name="mrt">ใกล้ MRT</string>
     <string name="nameFriends">ชื่อเพื่อน</string>
@@ -58,4 +60,6 @@
     <string name="err_input_id">กรุณากรอกไอดีส่วนตัว</string>
     <string name="submit_title">ผลการบันทึก</string>
     <string name="submit_result">บันทึกสำเร็จ</string>
+    <string name="theme">ธีมงาน</string>
+    <string name="restaurant_type">ประเภทร้านอาหาร</string>
 </resources>

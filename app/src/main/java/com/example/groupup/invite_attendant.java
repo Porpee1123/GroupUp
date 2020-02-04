@@ -18,7 +18,7 @@ public class invite_attendant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_attendant);
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear);
-        linearLayout.setBackgroundColor(Color.parseColor("#00b06b"));
+        linearLayout.setBackgroundColor(Color.parseColor("#BCD0ED"));
         bu_slide = findViewById(R.id.slide);
         table_row = findViewById(R.id.invite_table_friend);
         //set up

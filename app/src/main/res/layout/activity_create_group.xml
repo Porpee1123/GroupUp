@@ -115,7 +115,7 @@
                 android:fontFamily="@font/pridi_extralight"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                tools:hint="@string/note" />
+                android:hint="@string/note" />
 
         </LinearLayout>
 
