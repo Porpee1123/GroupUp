@@ -51,5 +51,6 @@
     <string name="seats">seats</string>
     <string name="deposite">Deposite</string>
     <string name="myPlace">My Place</string>
+    <string name="import_calendar">import calendar event</string>
 
 </resources>

@@ -51,5 +51,6 @@
     <string name="seats">ที่นั่ง</string>
     <string name="deposite">มัดจำล่วงหน้า</string>
     <string name="myPlace">สถานที่ของฉัน</string>
+    <string name="import_calendar">นำเข้าข้อมูลจากปฏิทิน</string>
 
 </resources>
