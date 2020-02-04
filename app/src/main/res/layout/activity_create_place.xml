@@ -107,7 +107,7 @@
                     android:fontFamily="@font/pridi_extralight"
                     android:gravity="start|top"
                     android:inputType="textMultiLine"
-                    tools:hint="@string/details" />
+                    android:hint="@string/details" />
 
             </LinearLayout>
 
@@ -263,6 +263,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@color/white"
+                android:fontFamily="@font/pridi_extralight"
                 android:text="@string/facility"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -283,6 +284,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/parking"
                         android:textSize="18sp" />
 
@@ -292,6 +294,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/wifi"
                         android:textSize="18sp" />
 
@@ -307,6 +310,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/credit"
                         android:textSize="18sp" />
 
@@ -316,6 +320,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/kids"
                         android:textSize="18sp" />
                 </TableRow>
@@ -330,6 +335,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/air"
                         android:textSize="18sp" />
 
@@ -339,6 +345,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/room"
                         android:textSize="18sp" />
                 </TableRow>
@@ -353,6 +360,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/bts"
                         android:textSize="18sp" />
 
@@ -362,6 +370,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/mrt"
                         android:textSize="18sp" />
                 </TableRow>

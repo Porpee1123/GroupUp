@@ -16,6 +16,8 @@
     <string name="inviteFriends">Invite Friends</string>
     <string name="addFriends">Add Friends</string>
     <string name="search_friends">Search with ID</string>
+    <string name="search">Search</string>
+    <string name="search_theme">Search Theme</string>
     <string name="type_friends">Friends type</string>
     <string name="title_activity_invite_friends">Invite Friends</string>
     <string name="tab_text_1">Head</string>
@@ -58,4 +60,6 @@
     <string name="err_input_id">please input id</string>
     <string name="submit_title">save result</string>
     <string name="submit_result">Save complete</string>
+    <string name="theme">Theme</string>
+    <string name="restaurant_type">Restaurant Type</string>
 </resources>
