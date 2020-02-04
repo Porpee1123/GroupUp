@@ -3,7 +3,6 @@ package com.example.groupup;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,7 +14,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -173,11 +171,11 @@ public class register extends AppCompatActivity {
             txtId.requestFocus();
             return false;
         }
-        String url = "http://www.groupupddb.com/android/register.php";
+        String url = "http://www.groupupdb.com/android/register.php";
         url += "?sName=" + txtName.getText().toString();
-        url += "&sMsg=" + txtEmail.getText().toString();
-        url += "&sAmt=" + txtId.getText().toString();
-        url += "&sNote=" + txtImage.getBackground().toString();
+        url += "&sEmail=" + txtEmail.getText().toString();
+        url += "&sId=" + txtId.getText().toString();
+        url += "&sImage=" + txtImage.getBackground().toString();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
