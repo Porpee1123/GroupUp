@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
+        <activity android:name=".theme"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize"/>
         <activity android:name=".recommend_calendar"
             android:screenOrientation="portrait"
             android:configChanges="screenSize"/>
