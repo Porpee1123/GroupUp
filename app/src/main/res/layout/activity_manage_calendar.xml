@@ -79,25 +79,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnGetCalendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button" />
         </LinearLayout>
-
         <com.squareup.timessquare.CalendarPickerView
             android:id="@+id/calendarPickerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingTop="16dp"
-            android:scrollbarStyle="outsideOverlay"
-            app:tsquare_dayBackground="@drawable/day_background"
-            app:tsquare_dayTextColor="@drawable/day_text_color"
-            app:tsquare_dividerColor="@android:color/transparent"
-            app:tsquare_headerTextColor="@color/color_6_blue"
-            app:tsquare_titleTextColor="@color/color_1_yellow" />
+            android:layout_weight="1" >
+
+        </com.squareup.timessquare.CalendarPickerView>
 
         <TextView
             android:id="@+id/textView20"

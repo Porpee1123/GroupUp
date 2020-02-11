@@ -64,10 +64,10 @@ public class register extends AppCompatActivity {
         bcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(SaveData()) {
+//                if(SaveData()) {
                     Intent intent = new Intent(register.this, home.class);
                     startActivity(intent);
-                }
+//                }
             }
         });
 //        final ImageButton btn = (ImageButton) findViewById(R.id.button);
@@ -147,7 +147,6 @@ public class register extends AppCompatActivity {
     public boolean SaveData(){
         final EditText txtName = (EditText)findViewById(R.id.name);
         final EditText txtEmail = (EditText)findViewById(R.id.email);
-        final EditText txtId = (EditText)findViewById(R.id.id);
         final ImageButton txtImage = (ImageButton)findViewById(R.id.addPicture);
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.err_title);
@@ -165,16 +164,9 @@ public class register extends AppCompatActivity {
             txtEmail.requestFocus();
             return false;
         }
-        if(txtId.getText().length() == 0) {
-            dialog.setMessage(R.string.err_input_id);
-            dialog.show();
-            txtId.requestFocus();
-            return false;
-        }
         String url = "http://www.groupupdb.com/android/register.php";
         url += "?sName=" + txtName.getText().toString();
         url += "&sEmail=" + txtEmail.getText().toString();
-        url += "&sId=" + txtId.getText().toString();
         url += "&sImage=" + txtImage.getBackground().toString();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -201,7 +193,6 @@ public class register extends AppCompatActivity {
                                 dialog.show();
                                 txtName.setText("");
                                 txtEmail.setText("");
-                                txtId.setText("");
                                 txtImage.setBackground(null);
                             }
                         } catch (JSONException e) {

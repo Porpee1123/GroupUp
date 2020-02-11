@@ -96,7 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@color/white"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -114,8 +115,8 @@
                 android:ems="8"
                 android:fontFamily="@font/pridi_extralight"
                 android:gravity="start|top"
-                android:inputType="textMultiLine"
-                android:hint="@string/note" />
+                android:hint="@string/note"
+                android:inputType="textMultiLine" />
 
         </LinearLayout>
 
