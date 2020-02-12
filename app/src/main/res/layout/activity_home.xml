@@ -125,6 +125,24 @@
             android:layout_marginTop="10dp"
             android:background="#CCCCCC" />
 
+        <Button
+            android:id="@+id/btngetuser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
