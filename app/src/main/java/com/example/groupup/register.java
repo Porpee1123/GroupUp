@@ -1,15 +1,11 @@
 package com.example.groupup;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,17 +21,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -95,9 +80,9 @@ public class register extends AppCompatActivity {
         bcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageUploadToServerFunction();
-//                    Intent intent = new Intent(register.this, home.class);
-//                    startActivity(intent);
+//                ImageUploadToServerFunction();
+                    Intent intent = new Intent(register.this, home.class);
+                    startActivity(intent);
             }
         });
 
