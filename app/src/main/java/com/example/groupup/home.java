@@ -51,6 +51,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.bringToFront();
 //        getUser();
         getEvent();
+        
+        Log.d("testp",);
 
     }
     public void setHumburgerButton(){
@@ -242,7 +244,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 SimpleAdapter sAdap;
                 sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_column,
-                        new String[] {"eid", "name", "month_start", "month_end"}, new int[] {R.id.col_trans_id, R.id.col_name, R.id.col_msg, R.id.col_amt});
+                        new String[] {"eid", "name", "month_start", "month_end", "wait"}, new int[] {R.id.col_trans_id, R.id.col_name, R.id.col_msg, R.id.col_amt ,R.id.col_note});
                 listView.setAdapter(sAdap);
                 final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
@@ -252,11 +254,12 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                         String sName = MyArrList.get(position).get("name").toString();
                         String sMsg = MyArrList.get(position).get("month_start").toString();
                         String sAmt = MyArrList.get(position).get("month_end").toString();
+                        String sWit = MyArrList.get(position).get("wait").toString();
                         viewDetail.setIcon(android.R.drawable.btn_star_big_on);
                         viewDetail.setTitle("รายละเอียด");
                         viewDetail.setMessage("เลขที่รายการ : " + sTransID + "\n"
                                 + "ชื่อ : " + sName + "\n" + "รายการ : " + sMsg + "\n"
-                                + "จำนวนเงิน : " + Double.parseDouble(sAmt)+ "\n");
+                                + "จำนวนเงิน : " + Double.parseDouble(sAmt)+ "\n"+sWit);
                         viewDetail.setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,
