@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,33 +40,43 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     ResponseStr responseStr = new ResponseStr();
     JSONArray data;
     ListView listView;
+    TextView hName;
+    TextView hEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        listView = (ListView)findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
         navigationView.setNavigationItemSelectedListener(home.this);
         navigationView.bringToFront();
-//        getUser();
-        getEvent();
-        
-        Log.d("testp",);
+        View v = navigationView.getHeaderView(0);
+        hName = v.findViewById(R.id.menu_name);
+        hEmail = v.findViewById(R.id.menu_email);
+
+        getUser();
+
+//        getEvent();
+        final Button btn = (Button) findViewById(R.id.btngetuser);
 
     }
-    public void setHumburgerButton(){
+
+    public void setHumburgerButton() {
 
     }
-    public void createGroup(View v){
-        Intent intent = new Intent(home.this,createGroup.class);
+
+    public void createGroup(View v) {
+        Intent intent = new Intent(home.this, createGroup.class);
         startActivity(intent);
     }
-    public void search(View v){
+
+    public void search(View v) {
 
     }
-    public void menuHamberger(View v){
+
+    public void menuHamberger(View v) {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
@@ -73,10 +84,10 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "Hello item");
         item.setChecked(true);
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_home:
                 Log.d(TAG, "onNavigationItemSelected home: " + item.getTitle());
-            break;
+                break;
             case R.id.menu_account:
                 Log.d(TAG, "onNavigationItemSelected account: " + item.getTitle());
                 break;
@@ -95,49 +106,51 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout.closeDrawers();
         return true;
     }
-    public void goToManageAccount(){}
-    public void goToCalendar(){
-        Intent intent = new Intent(home.this,Manage_calendar.class);
+
+    public void goToManageAccount() {
+    }
+
+    public void goToCalendar() {
+        Intent intent = new Intent(home.this, Manage_calendar.class);
         startActivity(intent);
     }
-    public void goToManageFriend(){
-        Intent intent = new Intent(home.this,addFriends.class);
+
+    public void goToManageFriend() {
+        Intent intent = new Intent(home.this, addFriends.class);
         startActivity(intent);
     }
-    public void signout(){}
-    public void getUser(){
+
+    public void signout() {
+    }
+
+    public void getUser() {
         responseStr = new ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/getuser.php";
-        url += "?sId=" + "1";//รอเอาIdจากfirebase
+        url += "?sId=" + "1";//รอเอาIdหรือ email จากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //textView.setText("Response is: "+ response.toString());
-
                         try {
-                            //responseStr = new ResponseStr(response.toString());
-                            //responseStr.setValue(new JSONArray(response.toString()));
-
-
-                            HashMap<String, String> map;
+                            HashMap<String, String> map = null;
                             JSONArray data = new JSONArray(response.toString());
-                            for(int i = 0; i < data.length(); i++){
+                            for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
                                 map.put("id", c.getString("id"));
                                 map.put("name", c.getString("name"));
                                 map.put("email", c.getString("email"));
                                 map.put("photo", c.getString("photo"));
-//                                map.put("note", c.getString("note"));
                                 MyArrList.add(map);
                             }
-                            //textView.setText(" :: "+ MyArrList.size());
-
-                            //textView.setText(" :: "+ responseStr.str);
+                            //set Header menu name email
+//                            Log.d("@query", MyArrList.get(0).get("name"));
+//                            Log.d("@query", MyArrList.get(0).get("email"));
+                            hName.setText(MyArrList.get(0).get("name"));
+                            hEmail.setText(MyArrList.get(0).get("email"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -147,49 +160,14 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():"+error.getMessage());
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-
-        final Button btn = (Button) findViewById(R.id.btngetuser);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                SimpleAdapter sAdap;
-                sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_column,
-                        new String[] {"id", "name", "email", "photo"}, new int[] {R.id.col_trans_id, R.id.col_name, R.id.col_msg, R.id.col_amt});
-                listView.setAdapter(sAdap);
-                final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
-
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                        String sTransID = MyArrList.get(position).get("id").toString();
-                        String sName = MyArrList.get(position).get("name").toString();
-                        String sMsg = MyArrList.get(position).get("email").toString();
-                        String sAmt = MyArrList.get(position).get("photo").toString();
-                        viewDetail.setIcon(android.R.drawable.btn_star_big_on);
-                        viewDetail.setTitle("รายละเอียด");
-                        viewDetail.setMessage("เลขที่รายการ : " + sTransID + "\n"
-                                + "ชื่อ : " + sName + "\n" + "รายการ : " + sMsg + "\n"
-                                + "จำนวนเงิน : " + Double.parseDouble(sAmt)+ "\n");
-                        viewDetail.setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        viewDetail.show();
-
-                    }
-                });
-            }
-        });
-
-
     }
-    public void getEvent(){
+
+    public void getEvent() {
         responseStr = new ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -209,7 +187,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
                             HashMap<String, String> map;
                             JSONArray data = new JSONArray(response.toString());
-                            for(int i = 0; i < data.length(); i++){
+                            for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
                                 map.put("eid", c.getString("eid"));
@@ -233,7 +211,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():"+error.getMessage());
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -244,7 +222,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 SimpleAdapter sAdap;
                 sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_column,
-                        new String[] {"eid", "name", "month_start", "month_end", "wait"}, new int[] {R.id.col_trans_id, R.id.col_name, R.id.col_msg, R.id.col_amt ,R.id.col_note});
+                        new String[]{"eid", "name", "month_start", "month_end", "wait"}, new int[]{R.id.col_trans_id, R.id.col_name, R.id.col_msg, R.id.col_amt, R.id.col_note});
                 listView.setAdapter(sAdap);
                 final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
@@ -259,7 +237,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                         viewDetail.setTitle("รายละเอียด");
                         viewDetail.setMessage("เลขที่รายการ : " + sTransID + "\n"
                                 + "ชื่อ : " + sName + "\n" + "รายการ : " + sMsg + "\n"
-                                + "จำนวนเงิน : " + Double.parseDouble(sAmt)+ "\n"+sWit);
+                                + "จำนวนเงิน : " + Double.parseDouble(sAmt) + "\n" + sWit);
                         viewDetail.setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,
@@ -276,11 +254,12 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
     }
-    public class ResponseStr{
+
+    public class ResponseStr {
         private String str;
         JSONArray jsonArray;
 
-        public void setValue(JSONArray jsonArr){
+        public void setValue(JSONArray jsonArr) {
             this.jsonArray = jsonArr;
         }
 
