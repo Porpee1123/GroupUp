@@ -59,7 +59,13 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         getUser();
 
 //        getEvent();
-        final Button btn = (Button) findViewById(R.id.btngetuser);
+        final Button btn = (Button) findViewById(R.id.btngotohead);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoManageHeader();
+            }
+        });
 
     }
 
@@ -263,5 +269,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             this.jsonArray = jsonArr;
         }
 
+    }
+    public void gotoManageHeader(){
+        Intent intent = new Intent(home.this,appointment.class);
+        startActivity(intent);
     }
 }

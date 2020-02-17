@@ -49,8 +49,7 @@ public class createGroup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (saveData()) {
-                    Intent in = new Intent(createGroup.this, home.class);
-                    startActivity(in);
+                    nextNewGroup();
                 }
             }
         });
@@ -134,8 +133,13 @@ public class createGroup extends AppCompatActivity {
         return true;
     }
 
-    public void inviteFriend(View v) {
-        Intent intent = new Intent(createGroup.this, invite.class);
+    public void backHome(View v) {
+        Intent intent = new Intent(createGroup.this, home.class);
+        startActivity(intent);
+    }
+
+    public void nextNewGroup() {
+        Intent intent = new Intent(createGroup.this, appointment.class);
         startActivity(intent);
     }
 

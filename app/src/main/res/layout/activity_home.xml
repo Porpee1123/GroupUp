@@ -74,7 +74,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/classicBlue"
                 android:onClick="createGroup"
-                android:src="@drawable/ic_group_add_black_24dp" />
+                android:src="@drawable/ic_add_black_24dp" />
 
             <View
                 android:id="@+id/view5"
@@ -126,6 +126,12 @@
             android:layout_height="1dip"
             android:layout_marginTop="10dp"
             android:background="#CCCCCC" />
+
+        <Button
+            android:id="@+id/btngotohead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="manage head" />
 
         <Button
             android:id="@+id/btngetuser"

@@ -101,5 +101,11 @@
     <string name="minimal">มินิมอล</string>
     <string name="warm">อบอุ่น</string>
     <string name="child">เด็ก</string>
-
+    <string name="appointment">นัดหมาย</string>
+    <string name="to">ถึง</string>
+    <string name="date_time">วันที่และเวลานัด</string>
+    <string name="select_date_time">เลือกวันที่และเวลา</string>
+    <string name="place">สถานที่นัด</string>
+    <string name="select_place">เลือกสถานที่</string>
+    <string name="next">ถัดไป</string>
 </resources>
