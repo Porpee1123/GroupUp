@@ -6,17 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".appoint_date_and_place">
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="#FFFFFF"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/date_time"
@@ -34,14 +31,12 @@
                 android:background="@drawable/button"
                 android:onClick="selectDateTime"
                 android:text="@string/select_date_time" />
-        </LinearLayout>
+        </TableRow>
 
-        <LinearLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="#FFFFFF"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/place"
@@ -59,7 +54,8 @@
                 android:background="@drawable/button"
                 android:onClick="selectPlace"
                 android:text="@string/select_place" />
-        </LinearLayout>
+        </TableRow>
 
-    </LinearLayout>
+    </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

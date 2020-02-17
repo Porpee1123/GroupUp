@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TabHost;
 
 public class appointment extends AppCompatActivity {
@@ -79,6 +80,12 @@ public class appointment extends AppCompatActivity {
         }
 
     }
+
+    public void backHomepage(View v) {
+        Intent intent = new Intent(appointment.this, home.class);
+        startActivity(intent);
+    }
+
 
 }
 

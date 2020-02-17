@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TabHost;
 
 public class invite extends AppCompatActivity {
@@ -43,5 +44,10 @@ public class invite extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mLocalActivityManager.dispatchResume();
+    }
+
+    public void backAppoint(View v) {
+        Intent intent = new Intent(invite.this, appointment.class);
+        startActivity(intent);
     }
 }

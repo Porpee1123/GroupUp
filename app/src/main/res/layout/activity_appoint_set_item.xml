@@ -6,17 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".appoint_setItem">
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="#FFFFFF"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/inviteFriends"
@@ -34,20 +31,18 @@
                 android:background="@drawable/button"
                 android:onClick="selectFriend"
                 android:text="@string/select_friend" />
-        </LinearLayout>
+        </TableRow>
 
-        <LinearLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="#FFFFFF"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/theme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.35"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/theme" />
 
@@ -59,7 +54,7 @@
                 android:background="@drawable/button"
                 android:onClick="selectTheme"
                 android:text="@string/select_theme" />
-        </LinearLayout>
+        </TableRow>
 
-    </LinearLayout>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
