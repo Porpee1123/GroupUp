@@ -146,17 +146,17 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
-                                map.put("id", c.getString("id"));
-                                map.put("name", c.getString("name"));
-                                map.put("email", c.getString("email"));
-                                map.put("photo", c.getString("photo"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_email", c.getString("user_email"));
+                                map.put("user_photo", c.getString("user_photo"));
                                 MyArrList.add(map);
                             }
                             //set Header menu name email
 //                            Log.d("@query", MyArrList.get(0).get("name"));
 //                            Log.d("@query", MyArrList.get(0).get("email"));
-                            hName.setText(MyArrList.get(0).get("name"));
-                            hEmail.setText(MyArrList.get(0).get("email"));
+                            hName.setText(MyArrList.get(0).get("user_names"));
+                            hEmail.setText(MyArrList.get(0).get("user_email"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -178,7 +178,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
-        String url = "http://www.groupupdb.com/android/getevent.php";
+        String url = "http://www.groupupdb.com/android/geteventtran.php";
         url += "?sId=" + "1";//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -196,11 +196,11 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
-                                map.put("eid", c.getString("eid"));
-                                map.put("name", c.getString("name"));
-                                map.put("month_start", c.getString("month_start"));
-                                map.put("month_end", c.getString("month_end"));
-                                map.put("wait", c.getString("wait"));
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("events_name", c.getString("events_name"));
+                                map.put("events_month_start", c.getString("events_month_start"));
+                                map.put("events_month_end", c.getString("events_month_end"));
+                                map.put("events_wait", c.getString("events_wait"));
 
 //                                map.put("note", c.getString("note"));
                                 MyArrList.add(map);
@@ -228,17 +228,17 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 SimpleAdapter sAdap;
                 sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_column,
-                        new String[]{"eid", "name", "month_start", "month_end", "wait"}, new int[]{R.id.col_trans_id, R.id.col_name, R.id.col_msg, R.id.col_amt, R.id.col_note});
+                        new String[]{"events_id", "events_name", "events_month_start", "events_month_end", "events_wait"}, new int[]{R.id.col_trans_id, R.id.col_name, R.id.col_msg, R.id.col_amt, R.id.col_note});
                 listView.setAdapter(sAdap);
                 final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                        String sTransID = MyArrList.get(position).get("eid").toString();
-                        String sName = MyArrList.get(position).get("name").toString();
-                        String sMsg = MyArrList.get(position).get("month_start").toString();
-                        String sAmt = MyArrList.get(position).get("month_end").toString();
-                        String sWit = MyArrList.get(position).get("wait").toString();
+                        String sTransID = MyArrList.get(position).get("events_id").toString();
+                        String sName = MyArrList.get(position).get("events_name").toString();
+                        String sMsg = MyArrList.get(position).get("events_month_start").toString();
+                        String sAmt = MyArrList.get(position).get("events_month_end").toString();
+                        String sWit = MyArrList.get(position).get("events_wait").toString();
                         viewDetail.setIcon(android.R.drawable.btn_star_big_on);
                         viewDetail.setTitle("รายละเอียด");
                         viewDetail.setMessage("เลขที่รายการ : " + sTransID + "\n"
