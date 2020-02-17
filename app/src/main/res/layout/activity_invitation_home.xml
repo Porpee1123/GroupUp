@@ -1,33 +1,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <TextView
-        android:id="@+id/col_trans_id"
+        android:id="@+id/col_head"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginLeft="10dp"
-        android:text="col_trans_id_str"/>
+        android:layout_weight="1"
+        android:text="head" />
+
     <TextView
         android:id="@+id/col_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="col_name_str"/>
+        android:text="name event" />
+
+    <TextView
+        android:id="@+id/col_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="time" />
+
     <TextView
         android:id="@+id/col_msg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:text="col_msg_str" />
-    <TextView
-        android:id="@+id/col_amt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="right"
-        android:layout_marginRight="10dp"
-        android:text="col_amt_str" />
 
     <TextView
         android:id="@+id/col_note"

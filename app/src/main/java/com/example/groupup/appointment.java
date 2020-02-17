@@ -38,7 +38,7 @@ public class appointment extends AppCompatActivity {
         tabHost.getTabWidget()
                 .getChildAt(0)
                 .setBackgroundResource(
-                        R.drawable.button_small);
+                        R.color.blueWhite);
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 
             @Override
@@ -60,16 +60,13 @@ public class appointment extends AppCompatActivity {
         mLocalActivityManager.dispatchResume();
     }
     protected void updateTabs() {
-
-
-
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
 
             if (tabHost.getTabWidget().getChildAt(i).isSelected()) {
                 tabHost.getTabWidget()
                         .getChildAt(i)
                         .setBackgroundResource(
-                                R.drawable.button_small);
+                                R.color.blueWhite);
             }
             else {
 

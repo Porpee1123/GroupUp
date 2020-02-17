@@ -25,7 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class createGroup extends AppCompatActivity {
-
+    String name="",id="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,9 @@ public class createGroup extends AppCompatActivity {
                 }
             }
         });
+        name = getIntent().getStringExtra("name");
+        id = getIntent().getStringExtra("id");
+        Log.d("pee",name);
 
     }
 
@@ -88,6 +91,7 @@ public class createGroup extends AppCompatActivity {
         url += "&sStart=" + spst.getSelectedItem().toString();
         url += "&sEnd=" + sped.getSelectedItem().toString();
         url += "&sWait=" + spwa.getSelectedItem().toString();
+        url += "&sProvi=" +name;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

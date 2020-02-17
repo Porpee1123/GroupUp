@@ -42,6 +42,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     ListView listView;
     TextView hName;
     TextView hEmail;
+    String name="",id="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     public void createGroup(View v) {
         Intent intent = new Intent(home.this, createGroup.class);
+        intent.putExtra("id",id);
+        intent.putExtra("name",name);
         startActivity(intent);
     }
 
@@ -156,6 +159,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 //                            Log.d("@query", MyArrList.get(0).get("name"));
 //                            Log.d("@query", MyArrList.get(0).get("email"));
                             hName.setText(MyArrList.get(0).get("user_names"));
+                            name = MyArrList.get(0).get("user_names");
+                            id= MyArrList.get(0).get("user_id");
                             hEmail.setText(MyArrList.get(0).get("user_email"));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -227,8 +232,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 SimpleAdapter sAdap;
-                sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_column,
-                        new String[]{"events_id", "events_name", "events_month_start", "events_month_end", "events_wait"}, new int[]{R.id.col_trans_id, R.id.col_name, R.id.col_msg, R.id.col_amt, R.id.col_note});
+                sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_invitation_home,
+                        new String[]{"events_id", "events_name", "events_month_start", "events_month_end", "events_wait"}, new int[]{R.id.col_head, R.id.col_name, R.id.col_msg, R.id.col_time, R.id.col_note});
                 listView.setAdapter(sAdap);
                 final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
