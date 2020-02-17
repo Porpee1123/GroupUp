@@ -10,7 +10,7 @@ import android.widget.TabHost;
 public class appointment extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
-
+    TabHost tabHost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,7 +18,8 @@ public class appointment extends AppCompatActivity {
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
 
-        TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
+
+        tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
@@ -34,6 +35,17 @@ public class appointment extends AppCompatActivity {
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
         tabHost.addTab(tabSpec3);
+        tabHost.getTabWidget()
+                .getChildAt(0)
+                .setBackgroundResource(
+                        R.drawable.button_small);
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+
+            @Override
+            public void onTabChanged(String tabId) {
+                updateTabs();
+            }
+        });
     }
     @Override
     protected void onPause() {
@@ -46,6 +58,29 @@ public class appointment extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mLocalActivityManager.dispatchResume();
+    }
+    protected void updateTabs() {
+
+
+
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+
+            if (tabHost.getTabWidget().getChildAt(i).isSelected()) {
+                tabHost.getTabWidget()
+                        .getChildAt(i)
+                        .setBackgroundResource(
+                                R.drawable.button_small);
+            }
+            else {
+
+                tabHost.getTabWidget()
+                        .getChildAt(i)
+                        .setBackgroundResource(
+                                R.drawable.visible);
+
+            }
+        }
+
     }
 
 }
