@@ -23,9 +23,6 @@
 
     </com.google.android.material.navigation.NavigationView>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -141,20 +138,13 @@
                 android:layout_height="wrap_content"
                 android:text="manage head" />
 
-            <Button
-                android:id="@+id/btngetuser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/invitation"
+                <Button
+                    android:id="@+id/btnInvi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Invitation" />
@@ -162,7 +152,7 @@
                 <ListView
                     android:id="@+id/listView_invite"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                 </ListView>
 
@@ -170,14 +160,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/header2"
+                <Button
+                    android:id="@+id/btnHead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Header" />
+                    android:text="Head" />
 
                 <ListView
                     android:id="@+id/listView_Header"
@@ -185,18 +175,19 @@
                     android:layout_height="match_parent">
 
                 </ListView>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/Attend"
+                <Button
+                    android:id="@+id/btnAttend"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Attend" />
+                    android:text="attend" />
 
                 <ListView
                     android:id="@+id/listView_attend"
@@ -205,6 +196,5 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

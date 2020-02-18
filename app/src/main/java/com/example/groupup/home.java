@@ -39,10 +39,11 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     NavigationView navigationView;
     ResponseStr responseStr = new ResponseStr();
     JSONArray data;
-    ListView listViewInvite,listViewHeader,listViewAttend;
+    ListView listViewInvite, listViewHeader, listViewAttend;
     TextView hName;
     TextView hEmail;
-    String name="",id="";
+    String name = "", id = "";
+    boolean invite = false, head = false, attend = false;//ปิด list view
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +59,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
-
         getUser();
-
         getEventInvitation();
         getEventHeader();
         getEventAttend();
@@ -89,8 +88,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     public void createGroup(View v) {
         Intent intent = new Intent(home.this, createGroup.class);
-        intent.putExtra("id",id);
-        intent.putExtra("name",name);
+        intent.putExtra("id", id);
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 
@@ -173,7 +172,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 //                            Log.d("@query", MyArrList.get(0).get("email"));
                             hName.setText(MyArrList.get(0).get("user_names"));
                             name = MyArrList.get(0).get("user_names");
-                            id= MyArrList.get(0).get("user_id");
+                            id = MyArrList.get(0).get("user_id");
                             hEmail.setText(MyArrList.get(0).get("user_email"));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -224,7 +223,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                                 MyArrList.add(map);
                             }
                             //textView.setText(" :: "+ MyArrList.size());
-
+                            Log.d("query",MyArrList.size()+"");
                             //textView.setText(" :: "+ responseStr.str);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -240,36 +239,65 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-                SimpleAdapter sAdap;
-                sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_invitation_home,
-                        new String[]{"event_creater", "events_name", "events_month_start","events_month_end"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time,R.id.col_time_end});
-                listViewInvite.setAdapter(sAdap);
-                final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
-                listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                        String sCreater = MyArrList.get(position).get("event_creater").toString();
-                        String sName = MyArrList.get(position).get("events_name").toString();
-                        String sSta = MyArrList.get(position).get("events_month_start").toString();
-                        String sEnd = MyArrList.get(position).get("events_month_end").toString();
-                        String sTim = sSta +" - "+sEnd;
-                        viewDetail.setIcon(android.R.drawable.btn_star_big_on);
-                        viewDetail.setTitle("รายละเอียด");
-                        viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
-                                + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n");
-                        viewDetail.setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        viewDetail.show();
+        Button btnget = findViewById(R.id.btnInvi);
+        btnget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (invite) {
+                    listViewInvite.setVisibility(View.GONE);
+                    invite = false;
+                } else {
+                    invite = true;
+                    listViewInvite.setVisibility(View.VISIBLE);
+                    SimpleAdapter sAdap;
+                    sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_invitation_home,
+                            new String[]{"event_creater", "events_name", "events_month_start", "events_month_end"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end});
+                    listViewInvite.setAdapter(sAdap);
+                    final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
-                    }
-                });
+                    listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+                            String sCreater = MyArrList.get(position).get("event_creater").toString();
+                            String sName = MyArrList.get(position).get("events_name").toString();
+                            String sSta = MyArrList.get(position).get("events_month_start").toString();
+                            String sEnd = MyArrList.get(position).get("events_month_end").toString();
+                            String sTim = sSta + " - " + sEnd;
+                            viewDetail.setIcon(android.R.drawable.btn_star_big_on);
+                            viewDetail.setTitle("รายละเอียด");
+                            viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
+                                    + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n");
+                            viewDetail.setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,
+                                                            int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            viewDetail.setNegativeButton("ไม่เข้าร่วม", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            viewDetail.setPositiveButton("เข้าร่วม", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            viewDetail.show();
+
+                        }
+                    });
+                }
+
+            }
+        });
+
 
     }
+
     public void getEventHeader() {
         responseStr = new ResponseStr();
 
@@ -315,31 +343,30 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
 
-                SimpleAdapter sAdap;
-                sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_header_home,
-                        new String[]{"events_name","states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
-                listViewHeader.setAdapter(sAdap);
-                final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
+        Button btnget = findViewById(R.id.btnHead);
+        btnget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (head) {
+                    listViewHeader.setVisibility(View.GONE);
+                    head = false;
+                } else {
+                    head = true;
+                    listViewHeader.setVisibility(View.VISIBLE);
+                    SimpleAdapter sAdap;
+                    sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_header_home,
+                            new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
+                    listViewHeader.setAdapter(sAdap);
 
-                listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                        String sCreater = MyArrList.get(position).get("events_name").toString();
-                        String sName = MyArrList.get(position).get("states_name").toString();
-                        viewDetail.setIcon(android.R.drawable.btn_star_big_on);
-                        viewDetail.setTitle("รายละเอียด");
-                        viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
-                                + "ชื่อการนัดหมาย : " + sName + "\n");
-                        viewDetail.setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        viewDetail.show();
+                    listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+                            // เข้าสู่ event
+                        }
+                    });
+                }
 
-                    }
-                });
+            }
+        });
 
 
     }
@@ -389,28 +416,29 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
 
-        SimpleAdapter sAdap;
-        sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_attend_home,
-                new String[]{"events_name","states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
-        listViewAttend.setAdapter(sAdap);
-        final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
+        Button btnget = findViewById(R.id.btnAttend);
+        btnget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (attend) {
+                    listViewAttend.setVisibility(View.GONE);
+                    attend = false;
+                } else {
+                    attend = true;
+                    listViewAttend.setVisibility(View.VISIBLE);
+                    SimpleAdapter sAdap;
+                    sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_attend_home,
+                            new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
+                    listViewAttend.setAdapter(sAdap);
 
-        listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                String sCreater = MyArrList.get(position).get("events_name").toString();
-                String sName = MyArrList.get(position).get("states_name").toString();
-                viewDetail.setIcon(android.R.drawable.btn_star_big_on);
-                viewDetail.setTitle("รายละเอียด");
-                viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
-                        + "ชื่อการนัดหมาย : " + sName + "\n");
-                viewDetail.setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                viewDetail.show();
+                    listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+//                        String sCreater = MyArrList.get(position).get("events_name").toString();
+//                        String sName = MyArrList.get(position).get("states_name").toString();
+                            // เข้าสู่ event
+                        }
+                    });
+                }
 
             }
         });
@@ -427,8 +455,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     }
-    public void gotoManageHeader(){
-        Intent intent = new Intent(home.this,appointment.class);
+
+    public void gotoManageHeader() {
+        Intent intent = new Intent(home.this, appointment.class);
         startActivity(intent);
     }
 }
