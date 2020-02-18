@@ -39,7 +39,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     NavigationView navigationView;
     ResponseStr responseStr = new ResponseStr();
     JSONArray data;
-    ListView listView;
+    ListView listViewInvite,listViewHeader,listViewAttend;
     TextView hName;
     TextView hEmail;
     String name="",id="";
@@ -48,7 +48,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        listView = (ListView) findViewById(R.id.listView);
+        listViewInvite = findViewById(R.id.listView_invite);
+        listViewHeader = findViewById(R.id.listView_Header);
+        listViewAttend = findViewById(R.id.listView_attend);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
         navigationView.setNavigationItemSelectedListener(home.this);
@@ -59,7 +61,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
         getUser();
 
-//        getEvent();
+        getEventInvitation();
+        getEventHeader();
+        getEventAttend();
         final Button btn = (Button) findViewById(R.id.btngotohead);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +72,15 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUser();
+        getEventInvitation();
+        getEventHeader();
+        getEventAttend();
     }
 
     public void setHumburgerButton() {
@@ -178,12 +191,12 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         queue.add(stringRequest);
     }
 
-    public void getEvent() {
+    public void getEventInvitation() {
         responseStr = new ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
-        String url = "http://www.groupupdb.com/android/geteventtran.php";
+        String url = "http://www.groupupdb.com/android/gethomeinvite.php";
         url += "?sId=" + "1";//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -201,11 +214,11 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
-                                map.put("events_id", c.getString("events_id"));
+                                map.put("event_creater", c.getString("event_creater"));
                                 map.put("events_name", c.getString("events_name"));
                                 map.put("events_month_start", c.getString("events_month_start"));
                                 map.put("events_month_end", c.getString("events_month_end"));
-                                map.put("events_wait", c.getString("events_wait"));
+                                //map.put("events_wait", c.getString("events_wait"));
 
 //                                map.put("note", c.getString("note"));
                                 MyArrList.add(map);
@@ -227,28 +240,23 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-
-        final Button btn = (Button) findViewById(R.id.btngetuser);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
                 SimpleAdapter sAdap;
                 sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_invitation_home,
-                        new String[]{"events_id", "events_name", "events_month_start", "events_month_end", "events_wait"}, new int[]{R.id.col_head, R.id.col_name, R.id.col_msg, R.id.col_time, R.id.col_note});
-                listView.setAdapter(sAdap);
+                        new String[]{"event_creater", "events_name", "events_month_start","events_month_end"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time,R.id.col_time_end});
+                listViewInvite.setAdapter(sAdap);
                 final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                        String sTransID = MyArrList.get(position).get("events_id").toString();
+                        String sCreater = MyArrList.get(position).get("event_creater").toString();
                         String sName = MyArrList.get(position).get("events_name").toString();
-                        String sMsg = MyArrList.get(position).get("events_month_start").toString();
-                        String sAmt = MyArrList.get(position).get("events_month_end").toString();
-                        String sWit = MyArrList.get(position).get("events_wait").toString();
+                        String sSta = MyArrList.get(position).get("events_month_start").toString();
+                        String sEnd = MyArrList.get(position).get("events_month_end").toString();
+                        String sTim = sSta +" - "+sEnd;
                         viewDetail.setIcon(android.R.drawable.btn_star_big_on);
                         viewDetail.setTitle("รายละเอียด");
-                        viewDetail.setMessage("เลขที่รายการ : " + sTransID + "\n"
-                                + "ชื่อ : " + sName + "\n" + "รายการ : " + sMsg + "\n"
-                                + "จำนวนเงิน : " + Double.parseDouble(sAmt) + "\n" + sWit);
+                        viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
+                                + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n");
                         viewDetail.setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,
@@ -260,6 +268,150 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
                     }
                 });
+
+    }
+    public void getEventHeader() {
+        responseStr = new ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+
+        String url = "http://www.groupupdb.com/android/gethomehead.php";
+        url += "?sId=" + "1";//รอเอาIdจากfirebase
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //textView.setText("Response is: "+ response.toString());
+
+                        try {
+                            //responseStr = new ResponseStr(response.toString());
+                            //responseStr.setValue(new JSONArray(response.toString()));
+
+
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("events_name", c.getString("events_name"));
+                                map.put("states_name", c.getString("states_name"));
+                                MyArrList.add(map);
+                            }
+                            //textView.setText(" :: "+ MyArrList.size());
+
+                            //textView.setText(" :: "+ responseStr.str);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
+                SimpleAdapter sAdap;
+                sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_header_home,
+                        new String[]{"events_name","states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
+                listViewHeader.setAdapter(sAdap);
+                final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
+
+                listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+                        String sCreater = MyArrList.get(position).get("events_name").toString();
+                        String sName = MyArrList.get(position).get("states_name").toString();
+                        viewDetail.setIcon(android.R.drawable.btn_star_big_on);
+                        viewDetail.setTitle("รายละเอียด");
+                        viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
+                                + "ชื่อการนัดหมาย : " + sName + "\n");
+                        viewDetail.setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        viewDetail.show();
+
+                    }
+                });
+
+
+    }
+
+    public void getEventAttend() {
+        responseStr = new ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+
+        String url = "http://www.groupupdb.com/android/gethomeattend.php";
+        url += "?sId=" + "1";//รอเอาIdจากfirebase
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //textView.setText("Response is: "+ response.toString());
+
+                        try {
+                            //responseStr = new ResponseStr(response.toString());
+                            //responseStr.setValue(new JSONArray(response.toString()));
+
+
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("events_name", c.getString("events_name"));
+                                map.put("states_name", c.getString("states_name"));
+                                MyArrList.add(map);
+                            }
+                            //textView.setText(" :: "+ MyArrList.size());
+
+                            //textView.setText(" :: "+ responseStr.str);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
+        SimpleAdapter sAdap;
+        sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_attend_home,
+                new String[]{"events_name","states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
+        listViewAttend.setAdapter(sAdap);
+        final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
+
+        listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+                String sCreater = MyArrList.get(position).get("events_name").toString();
+                String sName = MyArrList.get(position).get("states_name").toString();
+                viewDetail.setIcon(android.R.drawable.btn_star_big_on);
+                viewDetail.setTitle("รายละเอียด");
+                viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
+                        + "ชื่อการนัดหมาย : " + sName + "\n");
+                viewDetail.setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                viewDetail.show();
+
             }
         });
 
