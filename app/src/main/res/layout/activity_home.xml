@@ -25,69 +25,152 @@
     </com.google.android.material.navigation.NavigationView>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="411dp">
 
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/classicBlue"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:id="@+id/home_menuBar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/classicBlue"
+                android:onClick="menuHamberger"
+                android:src="@drawable/ic_dehaze_black_24dp" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/home"
+                style="@style/Style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="GroupUP" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:id="@+id/home_newGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/classicBlue"
+                android:onClick="createGroup"
+                android:src="@drawable/ic_add_black_24dp" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteX="411dp">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/search"
+                    android:inputType="textPersonName">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        app:srcCompat="@drawable/ic_search_black_24dp" />
+
+                    <EditText
+                        android:id="@+id/editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:fontFamily="@font/pridi_extralight"
+                        android:hint="@string/search"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginTop="10dp"
+            android:background="#CCCCCC" />
+
+        <Button
+            android:id="@+id/btngotohead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="manage head" />
+
+        <LinearLayout
+            android:id="@+id/linear_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/classicBlue"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent" />
-
-                <ImageButton
-                    android:id="@+id/home_menuBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@color/classicBlue"
-                    android:onClick="menuHamberger"
-                    android:src="@drawable/ic_dehaze_black_24dp" />
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:id="@+id/home"
-                    style="@style/Style"
+                <Button
+                    android:id="@+id/btnInvi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="3"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:text="GroupUP" />
+                    android:text="Invitation" />
 
-                <View
-                    android:id="@+id/view4"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent" />
-
-                <ImageButton
-                    android:id="@+id/home_newGroup"
-                    android:layout_width="wrap_content"
+                <ListView
+                    android:id="@+id/listView_invite"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/classicBlue"
-                    android:onClick="createGroup"
-                    android:src="@drawable/ic_add_black_24dp" />
+                    android:scrollbars="none">
 
-                <View
-                    android:id="@+id/view5"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent" />
+                </ListView>
 
             </LinearLayout>
 
@@ -96,115 +179,59 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:fontFamily="sans-serif"
-                        android:hint="@string/search"
-                        android:inputType="textPersonName" />
-
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            app:srcCompat="@drawable/ic_search_black_24dp" />
-
-                        <EditText
-                            android:id="@+id/editText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:fontFamily="@font/pridi_extralight"
-                            android:hint="@string/search"
-                            android:inputType="textPersonName" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/view6"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginTop="10dp"
-                    android:background="#CCCCCC" />
-
                 <Button
-                    android:id="@+id/btngotohead"
+                    android:id="@+id/btnAttend"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="manage head" />
+                    android:text="attend" />
 
-                <LinearLayout
+                <ListView
+                    android:id="@+id/listView_attend"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/btnInvi"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Invitation" />
-
-                    <ListView
-                        android:id="@+id/listView_invite"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                    </ListView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/btnHead"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Head" />
-
-                    <ListView
-                        android:id="@+id/listView_Header"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                    </ListView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/btnAttend"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="attend" />
-
-                    <ListView
-                        android:id="@+id/listView_attend"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
-       
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnHead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Head" />
+
+                <ListView
+                    android:id="@+id/listView_Header"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none">
+
+                </ListView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollIndicators="right"
+        android:scrollbars="vertical"/>
+
+    <ScrollView
+        android:id="@+id/scrollHome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    </ScrollView>
+
+
 </androidx.drawerlayout.widget.DrawerLayout>

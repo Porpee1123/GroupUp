@@ -5,10 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.zip.Inflater;
 
 public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "home";
@@ -257,6 +260,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                     sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_invitation_home,
                             new String[]{"event_creater", "events_name", "events_month_start", "events_month_end"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end});
                     listViewInvite.setAdapter(sAdap);
+                    LayoutInflater inflater = getLayoutInflater();
+                    LinearLayout listHeaderView = (LinearLayout) inflater.inflate(R.layout.activity_buttom_footer, listViewInvite,false);
+                    listViewInvite.addFooterView(listHeaderView);
                     final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
                     listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
