@@ -1,2 +1,2 @@
-include ':app', ':Multipickerlibrary'
+include ':app'
 rootProject.name='GroupUp'

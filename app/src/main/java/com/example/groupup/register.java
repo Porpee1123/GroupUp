@@ -124,6 +124,7 @@ public class register extends AppCompatActivity {
                 Bitmap lbp =scaleDown(dstBmp,375,false);
 
                 SelectImageGallery.setImageBitmap(lbp);
+//                SelectImageGallery.setAlpha(0.5f);
 
             } catch (IOException e) {
 
