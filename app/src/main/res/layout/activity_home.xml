@@ -111,8 +111,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/my_style"
-                        android:orientation="horizontal">
+                        android:ems="10"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/search"
+                        android:inputType="textPersonName" />
 
                         <ImageView
                             android:id="@+id/imageView"

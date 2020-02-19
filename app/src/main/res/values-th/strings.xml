@@ -8,7 +8,9 @@
     <string name="account">จัดการบัญชี</string>
     <string name="addImg">+ เพิ่มรูปภาพ</string>
     <string name="name">ชื่อ</string>
+    <string name="name_title">ชื่อ :</string>
     <string name="email">อีเมล</string>
+    <string name="email_title">อีเมล :</string>
     <string name="id">ID</string>
     <string name="colon">:</string>
     <string name="status">สถานะ :</string>

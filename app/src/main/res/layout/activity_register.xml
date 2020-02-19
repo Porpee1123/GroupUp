@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@color/classicBlue"
+                android:onClick="backHome"
                 android:src="@drawable/ic_chevron_left_black_24dp" />
 
             <TextView
@@ -78,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
 
@@ -86,8 +88,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/pridi_extralight"
-                    android:text="@string/name"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/name_title"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -96,8 +98,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:ems="15"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:ems="20"
+                    android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:hint="@string/name"
                     android:inputType="textPersonName"
@@ -118,8 +120,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/pridi_extralight"
-                    android:text="@string/email"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/email_title"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -127,8 +129,8 @@
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="15"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:ems="20"
+                    android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
@@ -142,7 +144,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
                 android:background="@color/classicBlue"
-                android:fontFamily="@font/pridi_extralight"
+                android:fontFamily="sans-serif"
                 android:text="@string/btn"
                 android:textColor="@color/white" />
         </LinearLayout>

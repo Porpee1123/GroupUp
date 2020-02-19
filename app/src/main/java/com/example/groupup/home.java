@@ -110,6 +110,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 Log.d(TAG, "onNavigationItemSelected home: " + item.getTitle());
                 break;
             case R.id.menu_account:
+                goToManageAccount();
                 Log.d(TAG, "onNavigationItemSelected account: " + item.getTitle());
                 break;
             case R.id.menu_calendar:
@@ -129,6 +130,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void goToManageAccount() {
+        Intent intent = new Intent(home.this,register.class);
+        startActivity(intent);
     }
 
     public void goToCalendar() {

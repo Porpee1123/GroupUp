@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void skipbutton(View v){
-        Intent in = new Intent(this,register.class);
+        Intent in = new Intent(this,home.class);
         startActivity(in);
     }
     public void skipPlace(View v){

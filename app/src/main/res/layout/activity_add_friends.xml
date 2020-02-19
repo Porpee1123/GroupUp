@@ -28,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@color/classicBlue"
+                android:onClick="backHome"
                 android:src="@drawable/ic_chevron_left_black_24dp" />
 
             <TextView
@@ -37,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="3"
+                android:fontFamily="sans-serif"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/addFriends" />
 
@@ -69,7 +71,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif"
                     android:text="@string/id"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -79,8 +81,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
-                    android:ems="14"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif"
                     android:hint="@string/search_friends"
                     android:inputType="textPersonName"
                     android:textSize="14sp" />
@@ -114,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/pridi_extralight"
+                android:fontFamily="sans-serif"
                 android:text="@string/nameFriends"
                 android:textSize="18sp" />
 
@@ -125,7 +127,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/classicBlue"
-                android:fontFamily="@font/pridi_extralight"
+                android:fontFamily="sans-serif"
                 android:text="@string/addFriends"
                 android:textColor="@color/white" />
 
@@ -157,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/white"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif"
                     android:text="@string/type_friends"
                     android:textSize="18sp" />
 

@@ -87,6 +87,7 @@ public class register extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onActivityResult(int RC, int RQC, Intent I) {
 
@@ -309,5 +310,10 @@ public class register extends AppCompatActivity {
             return stringBuilderObject.toString();
         }
 
+    }
+
+    public void backHome(View v){
+        Intent in = new Intent(this,home.class);
+        startActivity(in);
     }
 }

@@ -8,7 +8,9 @@
     <string name="account">Manage Account</string>
     <string name="addImg">+ Add Picture</string>
     <string name="name">Name</string>
+    <string name="name_title">Name :</string>
     <string name="email">Email</string>
+    <string name="email_title">Email :</string>
     <string name="id">ID</string>
     <string name="colon">:</string>
     <string name="status">Status :</string>

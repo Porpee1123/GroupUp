@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -268,5 +269,10 @@ public class Manage_calendar extends AppCompatActivity {
                 Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void backHome(View v){
+        Intent in = new Intent(this,home.class);
+        startActivity(in);
     }
 }
