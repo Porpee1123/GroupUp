@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".addFriends">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="411dp">
+        tools:layout_editor_absoluteX="-58dp"
+        tools:layout_editor_absoluteY="358dp">
 
         <LinearLayout
             android:layout_width="match_parent"
