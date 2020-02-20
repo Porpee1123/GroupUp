@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void skipbutton(View v){
         Intent in = new Intent(this,home.class);
+        in.putExtra("email","thanapatza2011@gmail.com");
         startActivity(in);
     }
     public void skipPlace(View v){
