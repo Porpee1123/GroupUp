@@ -55,7 +55,8 @@ public class createGroup extends AppCompatActivity {
         });
         name = getIntent().getStringExtra("name");
         id = getIntent().getStringExtra("id");
-        Log.d("pee",name);
+        Log.d("footer",name);
+        Log.d("footer",id);
 
     }
 
@@ -92,6 +93,9 @@ public class createGroup extends AppCompatActivity {
         url += "&sEnd=" + sped.getSelectedItem().toString();
         url += "&sWait=" + spwa.getSelectedItem().toString();
         url += "&sProvi=" +name;
+        url += "&sProid=" +id;
+
+        Log.d("footer",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
