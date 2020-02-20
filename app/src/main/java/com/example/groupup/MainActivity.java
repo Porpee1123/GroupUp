@@ -1,14 +1,24 @@
 package com.example.groupup;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,46 +34,58 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
     String customer;
-    TextView txt;
     SignInButton signInButton;
+    String name ="",email="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt = findViewById(R.id.textView2);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
-
-        mAuth = FirebaseAuth.getInstance();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
         signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-    }
-
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.sign_out_button:
-                signout();
-                break;
+        if (mAuth.getCurrentUser()!= null){
+            Log.d("footer",mAuth.getCurrentUser().getEmail());
+            Intent intent = new Intent(MainActivity.this,home.class);
+            intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
+            startActivity(intent);
+        }else {
+            signInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signIn();
+                }
+            });
         }
+
+
+
+
+
     }
+
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//
+//            case R.id.sign_out_button:
+//                signout();
+//                break;
+//        }
+//    }
 
     @Override
     public void onStart() {
@@ -76,9 +98,6 @@ public class MainActivity extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-//        Intent intent = new Intent(MainActivity.this,ConnectDB.class);
-//        intent.putExtra("data",customer);
-//        startActivity(intent);
 
     }
 
@@ -93,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-
-                //update ui
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -118,14 +135,21 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Snackbar.make(findViewById(R.id.textView), "Authentication Success.", Snackbar.LENGTH_SHORT).show();
                             customer = user.getUid() + " " + user.getEmail() + " " + user.getDisplayName() + " " + user.getProviderId() + " ";
+                            Log.d("footer",customer);
+                            name = user.getDisplayName();
+                            email = user.getEmail();
+                            saveData();
+                            Intent intent = new Intent(MainActivity.this,home.class);
+                            intent.putExtra("email",email);
+                            startActivity(intent);
 //                            customer = user.getDisplayName()+"/"+user.getEmail()+"/"+user.getPhoneNumber()+"/"+user.getUid();
 //                            txt.setText(customer);
-                            updateUI(customer);
+//                            updateUI(customer);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.textView), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
+//                            updateUI(null);
                         }
                     }
                 });
@@ -133,13 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(String account) {
         if (account != null) {
-//            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-
-//                Intent intent = new Intent(MainActivity.this, ConnectDB.class);
             Snackbar.make(findViewById(R.id.textView), "account pass", Snackbar.LENGTH_SHORT).show();
-            txt.setText(account);
-//                intent.putExtra("data", customer);
-//                startActivity(intent);
 
 //            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
@@ -151,13 +169,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void signout() {
-        FirebaseAuth.getInstance().signOut();
-        txt.setText("");
-        mGoogleSignInClient.revokeAccess();
-        Snackbar.make(findViewById(R.id.textView), "SIGN OUT Success.", Snackbar.LENGTH_SHORT).show();
-    }
-
     public void skipbutton(View v){
         Intent in = new Intent(this,home.class);
         startActivity(in);
@@ -165,6 +176,28 @@ public class MainActivity extends AppCompatActivity {
     public void skipPlace(View v){
         Intent in = new Intent(this,place.class);
         startActivity(in);
+    }
+    public boolean saveData() {
+        String url = "http://www.groupupdb.com/android/createuser.php";
+        url += "?sName=" + name;
+        url += "&sEmail=" + email;
+        Log.d("footer",url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Log", "Volley::onResponse():" + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        return true;
     }
 
 }

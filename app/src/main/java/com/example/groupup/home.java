@@ -26,7 +26,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,12 +44,13 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private static final String TAG = "home";
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    private GoogleSignInClient mGoogleSignInClient;
     ResponseStr responseStr = new ResponseStr();
     JSONArray data;
     ListView listViewInvite, listViewHeader, listViewAttend;
     TextView hName;
     TextView hEmail;
-    String name = "", id = "";
+    String name = "", id = "",email="";
     boolean invite = false, head = false, attend = false;//ปิด list view
 
     @Override
@@ -61,6 +67,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
+        email = getIntent().getStringExtra("email");
         getUser();
         getEventInvitation();
         getEventHeader();
@@ -72,13 +79,19 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 gotoManageHeader();
             }
         });
+        //firebase signin
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getUser();
         getEventInvitation();
         getEventHeader();
         getEventAttend();
@@ -124,6 +137,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 Log.d(TAG, "onNavigationItemSelected friend: " + item.getTitle());
                 break;
             case R.id.menu_signout:
+                signout();
                 Log.d(TAG, "onNavigationItemSelected signout: " + item.getTitle());
                 break;
         }
@@ -147,15 +161,19 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void signout() {
+        FirebaseAuth.getInstance().signOut();
+        mGoogleSignInClient.revokeAccess();
+        Intent intent = new Intent(home.this,MainActivity.class);
+        startActivity(intent);
     }
 
     public void getUser() {
         responseStr = new ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-
+        Log.d("footer","email "+email);
         String url = "http://www.groupupdb.com/android/getuser.php";
-        url += "?sId=" + "1";//รอเอาIdหรือ email จากfirebase
+        url += "?sEmail=" + email;//รอเอาIdหรือ email จากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -173,8 +191,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                                 MyArrList.add(map);
                             }
                             //set Header menu name email
-//                            Log.d("@query", MyArrList.get(0).get("name"));
-//                            Log.d("@query", MyArrList.get(0).get("email"));
+//                            Log.d("footer",MyArrList.get(0).get("user_id"));
+//                            Log.d("footer",MyArrList.get(0).get("user_names"));
+//                            Log.d("footer",MyArrList.get(0).get("user_email"));
                             hName.setText(MyArrList.get(0).get("user_names"));
                             name = MyArrList.get(0).get("user_names");
                             id = MyArrList.get(0).get("user_id");
@@ -201,7 +220,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/gethomeinvite.php";
-        url += "?sId=" + "1";//รอเอาIdจากfirebase
+        url += "?sId=" + id;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -316,7 +335,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/gethomehead.php";
-        url += "?sId=" + "1";//รอเอาIdจากfirebase
+        url += "?sId=" + id;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -383,7 +402,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/gethomeattend.php";
-        url += "?sId=" + "1";//รอเอาIdจากfirebase
+        url += "?sId=" + id;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -458,23 +477,23 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    public void btncloseFooter(final ListView listView){
-        //add in if
-//        listViewHeader.removeFooterView(listHeaderView);
-        //call after set adapter
-        final LayoutInflater inflater = getLayoutInflater();
-        final LinearLayout listHeaderView = (LinearLayout) inflater.inflate(R.layout.activity_btnfooter_collapse, listView,false);
-        listView.addFooterView(listHeaderView);
-        listHeaderView.findViewById(R.id.btnCollapse).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("footer","btnhideHead");
-                listView.setVisibility(View.GONE);
-                listView.removeFooterView(listHeaderView);
-                head=false;
-            }
-        });
-    }
+//    public void btncloseFooter(final ListView listView){
+//        //add in if
+////        listViewHeader.removeFooterView(listHeaderView);
+//        //call after set adapter
+//        final LayoutInflater inflater = getLayoutInflater();
+//        final LinearLayout listHeaderView = (LinearLayout) inflater.inflate(R.layout.activity_btnfooter_collapse, listView,false);
+//        listView.addFooterView(listHeaderView);
+//        listHeaderView.findViewById(R.id.btnCollapse).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d("footer","btnhideHead");
+//                listView.setVisibility(View.GONE);
+//                listView.removeFooterView(listHeaderView);
+//                head=false;
+//            }
+//        });
+//    }
 
     public void gotoManageHeader() {
         Intent intent = new Intent(home.this, appointment.class);

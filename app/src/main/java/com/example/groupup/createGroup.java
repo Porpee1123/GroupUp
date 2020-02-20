@@ -113,12 +113,12 @@ public class createGroup extends AppCompatActivity {
                                 strError = c.getString("Error");
                             }
                             if (strStatusID.equals("0")) {
-                                dialog.setMessage(strError);
-                                dialog.show();
+//                                dialog.setMessage(strError);
+//                                dialog.show();
                             } else {
-                                dialog.setTitle(R.string.submit_title);
-                                dialog.setMessage(R.string.submit_result);
-                                dialog.show();
+//                                dialog.setTitle(R.string.submit_title);
+//                                dialog.setMessage(R.string.submit_result);
+//                                dialog.show();
                                 txtName.setText("");
                                 spst.setSelection(0);
                                 sped.setSelection(0);

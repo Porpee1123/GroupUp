@@ -28,26 +28,12 @@
             android:gravity="center"
             android:orientation="horizontal" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/detail_customer" />
-
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="onClick" />
+            android:layout_gravity="center" />
 
-        <Button
-            android:id="@+id/sign_out_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="onClick"
-            android:text="@string/signout" />
 
         <Button
             android:id="@+id/button2"
