@@ -11,13 +11,12 @@
     <string name="name_title">ชื่อ :</string>
     <string name="email">อีเมล</string>
     <string name="email_title">อีเมล :</string>
-    <string name="id">ID</string>
     <string name="colon">:</string>
-    <string name="status">สถานะ :</string>
+    <string name="status">สถานะ: สร้างการนัดหมาย</string>
     <string name="btn">ยืนยัน</string>
     <string name="inviteFriends">เชิญเพื่อน</string>
     <string name="addFriends">เพิ่มเพื่อน</string>
-    <string name="search_friends">ค้นหาด้วย ID</string>
+    <string name="search_friends">ค้นหาด้วยอีเมล</string>
     <string name="search">ค้นหา</string>
     <string name="search_theme">ค้นหาธีมร้านอาหาร</string>
     <string name="type_friends">ประเภทเพื่อน</string>
@@ -39,12 +38,12 @@
     <string name="mrt">ใกล้ MRT</string>
     <string name="nameFriends">ชื่อเพื่อน</string>
     <string name="newGroup">สร้างนัด</string>
-    <string name="title">ชื่อกลุ่ม</string>
+    <string name="title">ชื่อการนัดหมาย</string>
     <string name="note">รายละเอียด</string>
-    <string name="stMonth">เดือนเริ่มต้น</string>
-    <string name="endMonth">เดือนสิ้นสุด</string>
+    <string name="stMonth">เดือนเริ่มต้นนัดหมาย</string>
+    <string name="endMonth">เดือนสิ้นสุดนัดหมาย</string>
     <string name="select_friend">เลือกเพื่อน</string>
-    <string name="waitTime">เวลารอโหวต</string>
+    <string name="waitTime">ระยะเวลารอโหวต</string>
     <string name="day">วัน</string>
     <string name="newPlace">สร้างสถานที่</string>
     <string name="details">รายละเอียด</string>
@@ -56,7 +55,6 @@
     <string name="seats">ที่นั่ง</string>
     <string name="deposite">มัดจำล่วงหน้า</string>
     <string name="myPlace">สถานที่ของฉัน</string>
-    <string name="import_calendar">นำเข้าข้อมูลจากปฏิทิน</string>
     <string name="err_title">มีข้อผิดพลาด</string>
     <string name="err_input_name">กรุณากรอกชื่อ</string>
     <string name="err_input_email">กรุณากรอกอีเมล</string>
@@ -108,7 +106,13 @@
     <string name="to">ถึง</string>
     <string name="date_time">วันที่และเวลานัด</string>
     <string name="select_date_time">เลือกวันที่และเวลา</string>
+    <string name="Appointment_period">ช่วงเวลานัดหมาย</string>
+    <string name="import_calendar">ดึงข้อมูลจากปฏิทิน</string>
     <string name="place">สถานที่นัด</string>
     <string name="select_place">เลือกสถานที่</string>
     <string name="next">ถัดไป</string>
+    <string name="start">เดือนเริ่มต้น</string>
+    <string name="end">เดือนสิ้นสุด</string>
+    <string name="setItem">กำหนดรายการ</string>
+    <string name="manageHead">การจัดการของแม่งาน</string>
 </resources>

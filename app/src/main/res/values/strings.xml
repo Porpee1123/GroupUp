@@ -4,20 +4,19 @@
     <string name="right">right</string>
     <string name="description">description</string>
     <string name="detail_customer">Detail_customer</string>
-    <string name="signout">signout</string>
+    <string name="signout">Signout</string>
     <string name="account">Manage Account</string>
     <string name="addImg">+ Add Picture</string>
     <string name="name">Name</string>
     <string name="name_title">Name :</string>
     <string name="email">Email</string>
     <string name="email_title">Email :</string>
-    <string name="id">ID</string>
     <string name="colon">:</string>
-    <string name="status">Status :</string>
+    <string name="status">Status: Create Appointment</string>
     <string name="btn">Confirm</string>
     <string name="inviteFriends">Invite Friends</string>
     <string name="addFriends">Add Friends</string>
-    <string name="search_friends">Search with ID</string>
+    <string name="search_friends">Search with Email</string>
     <string name="search">Search</string>
     <string name="search_theme">Search Theme</string>
     <string name="type_friends">Friends type</string>
@@ -25,7 +24,7 @@
     <string name="invitations">Invitations</string>
     <string name="tab_text_1">Head</string>
     <string name="tab_text_2">Attendant</string>
-    <string name="home">home</string>
+    <string name="home">Home</string>
     <string name="manage_friend">Manage Friend</string>
     <string name="manage_calendar">Manage calendar</string>
     <string name="facility">Facility :</string>
@@ -41,11 +40,12 @@
     <string name="newGroup">New Meet</string>
     <string name="title">Title</string>
     <string name="note">Note</string>
-    <string name="stMonth">Start Month</string>
-    <string name="endMonth">End Month</string>
+    <string name="stMonth">Appointment Start Month</string>
+    <string name="endMonth">Appointment End Month</string>
     <string name="select_friend">select friend</string>
-    <string name="waitTime">Wait Time</string>
+    <string name="waitTime">Wait Time Vote</string>
     <string name="day">Day</string>
+    <string name="Appointment_period">Appointment period</string>
     <string name="newPlace">New Place</string>
     <string name="details">Details</string>
     <string name="priceRange">Price range</string>
@@ -111,4 +111,10 @@
     <string name="place">Appointment place</string>
     <string name="select_place">Select place</string>
     <string name="next">Next</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="setItem">Set Item</string>
+    <string name="manageHead">Manage Head</string>
+
+
 </resources>

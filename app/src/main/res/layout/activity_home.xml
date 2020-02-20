@@ -145,7 +145,7 @@
             android:id="@+id/btngotohead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="manage head" />
+            android:text="@string/manageHead" />
 
         <LinearLayout
             android:id="@+id/linear_scrollview"

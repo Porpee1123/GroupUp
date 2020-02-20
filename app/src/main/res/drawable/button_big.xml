@@ -9,6 +9,7 @@
         android:centerColor="#4682B4"
         android:startColor="#BCD0ED"
         android:endColor="#4682B4"
+        android:background="@drawable/ic_account_box_black_24dp"
         android:type="linear"
         />
     <padding
@@ -21,5 +22,6 @@
         android:width="140dp"
         android:height="140dp"
         />
+
 
 </shape>

@@ -19,8 +19,8 @@ public class appoint_setItem extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void selectTheme(View v) {
-        Intent intent = new Intent(appoint_setItem.this, theme.class);
-        startActivity(intent);
-    }
+//    public void selectTheme(View v) {
+//        Intent intent = new Intent(appoint_setItem.this, theme.class);
+//        startActivity(intent);
+//    }
 }

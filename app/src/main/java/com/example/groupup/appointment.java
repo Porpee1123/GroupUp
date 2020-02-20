@@ -19,13 +19,13 @@ public class appointment extends AppCompatActivity {
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
 
-
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
-                .setIndicator("กำหนดรายการ")
+                .setIndicator("กำหนดรายการ ")
                 .setContent(new Intent(this, appoint_setItem.class));
+
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("วันที่เวลา/สถานที่")
                 .setContent(new Intent(this, appoint_date_and_place.class));

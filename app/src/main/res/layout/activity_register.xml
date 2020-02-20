@@ -68,10 +68,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/button_big"
+                android:background="@drawable/ic_account_box_black_24dp"
                 android:fontFamily="@font/pridi_extralight"
                 android:gravity="center"
-                android:src="@drawable/ic_add_black_24dp"
+                android:src="@drawable/add"
                 android:text="@string/addImg"
                 android:textSize="18sp" />
 

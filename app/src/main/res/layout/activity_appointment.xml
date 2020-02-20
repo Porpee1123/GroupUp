@@ -21,7 +21,7 @@
             <View
                 android:id="@+id/view"
                 android:layout_width="20dp"
-                android:layout_height="match_parent" /> ̰
+                android:layout_height="match_parent" /> 
 
             <ImageButton
                 android:id="@+id/back_home"
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="TextView" />
+                    android:text="@string/title" />
             </LinearLayout>
 
             <TextView
@@ -127,16 +127,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="TextView" />
+                    android:text="@string/Appointment_period" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/startMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="TextView" />
+                android:text="@string/start" />
 
             <TextView
                 android:id="@+id/textView21"
@@ -147,12 +147,12 @@
                 android:text="@string/to" />
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/endMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="TextView" />
+                android:text="@string/end" />
         </LinearLayout>
 
         <LinearLayout
@@ -180,12 +180,14 @@
                     <FrameLayout
                         android:id="@android:id/tabcontent"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@color/blueWhite">
 
                         <LinearLayout
                             android:id="@+id/tab1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:background="@color/blueWhite"
                             android:orientation="vertical" />
 
                         <LinearLayout

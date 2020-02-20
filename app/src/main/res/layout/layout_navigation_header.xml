@@ -13,10 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         android:background="@color/blueWhite"
         android:backgroundTint="@color/classicBlue"
-        android:src="@drawable/button_small" />
+        android:src="@drawable/account" />
 
     <TextView
         android:id="@+id/menu_name"

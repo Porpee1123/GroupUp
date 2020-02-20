@@ -22,16 +22,20 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
-                android:text="@string/inviteFriends" />
+                android:text="@string/inviteFriends"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/select_friend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/button"
                 android:onClick="selectFriend"
-                android:text="@string/select_friend" />
+                android:text="@string/select_friend"
+                android:textColor="#FFFFFF" />
         </TableRow>
 
         <TableRow
@@ -46,17 +50,35 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
-                android:text="@string/theme" />
+                android:text="@string/theme"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/selectTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/button"
-                android:onClick="selectTheme"
-                android:text="@string/select_theme" />
+                android:text="@string/select_theme"
+                android:textColor="#FFFFFF" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/view14"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/blueWhite" />
+
         </TableRow>
 
     </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
