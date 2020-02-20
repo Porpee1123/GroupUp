@@ -34,7 +34,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.zip.Inflater;
 
 public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "home";
@@ -210,10 +209,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                         //textView.setText("Response is: "+ response.toString());
 
                         try {
-                            //responseStr = new ResponseStr(response.toString());
-                            //responseStr.setValue(new JSONArray(response.toString()));
-
-
                             HashMap<String, String> map;
                             JSONArray data = new JSONArray(response.toString());
                             for (int i = 0; i < data.length(); i++) {
@@ -224,13 +219,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                                 map.put("events_month_start", c.getString("events_month_start"));
                                 map.put("events_month_end", c.getString("events_month_end"));
                                 //map.put("events_wait", c.getString("events_wait"));
-
-//                                map.put("note", c.getString("note"));
                                 MyArrList.add(map);
                             }
-                            //textView.setText(" :: "+ MyArrList.size());
                             Log.d("query",MyArrList.size()+"");
-                            //textView.setText(" :: "+ responseStr.str);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -245,13 +236,18 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+//        LayoutInflater inflater = getLayoutInflater();
+//        final LinearLayout listInviteView = (LinearLayout) inflater.inflate(R.layout.activity_btnfooter_collapse, listViewInvite,false);
+
 
         Button btnget = findViewById(R.id.btnInvi);
         btnget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (invite) {
-                    listViewInvite.setVisibility(View.GONE);
+                    listViewInvite.setVisibility(View.GONE);//ปิด
+                    listViewInvite.removeAllViewsInLayout();
+//                    listViewInvite.removeFooterView(listInviteView);
                     invite = false;
                 } else {
                     invite = true;
@@ -260,9 +256,16 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                     sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_invitation_home,
                             new String[]{"event_creater", "events_name", "events_month_start", "events_month_end"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end});
                     listViewInvite.setAdapter(sAdap);
-                    LayoutInflater inflater = getLayoutInflater();
-                    LinearLayout listHeaderView = (LinearLayout) inflater.inflate(R.layout.activity_buttom_footer, listViewInvite,false);
-                    listViewInvite.addFooterView(listHeaderView);
+//                    listViewInvite.addFooterView(listInviteView);
+//                    listInviteView.findViewById(R.id.btnCollapse).setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            Log.d("footer","btnhideInvite");
+//                            listViewInvite.setVisibility(View.GONE);
+//                            listViewInvite.removeFooterView(listInviteView);
+//                            invite=false;
+//                        }
+//                    });
                     final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
 
                     listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -318,13 +321,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //textView.setText("Response is: "+ response.toString());
 
                         try {
-                            //responseStr = new ResponseStr(response.toString());
-                            //responseStr.setValue(new JSONArray(response.toString()));
-
-
                             HashMap<String, String> map;
                             JSONArray data = new JSONArray(response.toString());
                             for (int i = 0; i < data.length(); i++) {
@@ -334,9 +332,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                                 map.put("states_name", c.getString("states_name"));
                                 MyArrList.add(map);
                             }
-                            //textView.setText(" :: "+ MyArrList.size());
-
-                            //textView.setText(" :: "+ responseStr.str);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -351,22 +346,24 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-
         Button btnget = findViewById(R.id.btnHead);
+
         btnget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (head) {
-                    listViewHeader.setVisibility(View.GONE);
+                    listViewHeader.setVisibility(View.GONE);//ปิด
+                    listViewHeader.removeAllViewsInLayout();
+
                     head = false;
                 } else {
                     head = true;
-                    listViewHeader.setVisibility(View.VISIBLE);
+                    listViewHeader.setVisibility(View.VISIBLE);//เปิด
                     SimpleAdapter sAdap;
                     sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_header_home,
                             new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
                     listViewHeader.setAdapter(sAdap);
-
+                    final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
                     listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                             // เข้าสู่ event
@@ -391,13 +388,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //textView.setText("Response is: "+ response.toString());
-
                         try {
-                            //responseStr = new ResponseStr(response.toString());
-                            //responseStr.setValue(new JSONArray(response.toString()));
-
-
                             HashMap<String, String> map;
                             JSONArray data = new JSONArray(response.toString());
                             for (int i = 0; i < data.length(); i++) {
@@ -424,15 +415,17 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-
         Button btnget = findViewById(R.id.btnAttend);
         btnget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (attend) {
                     listViewAttend.setVisibility(View.GONE);
+                    listViewAttend.removeAllViewsInLayout();
                     attend = false;
                 } else {
+//                    listViewAttend.removeFooterView(listAttendView);
+                    Log.d("footer","showAttend");
                     attend = true;
                     listViewAttend.setVisibility(View.VISIBLE);
                     SimpleAdapter sAdap;
@@ -463,6 +456,24 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             this.jsonArray = jsonArr;
         }
 
+    }
+
+    public void btncloseFooter(final ListView listView){
+        //add in if
+//        listViewHeader.removeFooterView(listHeaderView);
+        //call after set adapter
+        final LayoutInflater inflater = getLayoutInflater();
+        final LinearLayout listHeaderView = (LinearLayout) inflater.inflate(R.layout.activity_btnfooter_collapse, listView,false);
+        listView.addFooterView(listHeaderView);
+        listHeaderView.findViewById(R.id.btnCollapse).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("footer","btnhideHead");
+                listView.setVisibility(View.GONE);
+                listView.removeFooterView(listHeaderView);
+                head=false;
+            }
+        });
     }
 
     public void gotoManageHeader() {
