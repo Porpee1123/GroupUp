@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,6 +40,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
 public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "home";
@@ -50,13 +53,14 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     ListView listViewInvite, listViewHeader, listViewAttend;
     TextView hName;
     TextView hEmail;
-    String name = "", id = "",email="";
+    String name = "", id = "", email = "";
     boolean invite = false, head = false, attend = false;//ปิด list view
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         listViewInvite = findViewById(R.id.listView_invite);
         listViewHeader = findViewById(R.id.listView_Header);
         listViewAttend = findViewById(R.id.listView_attend);
@@ -69,9 +73,22 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         hEmail = v.findViewById(R.id.menu_email);
         email = getIntent().getStringExtra("email");
         getUser();
-        getEventInvitation();
-        getEventHeader();
-        getEventAttend();
+        new CountDownTimer(500, 500) {
+            public void onFinish() {
+                // When timer is finished
+                // Execute your code here
+                getEventInvitation();
+                getEventHeader();
+                getEventAttend();
+
+            }
+
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
+
+
         final Button btn = (Button) findViewById(R.id.btngotohead);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,12 +106,16 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+        getUser();
         getEventInvitation();
         getEventHeader();
         getEventAttend();
+
+
     }
 
     public void setHumburgerButton() {
@@ -146,7 +167,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void goToManageAccount() {
-        Intent intent = new Intent(home.this,register.class);
+        Intent intent = new Intent(home.this, register.class);
         startActivity(intent);
     }
 
@@ -163,7 +184,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     public void signout() {
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.revokeAccess();
-        Intent intent = new Intent(home.this,MainActivity.class);
+        Intent intent = new Intent(home.this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -171,7 +192,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         responseStr = new ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        Log.d("footer","email "+email);
+        Log.d("footer", "email " + email);
         String url = "http://www.groupupdb.com/android/getuser.php";
         url += "?sEmail=" + email;//รอเอาIdหรือ email จากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -191,9 +212,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                                 MyArrList.add(map);
                             }
                             //set Header menu name email
-//                            Log.d("footer",MyArrList.get(0).get("user_id"));
-//                            Log.d("footer",MyArrList.get(0).get("user_names"));
-//                            Log.d("footer",MyArrList.get(0).get("user_email"));
+//                            Log.d("footer", MyArrList.get(0).get("user_id"));
+//                            Log.d("footer", MyArrList.get(0).get("user_names"));
+//                            Log.d("footer", MyArrList.get(0).get("user_email"));
                             hName.setText(MyArrList.get(0).get("user_names"));
                             name = MyArrList.get(0).get("user_names");
                             id = MyArrList.get(0).get("user_id");
@@ -218,7 +239,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         responseStr = new ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-
+        Log.d("footer", "id" + id);
         String url = "http://www.groupupdb.com/android/gethomeinvite.php";
         url += "?sId=" + id;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -240,7 +261,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                                 //map.put("events_wait", c.getString("events_wait"));
                                 MyArrList.add(map);
                             }
-                            Log.d("query",MyArrList.size()+"");
+                            Log.d("query", MyArrList.size() + "");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -444,7 +465,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                     attend = false;
                 } else {
 //                    listViewAttend.removeFooterView(listAttendView);
-                    Log.d("footer","showAttend");
+                    Log.d("footer", "showAttend");
                     attend = true;
                     listViewAttend.setVisibility(View.VISIBLE);
                     SimpleAdapter sAdap;

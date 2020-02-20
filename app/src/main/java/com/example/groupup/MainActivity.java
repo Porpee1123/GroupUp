@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         signInButton = findViewById(R.id.sign_in_button);
         if (mAuth.getCurrentUser()!= null){
-            Log.d("footer",mAuth.getCurrentUser().getEmail());
+//            Log.d("footer",mAuth.getCurrentUser().getEmail());
             Intent intent = new Intent(MainActivity.this,home.class);
             intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
             startActivity(intent);
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         String url = "http://www.groupupdb.com/android/createuser.php";
         url += "?sName=" + name;
         url += "&sEmail=" + email;
-        Log.d("footer",url);
+//        Log.d("footer",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
