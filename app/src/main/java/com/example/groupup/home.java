@@ -254,6 +254,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
+                                map.put("events_id", c.getString("events_id"));
                                 map.put("event_creater", c.getString("event_creater"));
                                 map.put("events_name", c.getString("events_name"));
                                 map.put("events_month_start", c.getString("events_month_start"));
@@ -368,6 +369,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
+                                map.put("events_id", c.getString("events_id"));
                                 map.put("events_name", c.getString("events_name"));
                                 map.put("states_name", c.getString("states_name"));
                                 MyArrList.add(map);
@@ -407,6 +409,16 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                     listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                             // เข้าสู่ event
+                            String eName= MyArrList.get(position).get("events_name");
+                            String eId= MyArrList.get(position).get("events_id");
+                            String eStatus= MyArrList.get(position).get("states_name");
+                            Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
+                            Intent intent = new Intent(home.this,appointment.class);
+                            intent.putExtra("id",id);
+                            intent.putExtra("eid",eId);
+                            intent.putExtra("nameEvent",eName);
+
+                            startActivity(intent);
                         }
                     });
                 }
@@ -434,6 +446,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
+                                map.put("events_id", c.getString("events_id"));
                                 map.put("events_name", c.getString("events_name"));
                                 map.put("states_name", c.getString("states_name"));
                                 MyArrList.add(map);
@@ -478,6 +491,17 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 //                        String sCreater = MyArrList.get(position).get("events_name").toString();
 //                        String sName = MyArrList.get(position).get("states_name").toString();
                             // เข้าสู่ event
+//                            Intent intent = new Intent(home.this,appointment.class);
+//                            Object list =  myAdapter.getItemIdAtPosition(position);
+
+                           String eName= MyArrList.get(position).get("events_name");
+                            String eId= MyArrList.get(position).get("events_id");
+                            String eStatus= MyArrList.get(position).get("states_name");
+                            Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
+//                            intent.putExtra("nameEvent",li);
+//                            intent.putExtra("mStart",mStart);
+//                            intent.putExtra("mEnd",mEnd);
+//                            startActivity(intent);
                         }
                     });
                 }

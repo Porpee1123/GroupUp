@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 public class createGroup extends AppCompatActivity {
     String name="",id="";
+    String nEvent,mStart,mEnd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +95,9 @@ public class createGroup extends AppCompatActivity {
         url += "&sWait=" + spwa.getSelectedItem().toString();
         url += "&sProvi=" +name;
         url += "&sProid=" +id;
-
+        nEvent =txtName.getText().toString();
+        mStart = spst.getSelectedItem().toString();
+        mEnd =sped.getSelectedItem().toString();
         Log.d("footer",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -148,6 +151,10 @@ public class createGroup extends AppCompatActivity {
 
     public void nextNewGroup() {
         Intent intent = new Intent(createGroup.this, appointment.class);
+        intent.putExtra("nameEvent",nEvent);
+        intent.putExtra("mStart",mStart);
+        intent.putExtra("mEnd",mEnd);
+        intent.putExtra("id",id);
         startActivity(intent);
     }
 
