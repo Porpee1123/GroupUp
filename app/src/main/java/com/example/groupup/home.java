@@ -38,8 +38,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -110,7 +114,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onResume() {
         super.onResume();
-        getUser();
+//        getUser();
+        readFile();
         getEventInvitation();
         getEventHeader();
         getEventAttend();
@@ -168,6 +173,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     public void goToManageAccount() {
         Intent intent = new Intent(home.this, register.class);
+        intent.putExtra("email", email);
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 
@@ -219,6 +226,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             name = MyArrList.get(0).get("user_names");
                             id = MyArrList.get(0).get("user_id");
                             hEmail.setText(MyArrList.get(0).get("user_email"));
+                            writeFile(id,name,email);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -543,5 +551,47 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     public void gotoManageHeader() {
         Intent intent = new Intent(home.this, appointment.class);
         startActivity(intent);
+    }
+    public void writeFile(String id,String name,String email) {
+        String filename = "user.txt";
+        String sid = id+ ":";
+        String sname = name + ":";
+        String semail = email + "\n";
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(filename, MODE_PRIVATE);
+            outputStream.write(sid.getBytes());
+            outputStream.write(sname.getBytes());
+            outputStream.write(semail.getBytes());
+            outputStream.close();
+            Log.d("footer","write file : id "+sid +"/ name "+sname+"/ status "+ semail);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void readFile(){
+        String filename = "user.txt";
+        try {
+            BufferedReader inputReader = new BufferedReader(
+                    new InputStreamReader(openFileInput(filename)));
+
+            ArrayList<String> his = new ArrayList<>();
+            String line = "";
+            while ((line = inputReader.readLine()) != null) {
+                his.add(line);
+            }
+            for (int i = 0; i < his.size(); i++) {
+                StringTokenizer st = new StringTokenizer(his.get(i), ":");
+                id = st.nextToken();
+                name = st.nextToken();
+                email = st.nextToken();
+            }
+            Log.d("footer","read file : id "+id +"/ name "+name+"/ status "+ email);
+            hName.setText(name);
+            hEmail.setText(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
