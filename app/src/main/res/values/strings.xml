@@ -115,6 +115,7 @@
     <string name="end">End</string>
     <string name="setItem">Set Item</string>
     <string name="manageHead">Manage Head</string>
+    <string name="qrCode">QR Code</string>
 
 
 </resources>
