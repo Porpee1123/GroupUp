@@ -56,6 +56,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -76,27 +77,29 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/searchId"
+                        android:id="@+id/searchEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
                         android:hint="@string/search_friends"
                         android:inputType="textPersonName"
+                        android:imeOptions="actionSend"
                         android:textSize="14sp" />
 
                     <ImageButton
-                        android:id="@+id/imageButton4"
+                        android:id="@+id/searchBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="0.1"
                         android:background="@color/classicBlue"
+                        android:onClick="searchFriend"
                         app:srcCompat="@drawable/ic_search_black_24dp" />
 
                 </LinearLayout>
 
                 <ImageButton
-                    android:id="@+id/imageButton3"
+                    android:id="@+id/searchQrcodebtn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
@@ -104,14 +107,23 @@
                     android:background="@color/white"
                     app:srcCompat="@drawable/ic_qr_code" />
             </LinearLayout>
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_notfound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Not Found User"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/show_friend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/imag"
@@ -139,6 +151,7 @@
                 android:backgroundTint="@color/classicBlue"
                 android:fontFamily="sans-serif"
                 android:text="@string/addFriends"
+                android:onClick="addFriend"
                 android:textColor="@color/white" />
 
         </LinearLayout>
@@ -150,7 +163,7 @@
             android:layout_marginTop="20dp"
             android:background="@color/white"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="invisible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -174,7 +187,7 @@
                     android:textSize="18sp" />
 
                 <Spinner
-                    android:id="@+id/spinner3"
+                    android:id="@+id/typeFriend"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />

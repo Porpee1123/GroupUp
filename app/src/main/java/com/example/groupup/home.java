@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -65,7 +66,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        listViewInvite = findViewById(R.id.listView_invite);
+        listViewInvite = new ListView(this);
         listViewHeader = findViewById(R.id.listView_Header);
         listViewAttend = findViewById(R.id.listView_attend);
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -92,14 +93,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         }.start();
 
-
-        final Button btn = (Button) findViewById(R.id.btngotohead);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gotoManageHeader();
-            }
-        });
         //firebase signin
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -185,6 +178,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     public void goToManageFriend() {
         Intent intent = new Intent(home.this, addFriends.class);
+        intent.putExtra("id", id+"");
         startActivity(intent);
     }
 
@@ -289,7 +283,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 //        final LinearLayout listInviteView = (LinearLayout) inflater.inflate(R.layout.activity_btnfooter_collapse, listViewInvite,false);
 
 
-        Button btnget = findViewById(R.id.btnInvi);
+        ImageButton btnget = findViewById(R.id.btn_notification);
         btnget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
