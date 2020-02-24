@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".appoint_slipCheck"></activity>
+        <activity android:name=".invitation"></activity>
+        <activity android:name=".header" />
+        <activity android:name=".appoint_slipCheck" />
         <activity android:name=".appoint_date_and_place" />
         <activity android:name=".appoint_setItem" />
         <activity android:name=".appointment" />
