@@ -1,14 +1,9 @@
 package com.example.groupup;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,10 +28,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -67,7 +58,14 @@ public class MainActivity extends AppCompatActivity {
             signInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    signIn();
+                    if (mAuth.getCurrentUser()!= null){
+                        Intent intent = new Intent(MainActivity.this,home.class);
+                        intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
+                        startActivity(intent);
+                    }else {
+                        signIn();
+                    }
+
                 }
             });
         }

@@ -46,12 +46,14 @@ public class register extends AppCompatActivity {
     boolean check = true;
     ProgressDialog progressDialog ;
     String ServerUploadPath ="http://www.groupupdb.com/android/registerwithimages.php" ;
+    String name ,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        name = getIntent().getStringExtra("name");
+        email =getIntent().getStringExtra("email");
         SelectImageGallery = findViewById(R.id.addPicture);
         SelectImageGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,12 +71,12 @@ public class register extends AppCompatActivity {
 //                intent.setAction(Intent.ACTION_GET_CONTENT);
 //                startActivityForResult(Intent.createChooser(intent, "Select Image From Gallery"), 1);
                 }
-
-
-
-
             }
         });
+        EditText edt_name = findViewById(R.id.name);
+        EditText edt_email = findViewById(R.id.email);
+        edt_name.setText(name);
+        edt_email.setText(email);
 
         final Button bcon = (Button)findViewById(R.id.account_confirm);
         bcon.setOnClickListener(new View.OnClickListener() {
@@ -173,8 +175,8 @@ public class register extends AppCompatActivity {
 
 
         class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
-            final EditText txtName = (EditText)findViewById(R.id.name);
-            final EditText txtEmail = (EditText)findViewById(R.id.email);
+            final EditText txtName = findViewById(R.id.name);
+            final EditText txtEmail = findViewById(R.id.email);
             String name =txtName.getText().toString();
             String email =txtEmail.getText().toString();
             @Override
