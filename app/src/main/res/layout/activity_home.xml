@@ -75,7 +75,7 @@
                 android:text="GroupUP" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btn_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@color/classicBlue"
@@ -201,23 +201,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
-        android:layout_width="match_parent"
-
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollIndicators="right"
-        android:scrollbars="vertical"/>
-
-    <ScrollView
-        android:id="@+id/scrollHome"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-    </ScrollView>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
