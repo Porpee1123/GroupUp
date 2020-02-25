@@ -11,7 +11,7 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homehead_appointment_date_and_place);
+        setContentView(R.layout.activity_appoint_date_and_place);
     }
 
     public void selectDateTime(View v) {

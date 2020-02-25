@@ -63,7 +63,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
+        setContentView(R.layout.activity_home);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
         listViewInvite = new ListView(this);
@@ -109,7 +109,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         tabHost.setup(mLocalActivityManager);
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("ผู้เข้าร่วมงาน")
-                .setContent(new Intent(this, Home_Attendant.class));
+                .setContent(new Intent(this, Home_Listview_Attendant.class));
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("แม่งาน")

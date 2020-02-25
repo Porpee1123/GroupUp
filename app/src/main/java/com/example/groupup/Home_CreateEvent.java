@@ -30,7 +30,7 @@ public class Home_CreateEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_create_event);
+        setContentView(R.layout.activity_create_group);
 
         //Spinner
         Spinner sp = findViewById(R.id.spin_wait);

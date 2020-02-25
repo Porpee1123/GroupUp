@@ -27,7 +27,7 @@ public class Extend_Fragment_ScanQRCode extends Fragment {
                 zXingScannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
                     @Override
                     public void handleResult(Result result) {
-                        getActivity().setContentView(R.layout.addfriend_scan_qrcode);
+                        getActivity().setContentView(R.layout.activity_scan_qr);
                         String resultString = result.getText().toString();
                         emailScan =resultString;
 //                        Toast.makeText(getActivity(), "QR code = " + resultString, Toast.LENGTH_LONG).show();
@@ -43,7 +43,7 @@ public class Extend_Fragment_ScanQRCode extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_scan_qrcode, container, false);
+        View view = inflater.inflate(R.layout.fragment_scan_qr, container, false);
         return view;
     }
 

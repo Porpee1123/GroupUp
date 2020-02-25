@@ -50,7 +50,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ManageFriend_AddFriends);
+        setContentView(R.layout.activity_add_friends);
         searchFriend = findViewById(R.id.searchEmail);
         nameFriend = findViewById(R.id.nameFriend);
         searchBtn = findViewById(R.id.searchBtn);

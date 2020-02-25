@@ -9,6 +9,6 @@ public class HomeHead_Appointment_SlipCheck extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appointment_slipcheck);
+        setContentView(R.layout.activity_appoint_slip_check);
     }
 }

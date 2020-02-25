@@ -9,7 +9,7 @@ public class AddFriend_Scan_QRCode extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.addfriend_scan_qrcode);
+        setContentView(R.layout.activity_scan_qr);
 
         if (savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()

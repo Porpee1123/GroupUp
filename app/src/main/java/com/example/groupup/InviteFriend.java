@@ -19,22 +19,26 @@ public class InviteFriend extends AppCompatActivity {
         setContentView(R.layout.activity_invite);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
+        createTab();
 
-        TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
+    }
+    public void createTab(){
+
+        tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
-
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
-                .setIndicator("แม่งาน")
-                .setContent(new Intent(this, InviteFriend_Head.class));
-        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("ผู้เข้าร่วมงาน")
-                .setContent(new Intent(this, InviteFriend_Attendant.class));
+                .setContent(new Intent(this, InviteFriend_Head.class));
 
+        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
+                .setIndicator("แม่งาน")
+                .setContent(new Intent(this, InviteFriend_Attendant.class));
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
         tabHost.getTabWidget()
                 .getChildAt(0)
-                .setBackgroundResource(R.color.blueWhite);
+                .setBackgroundResource(
+                        R.drawable.shape_tab);
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 
             @Override
@@ -42,7 +46,6 @@ public class InviteFriend extends AppCompatActivity {
                 updateTabs();
             }
         });
-
     }
     protected void updateTabs() {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {

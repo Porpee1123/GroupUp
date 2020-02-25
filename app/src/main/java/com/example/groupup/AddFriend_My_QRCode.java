@@ -18,7 +18,7 @@ public class AddFriend_My_QRCode extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.addfriend_my_qrcode);
+        setContentView(R.layout.activity_my_qr);
         email = getIntent().getStringExtra("email");
         myqr = findViewById(R.id.myQr);
         qrcodeReader(email);

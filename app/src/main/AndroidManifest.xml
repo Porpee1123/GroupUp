@@ -45,7 +45,7 @@
             android:name=".AddFriend_QRCode"
             android:configChanges="screenSize"
             android:screenOrientation="locked"/>
-        <activity android:name=".Home_Attendant"
+        <activity android:name=".Home_Listview_Attendant"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
