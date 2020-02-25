@@ -45,9 +45,8 @@
         <activity
             android:name=".qrCode"
             android:configChanges="screenSize"
-            android:screenOrientation="locked" />
-        <activity
-            android:name=".invitation"
+            android:screenOrientation="locked"/>
+        <activity android:name=".attandant"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity

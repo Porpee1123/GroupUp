@@ -4,30 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".invitation">
+    tools:context=".attandant">
 
     <LinearLayout
-        android:id="@+id/linear_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btn_invite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Button"
+            tools:text="getInvitation" />
 
-            <Button
-                android:id="@+id/btnAttend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_2" />
-
-            <ListView
-                android:id="@+id/listView_attend"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
+        <ListView
+            android:id="@+id/listView_invite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

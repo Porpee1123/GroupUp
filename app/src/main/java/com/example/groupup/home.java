@@ -1,20 +1,20 @@
 package com.example.groupup;
 
 import android.app.AlertDialog;
+import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,7 +32,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
@@ -45,8 +44,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
 
 public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "home";
@@ -60,12 +57,15 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     TextView hEmail;
     String name = "", id = "", email = "";
     boolean invite = false, head = false, attend = false;//ปิด list view
+    LocalActivityManager mLocalActivityManager;
+    TabHost tabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        mLocalActivityManager = new LocalActivityManager(this, false);
+        mLocalActivityManager.dispatchCreate(savedInstanceState);
         listViewInvite = new ListView(this);
         listViewHeader = findViewById(R.id.listView_Header);
         listViewAttend = findViewById(R.id.listView_attend);
@@ -73,6 +73,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView = findViewById(R.id.na_view);
         navigationView.setNavigationItemSelectedListener(home.this);
         navigationView.bringToFront();
+        createTab();
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
@@ -102,7 +103,51 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
     }
+    public void createTab(){
 
+        tabHost = (TabHost) findViewById(R.id.tabhost);
+        tabHost.setup(mLocalActivityManager);
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
+                .setIndicator("ผู้เข้าร่วมงาน")
+                .setContent(new Intent(this, attendant.class));
+
+        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
+                .setIndicator("แม่งาน")
+                .setContent(new Intent(this, header.class));
+        tabHost.addTab(tabSpec);
+        tabHost.addTab(tabSpec2);
+        tabHost.getTabWidget()
+                .getChildAt(0)
+                .setBackgroundResource(
+                        R.drawable.shape_tab);
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+
+            @Override
+            public void onTabChanged(String tabId) {
+                updateTabs();
+            }
+        });
+    }
+    protected void updateTabs() {
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+
+            if (tabHost.getTabWidget().getChildAt(i).isSelected()) {
+                tabHost.getTabWidget()
+                        .getChildAt(i)
+                        .setBackgroundResource(
+                                R.drawable.shape_tab);
+            }
+            else {
+
+                tabHost.getTabWidget()
+                        .getChildAt(i)
+                        .setBackgroundResource(
+                                R.drawable.visible);
+
+            }
+        }
+
+    }
 
     @Override
     protected void onResume() {
