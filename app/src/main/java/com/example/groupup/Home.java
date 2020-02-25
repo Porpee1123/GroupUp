@@ -73,7 +73,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView = findViewById(R.id.na_view);
         navigationView.setNavigationItemSelectedListener(Home.this);
         navigationView.bringToFront();
-        createTab();
+
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
@@ -81,12 +81,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         getUser();
         new CountDownTimer(500, 500) {
             public void onFinish() {
-                // When timer is finished
-                // Execute your code here
-//                getEventInvitation();
-//                getEventHeader();
-//                getEventAttend();
-
+                createTab();
             }
 
             public void onTick(long millisUntilFinished) {
@@ -100,20 +95,31 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
+        ImageButton btnNoti = findViewById(R.id.btn_notification);
+        btnNoti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(Home.this,Home_Alert.class);
+                in.putExtra("id", id+"");
+                startActivity(in);
+            }
+        });
     }
     public void createTab(){
 
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
+        Intent inA = new Intent(this,Home_Listview_Attendant.class);
+        inA.putExtra("id", id+"");
+        Intent inH = new Intent(this,Home_Listview_Head.class);
+        inH.putExtra("id", id+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("ผู้เข้าร่วมงาน")
-                .setContent(new Intent(this, Home_Listview_Attendant.class));
+                .setContent(inA);
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("แม่งาน")
-                .setContent(new Intent(this, Home_Listview_Head.class));
+                .setContent(inH);
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
         tabHost.getTabWidget()
@@ -148,38 +154,22 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     }
-
     @Override
     protected void onResume() {
         super.onResume();
-//        getUser();
         readFile();
-//        getEventInvitation();
-//        getEventHeader();
-//        getEventAttend();
-
-
     }
-
-    public void setHumburgerButton() {
-
-    }
-
     public void createGroup(View v) {
         Intent intent = new Intent(Home.this, Home_CreateEvent.class);
         intent.putExtra("id", id);
         intent.putExtra("name", name);
         startActivity(intent);
     }
-
     public void search(View v) {
-
     }
-
     public void menuHamberger(View v) {
         drawerLayout.openDrawer(GravityCompat.START);
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "Hello item");
@@ -208,33 +198,28 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout.closeDrawers();
         return true;
     }
-
     public void goToManageAccount() {
         Intent intent = new Intent(Home.this, Manage_Account.class);
         intent.putExtra("email", email);
         intent.putExtra("name", name);
         startActivity(intent);
     }
-
     public void goToCalendar() {
         Intent intent = new Intent(Home.this, Manage_calendar.class);
         startActivity(intent);
     }
-
     public void goToManageFriend() {
         Intent intent = new Intent(Home.this, ManageFriend_AddFriends.class);
         intent.putExtra("id", id+"");
         intent.putExtra("email", email+"");
         startActivity(intent);
     }
-
     public void signout() {
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.revokeAccess();
         Intent intent = new Intent(Home.this, Login.class);
         startActivity(intent);
     }
-
     public void getUser() {
         responseStr = new ResponseStr();
 
@@ -282,284 +267,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-
-    public void getEventInvitation() {
-        responseStr = new ResponseStr();
-
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        Log.d("footer", "id" + id);
-        String url = "http://www.groupupdb.com/android/gethomeinvite.php";
-        url += "?sId=" + id;//รอเอาIdจากfirebase
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //textView.setText("Response is: "+ response.toString());
-
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("events_id", c.getString("events_id"));
-                                map.put("event_creater", c.getString("event_creater"));
-                                map.put("events_name", c.getString("events_name"));
-                                map.put("events_month_start", c.getString("events_month_start"));
-                                map.put("events_month_end", c.getString("events_month_end"));
-                                //map.put("events_wait", c.getString("events_wait"));
-                                MyArrList.add(map);
-                            }
-                            Log.d("query", MyArrList.size() + "");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-//        LayoutInflater inflater = getLayoutInflater();
-//        final LinearLayout listInviteView = (LinearLayout) inflater.inflate(R.layout.activity_btnfooter_collapse, listViewInvite,false);
-
-
-        ImageButton btnget = findViewById(R.id.btn_notification);
-        btnget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (invite) {
-                    listViewInvite.setVisibility(View.GONE);//ปิด
-                    listViewInvite.removeAllViewsInLayout();
-//                    listViewInvite.removeFooterView(listInviteView);
-                    invite = false;
-                } else {
-                    invite = true;
-                    listViewInvite.setVisibility(View.VISIBLE);
-                    SimpleAdapter sAdap;
-                    sAdap = new SimpleAdapter(Home.this, MyArrList, R.layout.activity_invitation_home,
-                            new String[]{"event_creater", "events_name", "events_month_start", "events_month_end"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end});
-                    listViewInvite.setAdapter(sAdap);
-//                    listViewInvite.addFooterView(listInviteView);
-//                    listInviteView.findViewById(R.id.btnCollapse).setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            Log.d("footer","btnhideInvite");
-//                            listViewInvite.setVisibility(View.GONE);
-//                            listViewInvite.removeFooterView(listInviteView);
-//                            invite=false;
-//                        }
-//                    });
-                    final AlertDialog.Builder viewDetail = new AlertDialog.Builder(Home.this);
-
-                    listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                            String sCreater = MyArrList.get(position).get("event_creater").toString();
-                            String sName = MyArrList.get(position).get("events_name").toString();
-                            String sSta = MyArrList.get(position).get("events_month_start").toString();
-                            String sEnd = MyArrList.get(position).get("events_month_end").toString();
-                            String sTim = sSta + " - " + sEnd;
-                            viewDetail.setIcon(android.R.drawable.btn_star_big_on);
-                            viewDetail.setTitle("รายละเอียด");
-                            viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
-                                    + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n");
-                            viewDetail.setPositiveButton("OK",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,
-                                                            int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                            viewDetail.setNegativeButton("ไม่เข้าร่วม", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });
-                            viewDetail.setPositiveButton("เข้าร่วม", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });
-                            viewDetail.show();
-
-                        }
-                    });
-                }
-
-            }
-        });
-
-
-    }
-
-    public void getEventHeader() {
-        responseStr = new ResponseStr();
-
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-
-        String url = "http://www.groupupdb.com/android/gethomehead.php";
-        url += "?sId=" + id;//รอเอาIdจากfirebase
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("events_id", c.getString("events_id"));
-                                map.put("events_name", c.getString("events_name"));
-                                map.put("states_name", c.getString("states_name"));
-                                MyArrList.add(map);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-        Button btnget = findViewById(R.id.btnHead);
-
-        btnget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (head) {
-                    listViewHeader.setVisibility(View.GONE);//ปิด
-                    listViewHeader.removeAllViewsInLayout();
-
-                    head = false;
-                } else {
-                    head = true;
-                    listViewHeader.setVisibility(View.VISIBLE);//เปิด
-                    SimpleAdapter sAdap;
-                    sAdap = new SimpleAdapter(Home.this, MyArrList, R.layout.activity_header_home,
-                            new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
-                    listViewHeader.setAdapter(sAdap);
-                    final AlertDialog.Builder viewDetail = new AlertDialog.Builder(Home.this);
-                    listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                            // เข้าสู่ event
-                            String eName= MyArrList.get(position).get("events_name");
-                            String eId= MyArrList.get(position).get("events_id");
-                            String eStatus= MyArrList.get(position).get("states_name");
-                            Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
-                            Intent intent = new Intent(Home.this, HomeHead_Appointment.class);
-                            intent.putExtra("id",id);
-                            intent.putExtra("eid",eId);
-                            intent.putExtra("nameEvent",eName);
-
-                            startActivity(intent);
-                        }
-                    });
-                }
-
-            }
-        });
-
-
-    }
-
-    public void getEventAttend() {
-        responseStr = new ResponseStr();
-
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-
-        String url = "http://www.groupupdb.com/android/gethomeattend.php";
-        url += "?sId=" + id;//รอเอาIdจากfirebase
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("events_id", c.getString("events_id"));
-                                map.put("events_name", c.getString("events_name"));
-                                map.put("states_name", c.getString("states_name"));
-                                MyArrList.add(map);
-                            }
-                            //textView.setText(" :: "+ MyArrList.size());
-
-                            //textView.setText(" :: "+ responseStr.str);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-        Button btnget = findViewById(R.id.btnAttend);
-        btnget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (attend) {
-                    listViewAttend.setVisibility(View.GONE);
-                    listViewAttend.removeAllViewsInLayout();
-                    attend = false;
-                } else {
-//                    listViewAttend.removeFooterView(listAttendView);
-                    Log.d("footer", "showAttend");
-                    attend = true;
-                    listViewAttend.setVisibility(View.VISIBLE);
-                    SimpleAdapter sAdap;
-                    sAdap = new SimpleAdapter(Home.this, MyArrList, R.layout.activity_attend_home,
-                            new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
-                    listViewAttend.setAdapter(sAdap);
-
-                    listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-//                        String sCreater = MyArrList.get(position).get("events_name").toString();
-//                        String sName = MyArrList.get(position).get("states_name").toString();
-                            // เข้าสู่ event
-//                            Intent intent = new Intent(home.this,appointment.class);
-//                            Object list =  myAdapter.getItemIdAtPosition(position);
-
-                           String eName= MyArrList.get(position).get("events_name");
-                            String eId= MyArrList.get(position).get("events_id");
-                            String eStatus= MyArrList.get(position).get("states_name");
-                            Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
-//                            intent.putExtra("nameEvent",li);
-//                            intent.putExtra("mStart",mStart);
-//                            intent.putExtra("mEnd",mEnd);
-//                            startActivity(intent);
-                        }
-                    });
-                }
-
-            }
-        });
-
-
-    }
-
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -569,25 +276,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     }
-
-//    public void btncloseFooter(final ListView listView){
-//        //add in if
-////        listViewHeader.removeFooterView(listHeaderView);
-//        //call after set adapter
-//        final LayoutInflater inflater = getLayoutInflater();
-//        final LinearLayout listHeaderView = (LinearLayout) inflater.inflate(R.layout.activity_btnfooter_collapse, listView,false);
-//        listView.addFooterView(listHeaderView);
-//        listHeaderView.findViewById(R.id.btnCollapse).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("footer","btnhideHead");
-//                listView.setVisibility(View.GONE);
-//                listView.removeFooterView(listHeaderView);
-//                head=false;
-//            }
-//        });
-//    }
-
     public void writeFile(String id,String name,String email) {
         String filename = "user.txt";
         String sid = id+ ":";

@@ -17,12 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnHead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_1" />
-
             <ListView
                 android:id="@+id/listView_Header"
                 android:layout_width="match_parent"
