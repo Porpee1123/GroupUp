@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Home_Alert"></activity>
+        <activity android:name=".ManageFriend"></activity>
+        <activity android:name=".Home_Alert" />
         <activity
             android:name=".MainAttendent_Reviews"
             android:configChanges="screenSize"
@@ -44,8 +45,9 @@
         <activity
             android:name=".AddFriend_QRCode"
             android:configChanges="screenSize"
-            android:screenOrientation="locked"/>
-        <activity android:name=".Home_Listview_Attendant"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".Home_Listview_Attendant"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
