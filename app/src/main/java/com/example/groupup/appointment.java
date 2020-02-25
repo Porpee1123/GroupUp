@@ -69,7 +69,7 @@ public class appointment extends AppCompatActivity {
         tabHost.getTabWidget()
                 .getChildAt(0)
                 .setBackgroundResource(
-                        R.color.blueWhite);
+                        R.drawable.shape_tab);
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 
             @Override
@@ -97,7 +97,7 @@ public class appointment extends AppCompatActivity {
                 tabHost.getTabWidget()
                         .getChildAt(i)
                         .setBackgroundResource(
-                                R.color.blueWhite);
+                                R.drawable.shape_tab);
             }
             else {
 

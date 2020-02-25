@@ -179,6 +179,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     public void goToManageFriend() {
         Intent intent = new Intent(home.this, addFriends.class);
         intent.putExtra("id", id+"");
+        intent.putExtra("email", email+"");
         startActivity(intent);
     }
 

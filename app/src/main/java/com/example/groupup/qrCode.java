@@ -11,29 +11,33 @@ import android.widget.TabHost;
 public class qrCode extends AppCompatActivity {
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code);
+        email = getIntent().getStringExtra("email");
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
-
+        Intent inMyQr = new Intent(qrCode.this,myQR.class);
+        inMyQr.putExtra("email", email+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("สแกนคิวอาร์โค้ด")
                 .setContent(new Intent(this, scanQR.class));
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("คิวอาร์โค้ดของฉัน")
-                .setContent(new Intent(this, myQR.class));
+                .setContent(inMyQr);
+
 
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
         tabHost.getTabWidget()
                 .getChildAt(0)
                 .setBackgroundResource(
-                        R.color.blueWhite);
+                        R.drawable.shape_tab);
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 
             @Override
@@ -49,7 +53,7 @@ public class qrCode extends AppCompatActivity {
                 tabHost.getTabWidget()
                         .getChildAt(i)
                         .setBackgroundResource(
-                                R.color.blueWhite);
+                                R.drawable.shape_tab);
             }
             else {
 

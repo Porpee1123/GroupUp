@@ -46,7 +46,7 @@ public class addFriends extends AppCompatActivity {
     LinearLayout showFriend, showType;
     Spinner spTypeFriend;
     addFriends.ResponseStr responseStr = new addFriends.ResponseStr();
-    String TAG = "addfriend", uid = "";
+    String TAG = "addfriend", uid = "",email="",emailScan="";
     SparseArray<String> type = new SparseArray<>();
     int MY_PERMISSIONS_REQUEST_CAMERA=0;
 
@@ -63,6 +63,9 @@ public class addFriends extends AppCompatActivity {
         showType = findViewById(R.id.show_type);
         spTypeFriend = findViewById(R.id.typeFriend);
         uid = getIntent().getStringExtra("id");
+        email = getIntent().getStringExtra("email");
+        emailScan = getIntent().getStringExtra("emailScan");
+        Log.d(TAG,"emailScan : "+emailScan);
         searchFriend.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -84,12 +87,16 @@ public class addFriends extends AppCompatActivity {
                     scanQr();
                 } else {
                     if (requestImagePermission()){
-                        scanQr();
+//                        scanQr();
                     }
 
                 }
             }
         });
+        if (emailScan!=null){
+            getUserByQrcode(emailScan);
+            getType();
+        }
     }
 
     public void backHome(View v) {
@@ -104,6 +111,57 @@ public class addFriends extends AppCompatActivity {
         Log.d(TAG, "email " + searchFriend.getText());
         String url = "http://www.groupupdb.com/android/getuser.php";
         url += "?sEmail=" + searchFriend.getText();//รอเอาIdหรือ email จากfirebase
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response);
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_email", c.getString("user_email"));
+                                map.put("user_photo", c.getString("user_photo"));
+                                MyArrList.add(map);
+                            }
+                            //set Header menu name email
+                            Log.d(TAG, "data " + MyArrList.get(0).get("user_names"));
+                            user[0] = MyArrList.get(0).get("user_name");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (user[0] != "") {
+                            nameFriend.setText(MyArrList.get(0).get("user_names"));
+                            showFriend.setVisibility(View.VISIBLE);
+                            showType.setVisibility(View.VISIBLE);
+                            txtNoUser.setVisibility(View.INVISIBLE);
+                        } else {
+                            txtNoUser.setVisibility(View.VISIBLE);
+                            showFriend.setVisibility(View.INVISIBLE);
+                            showType.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void getUserByQrcode(String s) {
+        responseStr = new addFriends.ResponseStr();
+        final String[] user = {""};
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        Log.d(TAG, "email " + s);
+        String url = "http://www.groupupdb.com/android/getuser.php";
+        url += "?sEmail=" + s;//รอเอาIdหรือ email จากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -218,6 +276,7 @@ public class addFriends extends AppCompatActivity {
     }
     public void scanQr(){
         Intent intent = new Intent(this,qrCode.class);
+        intent.putExtra("email", email+"");
         startActivity(intent);
     }
     public boolean requestImagePermission() {

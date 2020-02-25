@@ -1,5 +1,6 @@
 package com.example.groupup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import com.google.zxing.Result;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class scanQrFragment extends Fragment {
-
+    String emailScan;
     private ZXingScannerView zXingScannerView;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -29,9 +30,13 @@ public class scanQrFragment extends Fragment {
                     public void handleResult(Result result) {
                         getActivity().setContentView(R.layout.activity_scan_qr);
                         String resultString = result.getText().toString();
-                        Toast.makeText(getActivity(), "QR code = " + resultString, Toast.LENGTH_LONG).show();
+                        emailScan =resultString;
+//                        Toast.makeText(getActivity(), "QR code = " + resultString, Toast.LENGTH_LONG).show();
                         Log.d("scanQR", "QR code ==> " + resultString);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentMainFragment, new scanQrFragment()).commit();
+                        Intent intent = new Intent(getActivity(), addFriends.class);
+                        intent.putExtra("emailScan", emailScan+"");
+                        startActivity(intent);
                     }
                 });
     }
