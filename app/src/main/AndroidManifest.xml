@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
 
     <application
         android:allowBackup="true"
@@ -46,14 +48,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".invite"
-            android:configChanges="screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".createPlace"
-            android:configChanges="screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".place"
             android:configChanges="screenSize"
             android:screenOrientation="portrait" />
         <activity

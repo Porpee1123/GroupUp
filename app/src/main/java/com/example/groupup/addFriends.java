@@ -1,6 +1,10 @@
 package com.example.groupup;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +19,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,6 +48,7 @@ public class addFriends extends AppCompatActivity {
     addFriends.ResponseStr responseStr = new addFriends.ResponseStr();
     String TAG = "addfriend", uid = "";
     SparseArray<String> type = new SparseArray<>();
+    int MY_PERMISSIONS_REQUEST_CAMERA=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +74,20 @@ public class addFriends extends AppCompatActivity {
                     handle=true;
                 }
                 return handle;
+            }
+        });
+        qrcodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(addFriends.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(addFriends.this, "You have already permission access Camera", Toast.LENGTH_SHORT).show();
+                    scanQr();
+                } else {
+                    if (requestImagePermission()){
+                        scanQr();
+                    }
+
+                }
             }
         });
     }
@@ -192,6 +214,27 @@ public class addFriends extends AppCompatActivity {
         if (v!= null){
             InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+        }
+    }
+    public void scanQr(){
+        Intent intent = new Intent(this,qrCode.class);
+        startActivity(intent);
+    }
+    public boolean requestImagePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permission is needed for access the camera")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(addFriends.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+                        }
+                    }).create().show();
+            return false;
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+            return true;
         }
     }
 

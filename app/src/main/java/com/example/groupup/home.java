@@ -82,9 +82,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onFinish() {
                 // When timer is finished
                 // Execute your code here
-                getEventInvitation();
-                getEventHeader();
-                getEventAttend();
+//                getEventInvitation();
+//                getEventHeader();
+//                getEventAttend();
 
             }
 
@@ -109,9 +109,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         super.onResume();
 //        getUser();
         readFile();
-        getEventInvitation();
-        getEventHeader();
-        getEventAttend();
+//        getEventInvitation();
+//        getEventHeader();
+//        getEventAttend();
 
 
     }
@@ -542,10 +542,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 //        });
 //    }
 
-    public void gotoManageHeader() {
-        Intent intent = new Intent(home.this, appointment.class);
-        startActivity(intent);
-    }
     public void writeFile(String id,String name,String email) {
         String filename = "user.txt";
         String sid = id+ ":";

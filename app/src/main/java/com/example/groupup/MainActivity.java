@@ -172,10 +172,6 @@ public class MainActivity extends AppCompatActivity {
         in.putExtra("email","thanapatza2011@gmail.com");
         startActivity(in);
     }
-    public void skipPlace(View v){
-        Intent in = new Intent(this,place.class);
-        startActivity(in);
-    }
     public boolean saveData() {
         String url = "http://www.groupupdb.com/android/createuser.php";
         url += "?sName=" + name;
