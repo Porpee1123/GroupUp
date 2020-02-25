@@ -11,6 +11,7 @@ import android.widget.TabHost;
 public class invite extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
+    TabHost tabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,39 @@ public class invite extends AppCompatActivity {
 
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
+        tabHost.getTabWidget()
+                .getChildAt(0)
+                .setBackgroundResource(R.color.blueWhite);
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+
+            @Override
+            public void onTabChanged(String tabId) {
+                updateTabs();
+            }
+        });
+
     }
+    protected void updateTabs() {
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+
+            if (tabHost.getTabWidget().getChildAt(i).isSelected()) {
+                tabHost.getTabWidget()
+                        .getChildAt(i)
+                        .setBackgroundResource(
+                                R.color.blueWhite);
+            }
+            else {
+
+                tabHost.getTabWidget()
+                        .getChildAt(i)
+                        .setBackgroundResource(
+                                R.drawable.visible);
+
+            }
+        }
+
+    }
+
 
     @Override
     protected void onPause() {

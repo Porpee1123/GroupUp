@@ -39,7 +39,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="3"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/appointment" />
+                android:text="พีอย่าลืมเซ็ต" />
 
             <View
                 android:id="@+id/view1"
@@ -187,7 +187,6 @@
                             android:id="@+id/tab1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/blueWhite"
                             android:orientation="vertical" />
 
                         <LinearLayout

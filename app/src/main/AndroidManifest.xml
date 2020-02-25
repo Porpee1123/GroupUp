@@ -7,8 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".myQR"></activity>
+        <activity android:name=".attendant"></activity>
+        <activity android:name=".attend_reviews" />
+        <activity android:name=".attend_summary" />
+        <activity android:name=".attend_vote" />
+        <activity android:name=".attend" />
+        <activity android:name=".myQR" />
         <activity android:name=".scanQR" />
         <activity android:name=".qrCode" />
         <activity android:name=".invitation" />
