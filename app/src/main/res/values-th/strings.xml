@@ -116,4 +116,5 @@
     <string name="setItem">กำหนดรายการ</string>
     <string name="manageHead">การจัดการของแม่งาน</string>
     <string name="qrCode">คิวอาร์โค้ด</string>
+    <string name="alert">การแจ้งเตือน</string>
 </resources>

@@ -16,44 +16,58 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".attendant"></activity>
-        <activity android:name=".attend_reviews"
+        <activity android:name=".alert"></activity>
+        <activity android:name=".attendant" />
+        <activity
+            android:name=".attend_reviews"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
-        <activity android:name=".attend_summary"
+        <activity
+            android:name=".attend_summary"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
-        <activity android:name=".attend_vote"
-            android:configChanges="screenSize"
-            android:screenOrientation="locked"/>
-        <activity android:name=".attend"
+        <activity
+            android:name=".attend_vote"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
-        <activity android:name=".myQR"
-            android:configChanges="screenSize"
-            android:screenOrientation="locked"/>
-        <activity android:name=".scanQR"
+        <activity
+            android:name=".attend"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
-        <activity android:name=".qrCode"
-            android:configChanges="screenSize"
-            android:screenOrientation="locked"/>
-        <activity android:name=".invitation"
+        <activity
+            android:name=".myQR"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
-        <activity android:name=".header"
+        <activity
+            android:name=".scanQR"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
-        <activity android:name=".appoint_slipCheck"
+        <activity
+            android:name=".qrCode"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
-        <activity android:name=".appoint_date_and_place"
+        <activity
+            android:name=".invitation"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
-        <activity android:name=".appoint_setItem"
+        <activity
+            android:name=".header"
             android:configChanges="screenSize"
-            android:screenOrientation="locked"/>
-        <activity android:name=".appointment"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".appoint_slipCheck"
+            android:configChanges="screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".appoint_date_and_place"
+            android:configChanges="screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".appoint_setItem"
+            android:configChanges="screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".appointment"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
