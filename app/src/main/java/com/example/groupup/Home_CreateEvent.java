@@ -24,13 +24,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class createGroup extends AppCompatActivity {
+public class Home_CreateEvent extends AppCompatActivity {
     String name="",id="";
     String nEvent,mStart,mEnd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_group);
+        setContentView(R.layout.home_create_event);
 
         //Spinner
         Spinner sp = findViewById(R.id.spin_wait);
@@ -129,7 +129,7 @@ public class createGroup extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(createGroup.this, "Submission Error!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Home_CreateEvent.this, "Submission Error!", Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -145,12 +145,12 @@ public class createGroup extends AppCompatActivity {
     }
 
     public void backHome(View v) {
-        Intent intent = new Intent(createGroup.this, home.class);
+        Intent intent = new Intent(Home_CreateEvent.this, Home.class);
         startActivity(intent);
     }
 
     public void nextNewGroup() {
-        Intent intent = new Intent(createGroup.this, appointment.class);
+        Intent intent = new Intent(Home_CreateEvent.this, HomeHead_Appointment.class);
         intent.putExtra("nameEvent",nEvent);
         intent.putExtra("mStart",mStart);
         intent.putExtra("mEnd",mEnd);

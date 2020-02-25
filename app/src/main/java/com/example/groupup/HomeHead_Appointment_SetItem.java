@@ -7,18 +7,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class appoint_setItem extends AppCompatActivity {
+public class HomeHead_Appointment_SetItem extends AppCompatActivity {
     Button inviteFriend , selectTheme;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appoint_set_item);
+        setContentView(R.layout.activity_HomeHead_Appointment_SetItem);
         inviteFriend = findViewById(R.id.select_friend);
         selectTheme = findViewById(R.id.selectTheme);
     }
 
     public void selectFriend(View v) {
-        Intent intent = new Intent(appoint_setItem.this, invite.class);
+        Intent intent = new Intent(HomeHead_Appointment_SetItem.this, InviteFriend.class);
         startActivity(intent);
     }
 

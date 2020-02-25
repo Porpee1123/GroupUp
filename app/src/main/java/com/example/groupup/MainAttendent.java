@@ -6,15 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class alert extends AppCompatActivity {
+public class MainAttendent extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alert);
+        setContentView(R.layout.activity_attend);
     }
     public void backHome(View v) {
-        Intent in = new Intent(this, home.class);
-        startActivity(in);
+        Intent intent = new Intent(MainAttendent.this, Home.class);
+        startActivity(intent);
     }
 }

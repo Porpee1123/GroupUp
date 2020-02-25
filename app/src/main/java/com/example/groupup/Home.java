@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "home";
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -63,7 +63,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.home);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
         listViewInvite = new ListView(this);
@@ -71,7 +71,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         listViewAttend = findViewById(R.id.listView_attend);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
-        navigationView.setNavigationItemSelectedListener(home.this);
+        navigationView.setNavigationItemSelectedListener(Home.this);
         navigationView.bringToFront();
         createTab();
         View v = navigationView.getHeaderView(0);
@@ -109,11 +109,11 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         tabHost.setup(mLocalActivityManager);
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("ผู้เข้าร่วมงาน")
-                .setContent(new Intent(this, attendant.class));
+                .setContent(new Intent(this, Home_Attendant.class));
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("แม่งาน")
-                .setContent(new Intent(this, header.class));
+                .setContent(new Intent(this, Home_Listview_Head.class));
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
         tabHost.getTabWidget()
@@ -166,7 +166,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void createGroup(View v) {
-        Intent intent = new Intent(home.this, createGroup.class);
+        Intent intent = new Intent(Home.this, Home_CreateEvent.class);
         intent.putExtra("id", id);
         intent.putExtra("name", name);
         startActivity(intent);
@@ -210,19 +210,19 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void goToManageAccount() {
-        Intent intent = new Intent(home.this, register.class);
+        Intent intent = new Intent(Home.this, Manage_Account.class);
         intent.putExtra("email", email);
         intent.putExtra("name", name);
         startActivity(intent);
     }
 
     public void goToCalendar() {
-        Intent intent = new Intent(home.this, Manage_calendar.class);
+        Intent intent = new Intent(Home.this, Manage_calendar.class);
         startActivity(intent);
     }
 
     public void goToManageFriend() {
-        Intent intent = new Intent(home.this, addFriends.class);
+        Intent intent = new Intent(Home.this, ManageFriend_AddFriends.class);
         intent.putExtra("id", id+"");
         intent.putExtra("email", email+"");
         startActivity(intent);
@@ -231,7 +231,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     public void signout() {
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.revokeAccess();
-        Intent intent = new Intent(home.this, MainActivity.class);
+        Intent intent = new Intent(Home.this, Login.class);
         startActivity(intent);
     }
 
@@ -342,7 +342,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                     invite = true;
                     listViewInvite.setVisibility(View.VISIBLE);
                     SimpleAdapter sAdap;
-                    sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_invitation_home,
+                    sAdap = new SimpleAdapter(Home.this, MyArrList, R.layout.activity_invitation_home,
                             new String[]{"event_creater", "events_name", "events_month_start", "events_month_end"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end});
                     listViewInvite.setAdapter(sAdap);
 //                    listViewInvite.addFooterView(listInviteView);
@@ -355,7 +355,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 //                            invite=false;
 //                        }
 //                    });
-                    final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
+                    final AlertDialog.Builder viewDetail = new AlertDialog.Builder(Home.this);
 
                     listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
@@ -450,10 +450,10 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                     head = true;
                     listViewHeader.setVisibility(View.VISIBLE);//เปิด
                     SimpleAdapter sAdap;
-                    sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_header_home,
+                    sAdap = new SimpleAdapter(Home.this, MyArrList, R.layout.activity_header_home,
                             new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
                     listViewHeader.setAdapter(sAdap);
-                    final AlertDialog.Builder viewDetail = new AlertDialog.Builder(home.this);
+                    final AlertDialog.Builder viewDetail = new AlertDialog.Builder(Home.this);
                     listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                             // เข้าสู่ event
@@ -461,7 +461,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                             String eId= MyArrList.get(position).get("events_id");
                             String eStatus= MyArrList.get(position).get("states_name");
                             Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
-                            Intent intent = new Intent(home.this,appointment.class);
+                            Intent intent = new Intent(Home.this, HomeHead_Appointment.class);
                             intent.putExtra("id",id);
                             intent.putExtra("eid",eId);
                             intent.putExtra("nameEvent",eName);
@@ -530,7 +530,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                     attend = true;
                     listViewAttend.setVisibility(View.VISIBLE);
                     SimpleAdapter sAdap;
-                    sAdap = new SimpleAdapter(home.this, MyArrList, R.layout.activity_attend_home,
+                    sAdap = new SimpleAdapter(Home.this, MyArrList, R.layout.activity_attend_home,
                             new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
                     listViewAttend.setAdapter(sAdap);
 

@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-public class SpinnerAdapter extends ArrayAdapter {
+public class Extend_SpinnerAdapter extends ArrayAdapter {
     private SparseBooleanArray checked = new SparseBooleanArray();
     private SparseArray<String> array;
     private TextView titleView;
-    SpinnerAdapter(@NonNull Context context, SparseArray<String> array, String title) {
+    Extend_SpinnerAdapter(@NonNull Context context, SparseArray<String> array, String title) {
         super(context, 0);
         this.array = array;
         titleView = new TextView(context);

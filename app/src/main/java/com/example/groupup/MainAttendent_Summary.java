@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class attendant extends AppCompatActivity {
+public class MainAttendent_Summary extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attendant);
+        setContentView(R.layout.activity_attend_summary);
     }
 }

@@ -12,13 +12,13 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-public class myQR extends AppCompatActivity {
+public class AddFriend_My_QRCode extends AppCompatActivity {
     ImageView myqr ;
     String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_qr);
+        setContentView(R.layout.addfriend_my_qrcode);
         email = getIntent().getStringExtra("email");
         myqr = findViewById(R.id.myQr);
         qrcodeReader(email);

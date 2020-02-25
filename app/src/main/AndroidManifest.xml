@@ -16,65 +16,64 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".alert"></activity>
-        <activity android:name=".attendant" />
+        <activity android:name=".Home_Alert"></activity>
         <activity
-            android:name=".attend_reviews"
+            android:name=".MainAttendent_Reviews"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".attend_summary"
+            android:name=".MainAttendent_Summary"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".attend_vote"
+            android:name=".MainAttendent_Vote"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".attend"
+            android:name=".MainAttendent"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".myQR"
+            android:name=".AddFriend_My_QRCode"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".scanQR"
+            android:name=".AddFriend_Scan_QRCode"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".qrCode"
+            android:name=".AddFriend_QRCode"
             android:configChanges="screenSize"
             android:screenOrientation="locked"/>
-        <activity android:name=".attandant"
+        <activity android:name=".Home_Attendant"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".header"
+            android:name=".Home_Listview_Head"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".appoint_slipCheck"
+            android:name=".HomeHead_Appointment_SlipCheck"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".appoint_date_and_place"
+            android:name=".HomeHead_Appointment_Date_And_Place"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".appoint_setItem"
+            android:name=".HomeHead_Appointment_SetItem"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".appointment"
+            android:name=".HomeHead_Appointment"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".theme"
+            android:name=".HomeHead_Theme"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".recommend_calendar"
+            android:name=".HomeHead_Select_Date"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
@@ -82,35 +81,35 @@
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".invite_attendant"
+            android:name=".InviteFriend_Attendant"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".invite_head"
+            android:name=".InviteFriend_Head"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".invite"
+            android:name=".InviteFriend"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".addFriends"
+            android:name=".ManageFriend_AddFriends"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".createGroup"
+            android:name=".Home_CreateEvent"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".register"
+            android:name=".Manage_Account"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".home"
+            android:name=".Home"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Login"
             android:configChanges="screenSize"
             android:screenOrientation="locked">
             <intent-filter>

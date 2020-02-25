@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class appointment extends AppCompatActivity {
+public class HomeHead_Appointment extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
@@ -54,14 +54,14 @@ public class appointment extends AppCompatActivity {
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("กำหนดรายการ ")
-                .setContent(new Intent(this, appoint_setItem.class));
+                .setContent(new Intent(this, HomeHead_Appointment_SetItem.class));
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("วันที่เวลา/สถานที่")
-                .setContent(new Intent(this, appoint_date_and_place.class));
+                .setContent(new Intent(this, HomeHead_Appointment_Date_And_Place.class));
         TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3")
                 .setIndicator("ตรวจสอบสลิป")
-                .setContent(new Intent(this, appoint_slipCheck.class));
+                .setContent(new Intent(this, HomeHead_Appointment_SlipCheck.class));
 
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
@@ -155,7 +155,7 @@ public class appointment extends AppCompatActivity {
         queue.add(stringRequest);
     }
     public void backHomepage(View v) {
-        Intent intent = new Intent(appointment.this, home.class);
+        Intent intent = new Intent(HomeHead_Appointment.this, Home.class);
         startActivity(intent);
     }
 

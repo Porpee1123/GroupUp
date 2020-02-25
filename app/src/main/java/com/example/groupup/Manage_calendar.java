@@ -18,8 +18,6 @@ import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.timessquare.CalendarPickerView;
@@ -272,7 +270,7 @@ public class Manage_calendar extends AppCompatActivity {
     }
 
     public void backHome(View v){
-        Intent in = new Intent(this,home.class);
+        Intent in = new Intent(this, Home.class);
         startActivity(in);
     }
 }

@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class invite_head extends AppCompatActivity {
+public class InviteFriend_Head extends AppCompatActivity {
     Button bu_slide;
     View table_row;
     boolean isUp;

@@ -1,11 +1,9 @@
 package com.example.groupup;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -13,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -39,13 +36,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class addFriends extends AppCompatActivity {
+public class ManageFriend_AddFriends extends AppCompatActivity {
     EditText searchFriend;
     TextView nameFriend, txtNoUser;
     ImageButton searchBtn, qrcodeBtn;
     LinearLayout showFriend, showType;
     Spinner spTypeFriend;
-    addFriends.ResponseStr responseStr = new addFriends.ResponseStr();
+    ManageFriend_AddFriends.ResponseStr responseStr = new ManageFriend_AddFriends.ResponseStr();
     String TAG = "addfriend", uid = "",email="",emailScan="";
     SparseArray<String> type = new SparseArray<>();
     int MY_PERMISSIONS_REQUEST_CAMERA=0;
@@ -53,7 +50,7 @@ public class addFriends extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_friends);
+        setContentView(R.layout.activity_ManageFriend_AddFriends);
         searchFriend = findViewById(R.id.searchEmail);
         nameFriend = findViewById(R.id.nameFriend);
         searchBtn = findViewById(R.id.searchBtn);
@@ -82,8 +79,8 @@ public class addFriends extends AppCompatActivity {
         qrcodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(addFriends.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(addFriends.this, "You have already permission access Camera", Toast.LENGTH_SHORT).show();
+                if (ContextCompat.checkSelfPermission(ManageFriend_AddFriends.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(ManageFriend_AddFriends.this, "You have already permission access Camera", Toast.LENGTH_SHORT).show();
                     scanQr();
                 } else {
                     if (requestImagePermission()){
@@ -100,12 +97,12 @@ public class addFriends extends AppCompatActivity {
     }
 
     public void backHome(View v) {
-        Intent in = new Intent(this, home.class);
+        Intent in = new Intent(this, Home.class);
         startActivity(in);
     }
 
     public void getUser() {
-        responseStr = new addFriends.ResponseStr();
+        responseStr = new ManageFriend_AddFriends.ResponseStr();
         final String[] user = {""};
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         Log.d(TAG, "email " + searchFriend.getText());
@@ -156,7 +153,7 @@ public class addFriends extends AppCompatActivity {
         queue.add(stringRequest);
     }
     public void getUserByQrcode(String s) {
-        responseStr = new addFriends.ResponseStr();
+        responseStr = new ManageFriend_AddFriends.ResponseStr();
         final String[] user = {""};
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         Log.d(TAG, "email " + s);
@@ -208,7 +205,7 @@ public class addFriends extends AppCompatActivity {
     }
 
     public void getType() {
-        responseStr = new addFriends.ResponseStr();
+        responseStr = new ManageFriend_AddFriends.ResponseStr();
         final String[] user = {""};
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         Log.d(TAG, "id " + uid);
@@ -233,7 +230,7 @@ public class addFriends extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 type.append(i,MyArrList.get(i).get("type_name"));
                             }
-                            spTypeFriend.setAdapter(new SpinnerAdapter(addFriends.this, type, "Plese select"));
+                            spTypeFriend.setAdapter(new Extend_SpinnerAdapter(ManageFriend_AddFriends.this, type, "Plese select"));
 //                            Log.d(TAG, "checkbox " + spTypeFriend.getId());
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -275,7 +272,7 @@ public class addFriends extends AppCompatActivity {
         }
     }
     public void scanQr(){
-        Intent intent = new Intent(this,qrCode.class);
+        Intent intent = new Intent(this, AddFriend_QRCode.class);
         intent.putExtra("email", email+"");
         startActivity(intent);
     }
@@ -287,7 +284,7 @@ public class addFriends extends AppCompatActivity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(addFriends.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+                            ActivityCompat.requestPermissions(ManageFriend_AddFriends.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
                         }
                     }).create().show();
             return false;

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TabHost;
 
-public class invite extends AppCompatActivity {
+public class InviteFriend extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
@@ -25,10 +25,10 @@ public class invite extends AppCompatActivity {
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("แม่งาน")
-                .setContent(new Intent(this, invite_head.class));
+                .setContent(new Intent(this, InviteFriend_Head.class));
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("ผู้เข้าร่วมงาน")
-                .setContent(new Intent(this, invite_attendant.class));
+                .setContent(new Intent(this, InviteFriend_Attendant.class));
 
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
@@ -80,7 +80,7 @@ public class invite extends AppCompatActivity {
     }
 
     public void backAppoint(View v) {
-        Intent intent = new Intent(invite.this, appointment.class);
+        Intent intent = new Intent(InviteFriend.this, HomeHead_Appointment.class);
         startActivity(intent);
     }
 }

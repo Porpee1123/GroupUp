@@ -6,21 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class appoint_date_and_place extends AppCompatActivity {
+public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appoint_date_and_place);
+        setContentView(R.layout.activity_homehead_appointment_date_and_place);
     }
 
     public void selectDateTime(View v) {
-        Intent intent = new Intent(appoint_date_and_place.this, invite.class);
+        Intent intent = new Intent(HomeHead_Appointment_Date_And_Place.this, InviteFriend.class);
         startActivity(intent);
     }
 
     public void selectPlace(View v) {
-        Intent intent = new Intent(appoint_date_and_place.this, invite.class);
+        Intent intent = new Intent(HomeHead_Appointment_Date_And_Place.this, InviteFriend.class);
         startActivity(intent);
     }
 }

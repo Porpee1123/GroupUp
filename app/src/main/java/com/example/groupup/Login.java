@@ -29,7 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "SignInActivity";
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         signInButton = findViewById(R.id.sign_in_button);
         if (mAuth.getCurrentUser()!= null){
 //            Log.d("footer",mAuth.getCurrentUser().getEmail());
-            Intent intent = new Intent(MainActivity.this,home.class);
+            Intent intent = new Intent(Login.this, Home.class);
             intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
             startActivity(intent);
         }else {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (mAuth.getCurrentUser()!= null){
-                        Intent intent = new Intent(MainActivity.this,home.class);
+                        Intent intent = new Intent(Login.this, Home.class);
                         intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
                         startActivity(intent);
                     }else {
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                             name = user.getDisplayName();
                             email = user.getEmail();
                             saveData();
-                            Intent intent = new Intent(MainActivity.this,home.class);
+                            Intent intent = new Intent(Login.this, Home.class);
                             intent.putExtra("email",email);
                             startActivity(intent);
 //                            customer = user.getDisplayName()+"/"+user.getEmail()+"/"+user.getPhoneNumber()+"/"+user.getUid();
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void skipbutton(View v){
-        Intent in = new Intent(this,home.class);
+        Intent in = new Intent(this, Home.class);
         in.putExtra("email","thanapatza2011@gmail.com");
         startActivity(in);
     }
