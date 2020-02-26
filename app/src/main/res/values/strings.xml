@@ -117,6 +117,7 @@
     <string name="manageHead">Manage Head</string>
     <string name="qrCode">QR Code</string>
     <string name="alert">Alert</string>
+    <string name="create_friend_types">Create Friend Types</string>
 
 
 </resources>

@@ -15,7 +15,7 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
     }
 
     public void selectDateTime(View v) {
-        Intent intent = new Intent(HomeHead_Appointment_Date_And_Place.this, InviteFriend.class);
+        Intent intent = new Intent(HomeHead_Appointment_Date_And_Place.this, Manage_calendar.class);
         startActivity(intent);
     }
 
