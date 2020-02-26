@@ -17,4 +17,8 @@ public class ManageFriend extends AppCompatActivity {
         Intent in = new Intent(this, Home.class);
         startActivity(in);
     }
+    public void addFriend(View v) {
+        Intent in = new Intent(this, Home.class);
+        startActivity(in);
+    }
 }
