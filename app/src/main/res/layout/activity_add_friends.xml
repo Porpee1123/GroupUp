@@ -151,7 +151,6 @@
                 android:backgroundTint="@color/classicBlue"
                 android:fontFamily="sans-serif"
                 android:text="@string/addFriends"
-                android:onClick="addFriend"
                 android:textColor="@color/white" />
 
         </LinearLayout>
@@ -163,7 +162,7 @@
             android:layout_marginTop="20dp"
             android:background="@color/white"
             android:orientation="vertical"
-            android:visibility="invisible">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"

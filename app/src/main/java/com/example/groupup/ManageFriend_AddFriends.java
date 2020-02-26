@@ -1,6 +1,7 @@
 package com.example.groupup;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -35,16 +37,23 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class ManageFriend_AddFriends extends AppCompatActivity {
     EditText searchFriend;
     TextView nameFriend, txtNoUser;
     ImageButton searchBtn, qrcodeBtn;
     LinearLayout showFriend, showType;
+    Button btnAddFriend;
     Spinner spTypeFriend;
     ManageFriend_AddFriends.ResponseStr responseStr = new ManageFriend_AddFriends.ResponseStr();
     String TAG = "addfriend", uid = "",email="",emailScan="";
+    String fid="",tfid="";
     SparseArray<String> type = new SparseArray<>();
+    ArrayList<String> arSt;
+
+
+
     int MY_PERMISSIONS_REQUEST_CAMERA=0;
 
     @Override
@@ -58,7 +67,9 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         showFriend = findViewById(R.id.show_friend);
         txtNoUser = findViewById(R.id.txt_notfound);
         showType = findViewById(R.id.show_type);
+        btnAddFriend = findViewById(R.id.btnAddFriend);
         spTypeFriend = findViewById(R.id.typeFriend);
+        arSt = new ArrayList<>();
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         emailScan = getIntent().getStringExtra("emailScan");
@@ -100,7 +111,6 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         Intent in = new Intent(this, Home.class);
         startActivity(in);
     }
-
     public void getUser() {
         responseStr = new ManageFriend_AddFriends.ResponseStr();
         final String[] user = {""};
@@ -127,6 +137,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             //set Header menu name email
                             Log.d(TAG, "data " + MyArrList.get(0).get("user_names"));
                             user[0] = MyArrList.get(0).get("user_name");
+                            fid = MyArrList.get(0).get("user_id");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -178,6 +189,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             //set Header menu name email
                             Log.d(TAG, "data " + MyArrList.get(0).get("user_names"));
                             user[0] = MyArrList.get(0).get("user_name");
+                            fid = MyArrList.get(0).get("user_id");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -203,7 +215,6 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-
     public void getType() {
         responseStr = new ManageFriend_AddFriends.ResponseStr();
         final String[] user = {""};
@@ -230,8 +241,28 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 type.append(i,MyArrList.get(i).get("type_name"));
                             }
-                            spTypeFriend.setAdapter(new Extend_SpinnerAdapter(ManageFriend_AddFriends.this, type, "Plese select"));
-//                            Log.d(TAG, "checkbox " + spTypeFriend.getId());
+                            final Extend_SpinnerAdapter exSpin = new Extend_SpinnerAdapter(ManageFriend_AddFriends.this, type, "Plese select");
+                            spTypeFriend.setAdapter(exSpin);
+
+//                            spTypeFriend.set
+                            btnAddFriend.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Log.d(TAG, "checkbox " + exSpin.getCheckedValues());
+                                    arSt = cutString(exSpin.getCheckedValues());
+                                    Log.d(TAG,arSt.toString());
+                                    if (addFriendToDb()){
+                                        exSpin.getCheckedValues();
+                                        arSt = cutString(exSpin.getCheckedValues());
+                                        for (int i=0;i<arSt.size();i++){
+                                            addAllFriendToDb(arSt.get(i));
+                                        }
+                                        Intent in = new Intent(ManageFriend_AddFriends.this, Home.class);
+                                        startActivity(in);
+                                    }
+                                }
+                            });
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -251,9 +282,6 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         closeKeyboard();
         getUser();
         getType();
-    }
-    public void addFriend(View v){
-//        Log.d(TAG,"spGet"+ spTypeFriend.getSelectedItem());
     }
     public class ResponseStr {
         private String str;
@@ -293,5 +321,110 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
             return true;
         }
     }
+    public boolean addFriendToDb() {
+        final boolean[] re = {true};
+        Log.d(TAG,"addFriendToDb : true");
+        String url = "http://www.groupupdb.com/android/addfriend.php";
+        url += "?sEmail=" + searchFriend.getText();
+        url += "&sId=" +uid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String strStatusID = "0";
+                            String strError = "Unknow Status!";
+                            JSONObject c;
+                            JSONArray data = new JSONArray("[" + response.toString() + "]");
+                            for (int i = 0; i < data.length(); i++) {
+                                c = data.getJSONObject(i);
+                                strStatusID = c.getString("StatusID");
+                                strError = c.getString("Error");
+                            }
+                            if (strStatusID.equals("0")) {
+//                                dialog.setMessage(strError);
+//                                dialog.show();
+//                                Toast.makeText(ManageFriend_AddFriends.this, "Cannot Add Friend to DB", Toast.LENGTH_SHORT).show();
+                                re[0] =false;
+                            } else {
+//                                dialog.setTitle(R.string.submit_title);
+//                                dialog.setMessage(R.string.submit_result);
+//                                dialog.show();
+//                                Toast.makeText(ManageFriend_AddFriends.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                                searchFriend.setText("");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(ManageFriend_AddFriends.this, "Submission Error!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        return re[0];
+    }
+    public boolean addAllFriendToDb(String tfid) {
+        final EditText txtEmail = findViewById(R.id.title);
+        Log.d(TAG,"sid : "+uid +" ifs : "+fid+" tifs : "+tfid);
+        String url = "http://www.groupupdb.com/android/addallfriend.php";
+        url += "?sId=" + uid;
+        url += "&fId=" +fid;
+        url += "&tfId=" +tfid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String strStatusID = "0";
+                            String strError = "Unknow Status!";
+                            JSONObject c;
+                            JSONArray data = new JSONArray("[" + response.toString() + "]");
+                            for (int i = 0; i < data.length(); i++) {
+                                c = data.getJSONObject(i);
+                                strStatusID = c.getString("StatusID");
+                                strError = c.getString("Error");
+                            }
+                            if (strStatusID.equals("0")) {
+//                                dialog.setMessage(strError);
+//                                dialog.show();
+                            } else {
+                                Toast.makeText(ManageFriend_AddFriends.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+//                                dialog.setTitle(R.string.submit_title);
+//                                dialog.setMessage(R.string.submit_result);
+//                                dialog.show();
+                                searchFriend.setText("");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(ManageFriend_AddFriends.this, "Submission Error!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        return true;
+    }
+    public ArrayList cutString(String s){
+        StringTokenizer st = new StringTokenizer(s,",");
+        ArrayList<String> as = new ArrayList<>();
+        while (st.hasMoreTokens()){
+            as.add(st.nextToken());
+        }
+        return as;
+
+    }
 
 }
+

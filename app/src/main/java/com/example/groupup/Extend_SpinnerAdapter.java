@@ -44,8 +44,14 @@ public class Extend_SpinnerAdapter extends ArrayAdapter {
         StringBuilder string = new StringBuilder();
         if(checked.size() > 0){
             for(int index = 0; index < checked.size(); index++){
-                string.append(array.valueAt(checked.keyAt(index)));
+                if (index != checked.size()-1){
+                    string.append(array.valueAt(checked.keyAt(index)).concat(","));
+                }else {
+                    string.append(array.valueAt(checked.keyAt(index)).concat(""));
+                }
+
             }
+            titleView.setText(string.toString());
         }
         return string.toString();
     }
