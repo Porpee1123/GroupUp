@@ -106,8 +106,6 @@ public class Home_Listview_Attendant extends AppCompatActivity {
             }
         }.start();
     }
-
-
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;

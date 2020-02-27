@@ -48,7 +48,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     Spinner spTypeFriend;
     ManageFriend_AddFriends.ResponseStr responseStr = new ManageFriend_AddFriends.ResponseStr();
     String TAG = "addfriend", uid = "",email="",emailScan="";
-    String fid="",tfid="";
+    String fid="",fname="",fimage;
     SparseArray<String> type = new SparseArray<>();
     ArrayList<String> arSt;
 
@@ -138,6 +138,9 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             Log.d(TAG, "data " + MyArrList.get(0).get("user_names"));
                             user[0] = MyArrList.get(0).get("user_name");
                             fid = MyArrList.get(0).get("user_id");
+                            fname = MyArrList.get(0).get("user_names");
+                            fimage = MyArrList.get(0).get("user_photo");
+                            Log.d("getuser","id: "+fid+" name : "+fname+" image: "+fimage);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -168,6 +171,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         final String[] user = {""};
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         Log.d(TAG, "email " + s);
+        searchFriend.setText(s);
         String url = "http://www.groupupdb.com/android/getuser.php";
         url += "?sEmail=" + s;//รอเอาIdหรือ email จากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -190,6 +194,8 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             Log.d(TAG, "data " + MyArrList.get(0).get("user_names"));
                             user[0] = MyArrList.get(0).get("user_name");
                             fid = MyArrList.get(0).get("user_id");
+                            fname = MyArrList.get(0).get("user_names");
+                            fimage = MyArrList.get(0).get("user_photo");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -302,6 +308,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     public void scanQr(){
         Intent intent = new Intent(this, AddFriend_QRCode.class);
         intent.putExtra("email", email+"");
+        intent.putExtra("id", uid+"");
         startActivity(intent);
     }
     public boolean requestImagePermission() {
@@ -325,8 +332,11 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         final boolean[] re = {true};
         Log.d(TAG,"addFriendToDb : true");
         String url = "http://www.groupupdb.com/android/addfriend.php";
+        Log.d("getuser","id: "+fid+" name : "+fname+" image: "+fimage);
         url += "?sEmail=" + searchFriend.getText();
         url += "&sId=" +uid;
+        url += "&sName=" +fname;
+        url += "&sImage=" +fimage;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -370,7 +380,6 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         return re[0];
     }
     public boolean addAllFriendToDb(String tfid) {
-        final EditText txtEmail = findViewById(R.id.title);
         Log.d(TAG,"sid : "+uid +" ifs : "+fid+" tifs : "+tfid);
         String url = "http://www.groupupdb.com/android/addallfriend.php";
         url += "?sId=" + uid;

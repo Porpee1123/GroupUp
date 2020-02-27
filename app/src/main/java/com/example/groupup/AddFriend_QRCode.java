@@ -11,18 +11,21 @@ import android.widget.TabHost;
 public class AddFriend_QRCode extends AppCompatActivity {
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-    String email;
+    String email="",id="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code);
         email = getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
         Intent inMyQr = new Intent(AddFriend_QRCode.this, AddFriend_My_QRCode.class);
         inMyQr.putExtra("email", email+"");
+        inMyQr.putExtra("id",id+"");
+
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("สแกนคิวอาร์โค้ด")
                 .setContent(new Intent(this, AddFriend_Scan_QRCode.class));

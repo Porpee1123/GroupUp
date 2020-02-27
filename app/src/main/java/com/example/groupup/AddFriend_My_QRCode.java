@@ -14,14 +14,17 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public class AddFriend_My_QRCode extends AppCompatActivity {
     ImageView myqr ;
-    String email;
+    String email,id,sent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_qr);
         email = getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
+        sent = email+","+id;
         myqr = findViewById(R.id.myQr);
-        qrcodeReader(email);
+
+        qrcodeReader(sent);
     }
     public void qrcodeReader(String data){
         QRCodeWriter writer = new QRCodeWriter();

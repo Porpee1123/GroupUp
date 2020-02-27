@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.zxing.Result;
 
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class Extend_Fragment_ScanQRCode extends Fragment {
@@ -30,11 +33,19 @@ public class Extend_Fragment_ScanQRCode extends Fragment {
                         getActivity().setContentView(R.layout.activity_scan_qr);
                         String resultString = result.getText().toString();
                         emailScan =resultString;
+                        StringTokenizer st = new StringTokenizer(emailScan,",");
+                        ArrayList<String> qr = new ArrayList<>();
+                        while (st.hasMoreTokens()){
+                            qr.add(st.nextToken());
+                        }
 //                        Toast.makeText(getActivity(), "QR code = " + resultString, Toast.LENGTH_LONG).show();
                         Log.d("scanQR", "QR code ==> " + resultString);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentMainFragment, new Extend_Fragment_ScanQRCode()).commit();
                         Intent intent = new Intent(getActivity(), ManageFriend_AddFriends.class);
-                        intent.putExtra("emailScan", emailScan+"");
+                        intent.putExtra("emailScan", qr.get(0)+"");
+                        intent.putExtra("id", qr.get(1)+"");
+
+
                         startActivity(intent);
                     }
                 });
