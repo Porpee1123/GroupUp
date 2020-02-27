@@ -37,6 +37,7 @@ public class Home_CreateEvent extends AppCompatActivity {
         ArrayAdapter<CharSequence> adp = ArrayAdapter.createFromResource(this, R.array.number, android.R.layout.simple_spinner_item);
         adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp.setAdapter(adp);
+        sp.setSelection(1);
         //Spinner month start
         Spinner spms = findViewById(R.id.spin_start);
         Spinner spme = findViewById(R.id.spin_end);
