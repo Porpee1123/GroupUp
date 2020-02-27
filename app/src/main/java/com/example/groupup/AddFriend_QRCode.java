@@ -67,7 +67,7 @@ public class AddFriend_QRCode extends AppCompatActivity {
 
     }
     public void backFriend(View v){
-        Intent in = new Intent(this, Home.class);
+        Intent in = new Intent(this, ManageFriend_AddFriends.class);
         startActivity(in);
     }
 }

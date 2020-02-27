@@ -108,7 +108,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     }
 
     public void backHome(View v) {
-        Intent in = new Intent(this, Home.class);
+        Intent in = new Intent(this, ManageFriend.class);
         startActivity(in);
     }
     public void getUser() {
