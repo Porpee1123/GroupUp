@@ -12,6 +12,8 @@ public class InviteFriend extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
+    String uid,email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,8 @@ public class InviteFriend extends AppCompatActivity {
         setContentView(R.layout.activity_invite);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
+        uid = getIntent().getStringExtra("id");
+        email = getIntent().getStringExtra("email");
         createTab();
 
     }
@@ -26,13 +30,19 @@ public class InviteFriend extends AppCompatActivity {
 
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
+        Intent intentA = new Intent(this,InviteFriend_Attendant.class);
+        intentA.putExtra("id", uid+"");
+        intentA.putExtra("email", email+"");
+        Intent intentH = new Intent(this,InviteFriend_Head.class);
+        intentH.putExtra("id", uid+"");
+        intentH.putExtra("email", email+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("ผู้เข้าร่วมงาน")
-                .setContent(new Intent(this, InviteFriend_Head.class));
+                .setContent(intentA);
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("แม่งาน")
-                .setContent(new Intent(this, InviteFriend_Attendant.class));
+                .setContent(intentH);
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
         tabHost.getTabWidget()

@@ -111,8 +111,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         tabHost.setup(mLocalActivityManager);
         Intent inA = new Intent(this,Home_Listview_Attendant.class);
         inA.putExtra("id", id+"");
+        inA.putExtra("email", email+"");
         Intent inH = new Intent(this,Home_Listview_Head.class);
         inH.putExtra("id", id+"");
+        inH.putExtra("email", email+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("ผู้เข้าร่วมงาน")
                 .setContent(inA);

@@ -9,16 +9,21 @@ import android.widget.Button;
 
 public class HomeHead_Appointment_SetItem extends AppCompatActivity {
     Button inviteFriend , selectTheme;
+    String email ,id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appoint_set_item);
         inviteFriend = findViewById(R.id.select_friend);
         selectTheme = findViewById(R.id.selectTheme);
+        email = getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
     }
 
     public void selectFriend(View v) {
         Intent intent = new Intent(HomeHead_Appointment_SetItem.this, InviteFriend.class);
+        intent.putExtra("email",email);
+        intent.putExtra("id",id);
         startActivity(intent);
     }
 

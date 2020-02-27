@@ -28,7 +28,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-    String id,eid,nameE,monS,monE;
+    String id,eid,nameE,monS,monE,email;
     TextView tName,mStart,mEnd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +45,32 @@ public class HomeHead_Appointment extends AppCompatActivity {
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+        email = getIntent().getStringExtra("email");
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tName.setText(nameE);
         mStart.setText(monS);
         mEnd.setText(monE);
         getEvent();
         tabHost.setup(mLocalActivityManager);
-
+        Intent intentS = new Intent(this,HomeHead_Appointment_SetItem.class);
+        intentS.putExtra("id", id+"");
+        intentS.putExtra("email", email+"");
+        Intent intentdp  = new Intent(this,HomeHead_Appointment_Date_And_Place.class);
+        intentdp.putExtra("id", id+"");
+        intentdp.putExtra("email", email+"");
+        Intent intentslip  = new Intent(this,HomeHead_Appointment_SlipCheck.class);
+        intentslip.putExtra("id", id+"");
+        intentslip.putExtra("email", email+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("กำหนดรายการ ")
-                .setContent(new Intent(this, HomeHead_Appointment_SetItem.class));
+                .setContent(intentS);
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("วันที่เวลา/สถานที่")
-                .setContent(new Intent(this, HomeHead_Appointment_Date_And_Place.class));
+                .setContent(intentdp);
         TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3")
                 .setIndicator("ตรวจสอบสลิป")
-                .setContent(new Intent(this, HomeHead_Appointment_SlipCheck.class));
+                .setContent(intentslip);
 
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
