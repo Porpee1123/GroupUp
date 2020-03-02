@@ -7,12 +7,6 @@
     android:orientation="vertical"
     tools:context=".AddFriend_Scan_QRCode">
 
-    <TextView
-        android:id="@+id/qrcode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/qrCode" />
-
     <FrameLayout
         android:id="@+id/contentMainFragment"
         android:layout_width="match_parent"
