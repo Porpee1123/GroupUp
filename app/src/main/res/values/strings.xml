@@ -13,6 +13,7 @@
     <string name="email_title">Email :</string>
     <string name="colon">:</string>
     <string name="status">Status: Create Appointment</string>
+    <string name="statusEvent">Status :</string>
     <string name="btn">Confirm</string>
     <string name="inviteFriends">Invite Friends</string>
     <string name="addFriends">Add Friends</string>
@@ -39,6 +40,7 @@
     <string name="nameFriends">Name Friends</string>
     <string name="newGroup">New Meet</string>
     <string name="title">Title</string>
+    <string name="titleEvent">Title Event :</string>
     <string name="note">Note</string>
     <string name="stMonth">Appointment Start Month</string>
     <string name="endMonth">Appointment End Month</string>

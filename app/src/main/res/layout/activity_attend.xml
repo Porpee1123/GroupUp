@@ -36,6 +36,11 @@
                     android:onClick="backHome"
                     android:src="@drawable/ic_chevron_left_black_24dp" />
 
+                <View
+                    android:id="@+id/view20"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" />
+
                 <TextView
                     android:id="@+id/inviteFriends"
                     style="@style/Style"
@@ -51,6 +56,13 @@
                     android:id="@+id/view8"
                     android:layout_width="20dp"
                     android:layout_height="match_parent" />
+
+                <ImageButton
+                    android:id="@+id/imageButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/classicBlue"
+                    app:srcCompat="@drawable/ic_speaker_notes_black_24dp" />
 
                 <View
                     android:id="@+id/view3"

@@ -83,8 +83,8 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
                         android:hint="@string/search_friends"
-                        android:inputType="textPersonName"
                         android:imeOptions="actionSend"
+                        android:inputType="textPersonName"
                         android:textSize="14sp" />
 
                     <ImageButton

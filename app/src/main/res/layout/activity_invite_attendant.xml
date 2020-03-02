@@ -39,7 +39,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:fontFamily="sans-serif"
-                android:hint="@string/search_friends"
+                android:hint="@string/search"
                 android:inputType="textPersonName" />
 
         </LinearLayout>

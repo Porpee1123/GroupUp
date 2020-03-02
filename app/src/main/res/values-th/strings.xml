@@ -13,6 +13,7 @@
     <string name="email_title">อีเมล :</string>
     <string name="colon">:</string>
     <string name="status">สถานะ: สร้างการนัดหมาย</string>
+    <string name="statusEvent">สถานะ :</string>
     <string name="btn">ยืนยัน</string>
     <string name="inviteFriends">เชิญเพื่อน</string>
     <string name="addFriends">เพิ่มเพื่อน</string>
@@ -39,6 +40,7 @@
     <string name="nameFriends">ชื่อเพื่อน</string>
     <string name="newGroup">สร้างนัด</string>
     <string name="title">ชื่อการนัดหมาย</string>
+    <string name="titleEvent">ชื่อการนัดหมาย :</string>
     <string name="note">รายละเอียด</string>
     <string name="stMonth">เดือนเริ่มต้นนัดหมาย</string>
     <string name="endMonth">เดือนสิ้นสุดนัดหมาย</string>
