@@ -56,7 +56,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     TextView hName;
     TextView hEmail;
     String name = "", id = "", email = "";
-    boolean invite = false, head = false, attend = false;//ปิด list view
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
 
@@ -208,6 +207,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
     public void goToCalendar() {
         Intent intent = new Intent(Home.this, Manage_calendar.class);
+        intent.putExtra("id", id+"");
+        intent.putExtra("email", email+"");
         startActivity(intent);
     }
     public void goToManageFriend() {

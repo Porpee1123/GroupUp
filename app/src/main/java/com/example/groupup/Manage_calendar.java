@@ -42,6 +42,7 @@ public class Manage_calendar extends AppCompatActivity {
     List<String> calendars = new ArrayList<>();
     ArrayList<String> allDaySelect;
     ArrayList<String> newDate;
+    String uid,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class Manage_calendar extends AppCompatActivity {
         btnGetCalen = (Button) findViewById(R.id.btnGetCalendar);
         calendarPicker = findViewById(R.id.calendarPickerView);
         calendarPicker.highlightDates(date);
+        uid = getIntent().getStringExtra("id");
+        email = getIntent().getStringExtra("email");
         Date today = new Date();
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.MONTH, 4); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน

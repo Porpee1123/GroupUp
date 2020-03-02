@@ -70,7 +70,9 @@ public class AddFriend_QRCode extends AppCompatActivity {
 
     }
     public void backFriend(View v){
-        Intent in = new Intent(this, ManageFriend_AddFriends.class);
-        startActivity(in);
+        Intent intent = new Intent(this, ManageFriend_AddFriends.class);
+        intent.putExtra("id", id+"");
+        intent.putExtra("email", email+"");
+        startActivity(intent);
     }
 }

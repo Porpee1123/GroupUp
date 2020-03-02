@@ -12,8 +12,7 @@ public class InviteFriend extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-    String uid,email;
-
+    String uid,eid,nameE,monS,monE,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +22,10 @@ public class InviteFriend extends AppCompatActivity {
         mLocalActivityManager.dispatchCreate(savedInstanceState);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
+        eid =getIntent().getStringExtra("eid");
+        nameE = getIntent().getStringExtra("nameEvent");
+        monS = getIntent().getStringExtra("mStart");
+        monE = getIntent().getStringExtra("mEnd");
         createTab();
 
     }
@@ -94,6 +97,12 @@ public class InviteFriend extends AppCompatActivity {
 
     public void backAppoint(View v) {
         Intent intent = new Intent(InviteFriend.this, HomeHead_Appointment.class);
+        intent.putExtra("id", uid+"");
+        intent.putExtra("email", email+"");
+        intent.putExtra("eid",eid);
+        intent.putExtra("nameEvent",nameE);
+        intent.putExtra("mStart",monS);
+        intent.putExtra("mEnd",monE);
         startActivity(intent);
     }
 }

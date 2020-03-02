@@ -107,9 +107,16 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void backHome(View v) {
-        Intent in = new Intent(this, ManageFriend.class);
-        startActivity(in);
+        Intent intent = new Intent(this, ManageFriend.class);
+        intent.putExtra("id", uid+"");
+        intent.putExtra("email", email+"");
+        startActivity(intent);
     }
     public void getUser() {
         responseStr = new ManageFriend_AddFriends.ResponseStr();

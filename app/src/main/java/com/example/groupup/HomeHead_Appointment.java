@@ -55,12 +55,24 @@ public class HomeHead_Appointment extends AppCompatActivity {
         Intent intentS = new Intent(this,HomeHead_Appointment_SetItem.class);
         intentS.putExtra("id", id+"");
         intentS.putExtra("email", email+"");
+        intentS.putExtra("nEvent", nameE+"");
+        intentS.putExtra("mStart", monS+"");
+        intentS.putExtra("mEnd", monE+"");
+        intentS.putExtra("eid", eid+"");
         Intent intentdp  = new Intent(this,HomeHead_Appointment_Date_And_Place.class);
         intentdp.putExtra("id", id+"");
         intentdp.putExtra("email", email+"");
+        intentdp.putExtra("nEvent", nameE+"");
+        intentdp.putExtra("mStart", monS+"");
+        intentdp.putExtra("mEnd", monE+"");
+        intentdp.putExtra("eid", eid+"");
         Intent intentslip  = new Intent(this,HomeHead_Appointment_SlipCheck.class);
         intentslip.putExtra("id", id+"");
         intentslip.putExtra("email", email+"");
+        intentslip.putExtra("nEvent", nameE+"");
+        intentslip.putExtra("mStart", monS+"");
+        intentslip.putExtra("mEnd", monE+"");
+        intentslip.putExtra("eid", eid+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("กำหนดรายการ ")
                 .setContent(intentS);
