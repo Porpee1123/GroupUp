@@ -17,5 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_qr_code" />
+
+        <Button
+            android:id="@+id/btn_saveImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="#00FFFFFF"
+            android:text="Button"
+            tools:text="save image" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
