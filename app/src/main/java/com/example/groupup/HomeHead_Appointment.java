@@ -29,14 +29,14 @@ public class HomeHead_Appointment extends AppCompatActivity {
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     String id,eid,nameE,monS,monE,email;
-    TextView tName,mStart,mEnd;
+    TextView tName,mStart,mEnd,headAppoint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
-
+        headAppoint = findViewById(R.id.appointment);
         tName = findViewById(R.id.nameEvent);
         mStart = findViewById(R.id.startMonth);
         mEnd = findViewById(R.id.endMonth);
@@ -50,6 +50,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         tName.setText(nameE);
         mStart.setText(monS);
         mEnd.setText(monE);
+        headAppoint.setText(nameE);
         getEvent();
         tabHost.setup(mLocalActivityManager);
         Intent intentS = new Intent(this,HomeHead_Appointment_SetItem.class);
@@ -136,7 +137,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 //        Log.d("footer", "email " + email);
         String url = "http://www.groupupdb.com/android/geteventHeader.php";
-        url += "?sId=" + id;//รอเอาIdหรือ email จากfirebase
+        url += "?sId=" + id;//ร  อเอาIdหรือ email จากfirebase
         url += "&eId=" + eid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -177,6 +178,8 @@ public class HomeHead_Appointment extends AppCompatActivity {
     }
     public void backHomepage(View v) {
         Intent intent = new Intent(HomeHead_Appointment.this, Home.class);
+        intent.putExtra("id", id);
+        intent.putExtra("email", email);
         startActivity(intent);
     }
 

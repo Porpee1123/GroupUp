@@ -44,18 +44,49 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/slide"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center|start"
-            android:text="slide" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:id="@+id/layout_shortcut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top">
+
+                <Button
+                    android:id="@+id/btn_friendAll"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle_button"
+                    android:text="all" />
+
+                <View
+                    android:id="@+id/view_gab"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <ListView
             android:id="@+id/listview_friend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/slide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="confirm" />
 
     </LinearLayout>
 

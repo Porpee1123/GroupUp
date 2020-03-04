@@ -38,6 +38,7 @@ public class Home_Alert extends AppCompatActivity {
         setContentView(R.layout.activity_alert);
         id = getIntent().getStringExtra("id");
         listViewInvite = findViewById(R.id.listView_invite);
+        getEventInvitation();
     }
     public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
