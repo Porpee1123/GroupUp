@@ -78,6 +78,9 @@ public class Home_Alert extends AppCompatActivity {
                                 map.put("events_name", c.getString("events_name"));
                                 map.put("events_month_start", c.getString("events_month_start"));
                                 map.put("events_month_end", c.getString("events_month_end"));
+                                map.put("pri_id", c.getString("pri_id"));
+                                map.put("pri_name", c.getString("pri_name"));
+
                                 //map.put("events_wait", c.getString("events_wait"));
                                 MyArrList.add(map);
                             }
@@ -103,7 +106,7 @@ public class Home_Alert extends AppCompatActivity {
                 listViewInvite.setVisibility(View.VISIBLE);
                 SimpleAdapter sAdap;
                 sAdap = new SimpleAdapter(Home_Alert.this, MyArrList, R.layout.activity_invitation_home,
-                        new String[]{"event_creater", "events_name", "events_month_start", "events_month_end"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end});
+                        new String[]{"event_creater", "events_name", "events_month_start", "events_month_end","pri_name"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end,R.id.col_pri});
                 listViewInvite.setAdapter(sAdap);
                 final AlertDialog.Builder viewDetail = new AlertDialog.Builder(Home_Alert.this);
 
@@ -113,11 +116,13 @@ public class Home_Alert extends AppCompatActivity {
                         String sName = MyArrList.get(position).get("events_name").toString();
                         String sSta = MyArrList.get(position).get("events_month_start").toString();
                         String sEnd = MyArrList.get(position).get("events_month_end").toString();
+                        String sPri = MyArrList.get(position).get("pri_name").toString();
                         String sTim = sSta + " - " + sEnd;
                         viewDetail.setIcon(android.R.drawable.btn_star_big_on);
                         viewDetail.setTitle("รายละเอียด");
                         viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
-                                + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n");
+                                + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n"
+                                +"สถานะ : " + sPri + "\n");
                         viewDetail.setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,

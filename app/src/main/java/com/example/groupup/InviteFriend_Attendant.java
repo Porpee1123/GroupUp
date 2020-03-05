@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -147,7 +148,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     //***********************************************************************************************//
     Button btnLookup,btn_friendAll;
     View gab;
-    String uid = "",email="";
+    String uid = "",email="",eid="";
     int countType=0;
     ListView listViewFriend;
     List<InviteFriend_Attendant.Item> items;
@@ -172,6 +173,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         listViewFriend = findViewById(R.id.listview_friend);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
+        eid = getIntent().getStringExtra("eid");
         frientArray = new ArrayList<>();
         getType();
         getFriend();
@@ -232,6 +234,8 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                                 map.put("friend_name", c.getString("friend_name"));
                                 map.put("friend_email", c.getString("friend_email"));
                                 map.put("type_name", c.getString("type_name"));
+                                map.put("fid", c.getString("fid"));
+
                                 MyArrList.add(map);
                                 frientArray.add(map);
                             }
@@ -265,7 +269,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 }
                 Log.d("friend",str);
 
-//                Toast.makeText(InviteFriend_Attendant.this, str, Toast.LENGTH_LONG).show();
+                Toast.makeText(InviteFriend_Attendant.this, str, Toast.LENGTH_LONG).show();
     }
     public void getType() {
         responseStr = new InviteFriend_Attendant.ResponseStr();
@@ -408,5 +412,45 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         myItemsListAdapter = new InviteFriend_Attendant.ItemsListAdapter(this, items);
         listViewFriend.setAdapter(myItemsListAdapter);
     }
-    public void sentInviteToFriend(){}
+    public void sentInviteToFriend(String idInvite,String idEvent){
+        String url = "http://www.groupupdb.com/android/addFriendInvitationAttend.php";
+        url += "?sId=" + idInvite;
+        url += "&sEid=" + idEvent;
+        Log.d("footer",url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //str = new String(response, StandardCharsets.UTF_8);
+                        //String reader = new String(response, StandardCharsets.UTF_8);
+                        try {
+                            String strStatusID = "0";
+                            String strError = "Unknow Status!";
+                            JSONObject c;
+                            JSONArray data = new JSONArray("[" + response.toString() + "]");
+                            for (int i = 0; i < data.length(); i++) {
+                                c = data.getJSONObject(i);
+                                strStatusID = c.getString("StatusID");
+                                strError = c.getString("Error");
+                            }
+                            if (strStatusID.equals("0")) {
+
+                            } else {
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 }

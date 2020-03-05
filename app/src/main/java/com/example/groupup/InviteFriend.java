@@ -36,9 +36,11 @@ public class InviteFriend extends AppCompatActivity {
         Intent intentA = new Intent(this,InviteFriend_Attendant.class);
         intentA.putExtra("id", uid+"");
         intentA.putExtra("email", email+"");
+        intentA.putExtra("eid", eid+"");
         Intent intentH = new Intent(this,InviteFriend_Head.class);
         intentH.putExtra("id", uid+"");
         intentH.putExtra("email", email+"");
+        intentH.putExtra("eid", eid+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("ผู้เข้าร่วมงาน")
                 .setContent(intentA);

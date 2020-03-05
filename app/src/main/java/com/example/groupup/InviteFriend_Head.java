@@ -148,7 +148,7 @@ public class InviteFriend_Head extends AppCompatActivity {
     //***********************************************************************************************//
     Button btnLookup;
     int countType=0;
-    String uid = "",email="";
+    String uid = "",email="",eid="";
     ListView listViewFriend;
     List<InviteFriend_Head.Item> items;
     ArrayList<String> typefriend;
@@ -165,6 +165,7 @@ public class InviteFriend_Head extends AppCompatActivity {
         lShortcut = findViewById(R.id.layout_shortcut_head);
         typefriend = new ArrayList<>();
         uid = getIntent().getStringExtra("id");
+        eid = getIntent().getStringExtra("eid");
         email = getIntent().getStringExtra("email");
         listViewFriend = findViewById(R.id.listview_friend);
         btnLookup = findViewById(R.id.slide);
@@ -228,6 +229,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                                 map.put("friend_name", c.getString("friend_name"));
                                 map.put("friend_email", c.getString("friend_email"));
                                 map.put("type_name", c.getString("type_name"));
+                                map.put("fid", c.getString("fid"));
                                 MyArrList.add(map);
                                 frientArray.add(map);
                             }
@@ -259,7 +261,7 @@ public class InviteFriend_Head extends AppCompatActivity {
             }
         }
         Log.d("friend",str);
-//                Toast.makeText(InviteFriend_Attendant.this, str, Toast.LENGTH_LONG).show();
+                Toast.makeText(InviteFriend_Head.this, str, Toast.LENGTH_LONG).show();
     }
     public void getType() {
         responseStr = new InviteFriend_Head.ResponseStr();
@@ -402,5 +404,45 @@ public class InviteFriend_Head extends AppCompatActivity {
         myItemsListAdapter = new InviteFriend_Head.ItemsListAdapter(this, items);
         listViewFriend.setAdapter(myItemsListAdapter);
     }
-    public void sentInviteToFriend(){}
+    public void sentInviteToFriend(String idInvite,String idEvent){
+        String url = "http://www.groupupdb.com/android/addFriendInvitationHead.php";
+        url += "?sId=" + idInvite;
+        url += "&sEid=" + idEvent;
+        Log.d("footer",url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //str = new String(response, StandardCharsets.UTF_8);
+                        //String reader = new String(response, StandardCharsets.UTF_8);
+                        try {
+                            String strStatusID = "0";
+                            String strError = "Unknow Status!";
+                            JSONObject c;
+                            JSONArray data = new JSONArray("[" + response.toString() + "]");
+                            for (int i = 0; i < data.length(); i++) {
+                                c = data.getJSONObject(i);
+                                strStatusID = c.getString("StatusID");
+                                strError = c.getString("Error");
+                            }
+                            if (strStatusID.equals("0")) {
+
+                            } else {
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(InviteFriend_Head.this, "Submission Error!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 }
