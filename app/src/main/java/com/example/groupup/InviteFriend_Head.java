@@ -245,26 +245,6 @@ public class InviteFriend_Head extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        new CountDownTimer(500, 500) {
-            public void onFinish() {
-                // When timer is finished
-//                listViewFriend.setVisibility(View.VISIBLE);
-//                SimpleAdapter sAdap;
-//                sAdap = new SimpleAdapter(ManageFriend.this, frientArray, R.layout.activity_showfriend,
-//                        new String[]{"friend_name"}, new int[]{R.id.rowTextView});
-//                listViewFriend.setAdapter(sAdap);
-//                listViewFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-////                    Toast.makeText(ManageFriend.this, ((Item)(myAdapter.getItemAtPosition(position))).ItemString, Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//                myItemsListAdapter = new ItemsListAdapter(this, items);
-            }
-
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
     }
     public void setItemsListView(){
         myItemsListAdapter = new InviteFriend_Head.ItemsListAdapter(InviteFriend_Head.this, items);
@@ -326,7 +306,7 @@ public class InviteFriend_Head extends AppCompatActivity {
         Log.d("friend","countType : "+countType+"");
         for (int i=0;i<countType;i++){
             Log.d("friend","i : "+i+"");
-            Button b = new Button(this);
+            final Button b = new Button(this);
             ImageView v = new ImageView(this);
             b.setBackgroundResource(R.drawable.circle_button);
             b.setText(typefriend.get(i));
@@ -334,7 +314,93 @@ public class InviteFriend_Head extends AppCompatActivity {
             v.setImageResource(R.drawable.viewgab);
             lShortcut.addView(b);
             lShortcut.addView(v);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("friend","btn : "+b.getText()+"");
+                    showAlertDialog(b.getText().toString());
+                }
+            });
 //            lShortcut.addView(v);
         }
     }
+    public void showAlertDialog(String typeName){
+        responseStr = new InviteFriend_Head.ResponseStr();
+        final ArrayList<String> position = new ArrayList<>();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getfriendIntype.php";
+        url += "?sId=" + uid;
+        url += "&tname=" + typeName;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //textView.setText("Response is: "+ response.toString());
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("afid", c.getString("afid"));
+                                map.put("fid", c.getString("fid"));
+                                map.put("friend_name", c.getString("friend_name"));
+                                MyArrList.add(map);
+                            }
+                            Log.d("position", MyArrList.size() + "");
+                            for (int i = 0;i<MyArrList.size();i++){
+                                position.add(MyArrList.get(i).get("friend_name"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(300, 300) {
+            public void onFinish() {
+                checkBoxClick(position);
+            }
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
+    }
+    public void checkBoxClick(ArrayList position){
+        Log.d("position","position size: "+position.size()+"");
+        ArrayList<Boolean> statusAll  = new ArrayList<>();
+        ArrayList<String> nameClick  = new ArrayList<>();
+        items = new ArrayList<InviteFriend_Head.Item>();
+        for (int i=0;i<frientArray.size();i++){
+            String s =frientArray.get(i).get("friend_name");
+            nameClick.add(s);
+            boolean b= false;
+            statusAll.add(b);
+
+        }
+        for (int i =0 ;i<nameClick.size();i++){
+            for (int j=0;j<position.size();j++){
+                if (nameClick.get(i).equals(position.get(j))) {
+                    statusAll.set(i,true);
+                    Log.d("status","status : "+statusAll.get(i)+"");
+                }
+            }
+        }
+        for (int i=0;i<nameClick.size();i++){
+            InviteFriend_Head.Item item = new InviteFriend_Head.Item(nameClick.get(i), statusAll.get(i));
+            items.add(item);
+        }
+        myItemsListAdapter = new InviteFriend_Head.ItemsListAdapter(this, items);
+        listViewFriend.setAdapter(myItemsListAdapter);
+    }
+    public void sentInviteToFriend(){}
 }

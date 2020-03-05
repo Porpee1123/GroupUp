@@ -1,20 +1,14 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,7 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -157,6 +153,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     List<InviteFriend_Attendant.Item> items;
     ArrayList<HashMap<String, String>> frientArray;
     ArrayList<String> typefriend;
+    ArrayList<String> typefriendId;
     InviteFriend_Attendant.ResponseStr responseStr = new InviteFriend_Attendant.ResponseStr();
     InviteFriend_Attendant.ItemsListAdapter myItemsListAdapter;
     LinearLayout lShortcut ;
@@ -168,6 +165,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         linearLayout.setBackgroundColor(Color.parseColor("#BCD0ED"));
         lShortcut = findViewById(R.id.layout_shortcut);
         typefriend = new ArrayList<>();
+        typefriendId = new ArrayList<>();
         btnLookup = findViewById(R.id.slide);
         btn_friendAll = findViewById(R.id.btn_friendAll);
         gab =findViewById(R.id.view_gab);
@@ -262,9 +260,11 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 for (int i=0; i<items.size(); i++){
                     if (items.get(i).isChecked()){
                         str += i + "\n";
+                        Log.d("friend","item : "+items.get(i).ItemString+"");
                     }
                 }
                 Log.d("friend",str);
+
 //                Toast.makeText(InviteFriend_Attendant.this, str, Toast.LENGTH_LONG).show();
     }
     public void getType() {
@@ -292,6 +292,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                             countType = MyArrList.size();
                             for (int i=0;i<MyArrList.size();i++){
                                 typefriend.add(MyArrList.get(i).get("type_name"));
+                                typefriendId.add(MyArrList.get(i).get("tfid"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -312,7 +313,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         Log.d("friend","countType : "+countType+"");
         for (int i=0;i<countType;i++){
             Log.d("friend","i : "+i+"");
-            Button b = new Button(this);
+            final Button b = new Button(this);
             ImageView v = new ImageView(this);
             b.setBackgroundResource(R.drawable.circle_button);
             b.setText(typefriend.get(i));
@@ -320,7 +321,92 @@ public class InviteFriend_Attendant extends AppCompatActivity {
             v.setImageResource(R.drawable.viewgab);
             lShortcut.addView(b);
             lShortcut.addView(v);
-//            lShortcut.addView(v);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("friend","btn : "+b.getText()+"");
+                    showAlertDialog(b.getText().toString());
+                }
+            });
         }
     }
+    public void showAlertDialog(String typeName){
+        responseStr = new InviteFriend_Attendant.ResponseStr();
+        final ArrayList<String> position = new ArrayList<>();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getfriendIntype.php";
+        url += "?sId=" + uid;
+        url += "&tname=" + typeName;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //textView.setText("Response is: "+ response.toString());
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("afid", c.getString("afid"));
+                                map.put("fid", c.getString("fid"));
+                                map.put("friend_name", c.getString("friend_name"));
+                                MyArrList.add(map);
+                            }
+                            Log.d("position", MyArrList.size() + "");
+                            for (int i = 0;i<MyArrList.size();i++){
+                                position.add(MyArrList.get(i).get("friend_name"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(300, 300) {
+            public void onFinish() {
+                checkBoxClick(position);
+            }
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
+    }
+    public void checkBoxClick(ArrayList position){
+        Log.d("position","position size: "+position.size()+"");
+        ArrayList<Boolean> statusAll  = new ArrayList<>();
+        ArrayList<String> nameClick  = new ArrayList<>();
+        items = new ArrayList<InviteFriend_Attendant.Item>();
+        for (int i=0;i<frientArray.size();i++){
+            String s =frientArray.get(i).get("friend_name");
+            nameClick.add(s);
+            boolean b= false;
+            statusAll.add(b);
+
+        }
+        for (int i =0 ;i<nameClick.size();i++){
+            for (int j=0;j<position.size();j++){
+                if (nameClick.get(i).equals(position.get(j))) {
+                    statusAll.set(i,true);
+                    Log.d("status","status : "+statusAll.get(i)+"");
+                }
+            }
+        }
+        for (int i=0;i<nameClick.size();i++){
+            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(nameClick.get(i), statusAll.get(i));
+            items.add(item);
+        }
+        myItemsListAdapter = new InviteFriend_Attendant.ItemsListAdapter(this, items);
+        listViewFriend.setAdapter(myItemsListAdapter);
+    }
+    public void sentInviteToFriend(){}
 }
