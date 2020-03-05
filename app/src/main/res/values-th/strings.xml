@@ -120,4 +120,5 @@
     <string name="qrCode">คิวอาร์โค้ด</string>
     <string name="alert">การแจ้งเตือน</string>
     <string name="create_friend_types">สร้างประเภทเพื่อน</string>
+    <string name="custom">กำหนดเอง</string>
 </resources>

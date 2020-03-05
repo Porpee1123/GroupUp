@@ -35,8 +35,8 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void selectTheme(View v) {
-//        Intent intent = new Intent(appoint_setItem.this, theme.class);
-//        startActivity(intent);
-//    }
+    public void selectTheme(View v) {
+        Intent intent = new Intent(HomeHead_Appointment_SetItem.this, HomeHead_Theme.class);
+        startActivity(intent);
+    }
 }
