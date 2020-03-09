@@ -342,6 +342,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         Log.d("getuser","id: "+fid+" name : "+fname+" image: "+fimage);
         url += "?sEmail=" + searchFriend.getText();
         url += "&sId=" +uid;
+        url += "&fId=" +fid;
         url += "&sName=" +fname;
         url += "&sImage=" +fimage;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

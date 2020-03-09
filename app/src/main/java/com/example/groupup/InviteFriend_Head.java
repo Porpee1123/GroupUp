@@ -146,7 +146,7 @@ public class InviteFriend_Head extends AppCompatActivity {
         }
     }
     //***********************************************************************************************//
-    Button btnLookup;
+    Button btnConfirmHead;
     int countType=0;
     String uid = "",email="",eid="";
     ListView listViewFriend;
@@ -168,7 +168,7 @@ public class InviteFriend_Head extends AppCompatActivity {
         eid = getIntent().getStringExtra("eid");
         email = getIntent().getStringExtra("email");
         listViewFriend = findViewById(R.id.listview_friend);
-        btnLookup = findViewById(R.id.slide);
+        btnConfirmHead = findViewById(R.id.slide);
         frientArray = new ArrayList<>();
         getType();
         getFriend();
@@ -182,7 +182,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
-        btnLookup.setOnClickListener(new View.OnClickListener() {
+        btnConfirmHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 confirmFriend();
@@ -257,7 +257,9 @@ public class InviteFriend_Head extends AppCompatActivity {
         String str = "Check items:\n";
         for (int i=0; i<items.size(); i++){
             if (items.get(i).isChecked()){
-                str += i + "\n";
+                String fid=frientArray.get(i).get("fid");
+                str += i + " "+items.get(i).ItemString+"-"+fid+"\n";
+                sentInviteToFriend(fid,eid);
             }
         }
         Log.d("friend",str);

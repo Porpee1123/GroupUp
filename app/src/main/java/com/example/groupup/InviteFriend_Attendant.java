@@ -146,7 +146,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         }
     }
     //***********************************************************************************************//
-    Button btnLookup,btn_friendAll;
+    Button btnConfirmAttendant;
     View gab;
     String uid = "",email="",eid="";
     int countType=0;
@@ -167,8 +167,8 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         lShortcut = findViewById(R.id.layout_shortcut);
         typefriend = new ArrayList<>();
         typefriendId = new ArrayList<>();
-        btnLookup = findViewById(R.id.slide);
-        btn_friendAll = findViewById(R.id.btn_friendAll);
+        btnConfirmAttendant = findViewById(R.id.slide);
+
         gab =findViewById(R.id.view_gab);
         listViewFriend = findViewById(R.id.listview_friend);
         uid = getIntent().getStringExtra("id");
@@ -187,7 +187,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
-        btnLookup.setOnClickListener(new View.OnClickListener() {
+        btnConfirmAttendant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 confirmFriend();
@@ -263,8 +263,11 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 String str = "Check items:\n";
                 for (int i=0; i<items.size(); i++){
                     if (items.get(i).isChecked()){
-                        str += i + "\n";
+                        String fid=frientArray.get(i).get("fid");
+                        str += i + " "+items.get(i).ItemString+"-"+fid+"\n";
                         Log.d("friend","item : "+items.get(i).ItemString+"");
+
+                        sentInviteToFriend(fid,eid);
                     }
                 }
                 Log.d("friend",str);
