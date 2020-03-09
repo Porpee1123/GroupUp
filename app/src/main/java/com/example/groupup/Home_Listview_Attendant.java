@@ -36,7 +36,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         setContentView(R.layout.activity_attendant);
         listViewAttend = findViewById(R.id.listView_attend);
         id = getIntent().getStringExtra("id");
-        Log.d("listA","idA "+id);
+        Log.d("footer","attend : id "+id );
         getEventAttend();
     }
     public void getEventAttend() {
@@ -46,6 +46,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
 
         String url = "http://www.groupupdb.com/android/gethomeattend.php";
         url += "?sId=" + id;//รอเอาIdจากfirebase
+        Log.d("footer","id : id "+id) ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -64,7 +65,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
+                        Log.d("footer","arraylist : id "+MyArrList.toString()) ;
                     }
                 },
                 new Response.ErrorListener() {
@@ -76,7 +77,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
 
-        new CountDownTimer(500, 500) {
+        new CountDownTimer(300, 300) {
             public void onFinish() {
                 // When timer is finished
                 listViewAttend.setVisibility(View.VISIBLE);

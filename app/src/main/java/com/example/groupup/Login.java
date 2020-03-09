@@ -167,9 +167,14 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public void skipbutton(View v){
+    public void skipHead(View v){
         Intent in = new Intent(this, Home.class);
         in.putExtra("email","thanapatza2011@gmail.com");
+        startActivity(in);
+    }
+    public void skipCustomer(View v){
+        Intent in = new Intent(this, Home.class);
+        in.putExtra("email","thanapat1234@gmail.com");
         startActivity(in);
     }
     public boolean saveData() {

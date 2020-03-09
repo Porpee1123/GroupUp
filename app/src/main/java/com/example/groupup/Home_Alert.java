@@ -123,13 +123,8 @@ public class Home_Alert extends AppCompatActivity {
                         viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
                                 + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n"
                                 +"สถานะ : " + sPri + "\n");
-                        viewDetail.setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
+
+
                         viewDetail.setNegativeButton("ไม่เข้าร่วม", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

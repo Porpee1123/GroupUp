@@ -158,7 +158,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onResume() {
         super.onResume();
-        readFile();
+        new CountDownTimer(200, 200) {
+            public void onFinish() {
+                readFile();
+            }
+
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
+
     }
     public void createGroup(View v) {
         Intent intent = new Intent(Home.this, Home_CreateEvent.class);
