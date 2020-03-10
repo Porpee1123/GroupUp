@@ -118,7 +118,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/my_style"
+                    android:background="@drawable/frame"
                     android:ems="10"
                     android:fontFamily="sans-serif"
                     android:hint="@string/search"

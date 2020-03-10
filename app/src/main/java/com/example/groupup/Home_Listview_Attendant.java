@@ -93,9 +93,9 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         String eStatus= MyArrList.get(position).get("states_name");
                         Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
                         Intent intent = new Intent(Home_Listview_Attendant.this, MainAttendent.class);
-                        intent.putExtra("id",id);
-                        intent.putExtra("eid",eId);
-                        intent.putExtra("nameEvent",eName);
+                        intent.putExtra("id",id+"");
+                        intent.putExtra("eid",eId+"");
+                        intent.putExtra("nameEvent",eName+"");
                         startActivity(intent);
                     }
                 });

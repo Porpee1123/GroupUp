@@ -121,5 +121,12 @@
     <string name="alert">Alert</string>
     <string name="create_friend_types">Create Friend Types</string>
     <string name="custom">Custom</string>
-
+    <string name="vote_date_time">Vote date and time</string>
+    <string name="vote_place">Vote place</string>
+    <string name="job_summary">Job summary</string>
+    <string name="qrCode_attend_the_event">QR Code Attend The Event</string>
+    <string name="select">Select</string>
+    <string name="namePlace">Name Place :</string>
+    <string name="rating">Rating :</string>
+    <string name="review_details">Review Details :</string>
 </resources>

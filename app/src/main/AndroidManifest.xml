@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ManageFriend"></activity>
+        <activity android:name=".Vote_place"></activity>
+        <activity android:name=".Vote_date_and_time" />
+        <activity android:name=".ManageFriend" />
         <activity android:name=".Home_Alert" />
         <activity
             android:name=".MainAttendent_Reviews"

@@ -13,13 +13,15 @@ public class MainAttendent extends AppCompatActivity {
     String nEvent="",id="",eid="";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
+    TextView nHead;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attend);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
-        TextView nHead = findViewById(R.id.inviteFriends);
+
+        nHead = findViewById(R.id.inviteFriends);
         id = getIntent().getStringExtra("id");
         nEvent = getIntent().getStringExtra("nameEvent");
         eid = getIntent().getStringExtra("eid");
@@ -53,6 +55,16 @@ public class MainAttendent extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        id = getIntent().getStringExtra("id");
+        nEvent = getIntent().getStringExtra("nameEvent");
+        eid = getIntent().getStringExtra("eid");
+        nHead.setText(nEvent);
+    }
+
     public void backHome(View v) {
         Intent intent = new Intent(MainAttendent.this, Home.class);
         startActivity(intent);
