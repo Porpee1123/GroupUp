@@ -77,9 +77,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
         email = getIntent().getStringExtra("email");
-        getUser();
+
         new CountDownTimer(500, 500) {
             public void onFinish() {
+                getUser();
                 createTab();
             }
 
