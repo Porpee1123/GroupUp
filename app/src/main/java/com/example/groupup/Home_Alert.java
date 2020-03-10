@@ -1,8 +1,12 @@
 package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,6 +47,7 @@ public class Home_Alert extends AppCompatActivity {
     public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
         startActivity(in);
+        addNotification();
     }
     public class ResponseStr {
         private String str;
@@ -149,5 +154,21 @@ public class Home_Alert extends AppCompatActivity {
             }
         }.start();
 
+    }
+    private void addNotification() {
+        // Builds your notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("การเชิญเพื่อน")
+                .setContentText("คุณนิวได้เชิญคุณเข้าร่วมนัดหมาย");
+
+        // Creates the intent needed to show the notification
+        Intent notificationIntent = new Intent(this, Home_Alert.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
     }
 }
