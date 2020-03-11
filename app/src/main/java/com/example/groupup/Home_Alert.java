@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,7 +50,7 @@ public class Home_Alert extends AppCompatActivity {
         Intent in = new Intent(this, Home.class);
         in.putExtra("email", email+"");
         startActivity(in);
-        addNotification();
+//        addNotification();
     }
     public class ResponseStr {
         private String str;
@@ -80,6 +81,7 @@ public class Home_Alert extends AppCompatActivity {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
+                                map.put("trans_id", c.getString("trans_id"));
                                 map.put("events_id", c.getString("events_id"));
                                 map.put("event_creater", c.getString("event_creater"));
                                 map.put("events_name", c.getString("events_name"));
@@ -125,8 +127,9 @@ public class Home_Alert extends AppCompatActivity {
                         String sEnd = MyArrList.get(position).get("events_month_end").toString();
                         String sPri = MyArrList.get(position).get("pri_name").toString();
                         String sTim = sSta + " - " + sEnd;
+                        final String tranId = MyArrList.get(position).get("trans_id").toString();
                         viewDetail.setIcon(android.R.drawable.btn_star_big_on);
-                        viewDetail.setTitle("รายละเอียด");
+                        viewDetail.setTitle("รายละเอียด"+tranId);
                         viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
                                 + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n"
                                 +"สถานะ : " + sPri + "\n");
@@ -135,12 +138,14 @@ public class Home_Alert extends AppCompatActivity {
                         viewDetail.setNegativeButton("ไม่เข้าร่วม", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
 
                             }
                         });
                         viewDetail.setPositiveButton("เข้าร่วม", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                UpdateStateToDb(tranId,3+"");
 
                             }
                         });
@@ -172,5 +177,27 @@ public class Home_Alert extends AppCompatActivity {
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
+    }
+    public void UpdateStateToDb(String transId,String statusId){
+        String url = "http://www.groupupdb.com/android/acceptEvent.php";
+        url += "?tId=" + transId;
+        url += "&stId=" +statusId;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        startActivity(getIntent());
     }
 }
