@@ -25,13 +25,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Home_CreateEvent extends AppCompatActivity {
-    String name="",id="";
+    String name="",id="",email="";
     String nEvent,mStart,mEnd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-
         //Spinner
         Spinner sp = findViewById(R.id.spin_wait);
         ArrayAdapter<CharSequence> adp = ArrayAdapter.createFromResource(this, R.array.number, android.R.layout.simple_spinner_item);
@@ -57,8 +56,10 @@ public class Home_CreateEvent extends AppCompatActivity {
         });
         name = getIntent().getStringExtra("name");
         id = getIntent().getStringExtra("id");
+        email =getIntent().getStringExtra("email");
         Log.d("footer",name);
         Log.d("footer",id);
+        Log.d("footer",email);
 
     }
 
@@ -147,6 +148,7 @@ public class Home_CreateEvent extends AppCompatActivity {
 
     public void backHome(View v) {
         Intent intent = new Intent(Home_CreateEvent.this, Home.class);
+        intent.putExtra("email", email+"");
         startActivity(intent);
     }
 

@@ -39,14 +39,12 @@
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="skipHead"
             android:text="Header" />
 
         <Button
             android:id="@+id/button5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="skipCustomer"
             android:text="Customer" />
 
     </LinearLayout>

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Home_Alert extends AppCompatActivity {
-    String id="";
+    String id="",email="";
     ListView listViewInvite;
     Home_Alert.ResponseStr responseStr = new Home_Alert.ResponseStr();
     @Override
@@ -41,11 +41,13 @@ public class Home_Alert extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert);
         id = getIntent().getStringExtra("id");
+        email = getIntent().getStringExtra("email");
         listViewInvite = findViewById(R.id.listView_invite);
         getEventInvitation();
     }
     public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
+        in.putExtra("email", email+"");
         startActivity(in);
         addNotification();
     }

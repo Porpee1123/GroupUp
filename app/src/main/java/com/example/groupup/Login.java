@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,7 +70,20 @@ public class Login extends AppCompatActivity {
                 }
             });
         }
-
+        Button bCus = findViewById(R.id.button5);
+        bCus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                skipCustomer();
+            }
+        });
+        Button bHead = findViewById(R.id.button2);
+        bHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                skipHead();
+            }
+        });
 
 
 
@@ -167,12 +181,12 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public void skipHead(View v){
+    public void skipHead(){
         Intent in = new Intent(this, Home.class);
         in.putExtra("email","thanapatza2011@gmail.com");
         startActivity(in);
     }
-    public void skipCustomer(View v){
+    public void skipCustomer(){
         Intent in = new Intent(this, Home.class);
         in.putExtra("email","thanapat1234@gmail.com");
         startActivity(in);

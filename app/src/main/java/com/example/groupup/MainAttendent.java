@@ -10,7 +10,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 public class MainAttendent extends AppCompatActivity {
-    String nEvent="",id="",eid="";
+    String nEvent="",id="",eid="",email="";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     TextView nHead;
@@ -25,6 +25,7 @@ public class MainAttendent extends AppCompatActivity {
         id = getIntent().getStringExtra("id");
         nEvent = getIntent().getStringExtra("nameEvent");
         eid = getIntent().getStringExtra("eid");
+        email = getIntent().getStringExtra("email");
         nHead.setText(nEvent);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
@@ -62,11 +63,13 @@ public class MainAttendent extends AppCompatActivity {
         id = getIntent().getStringExtra("id");
         nEvent = getIntent().getStringExtra("nameEvent");
         eid = getIntent().getStringExtra("eid");
+        email = getIntent().getStringExtra("email");
         nHead.setText(nEvent);
     }
 
     public void backHome(View v) {
         Intent intent = new Intent(MainAttendent.this, Home.class);
+        intent.putExtra("email", email);
         startActivity(intent);
     }
     protected void updateTabs() {

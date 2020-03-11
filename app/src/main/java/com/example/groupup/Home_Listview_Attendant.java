@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 public class Home_Listview_Attendant extends AppCompatActivity {
     Home_Listview_Attendant.ResponseStr responseStr = new Home_Listview_Attendant.ResponseStr();
-    String name = "", id = "";
+    String name = "", id = "",email="";
     ListView listViewAttend;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         setContentView(R.layout.activity_attendant);
         listViewAttend = findViewById(R.id.listView_attend);
         id = getIntent().getStringExtra("id");
+        email = getIntent().getStringExtra("email");
         Log.d("footer","attend : id "+id );
         getEventAttend();
     }
@@ -96,6 +97,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         intent.putExtra("id",id+"");
                         intent.putExtra("eid",eId+"");
                         intent.putExtra("nameEvent",eName+"");
+                        intent.putExtra("email",email);
                         startActivity(intent);
                     }
                 });

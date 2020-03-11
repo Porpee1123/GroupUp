@@ -78,16 +78,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         hEmail = v.findViewById(R.id.menu_email);
         email = getIntent().getStringExtra("email");
 
-        new CountDownTimer(500, 500) {
-            public void onFinish() {
-                getUser();
-                createTab();
-            }
-
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
+//        new CountDownTimer(500, 500) {
+//            public void onFinish() {
+//                getUser();
+//                createTab();
+//            }
+//
+//            public void onTick(long millisUntilFinished) {
+//                // millisUntilFinished    The amount of time until finished.
+//            }
+//        }.start();
 
         //firebase signin
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -101,6 +101,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View view) {
                 Intent in = new Intent(Home.this,Home_Alert.class);
                 in.putExtra("id", id+"");
+                in.putExtra("email", email+"");
                 startActivity(in);
             }
         });
@@ -159,21 +160,26 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onResume() {
         super.onResume();
-        new CountDownTimer(200, 200) {
+        email = getIntent().getStringExtra("email");
+        Log.d("footer","resume: "+email);
+        getUser();
+        new CountDownTimer(500, 500) {
             public void onFinish() {
-                readFile();
+//                readFile();
+
+                createTab();
             }
 
             public void onTick(long millisUntilFinished) {
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
-
     }
     public void createGroup(View v) {
         Intent intent = new Intent(Home.this, Home_CreateEvent.class);
         intent.putExtra("id", id);
         intent.putExtra("name", name);
+        intent.putExtra("email", email+"");
         startActivity(intent);
     }
     public void search(View v) {
@@ -264,7 +270,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             name = MyArrList.get(0).get("user_names");
                             id = MyArrList.get(0).get("user_id");
                             hEmail.setText(MyArrList.get(0).get("user_email"));
-                            writeFile(id,name,email);
+//                            writeFile(id,name,email);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

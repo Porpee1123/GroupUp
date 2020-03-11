@@ -274,6 +274,7 @@ public class Manage_calendar extends AppCompatActivity {
 
     public void backHome(View v){
         Intent in = new Intent(this, Home.class);
+        in.putExtra("email", email+"");
         startActivity(in);
     }
 }
