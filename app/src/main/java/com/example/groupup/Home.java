@@ -87,10 +87,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void run() {
                 getUser();
-
             }
         }).start();
-        new CountDownTimer(300, 300) {
+        new CountDownTimer(800, 800) {
             public void onFinish() {
 
                 createTab();
@@ -154,6 +153,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
         handler.sendEmptyMessage(0);
+
     }
     protected void updateTabs() {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
