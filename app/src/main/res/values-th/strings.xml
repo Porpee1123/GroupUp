@@ -132,4 +132,8 @@
     <string name="slipCheck">ตรวจสอบสลิป</string>
     <string name="group_theme">กลุ่ม :</string>
     <string name="btn_cancle">ยกเลิก</string>
+    <string name="classic">คลาสสิค</string>
+    <string name="forkids">สำหรับเด็ก</string>
+    <string name="waterFront">ริมแม่น้ำ</string>
+    <string name="sky">บนชั้นดาดฟ้า</string>
 </resources>

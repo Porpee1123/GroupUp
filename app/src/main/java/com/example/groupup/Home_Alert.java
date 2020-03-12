@@ -14,7 +14,9 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -117,7 +119,7 @@ public class Home_Alert extends AppCompatActivity {
                 sAdap = new SimpleAdapter(Home_Alert.this, MyArrList, R.layout.activity_invitation_home,
                         new String[]{"event_creater", "events_name", "events_month_start", "events_month_end","pri_name"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end,R.id.col_pri});
                 listViewInvite.setAdapter(sAdap);
-                final AlertDialog.Builder viewDetail = new AlertDialog.Builder(Home_Alert.this);
+                final AlertDialog viewDetail = new AlertDialog.Builder(Home_Alert.this).create();
 
                 listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
@@ -135,14 +137,14 @@ public class Home_Alert extends AppCompatActivity {
                                 +"สถานะ : " + sPri + "\n");
 
 
-                        viewDetail.setNegativeButton("ไม่เข้าร่วม", new DialogInterface.OnClickListener() {
+                        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ไม่เข้าร่วม", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
                             }
                         });
-                        viewDetail.setPositiveButton("เข้าร่วม", new DialogInterface.OnClickListener() {
+                        viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"เข้าร่วม", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 UpdateStateToDb(tranId,3+"");
@@ -150,7 +152,13 @@ public class Home_Alert extends AppCompatActivity {
                             }
                         });
                         viewDetail.show();
+                        Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                        Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
 
+                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                        layoutParams.weight = 10;
+                        btnPositive.setLayoutParams(layoutParams);
+                        btnNegative.setLayoutParams(layoutParams);
                     }
                 });
 

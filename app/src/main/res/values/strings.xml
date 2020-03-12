@@ -132,4 +132,9 @@
     <string name="group_theme">Group</string>
     <string name="btn_cancle">cancle</string>
     <string name="slipCheck">Slip Check</string>
+    <string name="classic">Classic</string>
+    <string name="forkids">For Kids</string>
+    <string name="waterFront">Waterfront</string>
+    <string name="sky">rooftop</string>
+
 </resources>

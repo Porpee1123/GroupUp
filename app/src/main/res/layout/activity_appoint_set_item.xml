@@ -89,6 +89,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/button"
+                android:onClick="selectSlip"
                 android:text="@string/select"
                 android:textColor="#FFFFFF" />
         </TableRow>

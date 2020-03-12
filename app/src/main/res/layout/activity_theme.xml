@@ -129,6 +129,12 @@
                     app:srcCompat="@drawable/classic" />
 
                 <ImageView
+                    android:id="@+id/theme_kid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/forkids" />
+
+                <ImageView
                     android:id="@+id/theme_buffet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,12 +154,6 @@
 
                 <ImageView
                     android:id="@+id/theme_sky"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/rooftop" />
-
-                <ImageView
-                    android:id="@+id/theme_kid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/rooftop" />

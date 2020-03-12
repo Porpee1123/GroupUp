@@ -67,7 +67,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         intentdp.putExtra("mStart", monS+"");
         intentdp.putExtra("mEnd", monE+"");
         intentdp.putExtra("eid", eid+"");
-        Intent intentslip  = new Intent(this,HomeHead_Appointment_SlipCheck.class);
+        Intent intentslip  = new Intent(this, HomeHead_SlipCheck.class);
         intentslip.putExtra("id", id+"");
         intentslip.putExtra("email", email+"");
         intentslip.putExtra("nEvent", nameE+"");
@@ -109,26 +109,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         super.onResume();
         mLocalActivityManager.dispatchResume();
     }
-    protected void updateTabs() {
-        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
 
-            if (tabHost.getTabWidget().getChildAt(i).isSelected()) {
-                tabHost.getTabWidget()
-                        .getChildAt(i)
-                        .setBackgroundResource(
-                                R.drawable.shape_tab);
-            }
-            else {
-
-                tabHost.getTabWidget()
-                        .getChildAt(i)
-                        .setBackgroundResource(
-                                R.drawable.visible);
-
-            }
-        }
-
-    }
     public void getEvent() {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -172,6 +153,26 @@ public class HomeHead_Appointment extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+    protected void updateTabs() {
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+
+            if (tabHost.getTabWidget().getChildAt(i).isSelected()) {
+                tabHost.getTabWidget()
+                        .getChildAt(i)
+                        .setBackgroundResource(
+                                R.drawable.shape_tab);
+            }
+            else {
+
+                tabHost.getTabWidget()
+                        .getChildAt(i)
+                        .setBackgroundResource(
+                                R.drawable.visible);
+
+            }
+        }
+
     }
     public void backHomepage(View v) {
         Intent intent = new Intent(HomeHead_Appointment.this, Home.class);

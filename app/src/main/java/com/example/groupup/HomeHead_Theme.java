@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,14 +39,14 @@ import java.util.HashMap;
 
 public class HomeHead_Theme extends AppCompatActivity {
     HomeHead_Theme.ResponseStr responseStr = new HomeHead_Theme.ResponseStr();
-    String id,eid,nameE,monS,monE,email;
-    ArrayList<Integer> themeSelect = new ArrayList<>();
+    String id,eid,nameE,monS,monE,email,transId;
+    ArrayList<String> themeSelect = new ArrayList<>();
     Button b,btn_con;
     LinearLayout lShort,lCus;
     ScrollView scrollView;
     ImageView img_minimal,img_classic,img_buffet,img_river,img_karaoke,img_sky,img_kid;
     boolean checkVisible;
-    ArrayList<String>  name ;
+    ArrayList<String>  nameType ,idType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +72,7 @@ public class HomeHead_Theme extends AppCompatActivity {
         img_sky=findViewById(R.id.theme_sky);
         img_kid=findViewById(R.id.theme_kid);
         checkVisible = true;//close custom
+        getTransIDByTrans(id,eid,"3");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,32 +87,41 @@ public class HomeHead_Theme extends AppCompatActivity {
         });
         img_classic.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(22+"",R.string.original);
+            public void onClick(View view) { getTypeTheme(22+"",R.string.classic);
             }
         });
         img_buffet.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(15+"",R.string.family);
+            public void onClick(View view) { getTypeTheme(15+"",R.string.buffet);
             }
         });
         img_river.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(36+"",R.string.warm);
+            public void onClick(View view) { getTypeTheme(36+"",R.string.waterFront);
             }
         });
         img_karaoke.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(3+"",R.string.bar);
+            public void onClick(View view) { getTypeTheme(3+"",R.string.karaoke);
             }
         });
         img_sky.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(23+"",R.string.rooftop);
+            public void onClick(View view) { getTypeTheme(23+"",R.string.sky);
             }
         });
         img_kid.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(8+"",R.string.kids);
+            public void onClick(View view) { getTypeTheme(8+"",R.string.forkids);
+            }
+        });
+        btn_con.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i =0; i< themeSelect.size(); i++){
+                    sentInviteToFriend(themeSelect.get(i).toString(),eid);
+                }
+                Log.d("themeSelect","Remove : "+themeSelect.toString());
             }
         });
 
@@ -125,13 +136,13 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(cafe.isChecked()){
                     cafe.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.cafe);
+                    themeSelect.add("2131820591");
 //                    Log.d("themeSelect",
 //                            cafe.getText()+"--"+R.string.cafe+"");
 
                 }else {
                     cafe.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.cafe);
+                    removeTheme("2131820591");
                 }
 
             }
@@ -144,11 +155,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(coffee.isChecked()){
                     coffee.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.coffee_tea);
+                    themeSelect.add("2131820600");
                 }else {
                     coffee.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.coffee_tea
-                    );
+                    removeTheme("2131820600");
                 }
 
             }
@@ -161,10 +171,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(river.isChecked()){
                     river.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.riverside);
+                    themeSelect.add("2131820742");
                 }else {
                     river.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.riverside);
+                    removeTheme("2131820742");
                 }
 
             }
@@ -177,10 +187,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(karaoke.isChecked()){
                     karaoke.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.karaoke);
+                    themeSelect.add("2131820666");
                 }else {
                     karaoke.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.karaoke);
+                    removeTheme("2131820666");
                 }
 
             }
@@ -193,10 +203,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(clubs.isChecked()){
                     clubs.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.clubs);
+                    themeSelect.add("2131820734");
                 }else {
                     clubs.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.clubs);
+                    removeTheme("2131820734");
                 }
 
             }
@@ -209,10 +219,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(pub.isChecked()){
                     pub.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.pub);
+                    themeSelect.add("2131820599");
                 }else {
                     pub.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.pub);
+                    removeTheme("2131820599");
                 }
 
             }
@@ -225,10 +235,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(wine.isChecked()){
                     wine.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.wine_Bar);
+                    themeSelect.add("2131820784");
                 }else {
                     wine.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.wine_Bar);
+                    removeTheme("2131820784");
                 }
 
             }
@@ -241,10 +251,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(night.isChecked()){
                     night.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.late_night_rice);
+                    themeSelect.add("2131820668");
                 }else {
                     night.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.late_night_rice);
+                    removeTheme("2131820668");
                 }
 
             }
@@ -257,10 +267,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(vegeterian.isChecked()){
                     vegeterian.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.vegeterian);
+                    themeSelect.add("2131820778");
                 }else {
                     vegeterian.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.vegeterian);
+                    removeTheme("2131820778");
                 }
 
             }
@@ -273,10 +283,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(hotelBuf.isChecked()){
                     hotelBuf.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.hotel_buffet);
+                    themeSelect.add("2131820657");
                 }else {
                     karaoke.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.hotel_buffet);
+                    removeTheme("2131820657");
                 }
 
             }
@@ -289,10 +299,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(rooftop.isChecked()){
                     rooftop.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.rooftop);
+                    themeSelect.add("2131820743");
                 }else {
                     rooftop.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.rooftop);
+                    removeTheme("2131820743");
                 }
 
             }
@@ -305,10 +315,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(izakaya.isChecked()){
                     izakaya.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.izakaya);
+                    themeSelect.add("2131820664");
                 }else {
                     izakaya.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.izakaya);
+                    removeTheme("2131820664");
                 }
 
             }
@@ -321,10 +331,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(dessert.isChecked()){
                     dessert.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.dessert);
+                    themeSelect.add("2131820630");
                 }else {
                     dessert.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.dessert);
+                    removeTheme("2131820630");
                 }
 
             }
@@ -337,10 +347,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(alacarte.isChecked()){
                     alacarte.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.alacarte);
+                    themeSelect.add("2131820576");
                 }else {
                     alacarte.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.alacarte);
+                    removeTheme("2131820576");
                 }
 
             }
@@ -353,10 +363,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(seafood.isChecked()){
                     seafood.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.seafood);
+                    themeSelect.add("2131820745");
                 }else {
                     seafood.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.seafood);
+                    removeTheme("2131820745");
                 }
 
             }
@@ -369,10 +379,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(steak.isChecked()){
                     steak.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.steak);
+                    themeSelect.add("2131820764");
                 }else {
                     steak.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.steak);
+                    removeTheme("2131820764");
                 }
 
             }
@@ -385,10 +395,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(iceCream.isChecked()){
                     iceCream.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.iceCream);
+                    themeSelect.add("2131820658");
                 }else {
                     iceCream.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.iceCream);
+                    removeTheme("2131820658");
                 }
 
             }
@@ -401,10 +411,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(bakery.isChecked()){
                     bakery.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.bakery_cake);
+                    themeSelect.add("2131820582");
                 }else {
                     bakery.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.bakery_cake);
+                    removeTheme("2131820582");
                 }
 
             }
@@ -417,10 +427,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(bbq.isChecked()){
                     bbq.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.bbq);
+                    themeSelect.add("2131820585");
                 }else {
                     bbq.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.bbq);
+                    removeTheme("2131820585");
                 }
 
             }
@@ -433,10 +443,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(shabu.isChecked()){
                     shabu.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.shabu);
+                    themeSelect.add("2131820757");
                 }else {
                     shabu.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.shabu);
+                    removeTheme("2131820757");
                 }
 
             }
@@ -449,10 +459,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(buffet.isChecked()){
                     buffet.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.buffet);
+                    themeSelect.add("2131820589");
                 }else {
                     buffet.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.buffet);
+                    removeTheme("2131820589");
                 }
 
             }
@@ -465,10 +475,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(cleanFood.isChecked()){
                     cleanFood.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.cleanFood);
+                    themeSelect.add("2131820597");
                 }else {
                     cleanFood.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.cleanFood);
+                    removeTheme("2131820597");
                 }
 
             }
@@ -481,10 +491,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(thaiBbq.isChecked()){
                     thaiBbq.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.thai_bbq);
+                    themeSelect.add("2131820770");
                 }else {
                     thaiBbq.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.thai_bbq);
+                    removeTheme("2131820770");
                 }
 
             }
@@ -497,10 +507,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(pizza.isChecked()){
                     pizza.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.pizza);
+                    themeSelect.add("2131820730");
                 }else {
                     pizza.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.pizza);
+                    removeTheme("2131820730");
                 }
 
             }
@@ -513,10 +523,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(sushi.isChecked()){
                     sushi.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.sushi);
+                    themeSelect.add("2131820767");
                 }else {
                     sushi.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.sushi);
+                    removeTheme("2131820767");
                 }
 
             }
@@ -529,10 +539,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(burger.isChecked()){
                     burger.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.burger);
+                    themeSelect.add("2131820590");
                 }else {
                     burger.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.burger);
+                    removeTheme("2131820590");
                 }
 
             }
@@ -545,10 +555,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(ramen.isChecked()){
                     ramen.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.ramen);
+                    themeSelect.add("2131820737");
                 }else {
                     ramen.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.ramen);
+                    removeTheme("2131820737");
                 }
 
             }
@@ -561,10 +571,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(dimsum.isChecked()){
                     dimsum.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.dimsum);
+                    themeSelect.add("2131820633");
                 }else {
                     dimsum.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.dimsum);
+                    removeTheme("2131820633");
                 }
 
             }
@@ -577,10 +587,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(vegan.isChecked()){
                     vegan.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.vegan);
+                    themeSelect.add("2131820777");
                 }else {
                     vegan.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.vegan);
+                    removeTheme("2131820777");
                 }
 
             }
@@ -593,10 +603,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(veget.isChecked()){
                     veget.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.vegeterian);
+                    themeSelect.add("2131820778");
                 }else {
                     veget.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.vegeterian);
+                    removeTheme("2131820778");
                 }
 
             }
@@ -609,10 +619,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(original.isChecked()){
                     original.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.original);
+                    themeSelect.add("2131820721");
                 }else {
                     original.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.original);
+                    removeTheme("2131820721");
                 }
 
             }
@@ -625,10 +635,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(bar.isChecked()){
                     bar.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.bar);
+                    themeSelect.add("2131820583");
                 }else {
                     bar.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.bar);
+                    removeTheme("2131820583");
                 }
 
             }
@@ -641,10 +651,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(outdoor.isChecked()){
                     outdoor.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.outdoor);
+                    themeSelect.add("2131820722");
                 }else {
                     outdoor.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.outdoor);
+                    removeTheme("2131820722");
                 }
 
             }
@@ -657,10 +667,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(cozy.isChecked()){
                     cozy.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.cozy);
+                    themeSelect.add("2131820620");
                 }else {
                     cozy.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.cozy);
+                    removeTheme("2131820620");
                 }
 
             }
@@ -673,10 +683,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(family.isChecked()){
                     family.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.family);
+                    themeSelect.add("2131820647");
                 }else {
                     family.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.family);
+                    removeTheme("2131820647");
                 }
 
             }
@@ -689,10 +699,10 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(minimal.isChecked()){
                     minimal.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.minimal);
+                    themeSelect.add("2131820673");
                 }else {
                     minimal.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.minimal);
+                    removeTheme("2131820673");
                 }
 
             }
@@ -705,11 +715,11 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(warm.isChecked()){
                     warm.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.warm);
+                    themeSelect.add("2131820782");
 //                    Log.d("box",warm+"");
                 }else {
                     warm.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.warm);
+                    removeTheme("2131820782");
                 }
 
             }
@@ -722,11 +732,11 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                 if(child.isChecked()){
                     child.setBackgroundResource(R.color.blueWhite);
-                    themeSelect.add(R.string.child);
+                    themeSelect.add("2131820595");
 //                    Log.d("box",child+"");
                 }else {
                     child.setBackgroundResource(R.drawable.my_style);
-                    removeTheme(R.string.child);
+                    removeTheme("2131820595");
                 }
 
             }
@@ -734,15 +744,15 @@ public class HomeHead_Theme extends AppCompatActivity {
         Log.d("themeSelect",themeSelect.toString());
 
     }
-    public void removeTheme(int id){
+    public void removeTheme(String id){
         String number = "";
         for (int i =0; i< themeSelect.size(); i++){
-            if (id == themeSelect.get(i)){
+            if (id.equals(themeSelect.get(i))){
                 number = i+"";
             }
         }
         themeSelect.remove(Integer.parseInt(number));
-        Log.d("themeSelect","Remove : "+themeSelect.toString());
+//        Log.d("themeSelect","Remove : "+themeSelect.toString());
     }
     public void backAppoint(View v) {
         Intent intent = new Intent(HomeHead_Theme.this, HomeHead_Appointment.class);
@@ -771,10 +781,11 @@ public class HomeHead_Theme extends AppCompatActivity {
             checkVisible=true;
         }
     }
-    public void getTypeTheme(String tyid, final int head) {
+    public void getTypeTheme(final String tyid, final int head) {
         responseStr = new HomeHead_Theme.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        name = new ArrayList<>();
+        nameType = new ArrayList<>();
+        idType = new ArrayList<>();
         String url = "http://www.groupupdb.com/android/getthemebygroup.php";
         url += "?tyId=" + tyid;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -792,8 +803,10 @@ public class HomeHead_Theme extends AppCompatActivity {
                                 MyArrList.add(map);
                             }
                             for (int i=0;i<MyArrList.size();i++){
-                                name.add(MyArrList.get(i).get("theme_name")+"\n");
+                                nameType.add(MyArrList.get(i).get("theme_name")+"\n");
+                                idType.add(MyArrList.get(i).get("theme_id")+"\n");
                             }
+//                            Log.d("themeSelect","myarr : "+MyArrList.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -807,41 +820,49 @@ public class HomeHead_Theme extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        final AlertDialog.Builder viewDetail = new AlertDialog.Builder(HomeHead_Theme.this);
+        final AlertDialog viewDetail = new AlertDialog.Builder(HomeHead_Theme.this).create();
 //        Log.d("themeSelect","myarr : "+MyArrList.toString());
         new CountDownTimer(300,300){
             @Override
             public void onTick(long l) {
 
             }
-
             @Override
             public void onFinish() {
 
                 viewDetail.setTitle(head);
-                Log.d("themeSelect","myarr : "+name.toString());
+                Log.d("themeSelect","myarr : "+nameType.toString());
                 String s="";
-                for (int i=0;i<name.size();i++){
-                    s+= name.get(i);
+                for (int i=0;i<nameType.size();i++){
+                    s+= nameType.get(i);
                 }
                 viewDetail.setMessage(s+"\n");
-                viewDetail.setNegativeButton(R.string.btn_cancle, new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
                     }
                 });
-                viewDetail.setPositiveButton(R.string.btn, new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        for (int i=0;i<idType.size();i++){
+                            sentInviteToFriend(idType.get(i),eid);
+                        }
+
                     }
                 });
                 viewDetail.show();
+                Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                layoutParams.weight = 10;
+                btnPositive.setLayoutParams(layoutParams);
+                btnNegative.setLayoutParams(layoutParams);
             }
         }.start();
-
-
     }
     public class ResponseStr {
         private String str;
@@ -852,5 +873,93 @@ public class HomeHead_Theme extends AppCompatActivity {
         }
 
     }
+    public void sentInviteToFriend(String idTheme,String idEvent){
+        String url = "http://www.groupupdb.com/android/addeventtheme.php";
+        url += "?tId=" + idTheme;
+        url += "&eId=" + idEvent;
+        Log.d("themeSelect",url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //str = new String(response, StandardCharsets.UTF_8);
+                        //String reader = new String(response, StandardCharsets.UTF_8);
+                        Toast.makeText(HomeHead_Theme.this, response, Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        Log.d("themeSelect","transid: "+transId);
+        UpdateStateToDb(transId,5+"");
+    }
+    public void UpdateStateToDb(String transId,String statusId){
+        String url = "http://www.groupupdb.com/android/acceptEvent.php";
+        url += "?tId=" + transId;
+        url += "&stId=" +statusId;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void getTransIDByTrans(String uid,String eid,String pid){
+        responseStr = new HomeHead_Theme.ResponseStr();
+        Log.d("themeSelect","id : "+uid+" eid : "+eid+" pid : "+pid);
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/gettransid.php";
+        url += "?uId=" + uid;
+        url += "&eId=" +eid;
+        url += "&pId=" +pid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("trans_id", c.getString("trans_id"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("pri_id", c.getString("pri_id"));
+                                MyArrList.add(map);
+                            }
+                            transId =MyArrList.get(0).get("trans_id");
+//                            Log.d("themeSelect","myarr : "+MyArrList.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
 
 }

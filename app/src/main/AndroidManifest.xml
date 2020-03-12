@@ -61,7 +61,7 @@
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".HomeHead_Appointment_SlipCheck"
+            android:name=".HomeHead_SlipCheck"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
