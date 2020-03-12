@@ -37,6 +37,12 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
 
     public void selectTheme(View v) {
         Intent intent = new Intent(HomeHead_Appointment_SetItem.this, HomeHead_Theme.class);
+        intent.putExtra("email",email);
+        intent.putExtra("id",id);
+        intent.putExtra("eid",eid);
+        intent.putExtra("nameEvent",nameE);
+        intent.putExtra("mStart",monS);
+        intent.putExtra("mEnd",monE);
         startActivity(intent);
     }
 }

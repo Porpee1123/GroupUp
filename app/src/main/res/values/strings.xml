@@ -129,5 +129,7 @@
     <string name="namePlace">Name Place :</string>
     <string name="rating">Rating :</string>
     <string name="review_details">Review Details :</string>
+    <string name="group_theme">Group</string>
+    <string name="btn_cancle">cancle</string>
     <string name="slipCheck">Slip Check</string>
 </resources>

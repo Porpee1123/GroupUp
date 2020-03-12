@@ -130,4 +130,6 @@
     <string name="rating">ระดับความชื่นชอบ :</string>
     <string name="review_details">รายละเอียดรีวิว :</string>
     <string name="slipCheck">ตรวจสอบสลิป</string>
+    <string name="group_theme">กลุ่ม :</string>
+    <string name="btn_cancle">ยกเลิก</string>
 </resources>

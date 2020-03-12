@@ -72,22 +72,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView = findViewById(R.id.na_view);
         navigationView.setNavigationItemSelectedListener(Home.this);
         navigationView.bringToFront();
-
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
         email = getIntent().getStringExtra("email");
-
-//        new CountDownTimer(500, 500) {
-//            public void onFinish() {
-//                getUser();
-//                createTab();
-//            }
-//
-//            public void onTick(long millisUntilFinished) {
-//                // millisUntilFinished    The amount of time until finished.
-//            }
-//        }.start();
+        new CountDownTimer(300, 300) {
+            public void onFinish() {
+                createTab();
+            }
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
 
         //firebase signin
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -163,17 +159,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         email = getIntent().getStringExtra("email");
         Log.d("footer","resume: "+email);
         getUser();
-        new CountDownTimer(500, 500) {
-            public void onFinish() {
-//                readFile();
-
-                createTab();
-            }
-
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
     }
     public void createGroup(View v) {
         Intent intent = new Intent(Home.this, Home_CreateEvent.class);
@@ -286,15 +271,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public class ResponseStr {
-        private String str;
-        JSONArray jsonArray;
-
-        public void setValue(JSONArray jsonArr) {
-            this.jsonArray = jsonArr;
-        }
-
-    }
     public void writeFile(String id,String name,String email) {
         String filename = "user.txt";
         String sid = id+ ":";
@@ -336,5 +312,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public class ResponseStr {
+        private String str;
+        JSONArray jsonArray;
+
+        public void setValue(JSONArray jsonArr) {
+            this.jsonArray = jsonArr;
+        }
+
     }
 }
