@@ -2,10 +2,13 @@ package com.example.groupup;
 
 import android.app.AlertDialog;
 import android.app.LocalActivityManager;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,7 +61,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     String name = "", id = "", email = "";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-
+    ProgressDialog progressDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +79,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
         email = getIntent().getStringExtra("email");
+        progressDialog = new ProgressDialog(Home.this);
+        progressDialog.setMessage("กำลังโหลดข้อมูล....");
+        progressDialog.setTitle("กรุณารอซักครู่");
+        progressDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getUser();
+
+            }
+        }).start();
         new CountDownTimer(300, 300) {
             public void onFinish() {
+
                 createTab();
             }
             public void onTick(long millisUntilFinished) {
@@ -102,6 +117,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
     }
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.dismiss();
+        }
+    };
     public void createTab(){
 
         tabHost = (TabHost) findViewById(R.id.tabhost);
@@ -132,6 +153,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 updateTabs();
             }
         });
+        handler.sendEmptyMessage(0);
     }
     protected void updateTabs() {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
