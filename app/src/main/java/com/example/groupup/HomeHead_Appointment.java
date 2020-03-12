@@ -81,13 +81,10 @@ public class HomeHead_Appointment extends AppCompatActivity {
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("วันที่เวลา/สถานที่")
                 .setContent(intentdp);
-        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3")
-                .setIndicator("ตรวจสอบสลิป")
-                .setContent(intentslip);
+
 
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
-        tabHost.addTab(tabSpec3);
         tabHost.getTabWidget()
                 .getChildAt(0)
                 .setBackgroundResource(

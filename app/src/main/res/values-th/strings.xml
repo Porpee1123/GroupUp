@@ -129,4 +129,5 @@
     <string name="namePlace">ชื่อร้าน :</string>
     <string name="rating">ระดับความชื่นชอบ :</string>
     <string name="review_details">รายละเอียดรีวิว :</string>
+    <string name="slipCheck">ตรวจสอบสลิป</string>
 </resources>
