@@ -41,14 +41,6 @@
                 android:text="recommend date" />
 
 
-            <ImageButton
-                android:id="@+id/cancle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#34558b"
-                android:src="@drawable/ic_close_black_24dp" />
-
-
             <View
                 android:id="@+id/view3"
                 android:layout_width="20dp"

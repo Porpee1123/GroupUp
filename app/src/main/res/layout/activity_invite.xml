@@ -47,10 +47,12 @@
                     android:text="@string/inviteFriends" />
 
 
-                <View
-                    android:id="@+id/view8"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent" />
+                <ImageButton
+                    android:id="@+id/imageButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/classicBlue"
+                    app:srcCompat="@drawable/ic_add_black_24dp" />
 
                 <View
                     android:id="@+id/view3"
@@ -83,8 +85,7 @@
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/blueWhite">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:id="@+id/tab1"
