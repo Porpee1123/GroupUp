@@ -69,7 +69,7 @@ public class InviteFriend extends AppCompatActivity {
                 tabHost.getTabWidget()
                         .getChildAt(i)
                         .setBackgroundResource(
-                                R.color.blueWhite);
+                                R.drawable.shape_tab);
             }
             else {
 
@@ -90,13 +90,11 @@ public class InviteFriend extends AppCompatActivity {
         mLocalActivityManager.dispatchPause(!isFinishing());
 
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         mLocalActivityManager.dispatchResume();
     }
-
     public void backAppoint(View v) {
         Intent intent = new Intent(InviteFriend.this, HomeHead_Appointment.class);
         intent.putExtra("id", uid+"");

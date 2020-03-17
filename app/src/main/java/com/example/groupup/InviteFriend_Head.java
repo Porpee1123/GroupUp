@@ -160,8 +160,6 @@ public class InviteFriend_Head extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_head);
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear);
-        linearLayout.setBackgroundColor(Color.parseColor("#BCD0ED"));
         lShortcut = findViewById(R.id.layout_shortcut_head);
         typefriend = new ArrayList<>();
         uid = getIntent().getStringExtra("id");
@@ -287,6 +285,7 @@ public class InviteFriend_Head extends AppCompatActivity {
 
                             }
                             //set Header menu name email;
+                            typefriend.add("ALL");
                             countType = MyArrList.size();
                             for (int i=0;i<MyArrList.size();i++){
                                 typefriend.add(MyArrList.get(i).get("type_name"));
@@ -307,8 +306,9 @@ public class InviteFriend_Head extends AppCompatActivity {
 
     }
     public void shortCutAddFriend(){
+        Log.d("friend","typefriend : "+typefriend+"");
         Log.d("friend","countType : "+countType+"");
-        for (int i=0;i<countType;i++){
+        for (int i=0;i<typefriend.size();i++){
             Log.d("friend","i : "+i+"");
             final Button b = new Button(this);
             ImageView v = new ImageView(this);

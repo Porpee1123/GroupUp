@@ -162,8 +162,6 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_attendant);
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear);
-        linearLayout.setBackgroundColor(Color.parseColor("#BCD0ED"));
         lShortcut = findViewById(R.id.layout_shortcut);
         typefriend = new ArrayList<>();
         typefriendId = new ArrayList<>();
@@ -296,6 +294,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
 
                             }
                             //set Header menu name email;
+                            typefriend.add("ALL");
                             countType = MyArrList.size();
                             for (int i=0;i<MyArrList.size();i++){
                                 typefriend.add(MyArrList.get(i).get("type_name"));
@@ -318,7 +317,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     }
     public void shortCutAddFriend(){
         Log.d("friend","countType : "+countType+"");
-        for (int i=0;i<countType;i++){
+        for (int i=0;i<typefriend.size();i++){
             Log.d("friend","i : "+i+"");
             final Button b = new Button(this);
             ImageView v = new ImageView(this);
@@ -443,7 +442,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -456,4 +455,30 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+//    public void checkBoxClick(ArrayList position){    //show all
+//        Log.d("position","position size: "+position.size()+"");
+//        ArrayList<Boolean> statusAll  = new ArrayList<>();
+//        ArrayList<String> nameClick  = new ArrayList<>();
+//        items = new ArrayList<InviteFriend_Attendant.Item>();
+//        for (int i=0;i<frientArray.size();i++){
+//            String s =frientArray.get(i).get("friend_name");
+//            nameClick.add(s);
+//            boolean b= false;
+//            statusAll.add(b);
+//        }
+//        for (int i =0 ;i<nameClick.size();i++){
+//            for (int j=0;j<position.size();j++){
+//                if (nameClick.get(i).equals(position.get(j))) {
+//                    statusAll.set(i,true);
+//                    Log.d("status","status : "+statusAll.get(i)+"");
+//                }
+//            }
+//        }
+//        for (int i=0;i<nameClick.size();i++){
+//            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(nameClick.get(i), statusAll.get(i));
+//            items.add(item);
+//        }
+//        myItemsListAdapter = new InviteFriend_Attendant.ItemsListAdapter(this, items);
+//        listViewFriend.setAdapter(myItemsListAdapter);
+//    }
 }
