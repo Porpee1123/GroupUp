@@ -2,6 +2,7 @@ package com.example.groupup;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -42,11 +43,13 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         boolean checked;
         ImageView ItemDrawable;
         String ItemString;
+        String Id;
         //        Item(ImageView drawable, String t, boolean b){
-        Item( String t, boolean b){
+        Item( String t, boolean b,String i){
 //            ItemDrawable = drawable;
             ItemString = t;
             checked = b;
+            Id = i;
         }
 
         public boolean isChecked(){
@@ -196,8 +199,9 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         items = new ArrayList<InviteFriend_Attendant.Item>();
         for (int i=0;i<frientArray.size();i++){
             String s =frientArray.get(i).get("friend_name");
+            String id =frientArray.get(i).get("fid");
             boolean b= false;
-            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b);;
+            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b,id);;
             items.add(item);
         }
     }
@@ -261,11 +265,11 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 String str = "Check items:\n";
                 for (int i=0; i<items.size(); i++){
                     if (items.get(i).isChecked()){
-                        String fid=frientArray.get(i).get("fid");
+                        String fid=items.get(i).Id;
                         str += i + " "+items.get(i).ItemString+"-"+fid+"\n";
                         Log.d("friend","item : "+items.get(i).ItemString+"");
 
-                        sentInviteToFriend(fid,eid);
+//                        sentInviteToFriend(fid,eid);
                     }
                 }
                 Log.d("friend",str);
@@ -331,14 +335,20 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Log.d("friend","btn : "+b.getText()+"");
-                    showAlertDialog(b.getText().toString());
+                    if (b.getText().equals("ALL")){
+                        showAllCheckboxClick();
+                    }else {
+                        getFriendType(b.getText().toString());
+                    }
+
                 }
             });
         }
     }
-    public void showAlertDialog(String typeName){
+    public void getFriendType(String typeName){
         responseStr = new InviteFriend_Attendant.ResponseStr();
         final ArrayList<String> position = new ArrayList<>();
+        final ArrayList<String> positionId = new ArrayList<>();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getfriendIntype.php";
         url += "?sId=" + uid;
@@ -363,6 +373,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                             Log.d("position", MyArrList.size() + "");
                             for (int i = 0;i<MyArrList.size();i++){
                                 position.add(MyArrList.get(i).get("friend_name"));
+                                positionId.add(MyArrList.get(i).get("fid"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -380,39 +391,30 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         queue.add(stringRequest);
         new CountDownTimer(300, 300) {
             public void onFinish() {
-                checkBoxClick(position);
+                checkBoxClick(position,positionId);
             }
             public void onTick(long millisUntilFinished) {
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
     }
-    public void checkBoxClick(ArrayList position){
+    public void checkBoxClick(ArrayList position,ArrayList positionId){
         Log.d("position","position size: "+position.size()+"");
-        ArrayList<Boolean> statusAll  = new ArrayList<>();
-        ArrayList<String> nameClick  = new ArrayList<>();
         items = new ArrayList<InviteFriend_Attendant.Item>();
-        for (int i=0;i<frientArray.size();i++){
-            String s =frientArray.get(i).get("friend_name");
-            nameClick.add(s);
-            boolean b= false;
-            statusAll.add(b);
-
-        }
-        for (int i =0 ;i<nameClick.size();i++){
-            for (int j=0;j<position.size();j++){
-                if (nameClick.get(i).equals(position.get(j))) {
-                    statusAll.set(i,true);
-                    Log.d("status","status : "+statusAll.get(i)+"");
-                }
-            }
-        }
-        for (int i=0;i<nameClick.size();i++){
-            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(nameClick.get(i), statusAll.get(i));
+        for (int i=0;i<position.size();i++){
+            String s =position.get(i).toString();
+            String id =positionId.get(i).toString();
+            boolean b= true;
+            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b,id);;
             items.add(item);
         }
         myItemsListAdapter = new InviteFriend_Attendant.ItemsListAdapter(this, items);
         listViewFriend.setAdapter(myItemsListAdapter);
+    }
+    public void showAllCheckboxClick(){
+        initItems();
+        setItemsListView();
+        shortCutAddFriend();
     }
     public void sentInviteToFriend(String idInvite,String idEvent){
         String url = "http://www.groupupdb.com/android/addFriendInvitationAttend.php";

@@ -36,6 +36,7 @@
                 android:onClick="selectFriend"
                 android:text="@string/select_friend"
                 android:textColor="#FFFFFF" />
+
         </TableRow>
 
         <TableRow
