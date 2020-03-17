@@ -25,10 +25,13 @@ public class AddFriend_QRCode extends AppCompatActivity {
         Intent inMyQr = new Intent(AddFriend_QRCode.this, AddFriend_My_QRCode.class);
         inMyQr.putExtra("email", email+"");
         inMyQr.putExtra("id",id+"");
+        Intent inScQr = new Intent(AddFriend_QRCode.this, AddFriend_Scan_QRCode.class);
+        inScQr.putExtra("email", email+"");
+        inScQr.putExtra("id",id+"");
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("สแกนคิวอาร์โค้ด")
-                .setContent(new Intent(this, AddFriend_Scan_QRCode.class));
+                .setContent(inScQr);
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("คิวอาร์โค้ดของฉัน")

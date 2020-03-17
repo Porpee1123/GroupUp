@@ -2,13 +2,12 @@ package com.example.groupup;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,9 +20,6 @@ import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -31,17 +27,20 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class Extend_Fragment_ScanQRCode extends Fragment {
     String emailScan;
+    String email,id;
     private ZXingScannerView zXingScannerView;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //QR Controller
+        Log.d("QrTest","Extend_Fragment_ScanQRCode");
                 zXingScannerView = new ZXingScannerView(getActivity());
                 getActivity().setContentView(zXingScannerView);
                 zXingScannerView.startCamera();
                 zXingScannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
                     @Override
                     public void handleResult(Result result) {
+                        Log.d("QrTest","zXingScannerView" + "");
                         getActivity().setContentView(R.layout.activity_scan_qr);
                         String resultString = result.getText().toString();
                         emailScan =resultString;
@@ -50,12 +49,12 @@ public class Extend_Fragment_ScanQRCode extends Fragment {
                         while (st.hasMoreTokens()){
                             qr.add(st.nextToken());
                         }
-//                        Toast.makeText(getActivity(), "QR code = " + resultString, Toast.LENGTH_LONG).show();
-                        Log.d("scanQR", "QR code ==> " + resultString);
+                        Toast.makeText(getActivity(), "QR code = " + resultString, Toast.LENGTH_LONG).show();
+                        Log.d("QrTest", "QR code ==> " + resultString);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentMainFragment, new Extend_Fragment_ScanQRCode()).commit();
                         Intent intent = new Intent(getActivity(), ManageFriend_AddFriends.class);
                         intent.putExtra("emailScan", qr.get(0)+"");
-                        intent.putExtra("id", qr.get(1)+"");
+                        intent.putExtra("fid", qr.get(1)+"");
                         startActivity(intent);
                     }
                 });

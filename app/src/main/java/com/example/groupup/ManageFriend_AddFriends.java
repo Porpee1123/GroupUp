@@ -35,6 +35,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -47,11 +50,11 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     Button btnAddFriend;
     Spinner spTypeFriend;
     ManageFriend_AddFriends.ResponseStr responseStr = new ManageFriend_AddFriends.ResponseStr();
-    String TAG = "addfriend", uid = "",email="",emailScan="";
-    String fid="",fname="",fimage;
+    String TAG = "addfriend", uid = "",email="",emailScan;
+    String fScanid="",fid="",fname="",fimage;
     SparseArray<String> type = new SparseArray<>();
     ArrayList<String> arSt;
-
+    String fileEmail,fileId;
 
 
     int MY_PERMISSIONS_REQUEST_CAMERA=0;
@@ -70,10 +73,12 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         btnAddFriend = findViewById(R.id.btnAddFriend);
         spTypeFriend = findViewById(R.id.typeFriend);
         arSt = new ArrayList<>();
+        emailScan="";
         uid = getIntent().getStringExtra("id");
+        fScanid = getIntent().getStringExtra("fid");
         email = getIntent().getStringExtra("email");
         emailScan = getIntent().getStringExtra("emailScan");
-        Log.d(TAG,"emailScan : "+emailScan);
+        Log.d("AddFriend","emailScan : "+emailScan);
         searchFriend.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -90,6 +95,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         qrcodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                writeFile(uid,email);
                 if (ContextCompat.checkSelfPermission(ManageFriend_AddFriends.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(ManageFriend_AddFriends.this, "You have already permission access Camera", Toast.LENGTH_SHORT).show();
                     scanQr();
@@ -110,6 +116,10 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (emailScan!=""){
+            readFile();
+        }
+
     }
 
     public void backHome(View v) {
@@ -408,13 +418,8 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                                 strError = c.getString("Error");
                             }
                             if (strStatusID.equals("0")) {
-//                                dialog.setMessage(strError);
-//                                dialog.show();
                             } else {
                                 Toast.makeText(ManageFriend_AddFriends.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
-//                                dialog.setTitle(R.string.submit_title);
-//                                dialog.setMessage(R.string.submit_result);
-//                                dialog.show();
                                 searchFriend.setText("");
                             }
                         } catch (JSONException e) {
@@ -442,6 +447,42 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         return as;
 
     }
+    public void writeFile(String id,String email) {
+        String filename = "userFriend.txt";
+        String sid = id+ ":";
+        String semail = email + "\n";
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(filename, MODE_PRIVATE);
+            outputStream.write(sid.getBytes());
+            outputStream.write(semail.getBytes());
+            outputStream.close();
+            Log.d("AddFriend","write file : id "+sid +" / status "+ semail);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void readFile(){
+        String filename = "userFriend.txt";
+        try {
+            BufferedReader inputReader = new BufferedReader(
+                    new InputStreamReader(openFileInput(filename)));
+
+            ArrayList<String> his = new ArrayList<>();
+            String line = "";
+            while ((line = inputReader.readLine()) != null) {
+                his.add(line);
+            }
+            for (int i = 0; i < his.size(); i++) {
+                StringTokenizer st = new StringTokenizer(his.get(i), ":");
+                uid = st.nextToken().toString();
+                email = st.nextToken().toString();
+            }
+            Log.d("AddFriend","read file : id "+uid +" / name "+email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
