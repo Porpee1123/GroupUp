@@ -183,8 +183,9 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         new CountDownTimer(300, 300) {
             public void onFinish() {
                 initItems();
-                setItemsListView();
                 shortCutAddFriend();
+                setItemsListView();
+
             }
             public void onTick(long millisUntilFinished) {
                 // millisUntilFinished    The amount of time until finished.

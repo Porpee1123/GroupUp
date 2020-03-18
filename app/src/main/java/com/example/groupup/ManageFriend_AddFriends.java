@@ -121,7 +121,6 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
         }
 
     }
-
     public void backHome(View v) {
         Intent intent = new Intent(this, ManageFriend.class);
         intent.putExtra("id", uid+"");
@@ -281,6 +280,8 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                                             addAllFriendToDb(arSt.get(i));
                                         }
                                         Intent in = new Intent(ManageFriend_AddFriends.this, Home.class);
+                                        in.putExtra("id", uid+"");
+                                        in.putExtra("email", email+"");
                                         startActivity(in);
                                     }
                                 }

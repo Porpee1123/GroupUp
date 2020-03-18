@@ -91,7 +91,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }).start();
         new CountDownTimer(800, 800) {
             public void onFinish() {
-getUser();
+                getUser();
                 createTab();
             }
             public void onTick(long millisUntilFinished) {

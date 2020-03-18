@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -178,7 +179,7 @@ public class ManageFriend extends AppCompatActivity {
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
-
+        writeFile(uid,email);
     }
     public void getFriend() {
         responseStr = new ManageFriend.ResponseStr();
@@ -308,5 +309,21 @@ public class ManageFriend extends AppCompatActivity {
 
             }
         });
+    }
+    public void writeFile(String id,String email) {
+        String filename = "userFriend.txt";
+        String sid = id+ ":";
+        String semail = email + "\n";
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(filename, MODE_PRIVATE);
+            outputStream.write(sid.getBytes());
+            outputStream.write(semail.getBytes());
+            outputStream.close();
+            Log.d("AddFriend","write file : id "+sid +" / status "+ semail);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
