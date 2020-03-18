@@ -136,4 +136,8 @@
     <string name="forkids">สำหรับเด็ก</string>
     <string name="waterFront">ริมแม่น้ำ</string>
     <string name="sky">บนชั้นดาดฟ้า</string>
+    <string name="time_morning">11:00 - 14:00</string>
+    <string name="time_late">14:00 - 16:00</string>
+    <string name="time_afternoon">17:00 - 20:00</string>
+    <string name="time_evening">20:00 - 23:00</string>
 </resources>

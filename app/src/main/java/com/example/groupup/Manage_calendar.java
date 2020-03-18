@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,9 @@ import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.timessquare.CalendarPickerView;
@@ -43,45 +47,63 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> allDaySelect;
     ArrayList<String> newDate;
     String uid,email;
-
+    //checkbox
+    LinearLayout linearCheckbox;
+    boolean checkVisible;
+    CheckBox cbMorninig,cbLate,cbAfternoon,cbEvening;
+    TextView tvDateTime;
+    TypedArray arr_month;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_calendar);
         btnGetCalen = (Button) findViewById(R.id.btnGetCalendar);
         calendarPicker = findViewById(R.id.calendarPickerView);
+        linearCheckbox = findViewById(R.id.linear_Checkbox_Calendar);
         calendarPicker.highlightDates(date);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
+        //checkbox
+        linearCheckbox.setVisibility(View.GONE);
+        checkVisible = true;//close custom
+        tvDateTime = findViewById(R.id.cb_dateTime);
+        cbMorninig = findViewById(R.id.cb_time1);
+        cbLate = findViewById(R.id.cb_time2);
+        cbAfternoon = findViewById(R.id.cb_time3);
+        cbEvening = findViewById(R.id.cb_time4);
+        cbMorninig.setText(R.string.time_morning);
+        cbLate.setText(R.string.time_late);
+        cbAfternoon.setText(R.string.time_afternoon);
+        cbEvening.setText(R.string.time_evening);
+        arr_month = getResources().obtainTypedArray(R.array.month12);
+        //checkbox
         Date today = new Date();
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.MONTH, 4); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน
         calendarPicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
         calendarPicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-
             ArrayList<String> day = new ArrayList<>();
-
             @Override
             public void onDateSelected(Date date) {
                 //String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(date);
+                linearCheckbox.setVisibility(View.VISIBLE);
 
                 Calendar calSelected = Calendar.getInstance();
                 calSelected.setTime(date);
-
                 String selectedDate = "" + calSelected.get(Calendar.DAY_OF_MONTH)
                         + " " + (calSelected.get(Calendar.MONTH) + 1)
                         + " " + calSelected.get(Calendar.YEAR);
-
-                Toast.makeText(Manage_calendar.this, selectedDate, Toast.LENGTH_SHORT).show();
+                tvDateTime.setText(calSelected.get(Calendar.DAY_OF_MONTH) + " " + (arr_month.getString(calSelected.get(Calendar.MONTH)))+ " " + calSelected.get(Calendar.YEAR));
+//                Toast.makeText(Manage_calendar.this, selectedDate, Toast.LENGTH_SHORT).show();
                 String s = selectedDate;
 //                allDaySelect.add(s);
                 day.add(s);
 //                txt.setText(day.toString());
             }
-
             @Override
             public void onDateUnselected(Date date) {
+                linearCheckbox.setVisibility(View.GONE);
                 Calendar calUnSelected = Calendar.getInstance();
                 calUnSelected.setTime(date);
 
@@ -116,7 +138,6 @@ public class Manage_calendar extends AppCompatActivity {
         allDaySelect = new ArrayList();
         //clone Arraylist
 
-
 //        Button btn = (Button) findViewById(R.id.button);
 //        allDaySelect.add("ZERO");
 //        btn.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +168,6 @@ public class Manage_calendar extends AppCompatActivity {
             }
         });
     }
-
     public List<String> readCalendarEvent(Context context) {
 
         Calendar startTime = Calendar.getInstance();
@@ -238,7 +258,6 @@ public class Manage_calendar extends AppCompatActivity {
 //        txt2.setText(date.toString());
         return calendars;
     }
-
     public void requestCalendarPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CALENDAR)) {
             new AlertDialog.Builder(this)
@@ -260,7 +279,6 @@ public class Manage_calendar extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_PERMISSION_CODE);
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CALENDAR_PERMISSION_CODE) {
@@ -271,10 +289,11 @@ public class Manage_calendar extends AppCompatActivity {
             }
         }
     }
-
     public void backHome(View v){
         Intent in = new Intent(this, Home.class);
         in.putExtra("email", email+"");
         startActivity(in);
     }
+
+    
 }
