@@ -173,7 +173,7 @@ public class Home_Alert extends AppCompatActivity {
     private void addNotification() {
         // Builds your notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.ic_account_box_black_24dp)
                 .setContentTitle("การเชิญเพื่อน")
                 .setContentText("คุณนิวได้เชิญคุณเข้าร่วมนัดหมาย");
 

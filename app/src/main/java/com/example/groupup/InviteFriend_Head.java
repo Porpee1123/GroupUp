@@ -162,6 +162,8 @@ public class InviteFriend_Head extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_head);
+        //LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear);
+        //linearLayout.setBackgroundColor(Color.parseColor("#BCD0ED"));
         lShortcut = findViewById(R.id.layout_shortcut_head);
         typefriend = new ArrayList<>();
         uid = getIntent().getStringExtra("id");

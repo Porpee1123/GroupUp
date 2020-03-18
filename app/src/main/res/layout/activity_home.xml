@@ -139,7 +139,6 @@
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:fontFamily="@font/pridi_extralight"
                         android:hint="@string/search"
                         android:inputType="textPersonName" />
                 </LinearLayout>

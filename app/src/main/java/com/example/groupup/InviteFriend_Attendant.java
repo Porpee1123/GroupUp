@@ -165,6 +165,8 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_attendant);
+       // LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear);
+       // linearLayout.setBackgroundColor(Color.parseColor("#BCD0ED"));
         lShortcut = findViewById(R.id.layout_shortcut);
         typefriend = new ArrayList<>();
         typefriendId = new ArrayList<>();
