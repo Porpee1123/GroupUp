@@ -268,8 +268,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                         String fid=items.get(i).Id;
                         str += i + " "+items.get(i).ItemString+"-"+fid+"\n";
                         Log.d("friend","item : "+items.get(i).ItemString+"");
-
-//                        sentInviteToFriend(fid,eid);
+                        sentInviteToFriend(fid,eid);
                     }
                 }
                 Log.d("friend",str);

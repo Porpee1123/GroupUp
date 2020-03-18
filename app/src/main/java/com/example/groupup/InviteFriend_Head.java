@@ -262,7 +262,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                 str += i + " "+items.get(i).ItemString+"-"+fid+"\n";
                 Log.d("friend","item : "+items.get(i).ItemString+"");
 
-//                        sentInviteToFriend(fid,eid);
+                        sentInviteToFriend(fid,eid);
             }
         }
         Log.d("friend",str);
