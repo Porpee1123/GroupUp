@@ -136,10 +136,10 @@
     <string name="forkids">For Kids</string>
     <string name="waterFront">Waterfront</string>
     <string name="sky">rooftop</string>
-    <string name="time_morning">11:00 - 14:00</string>
-    <string name="time_late">14:00 - 16:00</string>
-    <string name="time_afternoon">17:00 - 20:00</string>
-    <string name="time_evening">20:00 - 23:00</string>
+    <string name="time_morning">11:00 - 13:59</string>
+    <string name="time_late">14:00 - 16:59</string>
+    <string name="time_afternoon">17:00 - 19:59</string>
+    <string name="time_evening">20:00 - 23:59</string>
 
 
 </resources>

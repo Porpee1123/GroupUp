@@ -46,13 +46,14 @@ public class Manage_calendar extends AppCompatActivity {
     List<String> calendars = new ArrayList<>();
     ArrayList<String> allDaySelect;
     ArrayList<String> newDate;
-    String uid,email;
+    String uid, email;
     //checkbox
     LinearLayout linearCheckbox;
     boolean checkVisible;
-    CheckBox cbMorninig,cbLate,cbAfternoon,cbEvening;
+    CheckBox cbMorninig, cbLate, cbAfternoon, cbEvening;
     TextView tvDateTime;
     TypedArray arr_month;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +85,7 @@ public class Manage_calendar extends AppCompatActivity {
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
         calendarPicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             ArrayList<String> day = new ArrayList<>();
+
             @Override
             public void onDateSelected(Date date) {
                 //String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(date);
@@ -94,13 +96,15 @@ public class Manage_calendar extends AppCompatActivity {
                 String selectedDate = "" + calSelected.get(Calendar.DAY_OF_MONTH)
                         + " " + (calSelected.get(Calendar.MONTH) + 1)
                         + " " + calSelected.get(Calendar.YEAR);
-                tvDateTime.setText(calSelected.get(Calendar.DAY_OF_MONTH) + " " + (arr_month.getString(calSelected.get(Calendar.MONTH)))+ " " + calSelected.get(Calendar.YEAR));
+                tvDateTime.setText(calSelected.get(Calendar.DAY_OF_MONTH) + " " + (arr_month.getString(calSelected.get(Calendar.MONTH))) + " " + calSelected.get(Calendar.YEAR));
 //                Toast.makeText(Manage_calendar.this, selectedDate, Toast.LENGTH_SHORT).show();
                 String s = selectedDate;
 //                allDaySelect.add(s);
                 day.add(s);
 //                txt.setText(day.toString());
+//                Log.d("dateTime",date.toString());
             }
+
             @Override
             public void onDateUnselected(Date date) {
                 linearCheckbox.setVisibility(View.GONE);
@@ -168,6 +172,7 @@ public class Manage_calendar extends AppCompatActivity {
             }
         });
     }
+
     public List<String> readCalendarEvent(Context context) {
 
         Calendar startTime = Calendar.getInstance();
@@ -218,13 +223,13 @@ public class Manage_calendar extends AppCompatActivity {
             Calendar c1 = Calendar.getInstance();
             Calendar c2 = Calendar.getInstance();
             c1.setTimeInMillis(Long.parseLong(s2));
-            c2.setTimeInMillis(Long.parseLong(s3) - 25201000); //25200100 millisec = 252001 sec
-            DateFormat simple = new SimpleDateFormat("dd/MM/yyyy");
+            c2.setTimeInMillis(Long.parseLong(s3)); //25200100 millisec = 252001 sec
+            DateFormat simple = new SimpleDateFormat("dd/MM/yyyy:HH"); //dd/MM/yyyy/HH/mm
             all += s1 + "\n\t\t" + simple.format(c1.getTime()) + "---" + simple.format(c2.getTime()) + "\n\n";
 
             d.setTime(cursor.getLong(3));
-            dend.setTime((cursor.getLong(4) - 25201000));
-
+            dend.setTime((cursor.getLong(4)));
+            Log.d("dateTime ", "Calendar Name long : " + s1 + " - " + simple.format(c1.getTime()) + " + " + simple.format(c2.getTime()));
 
 //            Log.i("@calendar", "Calendar Name : " + d+" - "+dend);
             date.add(d);
@@ -242,10 +247,10 @@ public class Manage_calendar extends AppCompatActivity {
                     Log.i("@result", ddiff + "");
                     dateString.add(ddiff + "");
                 }
-                for (int a = date.size() - 4; a < date.size(); a++) {
-                    Log.i("@resultString/////", dateString.get(a) + "");
-                    Log.i("@resultDate/////", date.get(a) + "");
-                }
+//                for (int a = date.size() - 4; a < date.size(); a++) {
+//                    Log.i("@resultString/////", dateString.get(a) + "");
+//                    Log.i("@resultDate/////", date.get(a) + "");
+//                }
             }
             Log.d("@Lastcalendar ", "Calendar Name : " + d + " - " + dend + " + " + ddiff);
             cursor.moveToNext();
@@ -256,8 +261,10 @@ public class Manage_calendar extends AppCompatActivity {
         }
 //        txt.setText(all);
 //        txt2.setText(date.toString());
+//        Log.d("dateTime",date.toString());
         return calendars;
     }
+
     public void requestCalendarPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CALENDAR)) {
             new AlertDialog.Builder(this)
@@ -279,6 +286,7 @@ public class Manage_calendar extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_PERMISSION_CODE);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CALENDAR_PERMISSION_CODE) {
@@ -289,11 +297,82 @@ public class Manage_calendar extends AppCompatActivity {
             }
         }
     }
-    public void backHome(View v){
+
+    public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
-        in.putExtra("email", email+"");
+        in.putExtra("email", email + "");
         startActivity(in);
     }
 
-    
+    public void clickCheckboxDateTime(int tiStart, int tiEnd,String daStart,String daEnd) {
+        if (!daStart.equals(daEnd)&&tiStart==tiEnd){//date same day all day
+            cbMorninig.setChecked(true);
+            cbLate.setChecked(true);
+            cbAfternoon.setChecked(true);
+            cbEvening.setChecked(true);
+        }else{
+            if (tiStart >= 0 && tiStart < 14) {
+                if (tiEnd >= 0 && tiEnd < 11) {
+                    //0
+                } else if (tiEnd >= 11 && tiEnd < 14) {
+                    //1
+                    cbMorninig.setChecked(true);
+                } else if (tiEnd >= 14 && tiEnd < 17) {
+                    //12
+                    cbMorninig.setChecked(true);
+                    cbLate.setChecked(true);
+                } else if (tiEnd >= 17 && tiEnd < 20) {
+                    //123
+                    cbMorninig.setChecked(true);
+                    cbLate.setChecked(true);
+                    cbAfternoon.setChecked(true);
+                } else if (tiEnd >= 20 && tiEnd < 24) {
+                    //1234
+                    cbMorninig.setChecked(true);
+                    cbLate.setChecked(true);
+                    cbAfternoon.setChecked(true);
+                    cbEvening.setChecked(true);
+                }
+            }
+            else if (tiStart >= 14 && tiStart < 17) {
+                if (tiEnd >= 14 && tiEnd < 17) {
+                    //2
+                    cbLate.setChecked(true);
+                } else if (tiEnd >= 17 && tiEnd < 20) {
+                    //23
+                    cbLate.setChecked(true);
+                    cbAfternoon.setChecked(true);
+                } else if (tiEnd >= 20 && tiEnd < 24) {
+                    //234
+                    cbLate.setChecked(true);
+                    cbAfternoon.setChecked(true);
+                    cbEvening.setChecked(true);
+                }
+            }
+            else if (tiStart >= 17 && tiStart < 20) {
+                if (tiEnd >= 17 && tiEnd < 20) {
+                    //3
+                    cbAfternoon.setChecked(true);
+                } else if (tiEnd >= 20 && tiEnd < 24) {
+                    //34
+                    cbAfternoon.setChecked(true);
+                    cbEvening.setChecked(true);
+                }
+            }
+            else if (tiStart >= 20 && tiStart < 24) {
+                if (tiEnd >= 20 && tiEnd < 24) {
+                    //4
+                    cbEvening.setChecked(true);
+                }
+            }
+        }
+
+    }
+    public void clearCheckBox(){
+        cbMorninig.setChecked(false);
+        cbLate.setChecked(false);
+        cbAfternoon.setChecked(false);
+        cbEvening.setChecked(false);
+    }
+
 }
