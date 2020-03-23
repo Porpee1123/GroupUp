@@ -5,12 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,7 +102,7 @@ public class ManageFriend extends AppCompatActivity {
 
                 viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.rowCheckBox);
                 viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
-                viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextView);
+                viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextViewName);
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) rowView.getTag();

@@ -4,14 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -103,7 +101,7 @@ public class InviteFriend_Head extends AppCompatActivity {
 
                 viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.rowCheckBox);
                 viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
-                viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextView);
+                viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextViewName);
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (InviteFriend_Head.ViewHolder) rowView.getTag();

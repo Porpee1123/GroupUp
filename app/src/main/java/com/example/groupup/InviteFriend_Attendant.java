@@ -2,8 +2,6 @@ package com.example.groupup;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -33,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -104,7 +101,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
 
                 viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.rowCheckBox);
                 viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
-                viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextView);
+                viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextViewName);
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (InviteFriend_Attendant.ViewHolder) rowView.getTag();

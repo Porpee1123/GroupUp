@@ -23,7 +23,7 @@
                 app:srcCompat="@drawable/ic_account_box_black_24dp" />
 
             <TextView
-                android:id="@+id/rowTextView"
+                android:id="@+id/rowTextViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
