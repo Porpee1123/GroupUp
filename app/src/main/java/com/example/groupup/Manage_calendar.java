@@ -122,7 +122,10 @@ public class Manage_calendar extends AppCompatActivity {
 //                    Log.d("dateTime", "dateCalGet : " + dateCalGet.get(i) + " " + selectedDateCompare);
                     if (selectedDateCompare.equals(dateCalGet.get(i))) {
 //                        Log.d("dateTime", "checkbox : " + Integer.parseInt(timeCalGet.get(i)) + " " + Integer.parseInt(timeCalGetEnd.get(i)) + " " + dateCalGet.get(i) + " " + dateCalGetEnd.get(i));
+                        Log.d("dateTime123", "selectedDateCompare : " + selectedDateCompare);
                         clickCheckboxDateTime(Integer.parseInt(timeCalGet.get(i)), Integer.parseInt(timeCalGetEnd.get(i)), dateCalGet.get(i), dateCalGetEnd.get(i));
+                    }else if(selectedDateCompare.equals(dateCalGetEnd.get(i))){
+                        clickCheckboxDiffDTLastDay(Integer.parseInt(timeCalGetEnd.get(i)));
                     }
                 }
                 for (int i = 0; i < dateCalGetDiff.size(); i++) {
@@ -193,10 +196,16 @@ public class Manage_calendar extends AppCompatActivity {
                 } else {
                     requestCalendarPermission();
                     readCalendarEvent(Manage_calendar.this);
-                    Log.d("calendar123", "date : " + date);
-                    calendarPicker.highlightDates(date);
+//                    Log.d("calendar123", "date : " + date);
+//                    calendarPicker.highlightDates(date);
 //                    calendarPicker.highlightDates(dateDifference);
-                    ;
+                    newDate = new ArrayList();
+                    for (int i = 0; i < dateString.size(); i++) {
+                        long date = Date.parse(dateString.get(i));
+                        Date d = new Date(date);
+                        newDate.add(d);
+                    }
+                    calendarPicker.highlightDates(newDate);
                 }
             }
         });
@@ -346,12 +355,87 @@ public class Manage_calendar extends AppCompatActivity {
 
     public void clickCheckboxDateTime(int tiStart, int tiEnd, String daStart, String daEnd) {
         if (!daStart.equals(daEnd) && tiStart == tiEnd) {//date same day all day
+            Log.d("calendar123", "date123 : "+daStart+" - " +daEnd);
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
         } else {
-            if (!daStart.equals(daEnd) && tiStart != tiEnd) {
+            Log.d("calendar123", "date : "+daStart+" - " +daEnd);
+            if (!daStart.equals(daEnd) && tiStart != tiEnd) {//no same dat No all time
+                Log.d("calendar123", "date : "+daStart+" - " +daEnd);
+//                if ((tiStart >= 0 && tiStart < 14)&&(daStart!=daEnd)) {
+//                    if (tiEnd >= 0 && tiEnd < 11) {
+//                        //0
+//                    } else if (tiEnd >= 11 && tiEnd < 14) {
+//                        //1234
+//                        cbMorninig.setChecked(true);
+//                        cbLate.setChecked(true);
+//                        cbAfternoon.setChecked(true);
+//                        cbEvening.setChecked(true);
+//                    } else if (tiEnd >= 14 && tiEnd < 17) {
+//                        //234
+//                        cbLate.setChecked(true);
+//                        cbAfternoon.setChecked(true);
+//                        cbEvening.setChecked(true);
+//                    } else if (tiEnd >= 17 && tiEnd < 20) {
+//                        //34
+//                        cbAfternoon.setChecked(true);
+//                        cbEvening.setChecked(true);
+//                    } else if (tiEnd >= 20 && tiEnd < 24) {
+//                        //4
+//                        cbEvening.setChecked(true);
+//                    }
+//                } else if ((tiStart >= 14 && tiStart < 17)&&(daStart!=daEnd)) {
+//                    if (tiEnd >= 14 && tiEnd < 17) {
+//                        //234
+//                        cbLate.setChecked(true);
+//                        cbAfternoon.setChecked(true);
+//                        cbEvening.setChecked(true);
+//                    } else if (tiEnd >= 17 && tiEnd < 20) {
+//                        //34
+//                        cbAfternoon.setChecked(true);
+//                        cbEvening.setChecked(true);
+//                    } else if (tiEnd >= 20 && tiEnd < 24) {
+//                        //4
+//                        cbEvening.setChecked(true);
+//                    }
+//                } else if ((tiStart >= 17 && tiStart < 20)&&(daStart!=daEnd)) {
+//                    if (tiEnd >= 17 && tiEnd < 20) {
+//                        //34
+//                        cbAfternoon.setChecked(true);
+//                        cbEvening.setChecked(true);
+//                    } else if (tiEnd >= 20 && tiEnd < 24) {
+//                        //4
+//                        cbEvening.setChecked(true);
+//                    }
+//                } else if ((tiStart >= 20 && tiStart < 24)&&(daStart!=daEnd)) {
+//                    if (tiEnd >= 20 && tiEnd < 24) {
+//                        //4
+//                        cbEvening.setChecked(true);
+//                    }
+//                }
+                if (tiStart >= 0 && tiStart < 11) {
+                    //0
+                } else if (tiStart >= 11 && tiStart < 14) {
+                    //1234
+                    cbMorninig.setChecked(true);
+                    cbLate.setChecked(true);
+                    cbAfternoon.setChecked(true);
+                    cbEvening.setChecked(true);
+                } else if (tiStart >= 14 && tiStart < 17) {
+                    //234
+                    cbLate.setChecked(true);
+                    cbAfternoon.setChecked(true);
+                    cbEvening.setChecked(true);
+                } else if (tiStart >= 17 && tiStart < 20) {
+                    //34
+                    cbAfternoon.setChecked(true);
+                    cbEvening.setChecked(true);
+                } else if (tiStart >= 20 && tiStart < 24) {
+                    //4
+                    cbEvening.setChecked(true);
+                }
 
             } else {
                 if (tiStart >= 0 && tiStart < 14) {
@@ -408,6 +492,33 @@ public class Manage_calendar extends AppCompatActivity {
             }
 
         }
+
+    }
+    public void clickCheckboxDiffDTLastDay(int tiEnd) {
+            if (tiEnd >= 0 && tiEnd < 11) {
+                //0
+            } else if (tiEnd >= 11 && tiEnd < 14) {
+                //1
+                cbMorninig.setChecked(true);
+            } else if (tiEnd >= 14 && tiEnd < 17) {
+                //12
+                cbMorninig.setChecked(true);
+                cbLate.setChecked(true);
+            } else if (tiEnd >= 17 && tiEnd < 20) {
+                //123
+                cbMorninig.setChecked(true);
+                cbLate.setChecked(true);
+                cbAfternoon.setChecked(true);;
+            } else if (tiEnd >= 20 && tiEnd < 24) {
+                //1234
+                cbMorninig.setChecked(true);
+                cbLate.setChecked(true);
+                cbAfternoon.setChecked(true);
+                cbEvening.setChecked(true);
+            }
+
+
+
 
     }
 
