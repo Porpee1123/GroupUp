@@ -28,6 +28,7 @@ import com.squareup.timessquare.CalendarPickerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,9 +44,10 @@ public class Manage_calendar extends AppCompatActivity {
     Button btnGetCalen;
     private int CALENDAR_PERMISSION_CODE = 1;
     ArrayList<Date> date = new ArrayList<>();
+    ArrayList<String> dateString = new ArrayList<>();
     List<String> calendars = new ArrayList<>();
     ArrayList<String> allDaySelect;
-    ArrayList<String> newDate;
+    ArrayList<Date> newDate;
     ArrayList<String> dateCalGet = new ArrayList<>();
     ArrayList<String> timeCalGet = new ArrayList<>();
     ArrayList<String> dateCalGetEnd = new ArrayList<>();
@@ -53,6 +55,7 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> dateCalGetDiff = new ArrayList<>();
     ArrayList<String> timeCalGetDiff = new ArrayList<>();
     ArrayList<String> startDateTime = new ArrayList<>();
+    ArrayList<String> dateCalGetAllDay = new ArrayList<>();
     ArrayList<String> endDateTime = new ArrayList<>();
     ArrayList<String> diffDateTime = new ArrayList<>();
     String uid, email;
@@ -106,8 +109,8 @@ public class Manage_calendar extends AppCompatActivity {
                 String selectedDate = "" + calSelected.get(Calendar.DAY_OF_MONTH)
                         + " " + (calSelected.get(Calendar.MONTH) + 1)
                         + " " + calSelected.get(Calendar.YEAR);
-                String selectedDateCompare = "" + checkCalendarDate(calSelected.get(Calendar.DAY_OF_MONTH)+"") + "/";
-                selectedDateCompare += checkCalendar(calSelected.get(Calendar.MONTH)+"") + "/";
+                String selectedDateCompare = "" + checkCalendarDate(calSelected.get(Calendar.DAY_OF_MONTH) + "") + "/";
+                selectedDateCompare += checkCalendar(calSelected.get(Calendar.MONTH) + "") + "/";
                 selectedDateCompare += calSelected.get(Calendar.YEAR);
                 tvDateTime.setText(calSelected.get(Calendar.DAY_OF_MONTH) + " " + (arr_month.getString(calSelected.get(Calendar.MONTH))) + " " + calSelected.get(Calendar.YEAR));
 //                Toast.makeText(Manage_calendar.this, selectedDateCompare, Toast.LENGTH_SHORT).show();
@@ -118,12 +121,12 @@ public class Manage_calendar extends AppCompatActivity {
                 for (int i = 0; i < dateCalGet.size(); i++) {
 //                    Log.d("dateTime", "dateCalGet : " + dateCalGet.get(i) + " " + selectedDateCompare);
                     if (selectedDateCompare.equals(dateCalGet.get(i))) {
-                        Log.d("dateTime", "checkbox : " + Integer.parseInt(timeCalGet.get(i)) + " " + Integer.parseInt(timeCalGetEnd.get(i)) + " " + dateCalGet.get(i) + " " + dateCalGetEnd.get(i));
+//                        Log.d("dateTime", "checkbox : " + Integer.parseInt(timeCalGet.get(i)) + " " + Integer.parseInt(timeCalGetEnd.get(i)) + " " + dateCalGet.get(i) + " " + dateCalGetEnd.get(i));
                         clickCheckboxDateTime(Integer.parseInt(timeCalGet.get(i)), Integer.parseInt(timeCalGetEnd.get(i)), dateCalGet.get(i), dateCalGetEnd.get(i));
                     }
                 }
-                for (int i =0 ;i<dateCalGetDiff.size();i++){
-                    Log.d("dateTime","dateCalGetDiff : "+dateCalGetDiff.toString());
+                for (int i = 0; i < dateCalGetDiff.size(); i++) {
+//                    Log.d("dateTime", "dateCalGetDiff : " + dateCalGetDiff.toString());
                     if (selectedDateCompare.equals(dateCalGetDiff.get(i))) {
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
@@ -157,11 +160,13 @@ public class Manage_calendar extends AppCompatActivity {
             }
         });
 //        //Change format date
-//        newDate = new ArrayList();
-//        for (int i = 0; i < date.size(); i++) {
-//            DateFormat simple = new SimpleDateFormat("dd MM yyyy");
-//            newDate.add(simple.format(date.get(i).getTime()));
-//        }
+        newDate = new ArrayList();
+        for (int i = 0; i < dateString.size(); i++) {
+//            DateFormat simple = new SimpleDateFormat();
+            long date = Date.parse(dateString.get(i));
+            Date d = new Date(date * 1000);
+            newDate.add(d);
+        }
 
         allDaySelect = new ArrayList();
         btnGetCalen.setOnClickListener(new View.OnClickListener() {
@@ -171,13 +176,26 @@ public class Manage_calendar extends AppCompatActivity {
                     Toast.makeText(Manage_calendar.this, "You have already permission", Toast.LENGTH_SHORT).show();
                     readCalendarEvent(Manage_calendar.this);
 //                    Log.d("dateTime", "calendarPicker : "+ date.toString());
-                    calendarPicker.highlightDates(date);
+//                    for (int i = 0;i<dateString.size();i++){
+//                        Log.d("calendar123", "date : " + dateString.get(i)+"\n");
+//                    }
+//                    Log.d("calendar123", "date : " + date);
+//                    calendarPicker.highlightDates(date);
+                    newDate = new ArrayList();
+                    for (int i = 0; i < dateString.size(); i++) {
+                        long date = Date.parse(dateString.get(i));
+                        Date d = new Date(date);
+                        newDate.add(d);
+                    }
+                    calendarPicker.highlightDates(newDate);
 
 
                 } else {
                     requestCalendarPermission();
                     readCalendarEvent(Manage_calendar.this);
+                    Log.d("calendar123", "date : " + date);
                     calendarPicker.highlightDates(date);
+//                    calendarPicker.highlightDates(dateDifference);
                     ;
                 }
             }
@@ -204,7 +222,7 @@ public class Manage_calendar extends AppCompatActivity {
         Cursor cursor = context.getContentResolver()
                 .query(Uri.parse("content://com.android.calendar/events"),
                         new String[]{"calendar_id", "title", "description",
-                                "dtstart", "dtend", "eventLocation"}, selection,
+                                "dtstart", "dtend", "eventLocation", CalendarContract.Events.ALL_DAY}, selection,
                         null, null);
         cursor.moveToFirst();
         // fetching calendars name
@@ -237,31 +255,40 @@ public class Manage_calendar extends AppCompatActivity {
             c2.setTimeInMillis(Long.parseLong(s3)); //25200100 millisec = 252001 sec
             DateFormat simple = new SimpleDateFormat("dd/MM/yyyy:HH"); //dd/MM/yyyy/HH/mm
             all += s1 + "\n\t\t" + simple.format(c1.getTime()) + "---" + simple.format(c2.getTime()) + "\n\n";
-            Log.d("dateTime ", "Calendar Name long : " + s1 + " - " + simple.format(c1.getTime()) + " + " + simple.format(c2.getTime()));
+            Log.d("dateTime ", "Calendar Name long : " + s1 + " - " + simple.format(c1.getTime()) + " + " + simple.format(c2.getTime()) + " : " + cursor.getString(6));
             startDateTime.add(simple.format(c1.getTime()));
             endDateTime.add(simple.format(c2.getTime()));
+            dateCalGetAllDay.add(cursor.getString(6));
             cutStringDate(startDateTime, endDateTime);
-
             d.setTime(cursor.getLong(3));
             dend.setTime((cursor.getLong(4)));
-//            Log.i("@calendar", "Calendar Name : " + d+" - "+dend);
             date.add(d);
-//            date.add(dend);
+            dateString.add(d.toString());
+            if (cursor.getString(6).equals("0")){
+                date.add(dend);
+                dateString.add(dend.toString());
+            }
             if (d.getDate() != dend.getDate()) {
+//                Log.d("checkTime ", "d : " + d.getDate()+"---"+dend.getDate());
                 int dif = 0;
                 long oneday = 86400000;
                 dif = Integer.parseInt(dend.getDate() + "") - Integer.parseInt(d.getDate() + "");
-                for (int num = 1; num < dif-1; num++) {
-                    ddiff.setTime(d.getTime() + (oneday * num));
+                Log.d("dateTime ", "d : " + d.getDate()+"---"+dend.getDate());
+                Log.d("dateTime ", "dif : " + dif);
+                for (int num = 1; num < dif; num++) {
+                    ddiff.setTime(d.getTime() + (oneday)*num);
+                    Log.d("checkTime ", "checkTime : " + ddiff);
+                    Log.d("dateTime ", "ddiff : " + ddiff);
                     date.add(ddiff);
-//                    Log.d("dateTimeqq ", "///////////////////////////////////////");
-//                    Log.d("dateTimeqq ", "diff: " + date);
+                    dateString.add(ddiff.toString());
                     diffDateTime.add(simple.format(ddiff));
-                    Log.d("dateTime ", "diffDateTime : " + diffDateTime.toString());
+                    Log.d("checkTime ", "date : " + date.get(date.size() - 1));
+//                    Log.d("dateTime ", "diffDateTime : " + diffDateTime.toString());
 
                 }
-                Log.d("dateTime ", "diffDateTime : " + diffDateTime.toString());
+//                Log.d("dateTime ", "diffDateTime : " + diffDateTime.toString());
                 cutStringDateDiff(diffDateTime);
+//                Log.d("dateTime ", "all : " +cursor.getString(6));
 ////                for (int a = date.size() - 4; a < date.size(); a++) {
 ////                    Log.i("@resultString/////", dateString.get(a) + "");
 ////                    Log.i("@resultDate/////", date.get(a) + "");
@@ -324,9 +351,9 @@ public class Manage_calendar extends AppCompatActivity {
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
         } else {
-            if (!daStart.equals(daEnd) && tiStart != tiEnd){
+            if (!daStart.equals(daEnd) && tiStart != tiEnd) {
 
-            }else{
+            } else {
                 if (tiStart >= 0 && tiStart < 14) {
                     if (tiEnd >= 0 && tiEnd < 11) {
                         //0
@@ -408,6 +435,7 @@ public class Manage_calendar extends AppCompatActivity {
         }
 
     }
+
     public void cutStringDateDiff(ArrayList dt) {
         for (int i = 0; i < dt.size(); i++) {
             StringTokenizer st = new StringTokenizer(dt.get(i).toString(), ":");
@@ -417,6 +445,7 @@ public class Manage_calendar extends AppCompatActivity {
             }
         }
     }
+
     public String checkCalendar(String monthNumber) {
         switch (monthNumber) {
             case "0":
@@ -447,6 +476,7 @@ public class Manage_calendar extends AppCompatActivity {
                 return "00";
         }
     }
+
     public String checkCalendarDate(String dateNumber) {
         switch (dateNumber) {
             case "1":
