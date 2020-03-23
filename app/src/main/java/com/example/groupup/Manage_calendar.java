@@ -254,23 +254,33 @@ public class Manage_calendar extends AppCompatActivity {
             Date d = new Date();
             Date dend = new Date();
             Date ddiff = new Date();
+            long oneday = 86400000;
             CNames[i] = cursor.getString(1);
             s1 = cursor.getString(1);
             s2 = cursor.getString(3);
-            s3 = cursor.getString(4);
+//            s3 = cursor.getString(4);
             Calendar c1 = Calendar.getInstance();
             Calendar c2 = Calendar.getInstance();
+            if (cursor.getString(4)==null){
+                s3=cursor.getString(3);
+                c2.setTimeInMillis(Long.parseLong(s3)+oneday);
+            }else{
+                s3 = cursor.getString(4);
+                c2.setTimeInMillis(Long.parseLong(s3));
+            }
+//            Calendar c1 = Calendar.getInstance();
+//            Calendar c2 = Calendar.getInstance();
             c1.setTimeInMillis(Long.parseLong(s2));
-            c2.setTimeInMillis(Long.parseLong(s3)); //25200100 millisec = 252001 sec
+
             DateFormat simple = new SimpleDateFormat("dd/MM/yyyy:HH"); //dd/MM/yyyy/HH/mm
             all += s1 + "\n\t\t" + simple.format(c1.getTime()) + "---" + simple.format(c2.getTime()) + "\n\n";
-            Log.d("dateTime ", "Calendar Name long : " + s1 + " - " + simple.format(c1.getTime()) + " + " + simple.format(c2.getTime()) + " : " + cursor.getString(6));
+//            Log.d("dateTime ", "Calendar Name long : " + s1 + " - " + simple.format(c1.getTime()) + " + " + simple.format(c2.getTime()) + " : " + cursor.getString(6));
             startDateTime.add(simple.format(c1.getTime()));
             endDateTime.add(simple.format(c2.getTime()));
             dateCalGetAllDay.add(cursor.getString(6));
             cutStringDate(startDateTime, endDateTime);
             d.setTime(cursor.getLong(3));
-            dend.setTime((cursor.getLong(4)));
+            dend.setTime(Long.parseLong(s3));
             date.add(d);
             dateString.add(d.toString());
             if (cursor.getString(6).equals("0")){
@@ -280,7 +290,6 @@ public class Manage_calendar extends AppCompatActivity {
             if (d.getDate() != dend.getDate()) {
 //                Log.d("checkTime ", "d : " + d.getDate()+"---"+dend.getDate());
                 int dif = 0;
-                long oneday = 86400000;
                 dif = Integer.parseInt(dend.getDate() + "") - Integer.parseInt(d.getDate() + "");
                 Log.d("dateTime ", "d : " + d.getDate()+"---"+dend.getDate());
                 Log.d("dateTime ", "dif : " + dif);
@@ -436,7 +445,6 @@ public class Manage_calendar extends AppCompatActivity {
                     //4
                     cbEvening.setChecked(true);
                 }
-
             } else {
                 if (tiStart >= 0 && tiStart < 14) {
                     if (tiEnd >= 0 && tiEnd < 11) {
