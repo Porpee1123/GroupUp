@@ -15,11 +15,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,7 +43,7 @@ public class Home_Alert extends AppCompatActivity {
         setContentView(R.layout.activity_alert);
         id = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
-        listViewInvite = findViewById(R.id.listView_invite);
+        listViewInvite = findViewById(R.id.listView_slipCheck);
         getEventInvitation();
     }
     public void backHome(View v) {

@@ -2,13 +2,116 @@ package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SlipCheck_finish extends AppCompatActivity {
+    String id,eid,nameE,monS,monE,email;
+    SlipCheck_finish.ResponseStr responseStr = new SlipCheck_finish.ResponseStr();
 
+    ListView slipFinish ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slip_check_finish);
+        email = getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
+        eid =getIntent().getStringExtra("eid");
+        nameE = getIntent().getStringExtra("nameEvent");
+        monS = getIntent().getStringExtra("mStart");
+        monE = getIntent().getStringExtra("mEnd");
+        slipFinish = findViewById(R.id.listView_slipFinish);
+
+        getSlipFinish();
+    }
+    public void getSlipFinish() {
+        responseStr = new SlipCheck_finish.ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+
+        String url = "http://www.groupupdb.com/android/gethomeattend.php";
+        url += "?sId=" + id;//รอเอาIdจากfirebase
+        Log.d("footer","id : id "+id) ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("events_name", c.getString("events_name"));
+                                map.put("states_name", c.getString("states_name"));
+                                MyArrList.add(map);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("footer","arraylist : id "+MyArrList.toString()) ;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
+
+        // When timer is finished
+        slipFinish.setVisibility(View.VISIBLE);
+        SimpleAdapter sAdap;
+        sAdap = new SimpleAdapter(SlipCheck_finish.this, MyArrList, R.layout.activity_attend_home,
+                new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
+        slipFinish.setAdapter(sAdap);
+
+        slipFinish.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+                String eName= MyArrList.get(position).get("events_name");
+                String eId= MyArrList.get(position).get("events_id");
+                String eStatus= MyArrList.get(position).get("states_name");
+                Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
+                Intent intent = new Intent(SlipCheck_finish.this, MainAttendent.class);
+                intent.putExtra("id",id+"");
+                intent.putExtra("eid",eId+"");
+                intent.putExtra("nameEvent",eName+"");
+                intent.putExtra("email",email);
+                startActivity(intent);
+            }
+        });
+
+    }
+    public class ResponseStr {
+        private String str;
+        JSONArray jsonArray;
+
+        public void setValue(JSONArray jsonArr) {
+            this.jsonArray = jsonArr;
+        }
+
     }
 }

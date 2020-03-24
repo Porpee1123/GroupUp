@@ -32,7 +32,7 @@
                 android:src="@drawable/ic_chevron_left_black_24dp" />
 
             <TextView
-                android:id="@+id/addFriends"
+                android:id="@+id/SlipCheck"
                 style="@style/Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         </LinearLayout>
 
         <ListView
-            android:id="@+id/listView_invite"
+            android:id="@+id/listView_slipCheck"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

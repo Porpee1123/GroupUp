@@ -141,5 +141,5 @@
     <string name="time_afternoon">17:00 - 19:59</string>
     <string name="time_evening">20:00 - 23:59</string>
     <string name="send_notification">ส่งการแจ้งเตือน</string>
-    <string name="verification">การตรวจสอบ</string>
+    <string name="verification">ตรวจสอบ</string>
 </resources>
