@@ -37,9 +37,6 @@ import java.util.StringTokenizer;
 
 
 public class Manage_calendar extends AppCompatActivity {
-    private final int INVALID_VAL = -1;
-    int mHour, mMinute;
-    String mRecurrenceOption, mRecurrenceRule;
     CalendarPickerView calendarPicker;
     Button btnGetCalen;
     private int CALENDAR_PERMISSION_CODE = 1;
@@ -58,6 +55,8 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> dateCalGetAllDay = new ArrayList<>();
     ArrayList<String> endDateTime = new ArrayList<>();
     ArrayList<String> diffDateTime = new ArrayList<>();
+    ArrayList<String> addDateToDB = new ArrayList<>();
+    ArrayList<String> addTimeToDB = new ArrayList<>();
     String uid, email;
     //checkbox
     LinearLayout linearCheckbox;
@@ -124,7 +123,7 @@ public class Manage_calendar extends AppCompatActivity {
 //                        Log.d("dateTime", "checkbox : " + Integer.parseInt(timeCalGet.get(i)) + " " + Integer.parseInt(timeCalGetEnd.get(i)) + " " + dateCalGet.get(i) + " " + dateCalGetEnd.get(i));
                         Log.d("dateTime123", "selectedDateCompare : " + selectedDateCompare);
                         clickCheckboxDateTime(Integer.parseInt(timeCalGet.get(i)), Integer.parseInt(timeCalGetEnd.get(i)), dateCalGet.get(i), dateCalGetEnd.get(i));
-                    }else if(selectedDateCompare.equals(dateCalGetEnd.get(i))){
+                    } else if (selectedDateCompare.equals(dateCalGetEnd.get(i))) {
                         clickCheckboxDiffDTLastDay(Integer.parseInt(timeCalGetEnd.get(i)));
                     }
                 }
@@ -195,17 +194,14 @@ public class Manage_calendar extends AppCompatActivity {
 
                 } else {
                     requestCalendarPermission();
-                    readCalendarEvent(Manage_calendar.this);
-//                    Log.d("calendar123", "date : " + date);
-//                    calendarPicker.highlightDates(date);
-//                    calendarPicker.highlightDates(dateDifference);
-                    newDate = new ArrayList();
-                    for (int i = 0; i < dateString.size(); i++) {
-                        long date = Date.parse(dateString.get(i));
-                        Date d = new Date(date);
-                        newDate.add(d);
-                    }
-                    calendarPicker.highlightDates(newDate);
+//                    readCalendarEvent(Manage_calendar.this);
+//                    newDate = new ArrayList();
+//                    for (int i = 0; i < dateString.size(); i++) {
+//                        long date = Date.parse(dateString.get(i));
+//                        Date d = new Date(date);
+//                        newDate.add(d);
+//                    }
+//                    calendarPicker.highlightDates(newDate);
                 }
             }
         });
@@ -261,10 +257,10 @@ public class Manage_calendar extends AppCompatActivity {
 //            s3 = cursor.getString(4);
             Calendar c1 = Calendar.getInstance();
             Calendar c2 = Calendar.getInstance();
-            if (cursor.getString(4)==null){
-                s3=cursor.getString(3);
-                c2.setTimeInMillis(Long.parseLong(s3)+oneday);
-            }else{
+            if (cursor.getString(4) == null) {
+                s3 = cursor.getString(3);
+                c2.setTimeInMillis(Long.parseLong(s3) + oneday);
+            } else {
                 s3 = cursor.getString(4);
                 c2.setTimeInMillis(Long.parseLong(s3));
             }
@@ -283,7 +279,7 @@ public class Manage_calendar extends AppCompatActivity {
             dend.setTime(Long.parseLong(s3));
             date.add(d);
             dateString.add(d.toString());
-            if (cursor.getString(6).equals("0")){
+            if (cursor.getString(6).equals("0")) {
                 date.add(dend);
                 dateString.add(dend.toString());
             }
@@ -291,10 +287,10 @@ public class Manage_calendar extends AppCompatActivity {
 //                Log.d("checkTime ", "d : " + d.getDate()+"---"+dend.getDate());
                 int dif = 0;
                 dif = Integer.parseInt(dend.getDate() + "") - Integer.parseInt(d.getDate() + "");
-                Log.d("dateTime ", "d : " + d.getDate()+"---"+dend.getDate());
+                Log.d("dateTime ", "d : " + d.getDate() + "---" + dend.getDate());
                 Log.d("dateTime ", "dif : " + dif);
                 for (int num = 1; num < dif; num++) {
-                    ddiff.setTime(d.getTime() + (oneday)*num);
+                    ddiff.setTime(d.getTime() + (oneday) * num);
                     Log.d("checkTime ", "checkTime : " + ddiff);
                     Log.d("dateTime ", "ddiff : " + ddiff);
                     date.add(ddiff);
@@ -364,15 +360,15 @@ public class Manage_calendar extends AppCompatActivity {
 
     public void clickCheckboxDateTime(int tiStart, int tiEnd, String daStart, String daEnd) {
         if (!daStart.equals(daEnd) && tiStart == tiEnd) {//date same day all day
-            Log.d("calendar123", "date123 : "+daStart+" - " +daEnd);
+            Log.d("calendar123", "date123 : " + daStart + " - " + daEnd);
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
         } else {
-            Log.d("calendar123", "date : "+daStart+" - " +daEnd);
+            Log.d("calendar123", "date : " + daStart + " - " + daEnd);
             if (!daStart.equals(daEnd) && tiStart != tiEnd) {//no same dat No all time
-                Log.d("calendar123", "date : "+daStart+" - " +daEnd);
+                Log.d("calendar123", "date : " + daStart + " - " + daEnd);
 //                if ((tiStart >= 0 && tiStart < 14)&&(daStart!=daEnd)) {
 //                    if (tiEnd >= 0 && tiEnd < 11) {
 //                        //0
@@ -502,30 +498,30 @@ public class Manage_calendar extends AppCompatActivity {
         }
 
     }
+
     public void clickCheckboxDiffDTLastDay(int tiEnd) {
-            if (tiEnd >= 0 && tiEnd < 11) {
-                //0
-            } else if (tiEnd >= 11 && tiEnd < 14) {
-                //1
-                cbMorninig.setChecked(true);
-            } else if (tiEnd >= 14 && tiEnd < 17) {
-                //12
-                cbMorninig.setChecked(true);
-                cbLate.setChecked(true);
-            } else if (tiEnd >= 17 && tiEnd < 20) {
-                //123
-                cbMorninig.setChecked(true);
-                cbLate.setChecked(true);
-                cbAfternoon.setChecked(true);;
-            } else if (tiEnd >= 20 && tiEnd < 24) {
-                //1234
-                cbMorninig.setChecked(true);
-                cbLate.setChecked(true);
-                cbAfternoon.setChecked(true);
-                cbEvening.setChecked(true);
-            }
-
-
+        if (tiEnd >= 0 && tiEnd < 11) {
+            //0
+        } else if (tiEnd >= 11 && tiEnd < 14) {
+            //1
+            cbMorninig.setChecked(true);
+        } else if (tiEnd >= 14 && tiEnd < 17) {
+            //12
+            cbMorninig.setChecked(true);
+            cbLate.setChecked(true);
+        } else if (tiEnd >= 17 && tiEnd < 20) {
+            //123
+            cbMorninig.setChecked(true);
+            cbLate.setChecked(true);
+            cbAfternoon.setChecked(true);
+            ;
+        } else if (tiEnd >= 20 && tiEnd < 24) {
+            //1234
+            cbMorninig.setChecked(true);
+            cbLate.setChecked(true);
+            cbAfternoon.setChecked(true);
+            cbEvening.setChecked(true);
+        }
 
 
     }
@@ -618,6 +614,113 @@ public class Manage_calendar extends AppCompatActivity {
                 return "09";
             default:
                 return dateNumber;
+        }
+    }
+
+    public void addToArrayForDB(int tiStart, int tiEnd, String daStart, String daEnd) {
+        if (!daStart.equals(daEnd) && tiStart == tiEnd) {//date same day all day
+            Log.d("calendar123", "date123 : " + daStart + " - " + daEnd);
+            addDateToDB.add("s/" + daStart + "/" + "1");
+            addDateToDB.add("s/" + daStart + "/" + "2");
+            addDateToDB.add("s/" + daStart + "/" + "3");
+            addDateToDB.add("s/" + daStart + "/" + "4");
+            addDateToDB.add("e/" + daEnd + "/" + "1");
+            addDateToDB.add("e/" + daEnd + "/" + "2");
+            addDateToDB.add("e/" + daEnd + "/" + "3");
+            addDateToDB.add("e/" + daEnd + "/" + "4");
+        } else {
+            if (!daStart.equals(daEnd) && tiStart != tiEnd) {//no same date No all time
+                if (tiStart >= 0 && tiStart < 11) {
+                    //0
+                } else if (tiStart >= 11 && tiStart < 14) {
+                    //1234
+                    addDateToDB.add("s/" + daStart + "/" + "1");
+                    addDateToDB.add("s/" + daStart + "/" + "2");
+                    addDateToDB.add("s/" + daStart + "/" + "3");
+                    addDateToDB.add("s/" + daStart + "/" + "4");
+                } else if (tiStart >= 14 && tiStart < 17) {
+                    //234
+                    addDateToDB.add("s/" + daStart + "/" + "2");
+                    addDateToDB.add("s/" + daStart + "/" + "3");
+                    addDateToDB.add("s/" + daStart + "/" + "4");
+                } else if (tiStart >= 17 && tiStart < 20) {
+                    //34
+                    addDateToDB.add("s/" + daStart + "/" + "3");
+                    addDateToDB.add("s/" + daStart + "/" + "4");
+                } else if (tiStart >= 20 && tiStart < 24) {
+                    //4
+                    addDateToDB.add("s/" + daStart + "/" + "4");
+                }
+            } else {//same day
+                if (tiStart >= 0 && tiStart < 14) {
+                    if (tiEnd >= 0 && tiEnd < 11) {
+                        //0
+                    } else if (tiEnd >= 11 && tiEnd < 14) {
+                        //1
+                        addDateToDB.add("s/" + daStart + "/" + "1");
+                        addDateToDB.add("e/" + daEnd + "/" + "1");
+                    } else if (tiEnd >= 14 && tiEnd < 17) {
+                        //12
+                        addDateToDB.add("s/" + daStart + "/" + "1");
+                        addDateToDB.add("e/" + daEnd + "/" + "1");
+                        addDateToDB.add("s/" + daStart + "/" + "2");
+                        addDateToDB.add("e/" + daEnd + "/" + "2");
+                    } else if (tiEnd >= 17 && tiEnd < 20) {
+                        //123
+                        addDateToDB.add("s/" + daStart + "/" + "1");
+                        addDateToDB.add("e/" + daEnd + "/" + "1");
+                        addDateToDB.add("s/" + daStart + "/" + "2");
+                        addDateToDB.add("e/" + daEnd + "/" + "2");
+                        addDateToDB.add("s/" + daStart + "/" + "3");
+                        addDateToDB.add("e/" + daEnd + "/" + "3");
+                    } else if (tiEnd >= 20 && tiEnd < 24) {
+                        //1234
+                        addDateToDB.add("s/" + daStart + "/" + "1");
+                        addDateToDB.add("e/" + daEnd + "/" + "1");
+                        addDateToDB.add("s/" + daStart + "/" + "2");
+                        addDateToDB.add("e/" + daEnd + "/" + "2");
+                        addDateToDB.add("s/" + daStart + "/" + "3");
+                        addDateToDB.add("e/" + daEnd + "/" + "3");
+                        addDateToDB.add("s/" + daStart + "/" + "4");
+                        addDateToDB.add("e/" + daEnd + "/" + "4");
+                    }
+                } else if (tiStart >= 14 && tiStart < 17) {
+                    if (tiEnd >= 14 && tiEnd < 17) {
+                        //2
+                        cbLate.setChecked(true);
+                    } else if (tiEnd >= 17 && tiEnd < 20) {
+                        //23
+                        cbLate.setChecked(true);
+                        cbAfternoon.setChecked(true);
+                    } else if (tiEnd >= 20 && tiEnd < 24) {
+                        //234
+                        cbLate.setChecked(true);
+                        cbAfternoon.setChecked(true);
+                        cbEvening.setChecked(true);
+                    }
+                } else if (tiStart >= 17 && tiStart < 20) {
+                    if (tiEnd >= 17 && tiEnd < 20) {
+                        //3
+                        cbAfternoon.setChecked(true);
+                    } else if (tiEnd >= 20 && tiEnd < 24) {
+                        //34
+                        cbAfternoon.setChecked(true);
+                        cbEvening.setChecked(true);
+                    }
+                } else if (tiStart >= 20 && tiStart < 24) {
+                    if (tiEnd >= 20 && tiEnd < 24) {
+                        //4
+                        cbEvening.setChecked(true);
+                    }
+                }
+            }
+
+        }
+        for (int i = 0; i < dateCalGetDiff.size(); i++) {
+            addDateToDB.add("d/" + dateCalGetDiff.get(i) + "/" + "1");
+            addDateToDB.add("d/" + dateCalGetDiff.get(i) + "/" + "2");
+            addDateToDB.add("d/" + dateCalGetDiff.get(i) + "/" + "3");
+            addDateToDB.add("d/" + dateCalGetDiff.get(i) + "/" + "4");
         }
     }
 }
