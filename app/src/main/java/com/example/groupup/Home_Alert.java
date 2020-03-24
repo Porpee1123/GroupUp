@@ -135,7 +135,7 @@ public class Home_Alert extends AppCompatActivity {
                                 +"สถานะ : " + sPri + "\n");
 
 
-                        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ไม่เข้าร่วม", new DialogInterface.OnClickListener() {
+                        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"เอาไว้ก่อน", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
