@@ -61,6 +61,7 @@ public class Manage_Account extends AppCompatActivity {
                 if (ContextCompat.checkSelfPermission(Manage_Account.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(Manage_Account.this, "You have already permission access gallery", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
+                    intent.putExtra("email", email+"");
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Select Image From Gallery"), 1);
@@ -77,6 +78,8 @@ public class Manage_Account extends AppCompatActivity {
         EditText edt_email = findViewById(R.id.email);
         edt_name.setText(name);
         edt_email.setText(email);
+        edt_email.setFocusable(false);
+        edt_email.setEnabled(false);
 
         final Button bcon = (Button)findViewById(R.id.account_confirm);
         bcon.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +87,7 @@ public class Manage_Account extends AppCompatActivity {
             public void onClick(View view) {
 //                ImageUploadToServerFunction();
                     Intent intent = new Intent(Manage_Account.this, Home.class);
+                    intent.putExtra("email", email+"");
                     startActivity(intent);
             }
         });

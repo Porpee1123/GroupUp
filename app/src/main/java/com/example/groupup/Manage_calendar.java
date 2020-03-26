@@ -268,8 +268,6 @@ public class Manage_calendar extends AppCompatActivity {
                     }
                     calendarPicker.highlightDates(newDate);
 //                    Log.d("newDate","newDate123"+dateString.toString());
-
-
                 } else {
                     requestCalendarPermission();
 //                    readCalendarEvent(Manage_calendar.this);
@@ -307,13 +305,25 @@ public class Manage_calendar extends AppCompatActivity {
                             for (int i=0;i<dateString.size();i++){
 //                                sentDateToDB(dateString.get(i));
                             }
-                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
+//                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
                             for(int i=0;i<dateDiffString.size();i++){
 //                                sentDateDiffToDB(dateDiffString.get(i));
                             }
                             handlerSave.sendEmptyMessage(0);
                         }else{
+                            handlerSave.sendEmptyMessage(0);
+                            final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
+                            viewDetail.setTitle("กรุณาเลือกวันที่");
+                            viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
+                                }
+                            });
+                            viewDetail.show();
+                            Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                            btnPositive.setLayoutParams(layoutParams);
                         }
 
                     }
@@ -623,7 +633,7 @@ public class Manage_calendar extends AppCompatActivity {
     }
 
     public void cutStringDateDiff(ArrayList dt) {
-        Log.d("dateAll ","dt : "+dt.toString());
+//        Log.d("dateAll ","dt : "+dt.toString());
         for (int i = 0; i < dt.size(); i++) {
             StringTokenizer st = new StringTokenizer(dt.get(i).toString(), ":");
             while (st.hasMoreTokens()) {
@@ -937,7 +947,7 @@ public class Manage_calendar extends AppCompatActivity {
                             for (int i =0;i<MyArrList.size();i++){
                                 dateDiffFromDB.add(MyArrList.get(i).get("datediff")+"+"+MyArrList.get(i).get("datediffend"));
                             }
-                            Log.d("dateAll","dateDiffFromDB"+dateDiffFromDB.toString());
+//                            Log.d("dateAll","dateDiffFromDB"+dateDiffFromDB.toString());
 //                            Log.d("newDate","dateDiffFromDB"+dateDiffFromDB.toString());
 //                            Log.d("query", MyArrList.toString() + "");
                         } catch (JSONException e) {
