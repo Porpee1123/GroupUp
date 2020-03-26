@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
+import java.io.FileOutputStream;
 
 public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
     String id,eid,nameE,monS,monE,email;
@@ -18,10 +21,12 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         email = getIntent().getStringExtra("email");
+
+//        Log.d("appoint",email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
     }
 
     public void selectDateTime(View v) {
-        Intent intent = new Intent(HomeHead_Appointment_Date_And_Place.this, Manage_calendar.class);
+        Intent intent = new Intent(HomeHead_Appointment_Date_And_Place.this, Head_Date.class);
         intent.putExtra("id", id+"");
         intent.putExtra("email", email+"");
         intent.putExtra("nEvent", nameE+"");
@@ -32,7 +37,7 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
     }
 
     public void selectPlace(View v) {
-        Intent intent = new Intent(HomeHead_Appointment_Date_And_Place.this, InviteFriend.class);
+        Intent intent = new Intent(HomeHead_Appointment_Date_And_Place.this, Head_Theme.class);
         intent.putExtra("id", id+"");
         intent.putExtra("email", email+"");
         intent.putExtra("nEvent", nameE+"");

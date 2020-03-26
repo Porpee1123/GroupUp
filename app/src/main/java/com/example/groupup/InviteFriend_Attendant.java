@@ -148,7 +148,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     //***********************************************************************************************//
     Button btnConfirmAttendant;
     View gab;
-    String uid = "",email="",eid="";
+    String uid,eid,nameE,monS,monE,email;
     int countType=0;
     ListView listViewFriend;
     List<InviteFriend_Attendant.Item> items;
@@ -174,6 +174,9 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
+        nameE = getIntent().getStringExtra("nameEvent");
+        monS = getIntent().getStringExtra("mStart");
+        monE = getIntent().getStringExtra("mEnd");
         frientArray = new ArrayList<>();
         getType();
         getFriend();

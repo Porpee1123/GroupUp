@@ -158,6 +158,7 @@ public class Home_CreateEvent extends AppCompatActivity {
         intent.putExtra("mStart",mStart);
         intent.putExtra("mEnd",mEnd);
         intent.putExtra("id",id);
+        intent.putExtra("tab",0+"");
         startActivity(intent);
     }
 

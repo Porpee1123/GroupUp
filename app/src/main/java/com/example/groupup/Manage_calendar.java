@@ -142,7 +142,7 @@ public class Manage_calendar extends AppCompatActivity {
                     Date d = new Date(date);
                     newDate.add(d);
                 }
-                calendarPicker.highlightDates(newDate);
+
                 cutStringDate(cbStartcalenFromDB,cbEndcalenFromDB);
 
                 DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
@@ -156,6 +156,7 @@ public class Manage_calendar extends AppCompatActivity {
                 Log.d("dateAll","diffDateTime : "+ diffDateTime.toString());
                 cutStringDateDiff(diffDateTime);
 //                Log.d("dateAll","diffDateTime : "+ diffDateTime.toString());
+                calendarPicker.highlightDates(newDate);
                 handler.sendEmptyMessage(0);
             }
 

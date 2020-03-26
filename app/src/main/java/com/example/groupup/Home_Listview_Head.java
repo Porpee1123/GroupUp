@@ -105,10 +105,11 @@ public class Home_Listview_Head extends AppCompatActivity {
                         String eStatus= MyArrList.get(position).get("states_name");
                         Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
                         Intent intent = new Intent(Home_Listview_Head.this, HomeHead_Appointment.class);
-                        intent.putExtra("id",id);
-                        intent.putExtra("eid",eId);
-                        intent.putExtra("nameEvent",eName);
-                        intent.putExtra("email",email);
+                        intent.putExtra("id",id+"");
+                        intent.putExtra("eid",eId+"");
+                        intent.putExtra("nameEvent",eName+"");
+                        intent.putExtra("email",email+"");
+                        intent.putExtra("tab",0+"");
                         startActivity(intent);
                     }
                 });

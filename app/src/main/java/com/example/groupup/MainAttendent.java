@@ -69,7 +69,7 @@ public class MainAttendent extends AppCompatActivity {
 
     public void backHome(View v) {
         Intent intent = new Intent(MainAttendent.this, Home.class);
-        intent.putExtra("email", email);
+        intent.putExtra("email", email+"");
         startActivity(intent);
     }
     protected void updateTabs() {

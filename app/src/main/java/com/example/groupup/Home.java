@@ -184,8 +184,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
     public void createGroup(View v) {
         Intent intent = new Intent(Home.this, Home_CreateEvent.class);
-        intent.putExtra("id", id);
-        intent.putExtra("name", name);
+        intent.putExtra("id", id+"");
+        intent.putExtra("name", name+"");
         intent.putExtra("email", email+"");
         startActivity(intent);
     }
@@ -225,8 +225,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
     public void goToManageAccount() {
         Intent intent = new Intent(Home.this, Manage_Account.class);
-        intent.putExtra("email", email);
-        intent.putExtra("name", name);
+        intent.putExtra("email", email+"");
+        intent.putExtra("name", name+"");
         startActivity(intent);
     }
     public void goToCalendar() {

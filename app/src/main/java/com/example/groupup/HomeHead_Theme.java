@@ -762,6 +762,7 @@ public class HomeHead_Theme extends AppCompatActivity {
         intent.putExtra("mStart", monS+"");
         intent.putExtra("mEnd", monE+"");
         intent.putExtra("eid", eid+"");
+        intent.putExtra("tab",0+"");
         startActivity(intent);
     }
     public void visibleLinear(){

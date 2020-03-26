@@ -4,8 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 
 public class HomeHead_Appointment_SetItem extends AppCompatActivity {
     Button inviteFriend , selectTheme;
@@ -22,27 +30,29 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+//        Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
     }
 
     public void selectFriend(View v) {
         Intent intent = new Intent(HomeHead_Appointment_SetItem.this, InviteFriend.class);
-        intent.putExtra("email",email);
-        intent.putExtra("id",id);
-        intent.putExtra("eid",eid);
-        intent.putExtra("nameEvent",nameE);
-        intent.putExtra("mStart",monS);
-        intent.putExtra("mEnd",monE);
+        intent.putExtra("email",email+"");
+        intent.putExtra("id",id+"");
+        intent.putExtra("eid",eid+"");
+        intent.putExtra("nameEvent",nameE+"");
+        intent.putExtra("mStart",monS+"");
+        intent.putExtra("mEnd",monE+"");
         startActivity(intent);
+
     }
 
     public void selectTheme(View v) {
         Intent intent = new Intent(HomeHead_Appointment_SetItem.this, HomeHead_Theme.class);
-        intent.putExtra("email",email);
-        intent.putExtra("id",id);
-        intent.putExtra("eid",eid);
-        intent.putExtra("nameEvent",nameE);
-        intent.putExtra("mStart",monS);
-        intent.putExtra("mEnd",monE);
+        intent.putExtra("email",email+"");
+        intent.putExtra("id",id+"");
+        intent.putExtra("eid",eid+"");
+        intent.putExtra("nameEvent",nameE+"");
+        intent.putExtra("mStart",monS+"");
+        intent.putExtra("mEnd",monE+"");
         startActivity(intent);
     }
     public void selectSlip(View v) {
@@ -55,4 +65,5 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
         intent.putExtra("eid", eid+"");
         startActivity(intent);
     }
+
 }

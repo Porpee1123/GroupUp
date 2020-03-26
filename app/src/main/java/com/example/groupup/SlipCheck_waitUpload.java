@@ -43,8 +43,8 @@ public class SlipCheck_waitUpload extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         slipWait = findViewById(R.id.listView_slipUpload);
-
         getSlipUpload();
+        Log.d("slipUpload","wait : ") ;
     }
     public void getSlipUpload() {
         responseStr = new SlipCheck_waitUpload.ResponseStr();
@@ -69,6 +69,7 @@ public class SlipCheck_waitUpload extends AppCompatActivity {
                                 map.put("states_name", c.getString("states_name"));
                                 MyArrList.add(map);
                             }
+                            Log.d("slipUpload","slipUpload : "+MyArrList.toString()) ;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -85,11 +86,16 @@ public class SlipCheck_waitUpload extends AppCompatActivity {
         queue.add(stringRequest);
 
 
-                // When timer is finished
-                slipWait.setVisibility(View.VISIBLE);
+        new CountDownTimer(500, 500){
+            @Override
+            public void onTick(long millisUntilFinished) {            }
+
+            @Override
+            public void onFinish() {
                 SimpleAdapter sAdap;
-                sAdap = new SimpleAdapter(SlipCheck_waitUpload.this, MyArrList, R.layout.activity_attend_home,
-                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
+                Log.d("slipUpload","12346 : "+MyArrList.toString()) ;
+                sAdap = new SimpleAdapter(SlipCheck_waitUpload.this, MyArrList, R.layout.activity_slip_upload,
+                        new String[]{"events_name", "states_name"}, new int[]{R.id.rowTextViewName, R.id.rowTextViewTag});
                 slipWait.setAdapter(sAdap);
 
                 slipWait.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,7 +112,8 @@ public class SlipCheck_waitUpload extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-
+            }
+        }.start();
     }
     public class ResponseStr {
         private String str;
@@ -117,4 +124,16 @@ public class SlipCheck_waitUpload extends AppCompatActivity {
         }
 
     }
+    //delay
+//    new CountDownTimer(500, 500){
+//        @Override
+//        public void onTick(long millisUntilFinished) {
+//
+//        }
+//
+//        @Override
+//        public void onFinish() {
+//
+//        }
+//    }.start();
 }

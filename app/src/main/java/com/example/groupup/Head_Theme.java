@@ -24,10 +24,11 @@ public class Head_Theme extends AppCompatActivity {
         Intent intent = new Intent(Head_Theme.this, HomeHead_Appointment.class);
         intent.putExtra("id", uid+"");
         intent.putExtra("email", email+"");
-        intent.putExtra("eid",eid);
-        intent.putExtra("nameEvent",nameE);
-        intent.putExtra("mStart",monS);
-        intent.putExtra("mEnd",monE);
+        intent.putExtra("eid",eid+"");
+        intent.putExtra("nameEvent",nameE+"");
+        intent.putExtra("mStart",monS+"");
+        intent.putExtra("mEnd",monE+"");
+        intent.putExtra("tab",1+"");
         startActivity(intent);
     }
 }

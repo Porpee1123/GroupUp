@@ -11,48 +11,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/classicBlue"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" /> ̰
-
-            <ImageButton
-                android:id="@+id/back_home"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/classicBlue"
-                android:src="@drawable/ic_chevron_left_black_24dp" />
-
-            <TextView
-                android:id="@+id/SlipCheck"
-                style="@style/Style"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="3"
-                android:fontFamily="sans-serif"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/slipCheck" />
-
-            <View
-                android:id="@+id/view1"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-            <View
-                android:id="@+id/view9"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-
         <ListView
             android:id="@+id/listView_slipFinish"
             android:layout_width="match_parent"

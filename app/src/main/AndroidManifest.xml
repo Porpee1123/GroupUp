@@ -19,9 +19,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Head_Theme"></activity>
         <activity android:name=".Head_Date" />
-        <activity android:name=".Invitation_Attendant" />
-        <activity android:name=".Invitation_Head" />
-        <activity android:name=".invitation" />
         <activity android:name=".SlipCheck_finish" />
         <activity android:name=".SlipCheck_waitCheck" />
         <activity android:name=".SlipCheck_waitUpload" />

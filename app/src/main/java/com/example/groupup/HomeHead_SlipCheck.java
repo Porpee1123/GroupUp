@@ -54,7 +54,7 @@ public class HomeHead_SlipCheck extends AppCompatActivity {
                 .setIndicator("รอดำเนินการ\nตรวจสอบ")
                 .setContent(intentWC);
         TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab2")
-                .setIndicator("เสร็จสิ้น")
+                .setIndicator("อัปโหลด\nเสร็จสิ้น")
                 .setContent(intentFi);
 
         tabHost.addTab(tabSpec);
@@ -100,6 +100,7 @@ public class HomeHead_SlipCheck extends AppCompatActivity {
         intent.putExtra("mStart", monS+"");
         intent.putExtra("mEnd", monE+"");
         intent.putExtra("eid", eid+"");
+        intent.putExtra("tab",0+"");
         startActivity(intent);
     }
 }

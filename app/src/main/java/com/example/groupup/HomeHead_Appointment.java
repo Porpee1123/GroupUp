@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
@@ -21,14 +22,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class HomeHead_Appointment extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     String id,eid,nameE,monS,monE,email;
+    int tab=0;
     TextView tName,mStart,mEnd,headAppoint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +52,16 @@ public class HomeHead_Appointment extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         email = getIntent().getStringExtra("email");
+        tab =Integer.parseInt(getIntent().getStringExtra("tab")+"") ;
+        Log.d("tab","tab "+tab);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tName.setText(nameE);
         mStart.setText(monS);
         mEnd.setText(monE);
         headAppoint.setText(nameE);
+
         getEvent();
+
         tabHost.setup(mLocalActivityManager);
         Intent intentS = new Intent(this,HomeHead_Appointment_SetItem.class);
         intentS.putExtra("id", id+"");
@@ -60,6 +70,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         intentS.putExtra("mStart", monS+"");
         intentS.putExtra("mEnd", monE+"");
         intentS.putExtra("eid", eid+"");
+
         Intent intentdp  = new Intent(this,HomeHead_Appointment_Date_And_Place.class);
         intentdp.putExtra("id", id+"");
         intentdp.putExtra("email", email+"");
@@ -67,13 +78,6 @@ public class HomeHead_Appointment extends AppCompatActivity {
         intentdp.putExtra("mStart", monS+"");
         intentdp.putExtra("mEnd", monE+"");
         intentdp.putExtra("eid", eid+"");
-        Intent intentslip  = new Intent(this, HomeHead_SlipCheck.class);
-        intentslip.putExtra("id", id+"");
-        intentslip.putExtra("email", email+"");
-        intentslip.putExtra("nEvent", nameE+"");
-        intentslip.putExtra("mStart", monS+"");
-        intentslip.putExtra("mEnd", monE+"");
-        intentslip.putExtra("eid", eid+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("กำหนดรายการ ")
                 .setContent(intentS);
@@ -107,6 +111,8 @@ public class HomeHead_Appointment extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        eventData();
+        tabHost.setCurrentTab(tab);
         mLocalActivityManager.dispatchResume();
     }
 
@@ -136,9 +142,15 @@ public class HomeHead_Appointment extends AppCompatActivity {
                                 map.put("events_month_end", c.getString("events_month_end"));
                                 MyArrList.add(map);
                             }
-                            tName.setText(MyArrList.get(0).get("events_name"));
-                            mStart.setText(MyArrList.get(0).get("events_month_start"));
-                            mEnd.setText(MyArrList.get(0).get("events_month_end"));
+                            nameE = MyArrList.get(0).get("events_name");
+                            monS = MyArrList.get(0).get("events_month_start");
+                            monE = MyArrList.get(0).get("events_month_end");
+                            tName.setText(nameE);
+                            mStart.setText(monS);
+                            mEnd.setText(monE);
+                            writeFile(id,eid,nameE,monS,monS,email);
+//                            Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
+//                            Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -176,12 +188,61 @@ public class HomeHead_Appointment extends AppCompatActivity {
     }
     public void backHomepage(View v) {
         Intent intent = new Intent(HomeHead_Appointment.this, Home.class);
-        intent.putExtra("id", id);
-        intent.putExtra("email", email);
+        intent.putExtra("id", id+"");
+        intent.putExtra("email", email+"");
         startActivity(intent);
     }
 
+    public void writeFile(String id,String eid,String nameE,String monS,String monE,String email) {
+    String filename = "eventData.txt";
+    String sid = id+ ":";
+    String seid = eid+ ":";
+    String snameE = nameE+ ":";
+    String smonS = monS+ ":";
+    String smonE = monE+ ":";
+    String semail = email + "\n";
+    FileOutputStream outputStream;
+    try {
+        outputStream = openFileOutput(filename, MODE_PRIVATE);
+        outputStream.write(sid.getBytes());
+        outputStream.write(seid.getBytes());
+        outputStream.write(snameE.getBytes());
+        outputStream.write(smonS.getBytes());
+        outputStream.write(smonE.getBytes());
+        outputStream.write(semail.getBytes());
+        outputStream.close();
+//            Log.d("AddFriend","write file : id "+sid +" / status "+ semail);
 
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+    public void eventData(){
+        String filename = "eventData.txt";
+        try {
+            BufferedReader inputReader = new BufferedReader(
+                    new InputStreamReader(openFileInput(filename)));
+
+            ArrayList<String> his = new ArrayList<>();
+            String line = "";
+            while ((line = inputReader.readLine()) != null) {
+                his.add(line);
+            }
+            for (int i = 0; i < his.size(); i++) {
+                StringTokenizer st = new StringTokenizer(his.get(i), ":");
+                id = st.nextToken();
+                eid =st.nextToken();
+                nameE = st.nextToken();
+                monS = st.nextToken();
+                monE = st.nextToken();
+                email = st.nextToken();
+            }
+            Log.d("appoint","readfile home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
+            headAppoint.setText(nameE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

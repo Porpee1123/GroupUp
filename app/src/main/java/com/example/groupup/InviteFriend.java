@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
+
 
 public class InviteFriend extends AppCompatActivity {
 
@@ -37,10 +39,17 @@ public class InviteFriend extends AppCompatActivity {
         intentA.putExtra("id", uid+"");
         intentA.putExtra("email", email+"");
         intentA.putExtra("eid", eid+"");
+        intentA.putExtra("nameEvent",nameE+"");
+        intentA.putExtra("mStart",monS+"");
+        intentA.putExtra("mEnd",monE+"");
+
         Intent intentH = new Intent(this,InviteFriend_Head.class);
         intentH.putExtra("id", uid+"");
         intentH.putExtra("email", email+"");
         intentH.putExtra("eid", eid+"");
+        intentH.putExtra("nameEvent",nameE+"");
+        intentH.putExtra("mStart",monS+"");
+        intentH.putExtra("mEnd",monE+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("ผู้เข้าร่วมงาน")
                 .setContent(intentA);
@@ -99,10 +108,12 @@ public class InviteFriend extends AppCompatActivity {
         Intent intent = new Intent(InviteFriend.this, HomeHead_Appointment.class);
         intent.putExtra("id", uid+"");
         intent.putExtra("email", email+"");
-        intent.putExtra("eid",eid);
-        intent.putExtra("nameEvent",nameE);
-        intent.putExtra("mStart",monS);
-        intent.putExtra("mEnd",monE);
+        intent.putExtra("eid",eid+"");
+        intent.putExtra("nameEvent",nameE+"");
+        intent.putExtra("mStart",monS+"");
+        intent.putExtra("mEnd",monE+"");
+        intent.putExtra("tab",0+"");
+        tabHost.setCurrentTab(1);
         startActivity(intent);
     }
 }

@@ -148,7 +148,7 @@ public class InviteFriend_Head extends AppCompatActivity {
     //***********************************************************************************************//
     Button btnConfirmHead;
     int countType=0;
-    String uid = "",email="",eid="";
+    String uid,eid,nameE,monS,monE,email;
     ListView listViewFriend;
     List<InviteFriend_Head.Item> items;
     ArrayList<String> typefriend;
@@ -167,6 +167,9 @@ public class InviteFriend_Head extends AppCompatActivity {
         uid = getIntent().getStringExtra("id");
         eid = getIntent().getStringExtra("eid");
         email = getIntent().getStringExtra("email");
+        nameE = getIntent().getStringExtra("nameEvent");
+        monS = getIntent().getStringExtra("mStart");
+        monE = getIntent().getStringExtra("mEnd");
         listViewFriend = findViewById(R.id.listview_friend);
         btnConfirmHead = findViewById(R.id.slide);
         frientArray = new ArrayList<>();
