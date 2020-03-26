@@ -44,7 +44,7 @@
     <string name="note">Note</string>
     <string name="stMonth">Appointment Start Month</string>
     <string name="endMonth">Appointment End Month</string>
-    <string name="select_friend">select friend</string>
+    <string name="select_friend">Select Friend</string>
     <string name="waitTime">Wait Time Vote</string>
     <string name="day">Day</string>
     <string name="Appointment_period">Appointment period</string>
@@ -53,7 +53,7 @@
     <string name="priceRange">Price range</string>
     <string name="bath">Bath</string>
     <string name="phone">Phone</string>
-    <string name="select_theme">select theme</string>
+    <string name="select_theme">Select Theme</string>
     <string name="numberOfSeats">Nuber of seats</string>
     <string name="seats">seats</string>
     <string name="deposite">Deposite</string>
@@ -109,9 +109,9 @@
     <string name="appointment">Appointment</string>
     <string name="to">To</string>
     <string name="date_time">Appointment date and time</string>
-    <string name="select_date_time">Select date and time</string>
+    <string name="select_date_time">Select Date And Time</string>
     <string name="place">Appointment place</string>
-    <string name="select_place">Select place</string>
+    <string name="select_place">Select Place</string>
     <string name="next">Next</string>
     <string name="start">Start</string>
     <string name="end">End</string>
@@ -142,6 +142,7 @@
     <string name="time_evening">20:00 - 23:59</string>
     <string name="send_notification">Send Notification</string>
     <string name="verification">Verification</string>
-
+    <string name="choice">Choice : (Choose 3 Choice)</string>
+    <string name="filter">Filter : </string>
 
 </resources>

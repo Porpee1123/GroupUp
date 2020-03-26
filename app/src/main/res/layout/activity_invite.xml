@@ -30,7 +30,7 @@
 
                 <ImageButton
                     android:id="@+id/back_home"
-                    android:layout_width="wrap_content"
+                    android:layout_width="13dp"
                     android:layout_height="match_parent"
                     android:background="@color/classicBlue"
                     android:onClick="backAppoint"

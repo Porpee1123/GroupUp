@@ -142,4 +142,6 @@
     <string name="time_evening">20:00 - 23:59</string>
     <string name="send_notification">ส่งการแจ้งเตือน</string>
     <string name="verification">ตรวจสอบ</string>
+    <string name="choice">ตัวเลือก : (เลือก 3 ตัวเลือก)</string>
+    <string name="filter">ตัวกรอง : </string>
 </resources>
