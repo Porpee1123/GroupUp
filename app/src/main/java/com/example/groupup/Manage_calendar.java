@@ -144,25 +144,19 @@ public class Manage_calendar extends AppCompatActivity {
                 }
                 calendarPicker.highlightDates(newDate);
                 cutStringDate(cbStartcalenFromDB,cbEndcalenFromDB);
-                Log.d("dateAll ","cbStartcalenFromDB : "+ cbStartcalenFromDB.toString());
-                Log.d("dateAll ","cbEndcalenFromDB : "+ cbEndcalenFromDB.toString());
-                DateFormat simple = new SimpleDateFormat("dd/MM/yyyy");
+
                 DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
-//                Log.d("newDate","newDate "+simple.format(newDate.get(0).getTime())+"size: "+newDate.size());
-//                Log.d("newDate","newDate "+checkCalendarDate(newDate.get(0).getDate()+"")+"/"+checkCalendar(newDate.get(0).getMonth()+"")+"/"+newDate.get(0).getYear()+"");
-//                Log.d("newDate","newDate "+dateCalGet.get(0));
-                Log.d("datediffer","newDate "+dateDiffFromDB.toString()+"size : "+ dateDiffFromDB.size());
+//                Log.d("dateAll","newDate "+dateDiffFromDB.toString()+"size : "+ dateDiffFromDB.size());
                 ArrayList<Date> pres = new ArrayList<>();
                 for (int i=0;i<dateDiffFromDB.size();i++){
-                    long date = Date.parse(dateFromDB.get(i));
+                    long date = Date.parse(dateDiffFromDB.get(i));
                     Date d = new Date(date);
-                    pres.add(d);
-                    diffDateTime.add(simpleHour.format(pres.get(i))+"");
-                    cutStringDateDiff(diffDateTime);
+                    diffDateTime.add(simpleHour.format(d)+"");
                 }
-                Log.d("dateAll ","diffDateTime : "+ diffDateTime.toString());
+                Log.d("dateAll","diffDateTime : "+ diffDateTime.toString());
+                cutStringDateDiff(diffDateTime);
+//                Log.d("dateAll","diffDateTime : "+ diffDateTime.toString());
                 handler.sendEmptyMessage(0);
-
             }
 
             public void onTick(long millisUntilFinished) {
@@ -207,10 +201,12 @@ public class Manage_calendar extends AppCompatActivity {
 //                        Log.d("dateTime", "checkbox : " + Integer.parseInt(timeCalGet.get(i)) + " " + Integer.parseInt(timeCalGetEnd.get(i)) + " " + dateCalGet.get(i) + " " + dateCalGetEnd.get(i));
                         Log.d("dateTime123", "selectedDateCompare : " + selectedDateCompare);
                         clickCheckboxDateTime(Integer.parseInt(timeCalGet.get(i)), Integer.parseInt(timeCalGetEnd.get(i)), dateCalGet.get(i), dateCalGetEnd.get(i));
+
                     } else if (selectedDateCompare.equals(dateCalGetEnd.get(i))) {
                         clickCheckboxDiffDTLastDay(Integer.parseInt(timeCalGetEnd.get(i)));
                     }
                 }
+//                Log.d("dateAll ","selectedDateCompare : "+selectedDateCompare+" diffDateTime222 : "+ dateCalGetDiff.toString());
                 for (int i = 0; i < dateCalGetDiff.size(); i++) {
 //                    Log.d("diffDateTime", "dateCalGetDiff : " + dateCalGetDiff.toString());
                     if (selectedDateCompare.equals(dateCalGetDiff.get(i))) {
@@ -305,13 +301,14 @@ public class Manage_calendar extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if (startDateTime!=null||endDateTime!=null||dateString!=null){
                             for (int i=0;i<startDateTime.size();i++){
-                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
+//                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
                             }
                             for (int i=0;i<dateString.size();i++){
-                                sentDateToDB(dateString.get(i));
+//                                sentDateToDB(dateString.get(i));
                             }
+                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
                             for(int i=0;i<dateDiffString.size();i++){
-                                sentDateDiffToDB(dateDiffString.get(i));
+//                                sentDateDiffToDB(dateDiffString.get(i));
                             }
                             handlerSave.sendEmptyMessage(0);
                         }else{
@@ -625,6 +622,7 @@ public class Manage_calendar extends AppCompatActivity {
     }
 
     public void cutStringDateDiff(ArrayList dt) {
+        Log.d("dateAll ","dt : "+dt.toString());
         for (int i = 0; i < dt.size(); i++) {
             StringTokenizer st = new StringTokenizer(dt.get(i).toString(), ":");
             while (st.hasMoreTokens()) {
@@ -938,6 +936,7 @@ public class Manage_calendar extends AppCompatActivity {
                             for (int i =0;i<MyArrList.size();i++){
                                 dateDiffFromDB.add(MyArrList.get(i).get("datediff")+"+"+MyArrList.get(i).get("datediffend"));
                             }
+                            Log.d("dateAll","dateDiffFromDB"+dateDiffFromDB.toString());
 //                            Log.d("newDate","dateDiffFromDB"+dateDiffFromDB.toString());
 //                            Log.d("query", MyArrList.toString() + "");
                         } catch (JSONException e) {
