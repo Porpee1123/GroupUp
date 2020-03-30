@@ -284,7 +284,7 @@ public class Manage_calendar extends AppCompatActivity {
         btnConfirmCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveDialog.show();
+
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
                 viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
 
@@ -298,6 +298,7 @@ public class Manage_calendar extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        saveDialog.show();
                         if (startDateTime!=null||endDateTime!=null||dateString!=null){
                             for (int i=0;i<startDateTime.size();i++){
                                 Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
@@ -710,27 +711,7 @@ public class Manage_calendar extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //str = new String(response, StandardCharsets.UTF_8);
-                        //String reader = new String(response, StandardCharsets.UTF_8);
-                        try {
-                            String strStatusID = "0";
-                            String strError = "Unknow Status!";
-                            JSONObject c;
-                            JSONArray data = new JSONArray("[" + response.toString() + "]");
-                            for (int i = 0; i < data.length(); i++) {
-                                c = data.getJSONObject(i);
-                                strStatusID = c.getString("StatusID");
-                                strError = c.getString("Error");
-                            }
-                            if (strStatusID.equals("0")) {
-
-                            } else {
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-//                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
-                        }
+                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -808,27 +789,8 @@ public class Manage_calendar extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //str = new String(response, StandardCharsets.UTF_8);
-                        //String reader = new String(response, StandardCharsets.UTF_8);
-                        try {
-                            String strStatusID = "0";
-                            String strError = "Unknow Status!";
-                            JSONObject c;
-                            JSONArray data = new JSONArray("[" + response.toString() + "]");
-                            for (int i = 0; i < data.length(); i++) {
-                                c = data.getJSONObject(i);
-                                strStatusID = c.getString("StatusID");
-                                strError = c.getString("Error");
-                            }
-                            if (strStatusID.equals("0")) {
+                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
 
-                            } else {
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-//                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
-                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -903,27 +865,8 @@ public class Manage_calendar extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //str = new String(response, StandardCharsets.UTF_8);
-                        //String reader = new String(response, StandardCharsets.UTF_8);
-                        try {
-                            String strStatusID = "0";
-                            String strError = "Unknow Status!";
-                            JSONObject c;
-                            JSONArray data = new JSONArray("[" + response.toString() + "]");
-                            for (int i = 0; i < data.length(); i++) {
-                                c = data.getJSONObject(i);
-                                strStatusID = c.getString("StatusID");
-                                strError = c.getString("Error");
-                            }
-                            if (strStatusID.equals("0")) {
+                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
 
-                            } else {
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-//                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
-                        }
                     }
                 },
                 new Response.ErrorListener() {
