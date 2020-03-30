@@ -703,10 +703,41 @@ public class Manage_calendar extends AppCompatActivity {
         }
     }
     public void sentCalendarToDB(String startDate, String endDate) {
+        Log.d("simpledate","startDate : "+startDate);
+        String dateCheckformatStart="",dateCheckformatEnd="";
+        StringTokenizer std = new StringTokenizer(startDate,":");
+        StringTokenizer ste = new StringTokenizer(endDate,":");
+        while (std.hasMoreTokens()){
+            String dfs = std.nextToken();
+            std.nextToken();
+            StringTokenizer st = new StringTokenizer(dfs,"/");
+            while (st.hasMoreTokens()){
+                String d = st.nextToken();
+                String m = st.nextToken();
+                String y = st.nextToken();
+                dateCheckformatStart = y+"/"+m+"/"+d;
+
+            }
+        }
+        while (ste.hasMoreTokens()){
+            String dfe = ste.nextToken();
+            ste.nextToken();
+            StringTokenizer st = new StringTokenizer(dfe,"/");
+            while (st.hasMoreTokens()){
+                String d = st.nextToken();
+                String m = st.nextToken();
+                String y = st.nextToken();
+                dateCheckformatEnd = y+"/"+m+"/"+d;
+
+            }
+        }
+        Log.d("simpledate","dateCheckformatStart : "+dateCheckformatStart+"--"+dateCheckformatEnd);
         String url = "http://www.groupupdb.com/android/addcalendar.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
+        url += "&dcfs=" + dateCheckformatStart+"";
+        url += "&dcfe=" + dateCheckformatEnd+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -776,15 +807,19 @@ public class Manage_calendar extends AppCompatActivity {
         date2="";
         CutStringDateForSaveDB(date);
         DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
         long dt = Date.parse(date);
         Date d = new Date(dt);
         String dateCheck =simpleHour.format(d);
+        String dateCheckformat =simpledate.format(d)+"";
+        Log.d("simpledate","sentDateToDB : "+dateCheckformat);
         Log.d("checkDB ", "dateCheck : " + dateCheck);
         String url = "http://www.groupupdb.com/android/adddate.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
         url += "&sdc=" + dateCheck+"";
+        url += "&dcf=" + dateCheckformat+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -848,19 +883,22 @@ public class Manage_calendar extends AppCompatActivity {
         queue.add(stringRequest);
     }
     public void sentDateDiffToDB(String date) {
-
         date1="";
         date2="";
         CutStringDateForSaveDB(date);
         DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
         long dt = Date.parse(date);
         Date d = new Date(dt);
         String dateCheck =simpleHour.format(d)+"";
+        String dateCheckformat =simpledate.format(d)+"";
+        Log.d("simpledate","getDateFromDB : "+dateCheckformat);
         String url = "http://www.groupupdb.com/android/adddatediff.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
         url += "&sdc=" + dateCheck+"";
+        url += "&dcf=" + dateCheckformat+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
