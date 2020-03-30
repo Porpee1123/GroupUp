@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -81,28 +82,35 @@ public class SlipCheck_finish extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
 
+        new CountDownTimer(500, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) { }
 
-        // When timer is finished
-        slipFinish.setVisibility(View.VISIBLE);
-        SimpleAdapter sAdap;
-        sAdap = new SimpleAdapter(SlipCheck_finish.this, MyArrList, R.layout.activity_attend_home,
-                new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
-        slipFinish.setAdapter(sAdap);
+            @Override
+            public void onFinish() {
+                SimpleAdapter sAdap;
+                Log.d("slipUpload","12346 : "+MyArrList.toString()) ;
+                sAdap = new SimpleAdapter(SlipCheck_finish.this, MyArrList, R.layout.activity_slip_finish,
+                        new String[]{"events_name", "states_name"}, new int[]{R.id.rowTextViewName, R.id.rowTextViewTag});
+                slipFinish.setAdapter(sAdap);
 
-        slipFinish.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                String eName= MyArrList.get(position).get("events_name");
-                String eId= MyArrList.get(position).get("events_id");
-                String eStatus= MyArrList.get(position).get("states_name");
-                Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
-                Intent intent = new Intent(SlipCheck_finish.this, MainAttendent.class);
-                intent.putExtra("id",id+"");
-                intent.putExtra("eid",eId+"");
-                intent.putExtra("nameEvent",eName+"");
-                intent.putExtra("email",email);
-                startActivity(intent);
+                slipFinish.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+                        String eName= MyArrList.get(position).get("events_name");
+                        String eId= MyArrList.get(position).get("events_id");
+                        String eStatus= MyArrList.get(position).get("states_name");
+                        Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
+                        Intent intent = new Intent(SlipCheck_finish.this, MainAttendent.class);
+                        intent.putExtra("id",id+"");
+                        intent.putExtra("eid",eId+"");
+                        intent.putExtra("nameEvent",eName+"");
+                        intent.putExtra("email",email);
+                        startActivity(intent);
+                    }
+                });
+
             }
-        });
+        }.start();
 
     }
     public class ResponseStr {

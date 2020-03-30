@@ -29,17 +29,32 @@ public class MainAttendent extends AppCompatActivity {
         nHead.setText(nEvent);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
+        Intent intentV = new Intent(this,MainAttendent_Vote.class);
+        intentV.putExtra("id", id+"");
+        intentV.putExtra("email", email+"");
+        intentV.putExtra("nameEvent", nEvent+"");
+        intentV.putExtra("eid", eid+"");
+        Intent intentS = new Intent(this,MainAttendent_Summary.class);
+        intentS.putExtra("id", id+"");
+        intentS.putExtra("email", email+"");
+        intentS.putExtra("nameEvent", nEvent+"");
+        intentS.putExtra("eid", eid+"");
+        Intent intentR = new Intent(this,MainAttendent_Reviews.class);
+        intentR.putExtra("id", id+"");
+        intentR.putExtra("email", email+"");
+        intentR.putExtra("nameEvent", nEvent+"");
+        intentR.putExtra("eid", eid+"");
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("การโหวต")
-                .setContent(new Intent(this, MainAttendent_Vote.class));
+                .setContent(intentV);
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("สรุปงาน")
-                .setContent(new Intent(this, MainAttendent_Summary.class));
+                .setContent(intentS);
         TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3")
                 .setIndicator("รีวิว")
-                .setContent(new Intent(this, MainAttendent_Reviews.class));
+                .setContent(intentR);
 
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
