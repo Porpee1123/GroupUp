@@ -144,4 +144,9 @@
     <string name="verification">ตรวจสอบ</string>
     <string name="choice">ตัวเลือก : (เลือก 3 ตัวเลือก)</string>
     <string name="filter">ตัวกรอง : </string>
+    <string name="default_notification_channel_name">Channel ID</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="msg_subscribed">Subscribed to weather topic</string>
+    <string name="fcm_message">fcm_message</string>
+    <string name="msg_subscribe_failed">Subscribe To failed</string>
 </resources>

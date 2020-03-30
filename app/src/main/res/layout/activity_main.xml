@@ -47,5 +47,19 @@
             android:layout_height="wrap_content"
             android:text="Customer" />
 
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="getTokenRetieve"
+            android:text="get Token" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startSubscribe"
+            android:text="subscribe" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
