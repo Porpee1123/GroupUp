@@ -170,7 +170,7 @@ public class Manage_calendar extends AppCompatActivity {
         btnConfirmCalendar.setVisibility(View.GONE);
         Date today = new Date();
         Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.MONTH, 4); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน
+        nextYear.add(Calendar.YEAR,1 ); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน
         calendarPicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
         calendarPicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
@@ -260,7 +260,7 @@ public class Manage_calendar extends AppCompatActivity {
                     Toast.makeText(Manage_calendar.this, "You have already permission", Toast.LENGTH_SHORT).show();
                     readCalendarEvent(Manage_calendar.this);
                     btnConfirmCalendar.setVisibility(View.VISIBLE);
-
+                    Log.d("checkDB ", "btnGetCalen : " + dateString);
                     for (int i = 0; i < dateString.size(); i++) {
                         long date = Date.parse(dateString.get(i));
                         Date d = new Date(date);
@@ -284,7 +284,7 @@ public class Manage_calendar extends AppCompatActivity {
         btnConfirmCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveDialog.show();
+
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
                 viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
 
@@ -298,16 +298,20 @@ public class Manage_calendar extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        saveDialog.show();
                         if (startDateTime!=null||endDateTime!=null||dateString!=null){
                             for (int i=0;i<startDateTime.size();i++){
-//                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
+                                Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
+                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
                             }
                             for (int i=0;i<dateString.size();i++){
-//                                sentDateToDB(dateString.get(i));
+                                Log.d("checkDB ", "dateString : " + dateString.toString());
+                                sentDateToDB(dateString.get(i));
                             }
 //                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
                             for(int i=0;i<dateDiffString.size();i++){
-//                                sentDateDiffToDB(dateDiffString.get(i));
+                                Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
+                                sentDateDiffToDB(dateDiffString.get(i));
                             }
                             handlerSave.sendEmptyMessage(0);
                         }else{
@@ -707,27 +711,7 @@ public class Manage_calendar extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //str = new String(response, StandardCharsets.UTF_8);
-                        //String reader = new String(response, StandardCharsets.UTF_8);
-                        try {
-                            String strStatusID = "0";
-                            String strError = "Unknow Status!";
-                            JSONObject c;
-                            JSONArray data = new JSONArray("[" + response.toString() + "]");
-                            for (int i = 0; i < data.length(); i++) {
-                                c = data.getJSONObject(i);
-                                strStatusID = c.getString("StatusID");
-                                strError = c.getString("Error");
-                            }
-                            if (strStatusID.equals("0")) {
-
-                            } else {
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-//                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
-                        }
+                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -787,38 +771,26 @@ public class Manage_calendar extends AppCompatActivity {
         queue.add(stringRequest);
     }
     public void sentDateToDB(String date) {
+        Log.d("checkDB ", "dateString123 : " + date);
         date1="";
         date2="";
         CutStringDateForSaveDB(date);
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        long dt = Date.parse(date);
+        Date d = new Date(dt);
+        String dateCheck =simpleHour.format(d);
+        Log.d("checkDB ", "dateCheck : " + dateCheck);
         String url = "http://www.groupupdb.com/android/adddate.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
+        url += "&sdc=" + dateCheck+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //str = new String(response, StandardCharsets.UTF_8);
-                        //String reader = new String(response, StandardCharsets.UTF_8);
-                        try {
-                            String strStatusID = "0";
-                            String strError = "Unknow Status!";
-                            JSONObject c;
-                            JSONArray data = new JSONArray("[" + response.toString() + "]");
-                            for (int i = 0; i < data.length(); i++) {
-                                c = data.getJSONObject(i);
-                                strStatusID = c.getString("StatusID");
-                                strError = c.getString("Error");
-                            }
-                            if (strStatusID.equals("0")) {
+                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
 
-                            } else {
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-//                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
-                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -876,38 +848,25 @@ public class Manage_calendar extends AppCompatActivity {
         queue.add(stringRequest);
     }
     public void sentDateDiffToDB(String date) {
+
         date1="";
         date2="";
         CutStringDateForSaveDB(date);
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        long dt = Date.parse(date);
+        Date d = new Date(dt);
+        String dateCheck =simpleHour.format(d)+"";
         String url = "http://www.groupupdb.com/android/adddatediff.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
+        url += "&sdc=" + dateCheck+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //str = new String(response, StandardCharsets.UTF_8);
-                        //String reader = new String(response, StandardCharsets.UTF_8);
-                        try {
-                            String strStatusID = "0";
-                            String strError = "Unknow Status!";
-                            JSONObject c;
-                            JSONArray data = new JSONArray("[" + response.toString() + "]");
-                            for (int i = 0; i < data.length(); i++) {
-                                c = data.getJSONObject(i);
-                                strStatusID = c.getString("StatusID");
-                                strError = c.getString("Error");
-                            }
-                            if (strStatusID.equals("0")) {
+                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
 
-                            } else {
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-//                            Toast.makeText(InviteFriend_Attendant.this, "Submission Error!", Toast.LENGTH_LONG).show();
-                        }
                     }
                 },
                 new Response.ErrorListener() {

@@ -144,5 +144,11 @@
     <string name="verification">Verification</string>
     <string name="choice">Choice : (Choose 3 Choice)</string>
     <string name="filter">Filter : </string>
+    <string name="default_notification_channel_name">Channel ID</string>
+    <string name="fcm_message">fcm_message</string>
+    <string name="msg_subscribed">Subscribed to weather topic</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="msg_subscribe_failed">Subscribe To failed</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
 </resources>
