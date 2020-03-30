@@ -2,7 +2,7 @@
     <string name="app_name">GroupUp</string>
     <string name="left">left</string>
     <string name="right">right</string>
-    <string name="description">description</string>
+    <string name="descriptionPlace">Description :</string>
     <string name="detail_customer">Detail_customer</string>
     <string name="signout">Signout</string>
     <string name="account">Manage Account</string>
