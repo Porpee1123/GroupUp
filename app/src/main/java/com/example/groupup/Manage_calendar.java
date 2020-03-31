@@ -79,7 +79,7 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> cbEndcalenFromDB = new ArrayList<>();
     ArrayList<String> dateFromDB = new ArrayList<>();
     ArrayList<String> dateDiffFromDB = new ArrayList<>();
-    ArrayList<String> AllDateTime = new ArrayList<>();
+    ArrayList<String> dateForDB  = new ArrayList<>();
     String uid, email;
     String date1,date2;
     //checkbox
@@ -174,15 +174,14 @@ public class Manage_calendar extends AppCompatActivity {
         calendarPicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
         calendarPicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-            ArrayList<String> day = new ArrayList<>();
-
             @Override
             public void onDateSelected(Date date) {
                 //String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(date);
+//                Log.d("dateSelectClick","date : "+date);
+                btnGetCalen.setEnabled(false);
                 clearCheckBox();
                 btnConfirmCalendar.setVisibility(View.VISIBLE);
                 linearCheckbox.setVisibility(View.VISIBLE);
-
                 Calendar calSelected = Calendar.getInstance();
                 calSelected.setTime(date);
                 String selectedDate = "" + calSelected.get(Calendar.DAY_OF_MONTH)
@@ -191,10 +190,41 @@ public class Manage_calendar extends AppCompatActivity {
                 String selectedDateCompare = "" + checkCalendarDate(calSelected.get(Calendar.DAY_OF_MONTH) + "") + "/";
                 selectedDateCompare += checkCalendar(calSelected.get(Calendar.MONTH) + "") + "/";
                 selectedDateCompare += calSelected.get(Calendar.YEAR);
+//                Log.d("dateSelectClick","selectedDate : "+selectedDateCompare);
+                dateForDB.add(date.toString());
+                final String finalSelectedDateCompare = selectedDateCompare;
+                cbMorninig.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDateTime.add(finalSelectedDateCompare +":11");
+                        endDateTime.add(finalSelectedDateCompare +":13");
+                    }
+                });
+                cbLate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDateTime.add(finalSelectedDateCompare+":14");
+                        endDateTime.add(finalSelectedDateCompare+":16");
+                    }
+                });
+                cbAfternoon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDateTime.add(finalSelectedDateCompare+":17");
+                        endDateTime.add(finalSelectedDateCompare+":19");
+                    }
+                });
+                cbEvening.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDateTime.add(finalSelectedDateCompare+":20");
+                        endDateTime.add(finalSelectedDateCompare+":23");
+                    }
+                });
+                Log.d("dateSelectClick","dateForDB : "+dateForDB.toString());
+                Log.d("dateSelectClick","startDateTime : "+startDateTime.toString());
+                Log.d("dateSelectClick","endDateTime : "+endDateTime.toString());
                 tvDateTime.setText(calSelected.get(Calendar.DAY_OF_MONTH) + " " + (arr_month.getString(calSelected.get(Calendar.MONTH))) + " " + calSelected.get(Calendar.YEAR));
-//                Toast.makeText(Manage_calendar.this, selectedDateCompare, Toast.LENGTH_SHORT).show();
-                String s = selectedDate;
-                day.add(s);
                 Log.d("newDate","dateCalGet "+dateCalGet.toString()+"---"+dateCalGetEnd.toString());
                 for (int i = 0; i < dateCalGet.size(); i++) {
 //                    Log.d("dateTime", "dateCalGet : " + dateCalGet.get(i) + " " + selectedDateCompare);
@@ -221,35 +251,31 @@ public class Manage_calendar extends AppCompatActivity {
 
             @Override
             public void onDateUnselected(Date date) {
+                btnGetCalen.setEnabled(true);
                 clearCheckBox();
                 linearCheckbox.setVisibility(View.GONE);
                 Calendar calUnSelected = Calendar.getInstance();
                 calUnSelected.setTime(date);
-
-                String selectedDate = "" + calUnSelected.get(Calendar.DAY_OF_MONTH)
-                        + " " + (calUnSelected.get(Calendar.MONTH) + 1)
-                        + " " + calUnSelected.get(Calendar.YEAR);
+                String unSelectedDateCompare = "" + checkCalendarDate(calUnSelected.get(Calendar.DAY_OF_MONTH) + "") + "/";
+                unSelectedDateCompare += checkCalendar(calUnSelected.get(Calendar.MONTH) + "") + "/";
+                unSelectedDateCompare += calUnSelected.get(Calendar.YEAR);
 
 //                Toast.makeText(Manage_calendar.this, selectedDate, Toast.LENGTH_SHORT).show();
-                String s = selectedDate;
-                String del = "";
-                for (int i = 0; i < day.size(); i++) {
-                    if (s.equals(day.get(i))) {
-                        del = i + "";
-                    }//time == time diff click all day
-                }
-//                allDaySelect.remove(Integer.parseInt(del));
-                day.remove(Integer.parseInt(del));
+                removeDate(date.toString(),dateForDB);
+                final String finalUnSelectedDateCompare = unSelectedDateCompare;
+                removeTime(finalUnSelectedDateCompare +":11",startDateTime);
+                removeTime(finalUnSelectedDateCompare +":13",endDateTime);
+                removeTime(finalUnSelectedDateCompare +":14",startDateTime);
+                removeTime(finalUnSelectedDateCompare +":16",endDateTime);
+                removeTime(finalUnSelectedDateCompare +":17",startDateTime);
+                removeTime(finalUnSelectedDateCompare +":19",endDateTime);
+                removeTime(finalUnSelectedDateCompare +":20",startDateTime);
+                removeTime(finalUnSelectedDateCompare +":23",endDateTime);
+                Log.d("dateSelectClick","RemovedateForDB : "+dateForDB.toString());
+                Log.d("dateSelectClick","RemovestartDateTime : "+startDateTime.toString());
+                Log.d("dateSelectClick","RemoveendDateTime : "+endDateTime.toString());
             }
         });
-//        //Change format date
-//        newDate = new ArrayList();
-//        for (int i = 0; i < dateString.size(); i++) {
-////            DateFormat simple = new SimpleDateFormat();
-//            long date = Date.parse(dateString.get(i));
-//            Date d = new Date(date * 1000);
-//            newDate.add(d);
-//        }
 
 
         allDaySelect = new ArrayList();
@@ -258,88 +284,73 @@ public class Manage_calendar extends AppCompatActivity {
             public void onClick(View view) {
                 if (ContextCompat.checkSelfPermission(Manage_calendar.this, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(Manage_calendar.this, "You have already permission", Toast.LENGTH_SHORT).show();
-                    readCalendarEvent(Manage_calendar.this);
-                    btnConfirmCalendar.setVisibility(View.VISIBLE);
-                    Log.d("checkDB ", "btnGetCalen : " + dateString);
-                    for (int i = 0; i < dateString.size(); i++) {
-                        long date = Date.parse(dateString.get(i));
-                        Date d = new Date(date);
-                        newDate.add(d);
-                    }
-                    calendarPicker.highlightDates(newDate);
-//                    Log.d("newDate","newDate123"+dateString.toString());
+                    SaveCalenGettoDB();
+
                 } else {
                     requestCalendarPermission();
-//                    readCalendarEvent(Manage_calendar.this);
-//                    newDate = new ArrayList();
-//                    for (int i = 0; i < dateString.size(); i++) {
-//                        long date = Date.parse(dateString.get(i));
-//                        Date d = new Date(date);
-//                        newDate.add(d);
-//                    }
-//                    calendarPicker.highlightDates(newDate);
+
                 }
             }
         });
         btnConfirmCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
-                viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
-
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-                    }
-                });
-                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveDialog.show();
-                        if (startDateTime!=null||endDateTime!=null||dateString!=null){
-                            for (int i=0;i<startDateTime.size();i++){
-                                Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
-                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
-                            }
-                            for (int i=0;i<dateString.size();i++){
-                                Log.d("checkDB ", "dateString : " + dateString.toString());
-                                sentDateToDB(dateString.get(i));
-                            }
-//                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
-                            for(int i=0;i<dateDiffString.size();i++){
-                                Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
-                                sentDateDiffToDB(dateDiffString.get(i));
-                            }
-                            handlerSave.sendEmptyMessage(0);
-                        }else{
-                            handlerSave.sendEmptyMessage(0);
-                            final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
-                            viewDetail.setTitle("กรุณาเลือกวันที่");
-                            viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });
-                            viewDetail.show();
-                            Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-                            btnPositive.setLayoutParams(layoutParams);
-                        }
-
-                    }
-                });
-                viewDetail.show();
-                Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-                layoutParams.weight = 10;
-                btnPositive.setLayoutParams(layoutParams);
-                btnNegative.setLayoutParams(layoutParams);
+//                sentCalendarFix();
+//                final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
+//                viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
+//
+//                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//
+//                    }
+//                });
+//                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        saveDialog.show();
+//                        if (startDateTime!=null||endDateTime!=null||dateString!=null){
+//                            for (int i=0;i<startDateTime.size();i++){
+//                                Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
+//                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
+//                            }
+//                            for (int i=0;i<dateString.size();i++){
+//                                Log.d("checkDB ", "dateString : " + dateString.toString());
+//                                sentDateToDB(dateString.get(i));
+//                            }
+////                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
+//                            for(int i=0;i<dateDiffString.size();i++){
+//                                Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
+//                                sentDateDiffToDB(dateDiffString.get(i));
+//                            }
+//                            handlerSave.sendEmptyMessage(0);
+//                        }else{
+//                            handlerSave.sendEmptyMessage(0);
+//                            final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
+//                            viewDetail.setTitle("กรุณาเลือกวันที่");
+//                            viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                }
+//                            });
+//                            viewDetail.show();
+//                            Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+//                            btnPositive.setLayoutParams(layoutParams);
+//                        }
+//
+//                    }
+//                });
+//                viewDetail.show();
+//                Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//                Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+//
+//                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+//                layoutParams.weight = 10;
+//                btnPositive.setLayoutParams(layoutParams);
+//                btnNegative.setLayoutParams(layoutParams);
 
             }
         });
@@ -483,6 +494,7 @@ public class Manage_calendar extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(Manage_calendar.this, new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_PERMISSION_CODE);
+                            Toast.makeText(Manage_calendar.this, "Plese put Get Calendar Again", Toast.LENGTH_SHORT).show();
                         }
                     }).setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
                 @Override
@@ -742,7 +754,7 @@ public class Manage_calendar extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -824,7 +836,7 @@ public class Manage_calendar extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
 
                     }
                 },
@@ -903,7 +915,7 @@ public class Manage_calendar extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
 
                     }
                 },
@@ -977,5 +989,145 @@ public class Manage_calendar extends AppCompatActivity {
             this.jsonArray = jsonArr;
         }
 
+    }
+    public void removeTime(String date,ArrayList arrayList){
+        String number = "";
+        for (int i =0; i< arrayList.size(); i++){
+            if (date.equals(arrayList.get(i))){
+                number = i+"";
+            }
+        }
+        if (!number.equals("")){
+            arrayList.remove(Integer.parseInt(number));
+        }
+
+        Log.d("dateSelect","removeDateTime : "+arrayList.toString());
+//        Toast.makeText(Manage_calendar.this, "removeDateTime : "+allDateTime.toString(), Toast.LENGTH_SHORT).show();
+    }
+    public void removeDate(String date,ArrayList allStartDate){
+        String number = "";
+        for (int i =0; i< allStartDate.size(); i++){
+            if (date.equals(allStartDate.get(i))){
+                number = i+"";
+            }
+        }
+        if (!number.equals("")){
+            allStartDate.remove(Integer.parseInt(number));
+        }
+
+        Log.d("dateSelect","removeDateTime : "+allStartDate.toString());
+//        Toast.makeText(Manage_calendar.this, "removeDateTime : "+allDateTime.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void SaveCalenGettoDB(){
+
+        final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
+        viewDetail.setTitle("Confirm Add Calendar to DataBase");
+
+        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                readCalendarEvent(Manage_calendar.this);
+                btnConfirmCalendar.setVisibility(View.VISIBLE);
+                Log.d("checkDB ", "btnGetCalen : " + dateString);
+                for (int i = 0; i < dateString.size(); i++) {
+                    long date = Date.parse(dateString.get(i));
+                    Date d = new Date(date);
+                    newDate.add(d);
+                }
+                calendarPicker.highlightDates(newDate);
+                saveDialog.show();
+                if (startDateTime!=null||endDateTime!=null||dateString!=null){
+//                    Log.d("dateSelect","start"+startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
+                    for (int i=0;i<startDateTime.size();i++){
+                        Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
+                        sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
+                    }
+                    for (int i=0;i<dateString.size();i++){
+                        Log.d("checkDB ", "dateString : " + dateString.toString());
+                        sentDateToDB(dateString.get(i));
+                    }
+//                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
+                    for(int i=0;i<dateDiffString.size();i++){
+                        Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
+                        sentDateDiffToDB(dateDiffString.get(i));
+                    }
+                    startDateTime.clear();
+                    endDateTime.clear();
+                    dateString.clear();
+                    dateDiffString.clear();
+//                    Log.d("dateSelect",startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
+                    handlerSave.sendEmptyMessage(0);
+                }else{
+                    handlerSave.sendEmptyMessage(0);
+                    final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
+                    viewDetail.setTitle("กรุณาเลือกวันที่");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    viewDetail.show();
+                    Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    btnPositive.setLayoutParams(layoutParams);
+                }
+
+            }
+        });
+        viewDetail.show();
+        Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+        layoutParams.weight = 10;
+        btnPositive.setLayoutParams(layoutParams);
+        btnNegative.setLayoutParams(layoutParams);
+
+    }
+    public void sentCalendarFix(String startDate) {
+        Log.d("simpledate","startDate : "+startDate);
+        String dateCheckformatStart="";
+        StringTokenizer std = new StringTokenizer(startDate,":");
+        while (std.hasMoreTokens()){
+            String dfs = std.nextToken();
+            std.nextToken();
+            StringTokenizer st = new StringTokenizer(dfs,"/");
+            while (st.hasMoreTokens()){
+                String d = st.nextToken();
+                String m = st.nextToken();
+                String y = st.nextToken();
+                dateCheckformatStart = y+"/"+m+"/"+d;
+            }
+        }
+        Log.d("simpledate","dateCheckformatStart : "+dateCheckformatStart);
+        String url = "http://www.groupupdb.com/android/changeDateDiffToDate.php";
+        url += "?sId=" + uid;
+        url += "&sdt=" + startDate;
+        url += "&sdtl=" + startDate;
+        url += "&dcf=" + dateCheckformatStart+"";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
