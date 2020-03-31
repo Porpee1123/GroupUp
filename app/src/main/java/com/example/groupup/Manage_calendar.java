@@ -296,61 +296,41 @@ public class Manage_calendar extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                sentCalendarFix();
-//                final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
-//                viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
+                final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
+                viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
 //
-//                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//
-//                    }
-//                });
-//                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        saveDialog.show();
-//                        if (startDateTime!=null||endDateTime!=null||dateString!=null){
-//                            for (int i=0;i<startDateTime.size();i++){
-//                                Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
-//                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
-//                            }
-//                            for (int i=0;i<dateString.size();i++){
-//                                Log.d("checkDB ", "dateString : " + dateString.toString());
-//                                sentDateToDB(dateString.get(i));
-//                            }
-////                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
-//                            for(int i=0;i<dateDiffString.size();i++){
-//                                Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
-//                                sentDateDiffToDB(dateDiffString.get(i));
-//                            }
-//                            handlerSave.sendEmptyMessage(0);
-//                        }else{
-//                            handlerSave.sendEmptyMessage(0);
-//                            final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
-//                            viewDetail.setTitle("กรุณาเลือกวันที่");
-//                            viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//
-//                                }
-//                            });
-//                            viewDetail.show();
-//                            Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-//                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-//                            btnPositive.setLayoutParams(layoutParams);
-//                        }
-//
-//                    }
-//                });
-//                viewDetail.show();
-//                Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-//                Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-//
-//                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-//                layoutParams.weight = 10;
-//                btnPositive.setLayoutParams(layoutParams);
-//                btnNegative.setLayoutParams(layoutParams);
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                });
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (startDateTime!=null||endDateTime!=null||dateString!=null){
+                            for (int i=0;i<startDateTime.size();i++){
+                                Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
+                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
+                            }
+                            for (int i=0;i<dateForDB.size();i++){
+                                Log.d("checkDB ", "dateString : " + dateForDB.toString());
+                                sentDateToDB(dateForDB.get(i));
+                            }
+                            handlerSave.sendEmptyMessage(0);
+                            startActivity(getIntent());
+                        }
+                    }
+                });
+                viewDetail.show();
+                Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                layoutParams.weight = 10;
+                btnPositive.setLayoutParams(layoutParams);
+                btnNegative.setLayoutParams(layoutParams);
 
             }
         });
@@ -1114,6 +1094,58 @@ public class Manage_calendar extends AppCompatActivity {
         url += "&sdt=" + startDate;
         url += "&sdtl=" + startDate;
         url += "&dcf=" + dateCheckformatStart+"";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void sentCustomDateToCalendar(String startDate, String endDate) {
+        Log.d("simpledate","startDate : "+startDate);
+        String dateCheckformatStart="",dateCheckformatEnd="";
+        StringTokenizer std = new StringTokenizer(startDate,":");
+        StringTokenizer ste = new StringTokenizer(endDate,":");
+        while (std.hasMoreTokens()){
+            String dfs = std.nextToken();
+            std.nextToken();
+            StringTokenizer st = new StringTokenizer(dfs,"/");
+            while (st.hasMoreTokens()){
+                String d = st.nextToken();
+                String m = st.nextToken();
+                String y = st.nextToken();
+                dateCheckformatStart = y+"/"+m+"/"+d;
+
+            }
+        }
+        while (ste.hasMoreTokens()){
+            String dfe = ste.nextToken();
+            ste.nextToken();
+            StringTokenizer st = new StringTokenizer(dfe,"/");
+            while (st.hasMoreTokens()){
+                String d = st.nextToken();
+                String m = st.nextToken();
+                String y = st.nextToken();
+                dateCheckformatEnd = y+"/"+m+"/"+d;
+
+            }
+        }
+        Log.d("simpledate","dateCheckformatStart : "+dateCheckformatStart+"--"+dateCheckformatEnd);
+        String url = "http://www.groupupdb.com/android/addcustomcalendar.php";
+        url += "?sId=" + uid;
+        url += "&sdt=" + startDate;
+        url += "&edt=" + endDate;
+        url += "&dcfs=" + dateCheckformatStart+"";
+        url += "&dcfe=" + dateCheckformatEnd+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
