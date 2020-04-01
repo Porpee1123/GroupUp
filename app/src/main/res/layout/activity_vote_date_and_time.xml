@@ -61,49 +61,65 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="50dp">
 
                 <Button
-                    android:id="@+id/button15"
+                    android:id="@+id/button1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:text="Button" />
+                    android:background="@color/blueWhite"
+                    android:text="ฺButton" />
 
                 <Button
-                    android:id="@+id/button16"
+                    android:id="@+id/button2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:background="@color/blueWhite"
                     android:text="Button" />
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="50dp">
 
                 <Button
-                    android:id="@+id/button17"
+                    android:id="@+id/button3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:background="@color/blueWhite"
                     android:text="Button" />
 
                 <Button
-                    android:id="@+id/button18"
+                    android:id="@+id/button4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:background="@color/blueWhite"
                     android:text="Button" />
             </TableRow>
 
         </TableLayout>
 
         <Button
-            android:id="@+id/button19"
-            android:layout_width="match_parent"
+            android:id="@+id/button10"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:background="@color/classicBlue"
+            android:text="@string/btn"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 

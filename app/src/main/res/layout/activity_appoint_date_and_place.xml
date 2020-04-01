@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,7 +32,8 @@
                 android:id="@+id/select_date_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button"
                 android:onClick="selectDateTime"
@@ -42,9 +43,11 @@
             <ToggleButton
                 android:id="@+id/toggleButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton" />
+                android:layout_height="match_parent"
+                android:text="ToggleButton"
+                android:textOff="@string/voteOff"
+                android:textOn="@string/voteOn"
+                android:textSize="12sp" />
 
         </TableRow>
 
@@ -67,7 +70,8 @@
                 android:id="@+id/select_place"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button"
                 android:onClick="selectPlace"
@@ -77,9 +81,11 @@
             <ToggleButton
                 android:id="@+id/toggleButton2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton" />
+                android:layout_height="match_parent"
+                android:text="ToggleButton"
+                android:textOff="@string/voteOff"
+                android:textOn="@string/voteOn"
+                android:textSize="12sp" />
 
         </TableRow>
 
@@ -97,4 +103,4 @@
 
     </TableLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
