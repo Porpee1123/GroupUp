@@ -24,6 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Home_CreateEvent extends AppCompatActivity {
     String name="",id="",email="";
     String nEvent,mStart,mEnd;
@@ -40,10 +43,23 @@ public class Home_CreateEvent extends AppCompatActivity {
         //Spinner month start
         Spinner spms = findViewById(R.id.spin_start);
         Spinner spme = findViewById(R.id.spin_end);
+        Date date = new Date();
+        int sdate,edate;
+        sdate = date.getMonth()+1;
+        edate = date.getMonth()+4;
+        if (sdate>11){
+            sdate-=11;
+        }
+        if (edate>11){
+            edate-=11;
+        }
         ArrayAdapter<CharSequence> adm = ArrayAdapter.createFromResource(this, R.array.month, android.R.layout.simple_spinner_item);
         adm.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spms.setAdapter(adm);
         spme.setAdapter(adm);
+        spms.setSelection(sdate);
+        spme.setSelection(edate);
+
         //start 3 end 2 คือ 3 2020 - 2 2021
         Button btn_create = findViewById(R.id.newGroup_confirm);
         btn_create.setOnClickListener(new View.OnClickListener() {

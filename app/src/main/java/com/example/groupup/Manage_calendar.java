@@ -45,6 +45,8 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -80,6 +82,7 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> dateFromDB = new ArrayList<>();
     ArrayList<String> dateDiffFromDB = new ArrayList<>();
     ArrayList<String> dateForDB  = new ArrayList<>();
+    ArrayList<String> dateOfyear  = new ArrayList<>();
     String uid, email;
     String date1,date2;
     //checkbox
@@ -166,13 +169,15 @@ public class Manage_calendar extends AppCompatActivity {
 
 //        Log.d("newDate","cbStartcalenFromDB "+cbStartcalenFromDB.toString());
 //        Log.d("newDate","dateCalGet "+dateCalGet.toString());
-        //checkbox
+        //add date in calendar
         btnConfirmCalendar.setVisibility(View.GONE);
         Date today = new Date();
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR,1 ); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน
+
         calendarPicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
+
         calendarPicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {

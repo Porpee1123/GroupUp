@@ -87,6 +87,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void run() {
                 getUser();
+                deleteDateOldDay();
             }
         }).start();
         new CountDownTimer(800, 800) {
@@ -344,5 +345,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             this.jsonArray = jsonArr;
         }
 
+    }
+    public void deleteDateOldDay() {
+        responseStr = new ResponseStr();
+        String url = "http://www.groupupdb.com/android/deleteDate.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.d("deleteDateOldDay", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
