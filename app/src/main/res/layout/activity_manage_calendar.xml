@@ -69,7 +69,10 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/import_calendar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -79,8 +82,14 @@
             <Button
                 android:id="@+id/btnGetCalendar"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/getCalen" />
+
+            <Button
+                android:id="@+id/btnDelCalendar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="@string/delCalen" />
         </LinearLayout>
         <com.squareup.timessquare.CalendarPickerView
             android:id="@+id/calendarPickerView"

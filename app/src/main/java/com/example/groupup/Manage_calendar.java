@@ -58,7 +58,7 @@ import java.util.StringTokenizer;
 
 public class Manage_calendar extends AppCompatActivity {
     CalendarPickerView calendarPicker;
-    Button btnGetCalen,btnConfirmCalendar;
+    Button btnGetCalen,btnConfirmCalendar,btnDelCalendar;
     Manage_calendar.ResponseStr responseStr = new Manage_calendar.ResponseStr();
     private int CALENDAR_PERMISSION_CODE = 1;
     ArrayList<Date> date = new ArrayList<>();
@@ -102,6 +102,7 @@ public class Manage_calendar extends AppCompatActivity {
         linearCheckbox = findViewById(R.id.linear_Checkbox_Calendar);
         calendarPicker.highlightDates(date);
         btnConfirmCalendar =findViewById(R.id.btn_confirmCalendar);
+        btnDelCalendar = findViewById(R.id.btnDelCalendar);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         //checkbox
@@ -183,19 +184,18 @@ public class Manage_calendar extends AppCompatActivity {
             public void onDateSelected(Date date) {
                 //String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(date);
 //                Log.d("dateSelectClick","date : "+date);
+
                 btnGetCalen.setEnabled(false);
                 clearCheckBox();
                 btnConfirmCalendar.setVisibility(View.VISIBLE);
                 linearCheckbox.setVisibility(View.VISIBLE);
                 Calendar calSelected = Calendar.getInstance();
                 calSelected.setTime(date);
-                String selectedDate = "" + calSelected.get(Calendar.DAY_OF_MONTH)
-                        + " " + (calSelected.get(Calendar.MONTH) + 1)
-                        + " " + calSelected.get(Calendar.YEAR);
                 String selectedDateCompare = "" + checkCalendarDate(calSelected.get(Calendar.DAY_OF_MONTH) + "") + "/";
                 selectedDateCompare += checkCalendar(calSelected.get(Calendar.MONTH) + "") + "/";
                 selectedDateCompare += calSelected.get(Calendar.YEAR);
 //                Log.d("dateSelectClick","selectedDate : "+selectedDateCompare);
+                Log.d("checkdiff","selectedDateCompare : "+selectedDateCompare);
                 dateForDB.add(date.toString());
                 final String finalSelectedDateCompare = selectedDateCompare;
                 cbMorninig.setOnClickListener(new View.OnClickListener() {
@@ -256,7 +256,6 @@ public class Manage_calendar extends AppCompatActivity {
 
             @Override
             public void onDateUnselected(Date date) {
-                btnGetCalen.setEnabled(true);
                 clearCheckBox();
                 linearCheckbox.setVisibility(View.GONE);
                 Calendar calUnSelected = Calendar.getInstance();
@@ -279,6 +278,11 @@ public class Manage_calendar extends AppCompatActivity {
                 Log.d("dateSelectClick","RemovedateForDB : "+dateForDB.toString());
                 Log.d("dateSelectClick","RemovestartDateTime : "+startDateTime.toString());
                 Log.d("dateSelectClick","RemoveendDateTime : "+endDateTime.toString());
+                if (dateForDB.size()==0){
+                    btnGetCalen.setEnabled(true);
+                }else{
+                    btnGetCalen.setEnabled(false);
+                }
             }
         });
 
@@ -303,6 +307,7 @@ public class Manage_calendar extends AppCompatActivity {
 //                sentCalendarFix();
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
                 viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
+                viewDetail.setMessage("เมื่อยืนยันแล้วคุณจะไม่สามารถแก้ไขได้");
 //
                 viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
@@ -317,14 +322,16 @@ public class Manage_calendar extends AppCompatActivity {
                         if (startDateTime!=null||endDateTime!=null||dateString!=null){
                             for (int i=0;i<startDateTime.size();i++){
                                 Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
-                                sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
+                                sentCustomDateToCalendar(startDateTime.get(i),endDateTime.get(i));
                             }
                             for (int i=0;i<dateForDB.size();i++){
                                 Log.d("checkDB ", "dateString : " + dateForDB.toString());
                                 sentDateToDB(dateForDB.get(i));
                             }
                             handlerSave.sendEmptyMessage(0);
-                            startActivity(getIntent());
+                            Intent in = new Intent(Manage_calendar.this, Home.class);
+                            in.putExtra("email", email + "");
+                            startActivity(in);
                         }
                     }
                 });
@@ -337,6 +344,36 @@ public class Manage_calendar extends AppCompatActivity {
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
 
+            }
+        });
+        btnDelCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
+                viewDetail.setTitle("ยืนยันการลบปฏิทิน");
+//
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                });
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteDateInDb();
+                        startActivity(getIntent());
+                    }
+                });
+                viewDetail.show();
+                Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                layoutParams.weight = 10;
+                btnPositive.setLayoutParams(layoutParams);
+                btnNegative.setLayoutParams(layoutParams);
             }
         });
     }
@@ -1117,45 +1154,35 @@ public class Manage_calendar extends AppCompatActivity {
     }
     public void sentCustomDateToCalendar(String startDate, String endDate) {
         Log.d("simpledate","startDate : "+startDate);
-        String dateCheckformatStart="",dateCheckformatEnd="";
-        StringTokenizer std = new StringTokenizer(startDate,":");
-        StringTokenizer ste = new StringTokenizer(endDate,":");
-        while (std.hasMoreTokens()){
-            String dfs = std.nextToken();
-            std.nextToken();
-            StringTokenizer st = new StringTokenizer(dfs,"/");
-            while (st.hasMoreTokens()){
-                String d = st.nextToken();
-                String m = st.nextToken();
-                String y = st.nextToken();
-                dateCheckformatStart = y+"/"+m+"/"+d;
-
-            }
-        }
-        while (ste.hasMoreTokens()){
-            String dfe = ste.nextToken();
-            ste.nextToken();
-            StringTokenizer st = new StringTokenizer(dfe,"/");
-            while (st.hasMoreTokens()){
-                String d = st.nextToken();
-                String m = st.nextToken();
-                String y = st.nextToken();
-                dateCheckformatEnd = y+"/"+m+"/"+d;
-
-            }
-        }
-        Log.d("simpledate","dateCheckformatStart : "+dateCheckformatStart+"--"+dateCheckformatEnd);
         String url = "http://www.groupupdb.com/android/addcustomcalendar.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
-        url += "&dcfs=" + dateCheckformatStart+"";
-        url += "&dcfe=" + dateCheckformatEnd+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 //                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void deleteDateInDb() {
+        responseStr = new Manage_calendar.ResponseStr();
+        String url = "http://www.groupupdb.com/android/deletedatebyuser.php";
+        url += "?sId=" + uid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.d("deleteDateOldDay", response);
                     }
                 },
                 new Response.ErrorListener() {
