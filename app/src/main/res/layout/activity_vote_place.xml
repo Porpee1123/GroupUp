@@ -63,9 +63,12 @@
 
         <Button
             android:id="@+id/button11"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_gravity="center"
+            android:background="@color/classicBlue"
+            android:text="@string/btn"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 

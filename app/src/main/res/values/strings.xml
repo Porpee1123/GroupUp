@@ -150,5 +150,9 @@
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="msg_subscribe_failed">Subscribe To failed</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="voteOff">Vote Off</string>
+    <string name="voteOn">Finish</string>
+    <string name="getCalen">Get Calendar</string>
+    <string name="delCalen">Delete Calendar All</string>
 
 </resources>

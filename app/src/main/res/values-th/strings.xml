@@ -149,4 +149,8 @@
     <string name="msg_subscribed">Subscribed to weather topic</string>
     <string name="fcm_message">fcm_message</string>
     <string name="msg_subscribe_failed">Subscribe To failed</string>
+    <string name="voteOff">ปิดโหวต</string>
+    <string name="voteOn">เสร็จสิ้น</string>
+    <string name="getCalen">ดึงข้อมูลจากปฏิทิน</string>
+    <string name="delCalen">ลบข้อมูลปฏิทินทั้งหมด</string>
 </resources>
