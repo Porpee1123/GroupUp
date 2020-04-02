@@ -1,11 +1,5 @@
 package com.example.groupup;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,13 +16,17 @@ import android.os.Message;
 import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -44,12 +42,8 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +52,7 @@ import java.util.StringTokenizer;
 
 public class Manage_calendar extends AppCompatActivity {
     CalendarPickerView calendarPicker;
-    Button btnGetCalen,btnConfirmCalendar,btnDelCalendar;
+    Button btnGetCalen, btnConfirmCalendar, btnDelCalendar;
     Manage_calendar.ResponseStr responseStr = new Manage_calendar.ResponseStr();
     private int CALENDAR_PERMISSION_CODE = 1;
     ArrayList<Date> date = new ArrayList<>();
@@ -81,27 +75,27 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> cbEndcalenFromDB = new ArrayList<>();
     ArrayList<String> dateFromDB = new ArrayList<>();
     ArrayList<String> dateDiffFromDB = new ArrayList<>();
-    ArrayList<String> dateForDB  = new ArrayList<>();
-    ArrayList<String> dateOfyear  = new ArrayList<>();
+    ArrayList<String> dateForDB = new ArrayList<>();
+    ArrayList<String> dateOfyear = new ArrayList<>();
     String uid, email;
-    String date1,date2;
+    String date1, date2;
     //checkbox
     LinearLayout linearCheckbox;
     boolean checkVisible;
     CheckBox cbMorninig, cbLate, cbAfternoon, cbEvening;
     TextView tvDateTime;
     TypedArray arr_month;
-    ProgressDialog progressDialog ,saveDialog;
+    ProgressDialog progressDialog, saveDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_calendar);
-        btnGetCalen = (Button) findViewById(R.id.btnGetCalendar);
+        btnGetCalen = findViewById(R.id.btnGetCalendar);
         calendarPicker = findViewById(R.id.calendarPickerView);
         linearCheckbox = findViewById(R.id.linear_Checkbox_Calendar);
         calendarPicker.highlightDates(date);
-        btnConfirmCalendar =findViewById(R.id.btn_confirmCalendar);
+        btnConfirmCalendar = findViewById(R.id.btn_confirmCalendar);
         btnDelCalendar = findViewById(R.id.btnDelCalendar);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
@@ -147,17 +141,17 @@ public class Manage_calendar extends AppCompatActivity {
                     newDate.add(d);
                 }
 
-                cutStringDate(cbStartcalenFromDB,cbEndcalenFromDB);
+                cutStringDate(cbStartcalenFromDB, cbEndcalenFromDB);
 
                 DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
 //                Log.d("dateAll","newDate "+dateDiffFromDB.toString()+"size : "+ dateDiffFromDB.size());
                 ArrayList<Date> pres = new ArrayList<>();
-                for (int i=0;i<dateDiffFromDB.size();i++){
+                for (int i = 0; i < dateDiffFromDB.size(); i++) {
                     long date = Date.parse(dateDiffFromDB.get(i));
                     Date d = new Date(date);
-                    diffDateTime.add(simpleHour.format(d)+"");
+                    diffDateTime.add(simpleHour.format(d) + "");
                 }
-                Log.d("dateAll","diffDateTime : "+ diffDateTime.toString());
+                Log.d("dateAll", "diffDateTime : " + diffDateTime.toString());
                 cutStringDateDiff(diffDateTime);
 //                Log.d("dateAll","diffDateTime : "+ diffDateTime.toString());
                 calendarPicker.highlightDates(newDate);
@@ -174,7 +168,7 @@ public class Manage_calendar extends AppCompatActivity {
         btnConfirmCalendar.setVisibility(View.GONE);
         Date today = new Date();
         Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.YEAR,1 ); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน
+        nextYear.add(Calendar.YEAR, 1); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน
 
         calendarPicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
@@ -195,42 +189,42 @@ public class Manage_calendar extends AppCompatActivity {
                 selectedDateCompare += checkCalendar(calSelected.get(Calendar.MONTH) + "") + "/";
                 selectedDateCompare += calSelected.get(Calendar.YEAR);
 //                Log.d("dateSelectClick","selectedDate : "+selectedDateCompare);
-                Log.d("checkdiff","selectedDateCompare : "+selectedDateCompare);
+                Log.d("checkdiff", "selectedDateCompare : " + selectedDateCompare);
                 dateForDB.add(date.toString());
                 final String finalSelectedDateCompare = selectedDateCompare;
                 cbMorninig.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startDateTime.add(finalSelectedDateCompare +":11");
-                        endDateTime.add(finalSelectedDateCompare +":13");
+                        startDateTime.add(finalSelectedDateCompare + ":11");
+                        endDateTime.add(finalSelectedDateCompare + ":13");
                     }
                 });
                 cbLate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startDateTime.add(finalSelectedDateCompare+":14");
-                        endDateTime.add(finalSelectedDateCompare+":16");
+                        startDateTime.add(finalSelectedDateCompare + ":14");
+                        endDateTime.add(finalSelectedDateCompare + ":16");
                     }
                 });
                 cbAfternoon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startDateTime.add(finalSelectedDateCompare+":17");
-                        endDateTime.add(finalSelectedDateCompare+":19");
+                        startDateTime.add(finalSelectedDateCompare + ":17");
+                        endDateTime.add(finalSelectedDateCompare + ":19");
                     }
                 });
                 cbEvening.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startDateTime.add(finalSelectedDateCompare+":20");
-                        endDateTime.add(finalSelectedDateCompare+":23");
+                        startDateTime.add(finalSelectedDateCompare + ":20");
+                        endDateTime.add(finalSelectedDateCompare + ":23");
                     }
                 });
-                Log.d("dateSelectClick","dateForDB : "+dateForDB.toString());
-                Log.d("dateSelectClick","startDateTime : "+startDateTime.toString());
-                Log.d("dateSelectClick","endDateTime : "+endDateTime.toString());
+                Log.d("dateSelectClick", "dateForDB : " + dateForDB.toString());
+                Log.d("dateSelectClick", "startDateTime : " + startDateTime.toString());
+                Log.d("dateSelectClick", "endDateTime : " + endDateTime.toString());
                 tvDateTime.setText(calSelected.get(Calendar.DAY_OF_MONTH) + " " + (arr_month.getString(calSelected.get(Calendar.MONTH))) + " " + calSelected.get(Calendar.YEAR));
-                Log.d("newDate","dateCalGet "+dateCalGet.toString()+"---"+dateCalGetEnd.toString());
+                Log.d("newDate", "dateCalGet " + dateCalGet.toString() + "---" + dateCalGetEnd.toString());
                 for (int i = 0; i < dateCalGet.size(); i++) {
 //                    Log.d("dateTime", "dateCalGet : " + dateCalGet.get(i) + " " + selectedDateCompare);
                     if (selectedDateCompare.equals(dateCalGet.get(i))) {
@@ -250,6 +244,10 @@ public class Manage_calendar extends AppCompatActivity {
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
+                        cbMorninig.setClickable(false);
+                        cbLate.setClickable(false);
+                        cbAfternoon.setClickable(false);
+                        cbEvening.setClickable(false);
                     }
                 }
             }
@@ -265,22 +263,22 @@ public class Manage_calendar extends AppCompatActivity {
                 unSelectedDateCompare += calUnSelected.get(Calendar.YEAR);
 
 //                Toast.makeText(Manage_calendar.this, selectedDate, Toast.LENGTH_SHORT).show();
-                removeDate(date.toString(),dateForDB);
+                removeDate(date.toString(), dateForDB);
                 final String finalUnSelectedDateCompare = unSelectedDateCompare;
-                removeTime(finalUnSelectedDateCompare +":11",startDateTime);
-                removeTime(finalUnSelectedDateCompare +":13",endDateTime);
-                removeTime(finalUnSelectedDateCompare +":14",startDateTime);
-                removeTime(finalUnSelectedDateCompare +":16",endDateTime);
-                removeTime(finalUnSelectedDateCompare +":17",startDateTime);
-                removeTime(finalUnSelectedDateCompare +":19",endDateTime);
-                removeTime(finalUnSelectedDateCompare +":20",startDateTime);
-                removeTime(finalUnSelectedDateCompare +":23",endDateTime);
-                Log.d("dateSelectClick","RemovedateForDB : "+dateForDB.toString());
-                Log.d("dateSelectClick","RemovestartDateTime : "+startDateTime.toString());
-                Log.d("dateSelectClick","RemoveendDateTime : "+endDateTime.toString());
-                if (dateForDB.size()==0){
+                removeTime(finalUnSelectedDateCompare + ":11", startDateTime);
+                removeTime(finalUnSelectedDateCompare + ":13", endDateTime);
+                removeTime(finalUnSelectedDateCompare + ":14", startDateTime);
+                removeTime(finalUnSelectedDateCompare + ":16", endDateTime);
+                removeTime(finalUnSelectedDateCompare + ":17", startDateTime);
+                removeTime(finalUnSelectedDateCompare + ":19", endDateTime);
+                removeTime(finalUnSelectedDateCompare + ":20", startDateTime);
+                removeTime(finalUnSelectedDateCompare + ":23", endDateTime);
+                Log.d("dateSelectClick", "RemovedateForDB : " + dateForDB.toString());
+                Log.d("dateSelectClick", "RemovestartDateTime : " + startDateTime.toString());
+                Log.d("dateSelectClick", "RemoveendDateTime : " + endDateTime.toString());
+                if (dateForDB.size() == 0) {
                     btnGetCalen.setEnabled(true);
-                }else{
+                } else {
                     btnGetCalen.setEnabled(false);
                 }
             }
@@ -309,22 +307,22 @@ public class Manage_calendar extends AppCompatActivity {
                 viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
                 viewDetail.setMessage("เมื่อยืนยันแล้วคุณจะไม่สามารถแก้ไขได้");
 //
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
                     }
                 });
-                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (startDateTime!=null||endDateTime!=null||dateString!=null){
-                            for (int i=0;i<startDateTime.size();i++){
+                        if (startDateTime != null || endDateTime != null || dateString != null) {
+                            for (int i = 0; i < startDateTime.size(); i++) {
                                 Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
-                                sentCustomDateToCalendar(startDateTime.get(i),endDateTime.get(i));
+                                sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
                             }
-                            for (int i=0;i<dateForDB.size();i++){
+                            for (int i = 0; i < dateForDB.size(); i++) {
                                 Log.d("checkDB ", "dateString : " + dateForDB.toString());
                                 sentDateToDB(dateForDB.get(i));
                             }
@@ -352,14 +350,14 @@ public class Manage_calendar extends AppCompatActivity {
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
                 viewDetail.setTitle("ยืนยันการลบปฏิทิน");
 //
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
                     }
                 });
-                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteDateInDb();
@@ -377,6 +375,7 @@ public class Manage_calendar extends AppCompatActivity {
             }
         });
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -389,6 +388,7 @@ public class Manage_calendar extends AppCompatActivity {
             saveDialog.dismiss();
         }
     };
+
     public List<String> readCalendarEvent(Context context) {
 
         Calendar startTime = Calendar.getInstance();
@@ -413,7 +413,7 @@ public class Manage_calendar extends AppCompatActivity {
                         null, null);
         cursor.moveToFirst();
         // fetching calendars name
-        String CNames[] = new String[cursor.getCount()];
+        String[] CNames = new String[cursor.getCount()];
 
         // fetching calendars id
 
@@ -478,7 +478,7 @@ public class Manage_calendar extends AppCompatActivity {
                     dateString.add(ddiff.toString());
                     dateDiffString.add(ddiff.toString());
                     diffDateTime.add(simple.format(ddiff));
-                    Log.d("checkTime ", "date : " + dateDiffString.get(dateDiffString.size()-1)+" date size: "+dateDiffString.size());
+                    Log.d("checkTime ", "date : " + dateDiffString.get(dateDiffString.size() - 1) + " date size: " + dateDiffString.size());
                 }
                 cutStringDateDiff(diffDateTime);
             }
@@ -537,6 +537,10 @@ public class Manage_calendar extends AppCompatActivity {
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
+            cbMorninig.setClickable(false);
+            cbLate.setClickable(false);
+            cbAfternoon.setClickable(false);
+            cbEvening.setClickable(false);
         } else {
             Log.d("calendar123", "date : " + daStart + " - " + daEnd);
             if (!daStart.equals(daEnd) && tiStart != tiEnd) {//no same dat No all time
@@ -549,18 +553,30 @@ public class Manage_calendar extends AppCompatActivity {
                     cbLate.setChecked(true);
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
+                    cbMorninig.setClickable(false);
+                    cbLate.setClickable(false);
+                    cbAfternoon.setClickable(false);
+                    cbEvening.setClickable(false);
+
+
                 } else if (tiStart >= 14 && tiStart < 17) {
                     //234
                     cbLate.setChecked(true);
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
+                    cbLate.setClickable(false);
+                    cbAfternoon.setClickable(false);
+                    cbEvening.setClickable(false);
                 } else if (tiStart >= 17 && tiStart < 20) {
                     //34
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
+                    cbAfternoon.setClickable(false);
+                    cbEvening.setClickable(false);
                 } else if (tiStart >= 20 && tiStart < 24) {
                     //4
                     cbEvening.setChecked(true);
+                    cbEvening.setClickable(false);
                 }
             } else {
                 if (tiStart >= 0 && tiStart < 14) {
@@ -569,49 +585,69 @@ public class Manage_calendar extends AppCompatActivity {
                     } else if (tiEnd >= 11 && tiEnd < 14) {
                         //1
                         cbMorninig.setChecked(true);
+                        cbMorninig.setClickable(false);
                     } else if (tiEnd >= 14 && tiEnd < 17) {
                         //12
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
+                        cbMorninig.setClickable(false);
+                        cbLate.setClickable(false);
                     } else if (tiEnd >= 17 && tiEnd < 20) {
                         //123
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
+                        cbMorninig.setClickable(false);
+                        cbLate.setClickable(false);
+                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //1234
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
+                        cbMorninig.setClickable(false);
+                        cbLate.setClickable(false);
+                        cbAfternoon.setClickable(false);
+                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 14 && tiStart < 17) {
                     if (tiEnd >= 14 && tiEnd < 17) {
                         //2
                         cbLate.setChecked(true);
+                        cbLate.setClickable(false);
                     } else if (tiEnd >= 17 && tiEnd < 20) {
                         //23
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
+                        cbLate.setClickable(false);
+                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //234
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
+                        cbLate.setClickable(false);
+                        cbAfternoon.setClickable(false);
+                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 17 && tiStart < 20) {
                     if (tiEnd >= 17 && tiEnd < 20) {
                         //3
                         cbAfternoon.setChecked(true);
+                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //34
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
+                        cbAfternoon.setClickable(false);
+                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 20 && tiStart < 24) {
                     if (tiEnd >= 20 && tiEnd < 24) {
                         //4
                         cbEvening.setChecked(true);
+                        cbEvening.setClickable(false);
                     }
                 }
             }
@@ -626,22 +662,31 @@ public class Manage_calendar extends AppCompatActivity {
         } else if (tiEnd >= 11 && tiEnd < 14) {
             //1
             cbMorninig.setChecked(true);
+            cbMorninig.setClickable(false);
         } else if (tiEnd >= 14 && tiEnd < 17) {
             //12
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
+            cbMorninig.setClickable(false);
+            cbLate.setClickable(false);
         } else if (tiEnd >= 17 && tiEnd < 20) {
             //123
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
-            ;
+            cbMorninig.setClickable(false);
+            cbLate.setClickable(false);
+            cbAfternoon.setClickable(false);
         } else if (tiEnd >= 20 && tiEnd < 24) {
             //1234
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
+            cbMorninig.setClickable(false);
+            cbLate.setClickable(false);
+            cbAfternoon.setClickable(false);
+            cbEvening.setClickable(false);
         }
     }
 
@@ -650,6 +695,10 @@ public class Manage_calendar extends AppCompatActivity {
         cbLate.setChecked(false);
         cbAfternoon.setChecked(false);
         cbEvening.setChecked(false);
+        cbMorninig.setClickable(true);
+        cbLate.setClickable(true);
+        cbAfternoon.setClickable(true);
+        cbEvening.setClickable(true);
     }
 
     public void cutStringDate(ArrayList dt, ArrayList edt) {
@@ -736,42 +785,43 @@ public class Manage_calendar extends AppCompatActivity {
                 return dateNumber;
         }
     }
+
     public void sentCalendarToDB(String startDate, String endDate) {
-        Log.d("simpledate","startDate : "+startDate);
-        String dateCheckformatStart="",dateCheckformatEnd="";
-        StringTokenizer std = new StringTokenizer(startDate,":");
-        StringTokenizer ste = new StringTokenizer(endDate,":");
-        while (std.hasMoreTokens()){
+        Log.d("simpledate", "startDate : " + startDate);
+        String dateCheckformatStart = "", dateCheckformatEnd = "";
+        StringTokenizer std = new StringTokenizer(startDate, ":");
+        StringTokenizer ste = new StringTokenizer(endDate, ":");
+        while (std.hasMoreTokens()) {
             String dfs = std.nextToken();
             std.nextToken();
-            StringTokenizer st = new StringTokenizer(dfs,"/");
-            while (st.hasMoreTokens()){
+            StringTokenizer st = new StringTokenizer(dfs, "/");
+            while (st.hasMoreTokens()) {
                 String d = st.nextToken();
                 String m = st.nextToken();
                 String y = st.nextToken();
-                dateCheckformatStart = y+"/"+m+"/"+d;
+                dateCheckformatStart = y + "/" + m + "/" + d;
 
             }
         }
-        while (ste.hasMoreTokens()){
+        while (ste.hasMoreTokens()) {
             String dfe = ste.nextToken();
             ste.nextToken();
-            StringTokenizer st = new StringTokenizer(dfe,"/");
-            while (st.hasMoreTokens()){
+            StringTokenizer st = new StringTokenizer(dfe, "/");
+            while (st.hasMoreTokens()) {
                 String d = st.nextToken();
                 String m = st.nextToken();
                 String y = st.nextToken();
-                dateCheckformatEnd = y+"/"+m+"/"+d;
+                dateCheckformatEnd = y + "/" + m + "/" + d;
 
             }
         }
-        Log.d("simpledate","dateCheckformatStart : "+dateCheckformatStart+"--"+dateCheckformatEnd);
+        Log.d("simpledate", "dateCheckformatStart : " + dateCheckformatStart + "--" + dateCheckformatEnd);
         String url = "http://www.groupupdb.com/android/addcalendar.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
-        url += "&dcfs=" + dateCheckformatStart+"";
-        url += "&dcfe=" + dateCheckformatEnd+"";
+        url += "&dcfs=" + dateCheckformatStart + "";
+        url += "&dcfe=" + dateCheckformatEnd + "";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -788,7 +838,8 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void getcalendarFromDB(){
+
+    public void getcalendarFromDB() {
         responseStr = new Manage_calendar.ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -801,7 +852,7 @@ public class Manage_calendar extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
+                            JSONArray data = new JSONArray(response);
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
@@ -813,7 +864,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 MyArrList.add(map);
                             }
 //                            Log.d("newDate","MyArrList"+MyArrList.toString());
-                            for (int i =0;i<MyArrList.size();i++){
+                            for (int i = 0; i < MyArrList.size(); i++) {
                                 cbStartcalenFromDB.add(MyArrList.get(i).get("startdatetime"));
                                 cbEndcalenFromDB.add(MyArrList.get(i).get("enddatetime"));
 //                                Log.d("newDate","MyArrList"+MyArrList.get(i).get("startdatetime"));
@@ -835,25 +886,26 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void sentDateToDB(String date) {
         Log.d("checkDB ", "dateString123 : " + date);
-        date1="";
-        date2="";
+        date1 = "";
+        date2 = "";
         CutStringDateForSaveDB(date);
         DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
         DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
         long dt = Date.parse(date);
         Date d = new Date(dt);
-        String dateCheck =simpleHour.format(d);
-        String dateCheckformat =simpledate.format(d)+"";
-        Log.d("simpledate","sentDateToDB : "+dateCheckformat);
+        String dateCheck = simpleHour.format(d);
+        String dateCheckformat = simpledate.format(d) + "";
+        Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
         Log.d("checkDB ", "dateCheck : " + dateCheck);
         String url = "http://www.groupupdb.com/android/adddate.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
-        url += "&sdc=" + dateCheck+"";
-        url += "&dcf=" + dateCheckformat+"";
+        url += "&sdc=" + dateCheck + "";
+        url += "&dcf=" + dateCheckformat + "";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -871,7 +923,8 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void getDateFromDB(){
+
+    public void getDateFromDB() {
         responseStr = new Manage_calendar.ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -884,7 +937,7 @@ public class Manage_calendar extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
+                            JSONArray data = new JSONArray(response);
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
@@ -896,8 +949,8 @@ public class Manage_calendar extends AppCompatActivity {
                                 //map.put("events_wait", c.getString("events_wait"));
                                 MyArrList.add(map);
                             }
-                            for (int i =0;i<MyArrList.size();i++){
-                                dateFromDB.add(MyArrList.get(i).get("date")+"+"+MyArrList.get(i).get("datelast"));
+                            for (int i = 0; i < MyArrList.size(); i++) {
+                                dateFromDB.add(MyArrList.get(i).get("date") + "+" + MyArrList.get(i).get("datelast"));
                             }
 //                            Log.d("newDate","dateFromDB"+dateFromDB.toString());
                             Log.d("query", MyArrList.toString() + "");
@@ -916,23 +969,24 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void sentDateDiffToDB(String date) {
-        date1="";
-        date2="";
+        date1 = "";
+        date2 = "";
         CutStringDateForSaveDB(date);
         DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
         DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
         long dt = Date.parse(date);
         Date d = new Date(dt);
-        String dateCheck =simpleHour.format(d)+"";
-        String dateCheckformat =simpledate.format(d)+"";
-        Log.d("simpledate","getDateFromDB : "+dateCheckformat);
+        String dateCheck = simpleHour.format(d) + "";
+        String dateCheckformat = simpledate.format(d) + "";
+        Log.d("simpledate", "getDateFromDB : " + dateCheckformat);
         String url = "http://www.groupupdb.com/android/adddatediff.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
-        url += "&sdc=" + dateCheck+"";
-        url += "&dcf=" + dateCheckformat+"";
+        url += "&sdc=" + dateCheck + "";
+        url += "&dcf=" + dateCheckformat + "";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -950,7 +1004,8 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void getDateDiffFromDB(){
+
+    public void getDateDiffFromDB() {
         responseStr = new Manage_calendar.ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -963,7 +1018,7 @@ public class Manage_calendar extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
+                            JSONArray data = new JSONArray(response);
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
@@ -975,8 +1030,8 @@ public class Manage_calendar extends AppCompatActivity {
                                 //map.put("events_wait", c.getString("events_wait"));
                                 MyArrList.add(map);
                             }
-                            for (int i =0;i<MyArrList.size();i++){
-                                dateDiffFromDB.add(MyArrList.get(i).get("datediff")+"+"+MyArrList.get(i).get("datediffend"));
+                            for (int i = 0; i < MyArrList.size(); i++) {
+                                dateDiffFromDB.add(MyArrList.get(i).get("datediff") + "+" + MyArrList.get(i).get("datediffend"));
                             }
 //                            Log.d("dateAll","dateDiffFromDB"+dateDiffFromDB.toString());
 //                            Log.d("newDate","dateDiffFromDB"+dateDiffFromDB.toString());
@@ -996,13 +1051,15 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void CutStringDateForSaveDB(String s){
-        StringTokenizer st = new StringTokenizer(s,"+");
-        while (st.hasMoreTokens()){
+
+    public void CutStringDateForSaveDB(String s) {
+        StringTokenizer st = new StringTokenizer(s, "+");
+        while (st.hasMoreTokens()) {
             date1 = st.nextToken();
             date2 = st.nextToken();
         }
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -1012,48 +1069,50 @@ public class Manage_calendar extends AppCompatActivity {
         }
 
     }
-    public void removeTime(String date,ArrayList arrayList){
+
+    public void removeTime(String date, ArrayList arrayList) {
         String number = "";
-        for (int i =0; i< arrayList.size(); i++){
-            if (date.equals(arrayList.get(i))){
-                number = i+"";
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (date.equals(arrayList.get(i))) {
+                number = i + "";
             }
         }
-        if (!number.equals("")){
+        if (!number.equals("")) {
             arrayList.remove(Integer.parseInt(number));
         }
 
-        Log.d("dateSelect","removeDateTime : "+arrayList.toString());
+        Log.d("dateSelect", "removeDateTime : " + arrayList.toString());
 //        Toast.makeText(Manage_calendar.this, "removeDateTime : "+allDateTime.toString(), Toast.LENGTH_SHORT).show();
     }
-    public void removeDate(String date,ArrayList allStartDate){
+
+    public void removeDate(String date, ArrayList allStartDate) {
         String number = "";
-        for (int i =0; i< allStartDate.size(); i++){
-            if (date.equals(allStartDate.get(i))){
-                number = i+"";
+        for (int i = 0; i < allStartDate.size(); i++) {
+            if (date.equals(allStartDate.get(i))) {
+                number = i + "";
             }
         }
-        if (!number.equals("")){
+        if (!number.equals("")) {
             allStartDate.remove(Integer.parseInt(number));
         }
 
-        Log.d("dateSelect","removeDateTime : "+allStartDate.toString());
+        Log.d("dateSelect", "removeDateTime : " + allStartDate.toString());
 //        Toast.makeText(Manage_calendar.this, "removeDateTime : "+allDateTime.toString(), Toast.LENGTH_SHORT).show();
     }
 
-    public void SaveCalenGettoDB(){
+    public void SaveCalenGettoDB() {
 
         final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
         viewDetail.setTitle("Confirm Add Calendar to DataBase");
 
-        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
             }
         });
-        viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+        viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 readCalendarEvent(Manage_calendar.this);
@@ -1066,18 +1125,18 @@ public class Manage_calendar extends AppCompatActivity {
                 }
                 calendarPicker.highlightDates(newDate);
                 saveDialog.show();
-                if (startDateTime!=null||endDateTime!=null||dateString!=null){
+                if (startDateTime != null || endDateTime != null || dateString != null) {
 //                    Log.d("dateSelect","start"+startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
-                    for (int i=0;i<startDateTime.size();i++){
+                    for (int i = 0; i < startDateTime.size(); i++) {
                         Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
-                        sentCalendarToDB(startDateTime.get(i),endDateTime.get(i));
+                        sentCalendarToDB(startDateTime.get(i), endDateTime.get(i));
                     }
-                    for (int i=0;i<dateString.size();i++){
+                    for (int i = 0; i < dateString.size(); i++) {
                         Log.d("checkDB ", "dateString : " + dateString.toString());
                         sentDateToDB(dateString.get(i));
                     }
 //                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
-                    for(int i=0;i<dateDiffString.size();i++){
+                    for (int i = 0; i < dateDiffString.size(); i++) {
                         Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
                         sentDateDiffToDB(dateDiffString.get(i));
                     }
@@ -1087,11 +1146,11 @@ public class Manage_calendar extends AppCompatActivity {
                     dateDiffString.clear();
 //                    Log.d("dateSelect",startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
                     handlerSave.sendEmptyMessage(0);
-                }else{
+                } else {
                     handlerSave.sendEmptyMessage(0);
                     final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
                     viewDetail.setTitle("กรุณาเลือกวันที่");
-                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -1115,27 +1174,28 @@ public class Manage_calendar extends AppCompatActivity {
         btnNegative.setLayoutParams(layoutParams);
 
     }
+
     public void sentCalendarFix(String startDate) {
-        Log.d("simpledate","startDate : "+startDate);
-        String dateCheckformatStart="";
-        StringTokenizer std = new StringTokenizer(startDate,":");
-        while (std.hasMoreTokens()){
+        Log.d("simpledate", "startDate : " + startDate);
+        String dateCheckformatStart = "";
+        StringTokenizer std = new StringTokenizer(startDate, ":");
+        while (std.hasMoreTokens()) {
             String dfs = std.nextToken();
             std.nextToken();
-            StringTokenizer st = new StringTokenizer(dfs,"/");
-            while (st.hasMoreTokens()){
+            StringTokenizer st = new StringTokenizer(dfs, "/");
+            while (st.hasMoreTokens()) {
                 String d = st.nextToken();
                 String m = st.nextToken();
                 String y = st.nextToken();
-                dateCheckformatStart = y+"/"+m+"/"+d;
+                dateCheckformatStart = y + "/" + m + "/" + d;
             }
         }
-        Log.d("simpledate","dateCheckformatStart : "+dateCheckformatStart);
+        Log.d("simpledate", "dateCheckformatStart : " + dateCheckformatStart);
         String url = "http://www.groupupdb.com/android/changeDateDiffToDate.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
         url += "&sdtl=" + startDate;
-        url += "&dcf=" + dateCheckformatStart+"";
+        url += "&dcf=" + dateCheckformatStart + "";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -1152,8 +1212,9 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void sentCustomDateToCalendar(String startDate, String endDate) {
-        Log.d("simpledate","startDate : "+startDate);
+        Log.d("simpledate", "startDate : " + startDate);
         String url = "http://www.groupupdb.com/android/addcustomcalendar.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
@@ -1174,6 +1235,7 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void deleteDateInDb() {
         responseStr = new Manage_calendar.ResponseStr();
         String url = "http://www.groupupdb.com/android/deletedatebyuser.php";
