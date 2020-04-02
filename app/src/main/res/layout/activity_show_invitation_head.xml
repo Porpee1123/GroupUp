@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Invitation_Head">
+    tools:context=".show_invitation_head">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <ListView
+            android:id="@+id/listview_show_invite_head"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
