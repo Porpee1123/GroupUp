@@ -1,9 +1,9 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -12,13 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,19 +44,20 @@ import java.util.List;
 
 
 public class ManageFriend extends AppCompatActivity {
-//*******************************TextView with checkbox******************************************//
+    //*******************************TextView with checkbox******************************************//
     public class Item {
         boolean checked;
         ImageView ItemDrawable;
         String ItemString;
-//        Item(ImageView drawable, String t, boolean b){
-        Item( String t, boolean b){
+
+        //        Item(ImageView drawable, String t, boolean b){
+        Item(String t, boolean b) {
 //            ItemDrawable = drawable;
             ItemString = t;
             checked = b;
         }
 
-        public boolean isChecked(){
+        public boolean isChecked() {
             return checked;
         }
     }
@@ -149,12 +156,16 @@ public class ManageFriend extends AppCompatActivity {
 //***********************************************************************************************//
 
     ManageFriend.ResponseStr responseStr = new ManageFriend.ResponseStr();
-    String uid = "",email="";
+    String uid = "", email = "";
     ListView listViewFriend;
     List<Item> items;
     ArrayList<HashMap<String, String>> frientArray;
     ItemsListAdapter myItemsListAdapter;
-    Button btnLookup;
+    Spinner spinnerType;
+    ArrayList<String> typefriend;
+    ArrayAdapter<String> dataAdapter;
+    ImageButton addTypeFriend;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,20 +174,81 @@ public class ManageFriend extends AppCompatActivity {
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         frientArray = new ArrayList<>();
-        btnLookup = findViewById(R.id.slide2);
-        Log.d("listA","idA "+uid);
+        spinnerType = findViewById(R.id.spinner_type);
+        typefriend = new ArrayList<>();
+        addTypeFriend = findViewById(R.id.addTypeFriend);
+        Log.d("listA", "idA " + uid);
         getFriend();
+        getType();
+        addTypeFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog viewDetail = new AlertDialog.Builder(ManageFriend.this).create();
+                viewDetail.setTitle("เพิ่มประเภทเพื่อน");
+
+
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                });
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+                viewDetail.show();
+                Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                layoutParams.weight = 10;
+                btnPositive.setLayoutParams(layoutParams);
+                btnNegative.setLayoutParams(layoutParams);
+            }
+        });
+        dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, typefriend);
         new CountDownTimer(500, 500) {
             public void onFinish() {
                 initItems();
                 click();
+
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerType.setAdapter(dataAdapter);
+                spinnerType.setSelection(0);
+                spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String selectedItemText = (String) parent.getItemAtPosition(position);
+                        Toast.makeText(getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT).show();
+                        getFriendType(selectedItemText);//get ได้แล้ว เหลือหาวิธีให้แสดง
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
+
             public void onTick(long millisUntilFinished) {
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
-        writeFile(uid,email);
+        writeFile(uid, email);
     }
+
+    public void checkBoxClick(ArrayList position, ArrayList positionId) {
+        Log.d("position", "position size: " + position.size() + "");
+        dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, position);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerType.setAdapter(dataAdapter);
+    }
+
     public void getFriend() {
         responseStr = new ManageFriend.ResponseStr();
 
@@ -237,6 +309,7 @@ public class ManageFriend extends AppCompatActivity {
             }
         }.start();
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -246,69 +319,116 @@ public class ManageFriend extends AppCompatActivity {
         }
 
     }
+
     public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
-        in.putExtra("email", email+"");
+        in.putExtra("email", email + "");
         startActivity(in);
     }
+
     public void addFriend(View v) {
         Intent in = new Intent(this, ManageFriend_AddFriends.class);
-        in.putExtra("id", uid+"");
-        in.putExtra("email", email+"");
+        in.putExtra("id", uid + "");
+        in.putExtra("email", email + "");
         startActivity(in);
     }
-    private void initItems(){
+
+    private void initItems() {
         items = new ArrayList<Item>();
-        for (int i=0;i<frientArray.size();i++){
-            String s =frientArray.get(i).get("friend_name");
-            boolean b= false;
-            Item item = new Item(s, b);;
+        for (int i = 0; i < frientArray.size(); i++) {
+            String s = frientArray.get(i).get("friend_name");
+            boolean b = false;
+            Item item = new Item(s, b);
+            ;
             items.add(item);
         }
     }
-    public void click(){
+
+    public void click() {
         myItemsListAdapter = new ItemsListAdapter(this, items);
         listViewFriend.setAdapter(myItemsListAdapter);
-        Log.d("listA",items.toString());
-        Log.d("listA","size"+myItemsListAdapter.getCount()+"");
-        listViewFriend.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        Log.d("listA", items.toString());
+        Log.d("listA", "size" + myItemsListAdapter.getCount() + "");
+        listViewFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(ManageFriend.this,
-                        ((Item)(parent.getItemAtPosition(position))).ItemString,
+                        ((Item) (parent.getItemAtPosition(position))).ItemString,
                         Toast.LENGTH_LONG).show();
-            }});
-
-        btnLookup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String str = "Check items:\n";
-
-                for (int i=0; i<items.size(); i++){
-                    if (items.get(i).isChecked()){
-                        str += i + "\n";
-                    }
-                }
-
-                /*
-                int cnt = myItemsListAdapter.getCount();
-                for (int i=0; i<cnt; i++){
-                    if(myItemsListAdapter.isChecked(i)){
-                        str += i + "\n";
-                    }
-                }
-                */
-
-                Toast.makeText(ManageFriend.this,
-                        str,
-                        Toast.LENGTH_LONG).show();
-
             }
         });
+
+//        btnLookup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String str = "Check items:\n";
+//
+//                for (int i=0; i<items.size(); i++){
+//                    if (items.get(i).isChecked()){
+//                        str += i + "\n";
+//                    }
+//                }
+//
+//                /*
+//                int cnt = myItemsListAdapter.getCount();
+//                for (int i=0; i<cnt; i++){
+//                    if(myItemsListAdapter.isChecked(i)){
+//                        str += i + "\n";
+//                    }
+//                }
+//                */
+//
+//                Toast.makeText(ManageFriend.this, str,Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
-    public void writeFile(String id,String email) {
+
+    public void getType() {
+        responseStr = new ManageFriend.ResponseStr();
+        final String[] user = {""};
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/gettypefriend.php";
+        url += "?sId=" + uid;//รอเอาIdหรือ email จากfirebase
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response);
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("tfid", c.getString("tfid"));
+                                map.put("type_name", c.getString("type_name"));
+                                MyArrList.add(map);
+
+                            }
+                            //set Header menu name email;
+                            typefriend.add("ALL");
+
+                            for (int i = 0; i < MyArrList.size(); i++) {
+                                typefriend.add(MyArrList.get(i).get("type_name"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
+    }
+
+    public void writeFile(String id, String email) {
         String filename = "userFriend.txt";
-        String sid = id+ ":";
+        String sid = id + ":";
         String semail = email + "\n";
         FileOutputStream outputStream;
         try {
@@ -316,10 +436,69 @@ public class ManageFriend extends AppCompatActivity {
             outputStream.write(sid.getBytes());
             outputStream.write(semail.getBytes());
             outputStream.close();
-            Log.d("AddFriend","write file : id "+sid +" / status "+ semail);
+            Log.d("AddFriend", "write file : id " + sid + " / status " + semail);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void getFriendType(String typeName) {
+        Log.d("position", "uid " + uid + " typeName " + typeName);
+        responseStr = new ManageFriend.ResponseStr();
+        final ArrayList<String> position = new ArrayList<>();
+        final ArrayList<String> positionId = new ArrayList<>();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getfriendIntype.php";
+        url += "?sId=" + uid;
+        url += "&tname=" + typeName;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //textView.setText("Response is: "+ response.toString());
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("afid", c.getString("afid"));
+                                map.put("fid", c.getString("fid"));
+                                map.put("friend_name", c.getString("friend_name"));
+                                MyArrList.add(map);
+                            }
+                            Log.d("position", "MyArrList " + MyArrList.size() + "");
+                            for (int i = 0; i < MyArrList.size(); i++) {
+                                position.add(MyArrList.get(i).get("friend_name"));
+                                positionId.add(MyArrList.get(i).get("fid"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("position", "response " + response + "");
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(500, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+//                checkBoxClick(position,positionId);
+            }
+        }.start();
+
     }
 }

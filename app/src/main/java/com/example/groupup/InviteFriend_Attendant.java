@@ -513,7 +513,6 @@ public class InviteFriend_Attendant extends AppCompatActivity {
             String id = positionId.get(i).toString();
             boolean b = true;
             InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b, id);
-            ;
             items.add(item);
         }
         myItemsListAdapter = new InviteFriend_Attendant.ItemsListAdapter(this, items);
