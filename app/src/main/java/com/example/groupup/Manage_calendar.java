@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -317,20 +319,54 @@ public class Manage_calendar extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (startDateTime != null || endDateTime != null || dateString != null) {
-                            for (int i = 0; i < startDateTime.size(); i++) {
-                                Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
-                                sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
+
+                        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+                            @Override
+                            protected void onPreExecute() {
+
+                                super.onPreExecute();
+
+                                progressDialog = ProgressDialog.show(Manage_calendar.this,"Calendar is Uploading","Please Wait",false,false);
                             }
-                            for (int i = 0; i < dateForDB.size(); i++) {
-                                Log.d("checkDB ", "dateString : " + dateForDB.toString());
-                                sentDateToDB(dateForDB.get(i));
+
+                            @Override
+                            protected void onPostExecute(String string1) {
+
+                                super.onPostExecute(string1);
+
+                                // Dismiss the progress dialog after done uploading.
+                                progressDialog.dismiss();
+
+                                // Printing uploading success message coming from server on android app.
+                                Toast.makeText(Manage_calendar.this,string1,Toast.LENGTH_LONG).show();
+
                             }
-                            handlerSave.sendEmptyMessage(0);
-                            Intent in = new Intent(Manage_calendar.this, Home.class);
-                            in.putExtra("email", email + "");
-                            startActivity(in);
+
+                            @Override
+                            protected String doInBackground(Void... params) {
+
+                                if (startDateTime != null || endDateTime != null || dateString != null) {
+                                    for (int i = 0; i < startDateTime.size(); i++) {
+                                        Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
+                                        sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
+                                    }
+                                    for (int i = 0; i < dateForDB.size(); i++) {
+                                        Log.d("checkDB ", "dateString : " + dateForDB.toString());
+                                        sentDateToDB(dateForDB.get(i));
+                                    }
+                                    handlerSave.sendEmptyMessage(0);
+                                    Intent in = new Intent(Manage_calendar.this, Home.class);
+                                    in.putExtra("email", email + "");
+                                    startActivity(in);
+                                }
+
+
+                                return "Finish";
+                            }
                         }
+                        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+
+                        AsyncTaskUploadClassOBJ.execute();
                     }
                 });
                 viewDetail.show();
@@ -360,8 +396,36 @@ public class Manage_calendar extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteDateInDb();
-                        startActivity(getIntent());
+                        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+                            @Override
+                            protected void onPreExecute() {
+
+                                super.onPreExecute();
+
+                                progressDialog = ProgressDialog.show(Manage_calendar.this,"Calendar is Uploading","Please Wait",false,false);
+                            }
+
+                            @Override
+                            protected void onPostExecute(String string1) {
+
+                                super.onPostExecute(string1);
+
+                                // Dismiss the progress dialog after done uploading.
+                                progressDialog.dismiss();
+                                calendarPicker.clearHighlightedDates();
+                                // Printing uploading success message coming from server on android app.
+                                Toast.makeText(Manage_calendar.this,string1,Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            protected String doInBackground(Void... params) {
+                                deleteDateInDb();
+                                return "Finish";
+                            }
+                        }
+                        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+
+                        AsyncTaskUploadClassOBJ.execute();
                     }
                 });
                 viewDetail.show();
@@ -1124,43 +1188,60 @@ public class Manage_calendar extends AppCompatActivity {
                     newDate.add(d);
                 }
                 calendarPicker.highlightDates(newDate);
-                saveDialog.show();
-                if (startDateTime != null || endDateTime != null || dateString != null) {
-//                    Log.d("dateSelect","start"+startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
-                    for (int i = 0; i < startDateTime.size(); i++) {
-                        Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
-                        sentCalendarToDB(startDateTime.get(i), endDateTime.get(i));
-                    }
-                    for (int i = 0; i < dateString.size(); i++) {
-                        Log.d("checkDB ", "dateString : " + dateString.toString());
-                        sentDateToDB(dateString.get(i));
-                    }
-//                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
-                    for (int i = 0; i < dateDiffString.size(); i++) {
-                        Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
-                        sentDateDiffToDB(dateDiffString.get(i));
-                    }
-                    startDateTime.clear();
-                    endDateTime.clear();
-                    dateString.clear();
-                    dateDiffString.clear();
-//                    Log.d("dateSelect",startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
-                    handlerSave.sendEmptyMessage(0);
-                } else {
-                    handlerSave.sendEmptyMessage(0);
-                    final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
-                    viewDetail.setTitle("กรุณาเลือกวันที่");
-                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+                    @Override
+                    protected void onPreExecute() {
 
+                        super.onPreExecute();
+
+                        progressDialog = ProgressDialog.show(Manage_calendar.this,"Calendar is Uploading","Please Wait",false,false);
+                    }
+
+                    @Override
+                    protected void onPostExecute(String string1) {
+
+                        super.onPostExecute(string1);
+
+                        // Dismiss the progress dialog after done uploading.
+                        progressDialog.dismiss();
+
+                        // Printing uploading success message coming from server on android app.
+                        Toast.makeText(Manage_calendar.this,string1,Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    protected String doInBackground(Void... params) {
+
+                        if (startDateTime != null || endDateTime != null || dateString != null) {
+//                    Log.d("dateSelect","start"+startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
+                            for (int i = 0; i < startDateTime.size(); i++) {
+                                Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
+                                sentCalendarToDB(startDateTime.get(i), endDateTime.get(i));
+                            }
+                            for (int i = 0; i < dateString.size(); i++) {
+                                Log.d("checkDB ", "dateString : " + dateString.toString());
+                                sentDateToDB(dateString.get(i));
+                            }
+//                            Log.d("dateAll ","dateDiffString : "+ dateDiffString.toString());
+                            for (int i = 0; i < dateDiffString.size(); i++) {
+                                Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
+                                sentDateDiffToDB(dateDiffString.get(i));
+                            }
+                            startDateTime.clear();
+                            endDateTime.clear();
+                            dateString.clear();
+                            dateDiffString.clear();
+//                    Log.d("dateSelect",startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
                         }
-                    });
-                    viewDetail.show();
-                    Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-                    btnPositive.setLayoutParams(layoutParams);
+
+
+                        return "Finish";
+                    }
                 }
+                AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+
+                AsyncTaskUploadClassOBJ.execute();
 
             }
         });
