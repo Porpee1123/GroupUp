@@ -424,7 +424,6 @@ public class Manage_calendar extends AppCompatActivity {
                             }
                         }
                         AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-
                         AsyncTaskUploadClassOBJ.execute();
                     }
                 });

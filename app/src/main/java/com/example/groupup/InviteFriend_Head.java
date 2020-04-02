@@ -181,8 +181,34 @@ public class InviteFriend_Head extends AppCompatActivity {
         listViewFriend = findViewById(R.id.listview_friend);
         btnConfirmHead = findViewById(R.id.slide);
         frientArray = new ArrayList<>();
-        getType();
-        getFriend();
+        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressDialog = ProgressDialog.show(InviteFriend_Head.this,"Friend is Dowloading","Please Wait",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String string1) {
+
+                super.onPostExecute(string1);
+                // Dismiss the progress dialog after done uploading.
+                progressDialog.dismiss();
+                // Printing uploading success message coming from server on android app.
+                Toast.makeText(InviteFriend_Head.this,string1,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                getType();
+                getFriend();
+                getFriendIDByTrans(uid, eid, 2 + "");
+                return "Finish";
+            }
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
+
         new CountDownTimer(300, 300) {
             public void onFinish() {
                 initItems();
@@ -197,37 +223,7 @@ public class InviteFriend_Head extends AppCompatActivity {
         btnConfirmHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-                    @Override
-                    protected void onPreExecute() {
-
-                        super.onPreExecute();
-
-                        progressDialog = ProgressDialog.show(InviteFriend_Head.this, "Calendar is Uploading", "Please Wait", false, false);
-                    }
-
-                    @Override
-                    protected void onPostExecute(String string1) {
-
-                        super.onPostExecute(string1);
-
-                        // Dismiss the progress dialog after done uploading.
-                        progressDialog.dismiss();
-
-                        // Printing uploading success message coming from server on android app.
-                        Toast.makeText(InviteFriend_Head.this, string1, Toast.LENGTH_LONG).show();
-
-                    }
-
-                    @Override
-                    protected String doInBackground(Void... params) {
-
-                        confirmFriend();
-                        return "Finish";
-                    }
-                }
-                AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-                AsyncTaskUploadClassOBJ.execute();
+                confirmFriend();
             }
         });
     }
@@ -237,9 +233,8 @@ public class InviteFriend_Head extends AppCompatActivity {
         for (int i = 0; i < frientArray.size(); i++) {
             String s = frientArray.get(i).get("friend_name");
             String id = frientArray.get(i).get("fid");
-            boolean b = false;
+            boolean b = checkFriendAlreadysent(id);
             InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id);
-            ;
             items.add(item);
         }
     }
@@ -502,6 +497,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+
         new CountDownTimer(300, 300) {
             public void onFinish() {
                 checkBoxClick(position, positionId);
@@ -521,7 +517,6 @@ public class InviteFriend_Head extends AppCompatActivity {
             String id = positionId.get(i).toString();
             boolean b = true;
             InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id);
-            ;
             items.add(item);
         }
         myItemsListAdapter = new InviteFriend_Head.ItemsListAdapter(this, items);
@@ -576,11 +571,11 @@ public class InviteFriend_Head extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void getTransIDByTrans(String uid, String eid, String pid) {
+    public void getFriendIDByTrans(String uid, String eid, String pid) {
         responseStr = new InviteFriend_Head.ResponseStr();
-        Log.d("themeSelect", "id : " + uid + " eid : " + eid + " pid : " + pid);
+        Log.d("friendselect", "id : " + uid + " eid : " + eid + " pid : " + pid);
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/gettransid.php";
+        String url = "http://www.groupupdb.com/android/getfriendalreadyInvite.php";
         url += "?uId=" + uid;
         url += "&eId=" + eid;
         url += "&pId=" + pid;
@@ -601,8 +596,11 @@ public class InviteFriend_Head extends AppCompatActivity {
                                 map.put("pri_id", c.getString("pri_id"));
                                 MyArrList.add(map);
                             }
-                            friendInDb.add(MyArrList.get(0).get("user_id"));
-//                            Log.d("themeSelect","myarr : "+MyArrList.toString());
+                            for (int i=0;i<MyArrList.size();i++){
+                                friendInDb.add(MyArrList.get(i).get("user_id"));
+                            }
+
+                            Log.d("friendselect", "myarrHead : " + friendInDb.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -617,6 +615,19 @@ public class InviteFriend_Head extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+    public boolean checkFriendAlreadysent(String id) {
+        Log.d("friendselect", "id : " + id);
+        Log.d("friendselect", "friendInDb : " + friendInDb.toString());
+            for (int j = 0; j < friendInDb.size(); j++) {
+               String fdb = friendInDb.get(j);
+                if (fdb.equals(id)) {
+                    return true;
+                }
+            }
+
+        return false;
+    }
+
 //    public void checkBoxClick(ArrayList position){
 //        Log.d("position","position size: "+position.size()+"");
 //        ArrayList<Boolean> statusAll  = new ArrayList<>();

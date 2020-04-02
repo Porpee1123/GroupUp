@@ -3,7 +3,6 @@ package com.example.groupup;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -164,7 +163,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     InviteFriend_Attendant.ResponseStr responseStr = new InviteFriend_Attendant.ResponseStr();
     InviteFriend_Attendant.ItemsListAdapter myItemsListAdapter;
     LinearLayout lShortcut;
-    ProgressDialog progressDialog ;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,9 +175,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         typefriend = new ArrayList<>();
         typefriendId = new ArrayList<>();
         friendInDb = new ArrayList<>();
-
         btnConfirmAttendant = findViewById(R.id.slide);
-
         gab = findViewById(R.id.view_gab);
         listViewFriend = findViewById(R.id.listview_friend);
         uid = getIntent().getStringExtra("id");
@@ -188,19 +185,40 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         frientArray = new ArrayList<>();
-        getType();
-        getFriend();
+        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this,"Friend is Dowloading","Please Wait",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String string1) {
+
+                super.onPostExecute(string1);
+                // Dismiss the progress dialog after done uploading.
+                progressDialog.dismiss();
+                // Printing uploading success message coming from server on android app.
+                Toast.makeText(InviteFriend_Attendant.this,string1,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                getType();
+                getFriend();
+                getFriendIDByTrans(uid, eid, 3 + "");
+                return "Finish";
+            }
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
         new CountDownTimer(300, 300) {
             public void onFinish() {
                 initItems();
                 shortCutAddFriend();
                 setItemsListView();
-
             }
-
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
+            public void onTick(long millisUntilFinished) {}
         }.start();
         btnConfirmAttendant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,9 +233,9 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         for (int i = 0; i < frientArray.size(); i++) {
             String s = frientArray.get(i).get("friend_name");
             String id = frientArray.get(i).get("fid");
-            boolean b = false;
+            boolean b = checkFriendAlreadysent(id);
+
             InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b, id);
-            ;
             items.add(item);
         }
     }
@@ -282,13 +300,13 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     }
 
     public void confirmFriend() {
-        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
             @Override
             protected void onPreExecute() {
 
                 super.onPreExecute();
 
-                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this,"Calendar is Uploading","Please Wait",false,false);
+                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this, "Calendar is Uploading", "Please Wait", false, false);
             }
 
             @Override
@@ -300,7 +318,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 progressDialog.dismiss();
 
                 // Printing uploading success message coming from server on android app.
-                Toast.makeText(InviteFriend_Attendant.this,string1,Toast.LENGTH_LONG).show();
+                Toast.makeText(InviteFriend_Attendant.this, string1, Toast.LENGTH_LONG).show();
 
             }
 
@@ -550,14 +568,14 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void getTransIDByTrans(String uid,String eid,String pid){
+    public void getFriendIDByTrans(String uid, String eid, String pid) {
         responseStr = new InviteFriend_Attendant.ResponseStr();
-        Log.d("themeSelect","id : "+uid+" eid : "+eid+" pid : "+pid);
+        Log.d("friendselect", "id : " + uid + " eid : " + eid + " pid : " + pid);
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/gettransid.php";
+        String url = "http://www.groupupdb.com/android/getfriendalreadyInvite.php";
         url += "?uId=" + uid;
-        url += "&eId=" +eid;
-        url += "&pId=" +pid;
+        url += "&eId=" + eid;
+        url += "&pId=" + pid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -575,8 +593,10 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                                 map.put("pri_id", c.getString("pri_id"));
                                 MyArrList.add(map);
                             }
-                            friendInDb.add(MyArrList.get(0).get("user_id"));
-//                            Log.d("themeSelect","myarr : "+MyArrList.toString());
+                            for (int i=0;i<MyArrList.size();i++){
+                                friendInDb.add(MyArrList.get(i).get("user_id"));
+                            }
+                            Log.d("friendselect", "myarrAttend : " + friendInDb.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -590,6 +610,18 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+    public boolean checkFriendAlreadysent(String id) {
+        Log.d("friendselect", "id : " + id);
+        Log.d("friendselect", "friendInDb : " + friendInDb.toString());
+        for (int j = 0; j < friendInDb.size(); j++) {
+            String fdb = friendInDb.get(j);
+            if (fdb.equals(id)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 //    public void checkBoxClick(ArrayList position){    //show all
 //        Log.d("position","position size: "+position.size()+"");
