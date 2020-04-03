@@ -16,10 +16,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.CalendarContract;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 
@@ -133,6 +134,13 @@ public class Manage_calendar extends AppCompatActivity {
             }
         }).start();
 
+        Calendar cal = Calendar.getInstance();
+        Date today1 = cal.getTime();
+        cal.add(Calendar.YEAR, 1); // to get previous year add -1
+        Date nextYear1 = cal.getTime();
+//        getWeekRange();
+        getWeeksRangesDates(2020, 12);
+        Log.d("getoneyear", "getoneyear : " + nextYear1.toString());
         new CountDownTimer(500, 500) {
             public void onFinish() {
 //                Log.d("newDate","dateFromDB "+dateFromDB.toString());
@@ -320,13 +328,13 @@ public class Manage_calendar extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+                        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
                             @Override
                             protected void onPreExecute() {
 
                                 super.onPreExecute();
 
-                                progressDialog = ProgressDialog.show(Manage_calendar.this,"Calendar is Uploading","Please Wait",false,false);
+                                progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
                             }
 
                             @Override
@@ -338,7 +346,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 progressDialog.dismiss();
 
                                 // Printing uploading success message coming from server on android app.
-                                Toast.makeText(Manage_calendar.this,string1,Toast.LENGTH_LONG).show();
+                                Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
 
                             }
 
@@ -396,13 +404,13 @@ public class Manage_calendar extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+                        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
                             @Override
                             protected void onPreExecute() {
 
                                 super.onPreExecute();
 
-                                progressDialog = ProgressDialog.show(Manage_calendar.this,"Calendar is Uploading","Please Wait",false,false);
+                                progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
                             }
 
                             @Override
@@ -414,7 +422,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 calendarPicker.clearHighlightedDates();
                                 // Printing uploading success message coming from server on android app.
-                                Toast.makeText(Manage_calendar.this,string1,Toast.LENGTH_LONG).show();
+                                Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -1187,13 +1195,13 @@ public class Manage_calendar extends AppCompatActivity {
                     newDate.add(d);
                 }
                 calendarPicker.highlightDates(newDate);
-                class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+                class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
                     @Override
                     protected void onPreExecute() {
 
                         super.onPreExecute();
 
-                        progressDialog = ProgressDialog.show(Manage_calendar.this,"Calendar is Uploading","Please Wait",false,false);
+                        progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
                     }
 
                     @Override
@@ -1205,7 +1213,7 @@ public class Manage_calendar extends AppCompatActivity {
                         progressDialog.dismiss();
 
                         // Printing uploading success message coming from server on android app.
-                        Toast.makeText(Manage_calendar.this,string1,Toast.LENGTH_LONG).show();
+                        Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
 
                     }
 
@@ -1335,5 +1343,46 @@ public class Manage_calendar extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+
+    ///////////////////////////////////////////////// check range of year
+    public Pair<String, String> getWeekRange(int year, int week_no) {
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.WEEK_OF_YEAR, week_no);
+        Date monday = cal.getTime();
+
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.WEEK_OF_YEAR, week_no);
+        Date sunday = cal.getTime();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return new Pair<String, String>(sdf.format(monday), sdf.format(sunday));
+    }
+
+    public void getWeeksRangesDates(int y, int w) {  //nice work
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, Calendar.MONDAY);
+        cal.set(Calendar.YEAR, y);
+        cal.set(Calendar.WEEK_OF_YEAR, w);
+        Date date1 = cal.getTime();
+        for (int i=0;i<365;i++){
+            int one = 1;
+            cal.add(Calendar.DATE, one);
+            Date date3 = cal.getTime();
+            Log.v("date3", date3.toString());
+        }
+        cal.add(Calendar.DATE, 6);
+        Date date2 = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Log.v("date1", sdf.format(date1));
+        Log.v("date2", date1.toString());
+        Log.v("date2", sdf.format(date2));
+        Log.v("date2", date2.toString());
+
     }
 }
