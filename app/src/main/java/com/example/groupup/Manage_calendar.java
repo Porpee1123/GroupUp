@@ -44,9 +44,11 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -79,7 +81,8 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> dateFromDB = new ArrayList<>();
     ArrayList<String> dateDiffFromDB = new ArrayList<>();
     ArrayList<String> dateForDB = new ArrayList<>();
-    ArrayList<String> dateOfyear = new ArrayList<>();
+    //Array for 1 year
+    static ArrayList<Date> dateInYear = new ArrayList<>(); // real Tue Sep 01 20:44:10 GMT+07:00 2020
     String uid, email;
     String date1, date2;
     //checkbox
@@ -133,14 +136,23 @@ public class Manage_calendar extends AppCompatActivity {
                 getDateDiffFromDB();
             }
         }).start();
-
+        //////////////////////////////////range date 1 year/////////////////////////////////////
         Calendar cal = Calendar.getInstance();
         Date today1 = cal.getTime();
         cal.add(Calendar.YEAR, 1); // to get previous year add -1
         Date nextYear1 = cal.getTime();
-//        getWeekRange();
-        getWeeksRangesDates(2020, 12);
+//        getDatesBetweenUsingJava7(today1,nextYear1);
+        Log.d("checkyear", getDatesBetweenInYear(today1,nextYear1).size()+"");
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
+        for (int i =0 ;i<dateInYear.size();i++){
+            Log.d("checkyear", i+" "+dateInYear.get(i)+" -> "+simpleHour.format(dateInYear.get(i)));
+        }
+
         Log.d("getoneyear", "getoneyear : " + nextYear1.toString());
+
+
+
+        //////////////////////////////////range date 1 year/////////////////////////////////////
         new CountDownTimer(500, 500) {
             public void onFinish() {
 //                Log.d("newDate","dateFromDB "+dateFromDB.toString());
@@ -1346,43 +1358,22 @@ public class Manage_calendar extends AppCompatActivity {
     }
 
     ///////////////////////////////////////////////// check range of year
-    public Pair<String, String> getWeekRange(int year, int week_no) {
+    public static List<Date> getDatesBetweenInYear(
+            Date startDate, Date endDate) {
+        List<Date> datesInRange = new ArrayList<>();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startDate);
 
-        Calendar cal = Calendar.getInstance();
+        Calendar endCalendar = new GregorianCalendar();
+        endCalendar.setTime(endDate);
 
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.WEEK_OF_YEAR, week_no);
-        Date monday = cal.getTime();
-
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.WEEK_OF_YEAR, week_no);
-        Date sunday = cal.getTime();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        return new Pair<String, String>(sdf.format(monday), sdf.format(sunday));
-    }
-
-    public void getWeeksRangesDates(int y, int w) {  //nice work
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, Calendar.MONDAY);
-        cal.set(Calendar.YEAR, y);
-        cal.set(Calendar.WEEK_OF_YEAR, w);
-        Date date1 = cal.getTime();
-        for (int i=0;i<365;i++){
-            int one = 1;
-            cal.add(Calendar.DATE, one);
-            Date date3 = cal.getTime();
-            Log.v("date3", date3.toString());
+        while (calendar.before(endCalendar)) {
+            Date result = calendar.getTime();
+            datesInRange.add(result);
+            dateInYear.add(result);
+            calendar.add(Calendar.DATE, 1);
         }
-        cal.add(Calendar.DATE, 6);
-        Date date2 = cal.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        Log.v("date1", sdf.format(date1));
-        Log.v("date2", date1.toString());
-        Log.v("date2", sdf.format(date2));
-        Log.v("date2", date2.toString());
-
+        return datesInRange;
     }
+    
 }
