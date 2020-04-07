@@ -60,7 +60,6 @@ public class Manage_calendar extends AppCompatActivity {
     Button btnGetCalen, btnConfirmCalendar, btnDelCalendar;
     Manage_calendar.ResponseStr responseStr = new Manage_calendar.ResponseStr();
     private int CALENDAR_PERMISSION_CODE = 1;
-    ArrayList<Date> date = new ArrayList<>();
     ArrayList<String> dateString = new ArrayList<>();
     ArrayList<String> dateDiffString = new ArrayList<>();
     List<String> calendars = new ArrayList<>();
@@ -100,7 +99,7 @@ public class Manage_calendar extends AppCompatActivity {
         btnGetCalen = findViewById(R.id.btnGetCalendar);
         calendarPicker = findViewById(R.id.calendarPickerView);
         linearCheckbox = findViewById(R.id.linear_Checkbox_Calendar);
-        calendarPicker.highlightDates(date);
+//        calendarPicker.highlightDates(date);
         btnConfirmCalendar = findViewById(R.id.btn_confirmCalendar);
         btnDelCalendar = findViewById(R.id.btnDelCalendar);
         uid = getIntent().getStringExtra("id");
@@ -147,12 +146,12 @@ public class Manage_calendar extends AppCompatActivity {
         for (int i =0 ;i<dateInYear.size();i++){
             Log.d("checkyear", i+" "+dateInYear.get(i)+" -> "+simpleHour.format(dateInYear.get(i)));
         }
-
         Log.d("getoneyear", "getoneyear : " + nextYear1.toString());
 
 
-
         //////////////////////////////////range date 1 year/////////////////////////////////////
+
+
         new CountDownTimer(500, 500) {
             public void onFinish() {
 //                Log.d("newDate","dateFromDB "+dateFromDB.toString());
@@ -541,12 +540,11 @@ public class Manage_calendar extends AppCompatActivity {
             Log.d("arraydb ", "size : " + endDateTime.size() + " dateString : " + endDateTime.toString());
             d.setTime(cursor.getLong(3));
             dend.setTime(Long.parseLong(s3));
-            date.add(d);
             dateString.add(d.toString());
             if (cursor.getString(6).equals("0")) {
-                date.add(dend);
                 dateString.add(dend.toString());
             }
+            Log.d("checkyear ",dateString.toString());
             if (d.getDate() != dend.getDate()) {
 //                Log.d("checkTime ", "d : " + d.getDate()+"---"+dend.getDate());
                 int dif = 0;
@@ -557,7 +555,6 @@ public class Manage_calendar extends AppCompatActivity {
                     ddiff.setTime(d.getTime() + (oneday) * num);
                     Log.d("checkTime ", "checkTime : " + ddiff);
                     Log.d("dateTime ", "ddiff : " + ddiff);
-                    date.add(ddiff);
                     dateString.add(ddiff.toString());
                     dateDiffString.add(ddiff.toString());
                     diffDateTime.add(simple.format(ddiff));
@@ -1358,8 +1355,7 @@ public class Manage_calendar extends AppCompatActivity {
     }
 
     ///////////////////////////////////////////////// check range of year
-    public static List<Date> getDatesBetweenInYear(
-            Date startDate, Date endDate) {
+    public static List<Date> getDatesBetweenInYear(Date startDate, Date endDate) {
         List<Date> datesInRange = new ArrayList<>();
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(startDate);
@@ -1375,5 +1371,4 @@ public class Manage_calendar extends AppCompatActivity {
         }
         return datesInRange;
     }
-    
 }
