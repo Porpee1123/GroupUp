@@ -10,13 +10,13 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CalendarContract;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -44,14 +44,12 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.StringTokenizer;
 
 
@@ -60,6 +58,7 @@ public class Manage_calendar extends AppCompatActivity {
     Button btnGetCalen, btnConfirmCalendar, btnDelCalendar;
     Manage_calendar.ResponseStr responseStr = new Manage_calendar.ResponseStr();
     private int CALENDAR_PERMISSION_CODE = 1;
+    private RequestQueue requestQueue;
     ArrayList<String> dateString = new ArrayList<>();
     ArrayList<String> dateDiffString = new ArrayList<>();
     List<String> calendars = new ArrayList<>();
@@ -81,7 +80,7 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> dateDiffFromDB = new ArrayList<>();
     ArrayList<String> dateForDB = new ArrayList<>();
     //Array for 1 year
-    static ArrayList<Date> dateInYear = new ArrayList<>(); // real Tue Sep 01 20:44:10 GMT+07:00 2020
+    static ArrayList<String> dateInYear ; // real Tue Sep 01 20:44:10 GMT+07:00 2020
     String uid, email;
     String date1, date2;
     //checkbox
@@ -102,6 +101,7 @@ public class Manage_calendar extends AppCompatActivity {
 //        calendarPicker.highlightDates(date);
         btnConfirmCalendar = findViewById(R.id.btn_confirmCalendar);
         btnDelCalendar = findViewById(R.id.btnDelCalendar);
+        dateInYear = new ArrayList<>();
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         //checkbox
@@ -140,13 +140,17 @@ public class Manage_calendar extends AppCompatActivity {
         Date today1 = cal.getTime();
         cal.add(Calendar.YEAR, 1); // to get previous year add -1
         Date nextYear1 = cal.getTime();
-//        getDatesBetweenUsingJava7(today1,nextYear1);
-        Log.d("checkyear", getDatesBetweenInYear(today1,nextYear1).size()+"");
+        getDatesBetweenInYear(today1, nextYear1);
+//        Log.d("checkyear", getDatesBetweenInYear(today1, nextYear1).size() + "");
         DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
-        for (int i =0 ;i<dateInYear.size();i++){
-            Log.d("checkyear", i+" "+dateInYear.get(i)+" -> "+simpleHour.format(dateInYear.get(i)));
+
+        for (int i = 0; i < dateInYear.size(); i++) {
+            long dat = Date.parse(dateInYear.get(i));
+            Date da = new Date(dat);
+//            Log.d("checkyear", i + " " + dateInYear.get(i) + " -> " + simpleHour.format(da));
         }
-        Log.d("getoneyear", "getoneyear : " + nextYear1.toString());
+//        Log.d("checkyear", dateInYear.toString());
+//        Log.d("getoneyear", "getoneyear : " + nextYear1.toString());
 
 
         //////////////////////////////////range date 1 year/////////////////////////////////////
@@ -432,6 +436,8 @@ public class Manage_calendar extends AppCompatActivity {
                                 // Dismiss the progress dialog after done uploading.
                                 progressDialog.dismiss();
                                 calendarPicker.clearHighlightedDates();
+                                startActivity(getIntent());
+
                                 // Printing uploading success message coming from server on android app.
                                 Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
                             }
@@ -543,8 +549,9 @@ public class Manage_calendar extends AppCompatActivity {
             dateString.add(d.toString());
             if (cursor.getString(6).equals("0")) {
                 dateString.add(dend.toString());
+                Log.d("checkyear ", "dend : " + dend.toString());
             }
-            Log.d("checkyear ",dateString.toString());
+//            Log.d("checkyear ", dateString.toString());
             if (d.getDate() != dend.getDate()) {
 //                Log.d("checkTime ", "d : " + d.getDate()+"---"+dend.getDate());
                 int dif = 0;
@@ -567,6 +574,7 @@ public class Manage_calendar extends AppCompatActivity {
             cursor.moveToNext();
         }
 //        Log.d("newDate","dateString "+dateString.toString());
+
         return calendars;
     }
 
@@ -915,6 +923,7 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
+//        uploadData(stringRequest);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
@@ -1000,6 +1009,7 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
+//        uploadData(stringRequest);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
@@ -1081,6 +1091,7 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
+//        uploadData(stringRequest);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
@@ -1207,28 +1218,24 @@ public class Manage_calendar extends AppCompatActivity {
                 class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
                     @Override
                     protected void onPreExecute() {
-
                         super.onPreExecute();
-
+                        checkdateforcal(dateString,dateInYear);
                         progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
                     }
 
                     @Override
                     protected void onPostExecute(String string1) {
-
                         super.onPostExecute(string1);
-
                         // Dismiss the progress dialog after done uploading.
                         progressDialog.dismiss();
-
+                        requestQueue = null;
                         // Printing uploading success message coming from server on android app.
                         Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
-
+                        addDateAvaliableTodb();
                     }
 
                     @Override
                     protected String doInBackground(Void... params) {
-
                         if (startDateTime != null || endDateTime != null || dateString != null) {
 //                    Log.d("dateSelect","start"+startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
                             for (int i = 0; i < startDateTime.size(); i++) {
@@ -1256,7 +1263,6 @@ public class Manage_calendar extends AppCompatActivity {
                     }
                 }
                 AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-
                 AsyncTaskUploadClassOBJ.execute();
 
             }
@@ -1352,6 +1358,51 @@ public class Manage_calendar extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+        startActivity(getIntent());
+    }
+
+    public void sentDateForCalToDB(String date, String morning, String late, String afternoon, String evening, String status) {
+        Log.d("checkDB ", "dateString123 : " + date);
+        date1 = "";
+        date2 = "";
+        CutStringDateForSaveDB(date);
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
+        long dt = Date.parse(date);
+        Date d = new Date(dt);
+        String dateCheck = simpleHour.format(d);
+        String dateCheckformat = simpledate.format(d) + "";
+        Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
+        Log.d("checkDB ", "dateCheck : " + dateCheck);
+        String url = "http://www.groupupdb.com/android/adddateforcal.php";
+        url += "?sId=" + uid;
+        url += "&sdt=" + date1;
+        url += "&sdtl=" + date2;
+        url += "&sdc=" + dateCheck + "";
+        url += "&dcf=" + dateCheckformat + "";
+        url += "&mor=" + morning + "";
+        url += "&lat=" + late + "";
+        url += "&aft=" + afternoon + "";
+        url += "&eve=" + evening + "";
+        url += "&sta=" + status + "";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+        uploadData(stringRequest);
     }
 
     ///////////////////////////////////////////////// check range of year
@@ -1366,9 +1417,72 @@ public class Manage_calendar extends AppCompatActivity {
         while (calendar.before(endCalendar)) {
             Date result = calendar.getTime();
             datesInRange.add(result);
-            dateInYear.add(result);
+            dateInYear.add(result.toString());
             calendar.add(Calendar.DATE, 1);
         }
+        Log.d("checkyear","dateYearsize "+dateInYear.size());
         return datesInRange;
+    }
+
+    public void checkdateforcal(ArrayList<String> dateEvent,ArrayList<String> dateYear){
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
+        Log.d("checkyear"," dateEventsize "+dateEvent.toString());
+        Log.d("checkyear","dateYearsize "+dateYear.size()+" dateEventsize "+dateEvent.size());
+        for (int i = 0; i < dateEvent.size(); i++) {
+            long dEat = Date.parse(dateEvent.get(i));
+            Date dEa = new Date(dEat);
+            for (int j=0;j<dateYear.size();j++){
+                long dat = Date.parse(dateYear.get(j));
+                Date da = new Date(dat);
+                if (simpleHour.format(da).equals(simpleHour.format(dEa))){
+                    Log.d("checkyear", " removeDate : " + " " + simpleHour.format(da) + " -> " + simpleHour.format(dEa));
+                    dateYear.remove(j);
+                }
+            }
+        }
+        Log.d("checkyear", "size "+ dateYear.size()+" removeDate : " + dateYear.toString());
+    }
+    public void addDateAvaliableTodb(){
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+            @Override
+            protected void onPreExecute() {
+
+                super.onPreExecute();
+
+                progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String string1) {
+
+                super.onPostExecute(string1);
+
+                // Dismiss the progress dialog after done uploading.
+                progressDialog.dismiss();
+//                requestQueue = null;
+                requestQueue.cancelAll(this);
+                // Printing uploading success message coming from server on android app.
+                Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+
+                    for (int i = 0;i<dateInYear.size();i++){
+                        sentDateForCalToDB(dateInYear.get(i),"1","1","1","1","1");
+                    }
+                return "Finish";
+            }
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
+    }
+    public void uploadData(StringRequest s) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }else{
+            requestQueue.add(s);
+        }
     }
 }
