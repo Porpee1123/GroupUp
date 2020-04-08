@@ -85,7 +85,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         progressDialog = new ProgressDialog(Home.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
-//        progressDialog.show();
+        progressDialog.show();
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -101,65 +101,25 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
-                        Toast.makeText(Home.this, msg, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Home.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+        new Thread(new Runnable() {
             @Override
-            protected void onPreExecute() {
+            public void run() {
                 getUser();
-                super.onPreExecute();
-
-                progressDialog = ProgressDialog.show(Home.this, "Calendar is Uploading", "Please Wait", false, false);
-            }
-
-            @Override
-            protected void onPostExecute(String string1) {
-
-                super.onPostExecute(string1);
-
-                // Dismiss the progress dialog after done uploading.
-                new CountDownTimer(800, 800) {
-                    public void onFinish() {
-                        createTab();
-                        progressDialog.dismiss();
-                    }
-
-                    public void onTick(long millisUntilFinished) {
-                        // millisUntilFinished    The amount of time until finished.
-                    }
-                }.start();
-
-
-                // Printing uploading success message coming from server on android app.
-                Toast.makeText(Home.this, string1, Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
                 deleteDateOldDay();
-
-                return "finish";
             }
-        }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-        AsyncTaskUploadClassOBJ.execute();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }).start();
-//        new CountDownTimer(800, 800) {
-//            public void onFinish() {
-//                getUser();
-//                createTab();
-//            }
-//            public void onTick(long millisUntilFinished) {
-//                // millisUntilFinished    The amount of time until finished.
-//            }
-//        }.start();
+        }).start();
+        new CountDownTimer(800, 800) {
+            public void onFinish() {
+                getUser();
+                createTab();
+            }
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
 
         //firebase signin
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
