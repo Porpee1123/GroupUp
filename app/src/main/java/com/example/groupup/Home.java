@@ -1,10 +1,9 @@
 package com.example.groupup;
 
-import android.app.AlertDialog;
 import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -12,13 +11,11 @@ import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,8 +31,12 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,10 +59,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     ListView listViewInvite, listViewHeader, listViewAttend;
     TextView hName;
     TextView hEmail;
+    private RequestQueue requestQueue;
     String name = "", id = "", email = "";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-    ProgressDialog progressDialog ;
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,23 +85,81 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         progressDialog = new ProgressDialog(Home.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
-        progressDialog.show();
-        new Thread(new Runnable() {
+//        progressDialog.show();
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg);
+                        Toast.makeText(Home.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
             @Override
-            public void run() {
+            protected void onPreExecute() {
                 getUser();
+                super.onPreExecute();
+
+                progressDialog = ProgressDialog.show(Home.this, "Calendar is Uploading", "Please Wait", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String string1) {
+
+                super.onPostExecute(string1);
+
+                // Dismiss the progress dialog after done uploading.
+                new CountDownTimer(800, 800) {
+                    public void onFinish() {
+                        createTab();
+                        progressDialog.dismiss();
+                    }
+
+                    public void onTick(long millisUntilFinished) {
+                        // millisUntilFinished    The amount of time until finished.
+                    }
+                }.start();
+
+
+                // Printing uploading success message coming from server on android app.
+                Toast.makeText(Home.this, string1, Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
                 deleteDateOldDay();
+
+                return "finish";
             }
-        }).start();
-        new CountDownTimer(800, 800) {
-            public void onFinish() {
-                getUser();
-                createTab();
-            }
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }).start();
+//        new CountDownTimer(800, 800) {
+//            public void onFinish() {
+//                getUser();
+//                createTab();
+//            }
+//            public void onTick(long millisUntilFinished) {
+//                // millisUntilFinished    The amount of time until finished.
+//            }
+//        }.start();
 
         //firebase signin
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -110,29 +171,32 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         btnNoti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(Home.this,Home_Alert.class);
-                in.putExtra("id", id+"");
-                in.putExtra("email", email+"");
+                Intent in = new Intent(Home.this, Home_Alert.class);
+                in.putExtra("id", id + "");
+                in.putExtra("email", email + "");
                 startActivity(in);
             }
         });
+
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
         }
     };
-    public void createTab(){
+
+    public void createTab() {
 
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
-        Intent inA = new Intent(this,Home_Listview_Attendant.class);
-        inA.putExtra("id", id+"");
-        inA.putExtra("email", email+"");
-        Intent inH = new Intent(this,Home_Listview_Head.class);
-        inH.putExtra("id", id+"");
-        inH.putExtra("email", email+"");
+        Intent inA = new Intent(this, Home_Listview_Attendant.class);
+        inA.putExtra("id", id + "");
+        inA.putExtra("email", email + "");
+        Intent inH = new Intent(this, Home_Listview_Head.class);
+        inH.putExtra("id", id + "");
+        inH.putExtra("email", email + "");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("ผู้เข้าร่วมงาน")
                 .setContent(inA);
@@ -156,6 +220,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         handler.sendEmptyMessage(0);
 
     }
+
     protected void updateTabs() {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
 
@@ -164,8 +229,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         .getChildAt(i)
                         .setBackgroundResource(
                                 R.drawable.shape_tab);
-            }
-            else {
+            } else {
 
                 tabHost.getTabWidget()
                         .getChildAt(i)
@@ -176,25 +240,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         email = getIntent().getStringExtra("email");
-        Log.d("footer","resume: "+email);
+        Log.d("footer", "resume: " + email);
         getUser();
     }
+
     public void createGroup(View v) {
         Intent intent = new Intent(Home.this, Home_CreateEvent.class);
-        intent.putExtra("id", id+"");
-        intent.putExtra("name", name+"");
-        intent.putExtra("email", email+"");
+        intent.putExtra("id", id + "");
+        intent.putExtra("name", name + "");
+        intent.putExtra("email", email + "");
         startActivity(intent);
     }
+
     public void search(View v) {
     }
+
     public void menuHamberger(View v) {
         drawerLayout.openDrawer(GravityCompat.START);
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "Hello item");
@@ -224,30 +293,35 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout.closeDrawers();
         return true;
     }
+
     public void goToManageAccount() {
         Intent intent = new Intent(Home.this, Manage_Account.class);
-        intent.putExtra("email", email+"");
-        intent.putExtra("name", name+"");
+        intent.putExtra("email", email + "");
+        intent.putExtra("name", name + "");
         startActivity(intent);
     }
+
     public void goToCalendar() {
         Intent intent = new Intent(Home.this, Manage_calendar.class);
-        intent.putExtra("id", id+"");
-        intent.putExtra("email", email+"");
+        intent.putExtra("id", id + "");
+        intent.putExtra("email", email + "");
         startActivity(intent);
     }
+
     public void goToManageFriend() {
         Intent intent = new Intent(Home.this, ManageFriend.class);
-        intent.putExtra("id", id+"");
-        intent.putExtra("email", email+"");
+        intent.putExtra("id", id + "");
+        intent.putExtra("email", email + "");
         startActivity(intent);
     }
+
     public void signout() {
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.revokeAccess();
         Intent intent = new Intent(Home.this, Login.class);
         startActivity(intent);
     }
+
     public void getUser() {
         responseStr = new ResponseStr();
 
@@ -272,9 +346,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                 MyArrList.add(map);
                             }
                             //set Header menu name email
-//                            Log.d("footer", MyArrList.get(0).get("user_id"));
-//                            Log.d("footer", MyArrList.get(0).get("user_names"));
-//                            Log.d("footer", MyArrList.get(0).get("user_email"));
+                            Log.d("footer", MyArrList.get(0).get("user_id"));
+                            Log.d("footer", MyArrList.get(0).get("user_names"));
+                            Log.d("footer", MyArrList.get(0).get("user_email"));
                             hName.setText(MyArrList.get(0).get("user_names"));
                             name = MyArrList.get(0).get("user_names");
                             id = MyArrList.get(0).get("user_id");
@@ -292,12 +366,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
+//        uploadData(stringRequest);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void writeFile(String id,String name,String email) {
+
+    public void writeFile(String id, String name, String email) {
         String filename = "user.txt";
-        String sid = id+ ":";
+        String sid = id + ":";
         String sname = name + ":";
         String semail = email + "\n";
         FileOutputStream outputStream;
@@ -307,13 +383,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             outputStream.write(sname.getBytes());
             outputStream.write(semail.getBytes());
             outputStream.close();
-            Log.d("footer","write file : id "+sid +"/ name "+sname+"/ status "+ semail);
+            Log.d("footer", "write file : id " + sid + "/ name " + sname + "/ status " + semail);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void readFile(){
+
+    public void readFile() {
         String filename = "user.txt";
         try {
             BufferedReader inputReader = new BufferedReader(
@@ -330,13 +407,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 name = st.nextToken();
                 email = st.nextToken();
             }
-            Log.d("footer","read file : id "+id +"/ name "+name+"/ status "+ email);
+            Log.d("footer", "read file : id " + id + "/ name " + name + "/ status " + email);
             hName.setText(name);
             hEmail.setText(email);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -346,6 +424,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     }
+
     public void deleteDateOldDay() {
         responseStr = new ResponseStr();
         String url = "http://www.groupupdb.com/android/deleteDate.php";
@@ -364,5 +443,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+
+    public void uploadData(StringRequest s) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        } else {
+            requestQueue.add(s);
+        }
     }
 }
