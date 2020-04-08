@@ -58,8 +58,8 @@ public class Manage_calendar extends AppCompatActivity {
     Manage_calendar.ResponseStr responseStr = new Manage_calendar.ResponseStr();
     private int CALENDAR_PERMISSION_CODE = 1;
     private RequestQueue requestQueue;
-    ArrayList<String> dateString = new ArrayList<>();
-    ArrayList<String> dateDiffString = new ArrayList<>();
+    ArrayList<String> dateString;
+    ArrayList<String> dateDiffString;
     List<String> calendars = new ArrayList<>();
     ArrayList<String> allDaySelect;
     ArrayList<Date> newDate;
@@ -69,9 +69,9 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> timeCalGetEnd = new ArrayList<>();
     ArrayList<String> dateCalGetDiff = new ArrayList<>();
     ArrayList<String> timeCalGetDiff = new ArrayList<>();
-    ArrayList<String> startDateTime = new ArrayList<>();
+    ArrayList<String> startDateTime;
     ArrayList<String> dateCalGetAllDay = new ArrayList<>();
-    ArrayList<String> endDateTime = new ArrayList<>();
+    ArrayList<String> endDateTime;
     ArrayList<String> diffDateTime = new ArrayList<>();
     ArrayList<String> cbStartcalenFromDB = new ArrayList<>();
     ArrayList<String> cbEndcalenFromDB = new ArrayList<>();
@@ -107,7 +107,10 @@ public class Manage_calendar extends AppCompatActivity {
         linearCheckbox.setVisibility(View.GONE);
         checkVisible = true;//close custom
         newDate = new ArrayList();
-
+        startDateTime = new ArrayList<>();
+        endDateTime = new ArrayList<>();
+        dateString = new ArrayList<>();
+        dateDiffString = new ArrayList<>();
         tvDateTime = findViewById(R.id.cb_dateTime);
         cbMorninig = findViewById(R.id.cb_time1);
         cbLate = findViewById(R.id.cb_time2);
@@ -347,10 +350,7 @@ public class Manage_calendar extends AppCompatActivity {
                             protected void onPreExecute() {
 
                                 super.onPreExecute();
-//                                addDateAvaliableTodb();
-//                                for (int i = 0; i < dateInYear.size(); i++) {
-//                                    sentDateForCalToDB(dateInYear.get(i), "1", "1", "1", "1", "1");
-//                                }
+                                sentdateforcalcustom(dateForDB, startDateTime);
                                 progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
 
                             }
@@ -383,8 +383,11 @@ public class Manage_calendar extends AppCompatActivity {
                                         Log.d("checkDB ", "dateForDB : " + dateForDB.toString());//[Mon Apr 20 00:00:00 GMT+07:00 2020]
                                         sentDateToDB(dateForDB.get(i));
                                     }
+                                    for (int i = 0; i < dateInYear.size(); i++) {
+                                        sentDateForCalToDB(dateInYear.get(i), "1", "1", "1", "1", "1");
+                                    }
                                     handlerSave.sendEmptyMessage(0);
-                                    sentdateforcalcustom(dateForDB, startDateTime);
+
                                 }
 
 
@@ -1235,7 +1238,8 @@ public class Manage_calendar extends AppCompatActivity {
                         super.onPostExecute(string1);
                         // Dismiss the progress dialog after done uploading.
                         progressDialog.dismiss();
-                        requestQueue = null;
+//                        requestQueue = null;
+                        requestQueue.cancelAll(this);
                         // Printing uploading success message coming from server on android app.
                         Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
                         addDateAvaliableTodb();
@@ -1258,10 +1262,10 @@ public class Manage_calendar extends AppCompatActivity {
                                 Log.d("checkDB ", "dateDiffString : " + dateDiffString.toString());
                                 sentDateDiffToDB(dateDiffString.get(i));
                             }
-                            startDateTime.clear();
-                            endDateTime.clear();
-                            dateString.clear();
-                            dateDiffString.clear();
+//                            startDateTime.clear();
+//                            endDateTime.clear();
+//                            dateString.clear();
+//                            dateDiffString.clear();
 //                    Log.d("dateSelect",startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
                         }
 
@@ -1503,12 +1507,16 @@ public class Manage_calendar extends AppCompatActivity {
             @Override
             protected void onPostExecute(String string1) {
 
+//                dateString
+                for (int i = 0; i < dateString.size(); i++) {
+                    sentDateForCalToDB(dateString.get(i), "0", "0", "0", "0", "0");
+                }
                 super.onPostExecute(string1);
 
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
-                requestQueue = null;
-//                requestQueue.cancelAll(this);
+//                requestQueue = null;
+                requestQueue.cancelAll(this);
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
 
@@ -1519,6 +1527,9 @@ public class Manage_calendar extends AppCompatActivity {
 
                 for (int i = 0; i < dateInYear.size(); i++) {
                     sentDateForCalToDB(dateInYear.get(i), "1", "1", "1", "1", "1");
+                }
+                for (int i = 0; i < dateString.size(); i++) {
+                    sentDateForCalToDB(dateString.get(i), "0", "0", "0", "0", "0");
                 }
                 return "Finish";
             }

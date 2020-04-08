@@ -404,12 +404,4 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-
-    public void uploadData(StringRequest s) {
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(this);
-        } else {
-            requestQueue.add(s);
-        }
-    }
 }
