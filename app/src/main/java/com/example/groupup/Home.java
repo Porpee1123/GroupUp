@@ -31,8 +31,12 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,6 +86,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
 //        progressDialog.show();
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg);
+                        Toast.makeText(Home.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
         class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
             @Override
             protected void onPreExecute() {
@@ -155,6 +177,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(in);
             }
         });
+
     }
 
     Handler handler = new Handler() {
