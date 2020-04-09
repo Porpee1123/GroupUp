@@ -111,9 +111,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 deleteDateOldDay();
             }
         }).start();
-        new CountDownTimer(800, 800) {
+        new CountDownTimer(1000, 1000) {
             public void onFinish() {
-                getUser();
+//                getUser();
                 createTab();
             }
             public void onTick(long millisUntilFinished) {
