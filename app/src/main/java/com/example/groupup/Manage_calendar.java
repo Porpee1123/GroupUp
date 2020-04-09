@@ -69,9 +69,11 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> timeCalGetEnd = new ArrayList<>();
     ArrayList<String> dateCalGetDiff = new ArrayList<>();
     ArrayList<String> timeCalGetDiff = new ArrayList<>();
-    ArrayList<String> startDateTime;
     ArrayList<String> dateCalGetAllDay = new ArrayList<>();
+    ArrayList<String> startDateTime;
     ArrayList<String> endDateTime;
+    ArrayList<String> startDateTimeDel;
+    ArrayList<String> endDateTimeDel;
     ArrayList<String> diffDateTime = new ArrayList<>();
     ArrayList<String> cbStartcalenFromDB = new ArrayList<>();
     ArrayList<String> cbEndcalenFromDB = new ArrayList<>();
@@ -109,6 +111,8 @@ public class Manage_calendar extends AppCompatActivity {
         newDate = new ArrayList();
         startDateTime = new ArrayList<>();
         endDateTime = new ArrayList<>();
+        startDateTimeDel = new ArrayList<>();
+        endDateTimeDel = new ArrayList<>();
         dateString = new ArrayList<>();
         dateDiffString = new ArrayList<>();
         allDaySelect = new ArrayList();
@@ -146,7 +150,6 @@ public class Manage_calendar extends AppCompatActivity {
             public void onDateSelected(Date date) {
                 //String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(date);
 //                Log.d("dateSelectClick","date : "+date);
-
                 btnGetCalen.setEnabled(false);
                 clearCheckBox();
                 btnConfirmCalendar.setVisibility(View.VISIBLE);
@@ -160,37 +163,115 @@ public class Manage_calendar extends AppCompatActivity {
                 Log.d("checkdiff", "selectedDateCompare : " + selectedDateCompare);
                 dateForDB.add(date.toString());
                 final String finalSelectedDateCompare = selectedDateCompare;
+                final int[] countMor = {1};
+                final int[] countLat = {1};
+                final int[] countAft = {1};
+                final int[] countEve = {1};
                 cbMorninig.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startDateTime.add(finalSelectedDateCompare + ":11");
-                        endDateTime.add(finalSelectedDateCompare + ":13");
+                        if (countMor[0] %2!=0){
+                            if (cbMorninig.isChecked()) {
+                                startDateTime.add(finalSelectedDateCompare + ":11");
+                                endDateTime.add(finalSelectedDateCompare + ":13");
+                                removeTime(finalSelectedDateCompare + ":11", startDateTimeDel);
+                                removeTime(finalSelectedDateCompare + ":13", endDateTimeDel);
+
+                            } else {
+                                startDateTimeDel.add(finalSelectedDateCompare + ":11");
+                                endDateTimeDel.add(finalSelectedDateCompare + ":13");
+                                removeTime(finalSelectedDateCompare + ":11", startDateTime);
+                                removeTime(finalSelectedDateCompare + ":13", endDateTime);
+                            }
+                        }else{
+                            removeTime(finalSelectedDateCompare + ":11", startDateTime);
+                            removeTime(finalSelectedDateCompare + ":13", endDateTime);
+                            removeTime(finalSelectedDateCompare + ":11", startDateTimeDel);
+                            removeTime(finalSelectedDateCompare + ":13", endDateTimeDel);
+                        }
+                        countMor[0]++;
                     }
                 });
                 cbLate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startDateTime.add(finalSelectedDateCompare + ":14");
-                        endDateTime.add(finalSelectedDateCompare + ":16");
+                        if (countLat[0] %2!=0){
+                            if (cbLate.isChecked()) {
+                                startDateTime.add(finalSelectedDateCompare + ":14");
+                                endDateTime.add(finalSelectedDateCompare + ":16");
+                                removeTime(finalSelectedDateCompare + ":14", startDateTimeDel);
+                                removeTime(finalSelectedDateCompare + ":16", endDateTimeDel);
+
+                            } else {
+                                startDateTimeDel.add(finalSelectedDateCompare + ":14");
+                                endDateTimeDel.add(finalSelectedDateCompare + ":16");
+                                removeTime(finalSelectedDateCompare + ":14", startDateTime);
+                                removeTime(finalSelectedDateCompare + ":16", endDateTime);
+                            }
+                        }else{
+                            removeTime(finalSelectedDateCompare + ":14", startDateTime);
+                            removeTime(finalSelectedDateCompare + ":16", endDateTime);
+                            removeTime(finalSelectedDateCompare + ":14", startDateTimeDel);
+                            removeTime(finalSelectedDateCompare + ":16", endDateTimeDel);
+                        }
+                        countLat[0]++;
                     }
                 });
                 cbAfternoon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startDateTime.add(finalSelectedDateCompare + ":17");
-                        endDateTime.add(finalSelectedDateCompare + ":19");
+                        if (countAft[0] %2!=0){
+                            if (cbAfternoon.isChecked()) {
+                                startDateTime.add(finalSelectedDateCompare + ":17");
+                                endDateTime.add(finalSelectedDateCompare + ":19");
+                                removeTime(finalSelectedDateCompare + ":17", startDateTimeDel);
+                                removeTime(finalSelectedDateCompare + ":19", endDateTimeDel);
+
+                            } else {
+                                startDateTimeDel.add(finalSelectedDateCompare + ":17");
+                                endDateTimeDel.add(finalSelectedDateCompare + ":19");
+                                removeTime(finalSelectedDateCompare + ":17", startDateTime);
+                                removeTime(finalSelectedDateCompare + ":19", endDateTime);
+                            }
+                        }else{
+                            removeTime(finalSelectedDateCompare + ":17", startDateTime);
+                            removeTime(finalSelectedDateCompare + ":19", endDateTime);
+                            removeTime(finalSelectedDateCompare + ":17", startDateTimeDel);
+                            removeTime(finalSelectedDateCompare + ":19", endDateTimeDel);
+                        }
+                        countAft[0]++;
                     }
                 });
                 cbEvening.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startDateTime.add(finalSelectedDateCompare + ":20");
-                        endDateTime.add(finalSelectedDateCompare + ":23");
+                        if (countEve[0] %2!=0){
+                            if (cbEvening.isChecked()) {
+                                startDateTime.add(finalSelectedDateCompare + ":17");
+                                endDateTime.add(finalSelectedDateCompare + ":19");
+                                removeTime(finalSelectedDateCompare + ":17", startDateTimeDel);
+                                removeTime(finalSelectedDateCompare + ":19", endDateTimeDel);
+
+                            } else {
+                                startDateTimeDel.add(finalSelectedDateCompare + ":20");
+                                endDateTimeDel.add(finalSelectedDateCompare + ":23");
+                                removeTime(finalSelectedDateCompare + ":20", startDateTime);
+                                removeTime(finalSelectedDateCompare + ":23", endDateTime);
+                            }
+                        }else{
+                            removeTime(finalSelectedDateCompare + ":20", startDateTime);
+                            removeTime(finalSelectedDateCompare + ":23", endDateTime);
+                            removeTime(finalSelectedDateCompare + ":20", startDateTimeDel);
+                            removeTime(finalSelectedDateCompare + ":23", endDateTimeDel);
+                        }
+                        countEve[0]++;
                     }
                 });
                 Log.d("dateSelectClick", "dateForDB : " + dateForDB.toString());
                 Log.d("dateSelectClick", "startDateTime : " + startDateTime.toString());
                 Log.d("dateSelectClick", "endDateTime : " + endDateTime.toString());
+                Log.d("dateSelectClick", "startDateTimeDel : " + startDateTimeDel.toString());
+                Log.d("dateSelectClick", "endDateTimeDel : " + endDateTimeDel.toString());
                 tvDateTime.setText(calSelected.get(Calendar.DAY_OF_MONTH) + " " + (arr_month.getString(calSelected.get(Calendar.MONTH))) + " " + calSelected.get(Calendar.YEAR));
                 Log.d("newDate", "dateCalGet " + dateCalGet.toString() + "---" + dateCalGetEnd.toString());
                 for (int i = 0; i < dateCalGet.size(); i++) {
@@ -212,10 +293,10 @@ public class Manage_calendar extends AppCompatActivity {
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
-                        cbMorninig.setClickable(false);
-                        cbLate.setClickable(false);
-                        cbAfternoon.setClickable(false);
-                        cbEvening.setClickable(false);
+//                        cbMorninig.setClickable(false);
+//                        cbLate.setClickable(false);
+//                        cbAfternoon.setClickable(false);
+//                        cbEvening.setClickable(false);
                     }
                 }
             }
@@ -241,9 +322,21 @@ public class Manage_calendar extends AppCompatActivity {
                 removeTime(finalUnSelectedDateCompare + ":19", endDateTime);
                 removeTime(finalUnSelectedDateCompare + ":20", startDateTime);
                 removeTime(finalUnSelectedDateCompare + ":23", endDateTime);
+                removeTime(finalUnSelectedDateCompare + ":11", startDateTimeDel);
+                removeTime(finalUnSelectedDateCompare + ":13", endDateTimeDel);
+                removeTime(finalUnSelectedDateCompare + ":14", startDateTimeDel);
+                removeTime(finalUnSelectedDateCompare + ":16", endDateTimeDel);
+                removeTime(finalUnSelectedDateCompare + ":17", startDateTimeDel);
+                removeTime(finalUnSelectedDateCompare + ":19", endDateTimeDel);
+                removeTime(finalUnSelectedDateCompare + ":20", startDateTimeDel);
+                removeTime(finalUnSelectedDateCompare + ":23", endDateTimeDel);
+//                removeTimeSame2Array(startDateTime,startDateTimeDel); // for test
                 Log.d("dateSelectClick", "RemovedateForDB : " + dateForDB.toString());
                 Log.d("dateSelectClick", "RemovestartDateTime : " + startDateTime.toString());
                 Log.d("dateSelectClick", "RemoveendDateTime : " + endDateTime.toString());
+                Log.d("dateSelectClick", "RemovestartDateTimeDel : " + startDateTimeDel.toString());
+                Log.d("dateSelectClick", "RemoveendDateTimeDel : " + endDateTimeDel.toString());
+
                 if (dateForDB.size() == 0) {
                     btnGetCalen.setEnabled(true);
                 } else {
@@ -569,10 +662,10 @@ public class Manage_calendar extends AppCompatActivity {
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
-            cbMorninig.setClickable(false);
-            cbLate.setClickable(false);
-            cbAfternoon.setClickable(false);
-            cbEvening.setClickable(false);
+//            cbMorninig.setClickable(false);
+//            cbLate.setClickable(false);
+//            cbAfternoon.setClickable(false);
+//            cbEvening.setClickable(false);
         } else {
             Log.d("calendar123", "date : " + daStart + " - " + daEnd);
             if (!daStart.equals(daEnd) && tiStart != tiEnd) {//no same dat No all time
@@ -585,10 +678,10 @@ public class Manage_calendar extends AppCompatActivity {
                     cbLate.setChecked(true);
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
-                    cbMorninig.setClickable(false);
-                    cbLate.setClickable(false);
-                    cbAfternoon.setClickable(false);
-                    cbEvening.setClickable(false);
+//                    cbMorninig.setClickable(false);
+//                    cbLate.setClickable(false);
+//                    cbAfternoon.setClickable(false);
+//                    cbEvening.setClickable(false);
 
 
                 } else if (tiStart >= 14 && tiStart < 17) {
@@ -596,19 +689,19 @@ public class Manage_calendar extends AppCompatActivity {
                     cbLate.setChecked(true);
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
-                    cbLate.setClickable(false);
-                    cbAfternoon.setClickable(false);
-                    cbEvening.setClickable(false);
+//                    cbLate.setClickable(false);
+//                    cbAfternoon.setClickable(false);
+//                    cbEvening.setClickable(false);
                 } else if (tiStart >= 17 && tiStart < 20) {
                     //34
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
-                    cbAfternoon.setClickable(false);
-                    cbEvening.setClickable(false);
+//                    cbAfternoon.setClickable(false);
+//                    cbEvening.setClickable(false);
                 } else if (tiStart >= 20 && tiStart < 24) {
                     //4
                     cbEvening.setChecked(true);
-                    cbEvening.setClickable(false);
+//                    cbEvening.setClickable(false);
                 }
             } else {
                 if (tiStart >= 0 && tiStart < 14) {
@@ -617,69 +710,69 @@ public class Manage_calendar extends AppCompatActivity {
                     } else if (tiEnd >= 11 && tiEnd < 14) {
                         //1
                         cbMorninig.setChecked(true);
-                        cbMorninig.setClickable(false);
+//                        cbMorninig.setClickable(false);
                     } else if (tiEnd >= 14 && tiEnd < 17) {
                         //12
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
-                        cbMorninig.setClickable(false);
-                        cbLate.setClickable(false);
+//                        cbMorninig.setClickable(false);
+//                        cbLate.setClickable(false);
                     } else if (tiEnd >= 17 && tiEnd < 20) {
                         //123
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
-                        cbMorninig.setClickable(false);
-                        cbLate.setClickable(false);
-                        cbAfternoon.setClickable(false);
+//                        cbMorninig.setClickable(false);
+//                        cbLate.setClickable(false);
+//                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //1234
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
-                        cbMorninig.setClickable(false);
-                        cbLate.setClickable(false);
-                        cbAfternoon.setClickable(false);
-                        cbEvening.setClickable(false);
+//                        cbMorninig.setClickable(false);
+//                        cbLate.setClickable(false);
+//                        cbAfternoon.setClickable(false);
+//                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 14 && tiStart < 17) {
                     if (tiEnd >= 14 && tiEnd < 17) {
                         //2
                         cbLate.setChecked(true);
-                        cbLate.setClickable(false);
+//                        cbLate.setClickable(false);
                     } else if (tiEnd >= 17 && tiEnd < 20) {
                         //23
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
-                        cbLate.setClickable(false);
-                        cbAfternoon.setClickable(false);
+//                        cbLate.setClickable(false);
+//                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //234
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
-                        cbLate.setClickable(false);
-                        cbAfternoon.setClickable(false);
-                        cbEvening.setClickable(false);
+//                        cbLate.setClickable(false);
+//                        cbAfternoon.setClickable(false);
+//                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 17 && tiStart < 20) {
                     if (tiEnd >= 17 && tiEnd < 20) {
                         //3
                         cbAfternoon.setChecked(true);
-                        cbAfternoon.setClickable(false);
+//                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //34
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
-                        cbAfternoon.setClickable(false);
-                        cbEvening.setClickable(false);
+//                        cbAfternoon.setClickable(false);
+//                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 20 && tiStart < 24) {
                     if (tiEnd >= 20 && tiEnd < 24) {
                         //4
                         cbEvening.setChecked(true);
-                        cbEvening.setClickable(false);
+//                        cbEvening.setClickable(false);
                     }
                 }
             }
@@ -694,31 +787,31 @@ public class Manage_calendar extends AppCompatActivity {
         } else if (tiEnd >= 11 && tiEnd < 14) {
             //1
             cbMorninig.setChecked(true);
-            cbMorninig.setClickable(false);
+//            cbMorninig.setClickable(false);
         } else if (tiEnd >= 14 && tiEnd < 17) {
             //12
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
-            cbMorninig.setClickable(false);
-            cbLate.setClickable(false);
+//            cbMorninig.setClickable(false);
+//            cbLate.setClickable(false);
         } else if (tiEnd >= 17 && tiEnd < 20) {
             //123
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
-            cbMorninig.setClickable(false);
-            cbLate.setClickable(false);
-            cbAfternoon.setClickable(false);
+//            cbMorninig.setClickable(false);
+//            cbLate.setClickable(false);
+//            cbAfternoon.setClickable(false);
         } else if (tiEnd >= 20 && tiEnd < 24) {
             //1234
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
-            cbMorninig.setClickable(false);
-            cbLate.setClickable(false);
-            cbAfternoon.setClickable(false);
-            cbEvening.setClickable(false);
+//            cbMorninig.setClickable(false);
+//            cbLate.setClickable(false);
+//            cbAfternoon.setClickable(false);
+//            cbEvening.setClickable(false);
         }
     }
 
@@ -1482,7 +1575,8 @@ public class Manage_calendar extends AppCompatActivity {
             requestQueue.add(s);
         }
     }
-    public void functionInCreate(){
+
+    public void functionInCreate() {
         //////////////////////////////////range date 1 year/////////////////////////////////////
         Calendar cal = Calendar.getInstance();
         Date today1 = cal.getTime();
@@ -1492,15 +1586,15 @@ public class Manage_calendar extends AppCompatActivity {
         //////////////////////////////////range date 1 year/////////////////////////////////////
         new CountDownTimer(2000, 2000) {
             public void onFinish() {
-                Log.d("newDate","dateFromDB "+dateFromDB.toString());
+                Log.d("newDate", "dateFromDB " + dateFromDB.toString());
                 for (int i = 0; i < dateFromDB.size(); i++) {
                     long date = Date.parse(dateFromDB.get(i));
                     Date d = new Date(date);
                     newDate.add(d);
                 }
                 cutStringDate(cbStartcalenFromDB, cbEndcalenFromDB);
-                Log.d("newDate","cbStartcalenFromDB "+cbStartcalenFromDB.toString());
-                Log.d("newDate","cbEndcalenFromDB "+cbEndcalenFromDB.toString());
+                Log.d("newDate", "cbStartcalenFromDB " + cbStartcalenFromDB.toString());
+                Log.d("newDate", "cbEndcalenFromDB " + cbEndcalenFromDB.toString());
                 checkdateforcal(dateFromDB, dateInYear);
 
                 DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
@@ -1514,12 +1608,12 @@ public class Manage_calendar extends AppCompatActivity {
                 Log.d("dateAll", "diffDateTime : " + diffDateTime.toString());
                 cutStringDateDiff(diffDateTime);
                 calendarPicker.highlightDates(newDate);
-                if (newDate==null){
+                if (newDate == null) {
                     getDateFromDB();
                     getDateDiffFromDB();
                     getcalendarFromDB();
                 }
-                Log.d("highDate","highDate : "+ newDate.toString());
+                Log.d("highDate", "highDate : " + newDate.toString());
                 handler.sendEmptyMessage(0);
             }
 
@@ -1534,4 +1628,31 @@ public class Manage_calendar extends AppCompatActivity {
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
 
     }
+
+//    public void removeTimeSame2Array(ArrayList arrayList1, ArrayList arrayList2) {
+//        ArrayList<Integer> numberArr1 = new ArrayList<>();
+//        ArrayList<Integer> numberArr2 = new ArrayList<>();
+//        boolean same = false;
+//        Log.d("dateSelectClick", "arrayList1 : " + arrayList1.isEmpty()+"");
+//        Log.d("dateSelectClick", "arrayList2 : " + arrayList2.isEmpty()+"");
+//        for (int i = 0; i < arrayList1.size(); i++) {
+//            for (int j=0;j<arrayList2.size();j++){
+//                if (arrayList1.get(i).equals(arrayList2.get(j))) {
+//                    numberArr1.add(i);
+//                    numberArr2.add(j);
+//                }
+//            }
+//        }
+//        Log.d("dateSelectClick", "numberArr1 : " + numberArr1.toString());
+//        Log.d("dateSelectClick", "numberArr2 : " + numberArr2.toString());
+//        Log.d("dateSelectClick", "isEmpty : " + numberArr1.isEmpty()+"");
+//        if (!numberArr1.isEmpty()) {
+//            Log.d("dateSelectClick", "size : " + numberArr1.size()+"");
+//            for (int i =0;i<numberArr1.size();i++){
+//                arrayList1.remove(numberArr1.get(i));
+//                arrayList2.remove(numberArr2.get(i));
+//            }
+//        }
+//    }
+
 }
