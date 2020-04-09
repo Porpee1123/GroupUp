@@ -111,6 +111,7 @@ public class Manage_calendar extends AppCompatActivity {
         endDateTime = new ArrayList<>();
         dateString = new ArrayList<>();
         dateDiffString = new ArrayList<>();
+        allDaySelect = new ArrayList();
         tvDateTime = findViewById(R.id.cb_dateTime);
         cbMorninig = findViewById(R.id.cb_time1);
         cbLate = findViewById(R.id.cb_time2);
@@ -129,77 +130,17 @@ public class Manage_calendar extends AppCompatActivity {
         saveDialog = new ProgressDialog(Manage_calendar.this);
         saveDialog.setMessage("กำลังบันทึกข้อมูล....");
         saveDialog.setTitle("กรุณารอซักครู่");
+        btnConfirmCalendar.setVisibility(View.GONE);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                getcalendarFromDB();
                 getDateFromDB();
                 getDateDiffFromDB();
+                getcalendarFromDB();
             }
         }).start();
-        //////////////////////////////////range date 1 year/////////////////////////////////////
-        Calendar cal = Calendar.getInstance();
-        Date today1 = cal.getTime();
-        cal.add(Calendar.YEAR, 1); // to get previous year add -1
-        Date nextYear1 = cal.getTime();
-        getDatesBetweenInYear(today1, nextYear1);
-//        Log.d("checkyear", getDatesBetweenInYear(today1, nextYear1).size() + "");
-//        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
-//
-//        for (int i = 0; i < dateInYear.size(); i++) {
-//            long dat = Date.parse(dateInYear.get(i));
-//            Date da = new Date(dat);
-//            Log.d("checkyear", i + " " + dateInYear.get(i) + " -> " + simpleHour.format(da));
-//        }
-//        Log.d("checkyear", dateInYear.toString());
-//        Log.d("getoneyear", "getoneyear : " + nextYear1.toString());
 
-
-        //////////////////////////////////range date 1 year/////////////////////////////////////
-
-
-        new CountDownTimer(500, 500) {
-            public void onFinish() {
-//                Log.d("newDate","dateFromDB "+dateFromDB.toString());
-//                Log.d("newDate","dateString "+dateString.toString());
-                for (int i = 0; i < dateFromDB.size(); i++) {
-                    long date = Date.parse(dateFromDB.get(i));
-                    Date d = new Date(date);
-                    newDate.add(d);
-                }
-                checkdateforcal(dateFromDB, dateInYear);
-                cutStringDate(cbStartcalenFromDB, cbEndcalenFromDB);
-
-                DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
-//                Log.d("dateAll","newDate "+dateDiffFromDB.toString()+"size : "+ dateDiffFromDB.size());
-                ArrayList<Date> pres = new ArrayList<>();
-                for (int i = 0; i < dateDiffFromDB.size(); i++) {
-                    long date = Date.parse(dateDiffFromDB.get(i));
-                    Date d = new Date(date);
-                    diffDateTime.add(simpleHour.format(d) + "");
-                }
-                Log.d("dateAll", "diffDateTime : " + diffDateTime.toString());
-                cutStringDateDiff(diffDateTime);
-//                Log.d("dateAll","diffDateTime : "+ diffDateTime.toString());
-                calendarPicker.highlightDates(newDate);
-                handler.sendEmptyMessage(0);
-            }
-
-            public void onTick(long millisUntilFinished) {
-            }
-        }.start();
-
-//        Log.d("newDate","cbStartcalenFromDB "+cbStartcalenFromDB.toString());
-//        Log.d("newDate","dateCalGet "+dateCalGet.toString());
-        //add date in calendar
-        btnConfirmCalendar.setVisibility(View.GONE);
-        Date today = new Date();
-        Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.YEAR, 1); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน
-
-        calendarPicker.init(today, nextYear.getTime())
-                .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
-
+        functionInCreate();
         calendarPicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {
@@ -312,7 +253,6 @@ public class Manage_calendar extends AppCompatActivity {
         });
 
 
-        allDaySelect = new ArrayList();
         btnGetCalen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -329,16 +269,13 @@ public class Manage_calendar extends AppCompatActivity {
         btnConfirmCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                sentCalendarFix();
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
                 viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
                 viewDetail.setMessage("เมื่อยืนยันแล้วคุณจะไม่สามารถแก้ไขได้");
-//
                 viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
                 });
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
@@ -359,15 +296,16 @@ public class Manage_calendar extends AppCompatActivity {
                             protected void onPostExecute(String string1) {
 
                                 super.onPostExecute(string1);
+                                requestQueue.cancelAll(this);
 
                                 // Dismiss the progress dialog after done uploading.
                                 progressDialog.dismiss();
 
                                 // Printing uploading success message coming from server on android app.
                                 Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
-                                    Intent in = new Intent(Manage_calendar.this, Home.class);
-                                    in.putExtra("email", email + "");
-                                    startActivity(in);
+                                Intent in = new Intent(Manage_calendar.this, Home.class);
+                                in.putExtra("email", email + "");
+                                startActivity(in);
 
                             }
 
@@ -389,8 +327,6 @@ public class Manage_calendar extends AppCompatActivity {
                                     handlerSave.sendEmptyMessage(0);
 
                                 }
-
-
                                 return "Finish";
                             }
                         }
@@ -440,6 +376,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 super.onPostExecute(string1);
 
                                 // Dismiss the progress dialog after done uploading.
+                                requestQueue.cancelAll(this);
                                 progressDialog.dismiss();
                                 calendarPicker.clearHighlightedDates();
                                 startActivity(getIntent());
@@ -979,9 +916,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        uploadData(stringRequest);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+//        uploadData(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public void sentDateToDB(String date) {
@@ -1064,9 +1001,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        uploadData(stringRequest);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+//        uploadData(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public void sentDateDiffToDB(String date) {
@@ -1148,9 +1085,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        uploadData(stringRequest);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+//        uploadData(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public void CutStringDateForSaveDB(String s) {
@@ -1544,5 +1481,57 @@ public class Manage_calendar extends AppCompatActivity {
         } else {
             requestQueue.add(s);
         }
+    }
+    public void functionInCreate(){
+        //////////////////////////////////range date 1 year/////////////////////////////////////
+        Calendar cal = Calendar.getInstance();
+        Date today1 = cal.getTime();
+        cal.add(Calendar.YEAR, 1); // to get previous year add -1
+        Date nextYear1 = cal.getTime();
+        getDatesBetweenInYear(today1, nextYear1);
+        //////////////////////////////////range date 1 year/////////////////////////////////////
+        new CountDownTimer(2000, 2000) {
+            public void onFinish() {
+                Log.d("newDate","dateFromDB "+dateFromDB.toString());
+                for (int i = 0; i < dateFromDB.size(); i++) {
+                    long date = Date.parse(dateFromDB.get(i));
+                    Date d = new Date(date);
+                    newDate.add(d);
+                }
+                cutStringDate(cbStartcalenFromDB, cbEndcalenFromDB);
+                Log.d("newDate","cbStartcalenFromDB "+cbStartcalenFromDB.toString());
+                Log.d("newDate","cbEndcalenFromDB "+cbEndcalenFromDB.toString());
+                checkdateforcal(dateFromDB, dateInYear);
+
+                DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+//                Log.d("dateAll","newDate "+dateDiffFromDB.toString()+"size : "+ dateDiffFromDB.size());
+                ArrayList<Date> pres = new ArrayList<>();
+                for (int i = 0; i < dateDiffFromDB.size(); i++) {
+                    long date = Date.parse(dateDiffFromDB.get(i));
+                    Date d = new Date(date);
+                    diffDateTime.add(simpleHour.format(d) + "");
+                }
+                Log.d("dateAll", "diffDateTime : " + diffDateTime.toString());
+                cutStringDateDiff(diffDateTime);
+                calendarPicker.highlightDates(newDate);
+                if (newDate==null){
+                    getDateFromDB();
+                    getDateDiffFromDB();
+                    getcalendarFromDB();
+                }
+                Log.d("highDate","highDate : "+ newDate.toString());
+                handler.sendEmptyMessage(0);
+            }
+
+            public void onTick(long millisUntilFinished) {
+            }
+        }.start();
+        Date today = new Date();
+        Calendar nextYear = Calendar.getInstance();
+        nextYear.add(Calendar.YEAR, 1); // ใช้setว่าจะให้แสดงปฏิทินยังไง กี่เดือน
+
+        calendarPicker.init(today, nextYear.getTime())
+                .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
+
     }
 }
