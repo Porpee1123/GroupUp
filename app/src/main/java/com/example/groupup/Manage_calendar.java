@@ -407,11 +407,15 @@ public class Manage_calendar extends AppCompatActivity {
                                 checkdateforcal(dateForDB, dateInYear);
                                 if (startDateTime != null || endDateTime != null || dateString != null) {
                                     for (int i = 0; i < startDateTime.size(); i++) {
-                                        Log.d("checkDB ", "startDateTimeSentToDB : " + startDateTime.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
+                                        Log.d("checkDBtest ", "startDateTimeSentToDB : " + startDateTime.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
                                         sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
                                     }
+                                    for (int i = 0; i < startDateTimeDel.size(); i++) {
+                                        Log.d("checkDBtest ", "startDateTimeEndSentToDB : " + startDateTimeDel.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
+                                        sentCustomDateToCalendar(startDateTimeDel.get(i), endDateTimeDel.get(i));
+                                    }
                                     for (int i = 0; i < dateForDB.size(); i++) {
-                                        Log.d("checkDB ", "dateForDB : " + dateForDB.toString());//[Mon Apr 20 00:00:00 GMT+07:00 2020]
+                                        Log.d("checkDBtest ", "dateForDB : " + dateForDB.toString());//[Mon Apr 20 00:00:00 GMT+07:00 2020]
                                         sentDateToDB(dateForDB.get(i));
                                     }
                                     for (int i = 0; i < dateInYear.size(); i++) {
