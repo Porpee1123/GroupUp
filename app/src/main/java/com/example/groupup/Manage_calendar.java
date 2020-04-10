@@ -71,6 +71,8 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> timeCalGetDiff = new ArrayList<>();
     ArrayList<String> dateCalGetAllDay = new ArrayList<>();
     ArrayList<String> startDateTime;
+    ArrayList<String> diffRangeDateTimeStart;
+    ArrayList<String> diffRangeDateTimeEnd;
     ArrayList<String> endDateTime;
     ArrayList<String> startDateTimeDel;
     ArrayList<String> endDateTimeDel;
@@ -110,6 +112,8 @@ public class Manage_calendar extends AppCompatActivity {
         checkVisible = true;//close custom
         newDate = new ArrayList();
         startDateTime = new ArrayList<>();
+        diffRangeDateTimeStart = new ArrayList<>();
+        diffRangeDateTimeEnd = new ArrayList<>();
         endDateTime = new ArrayList<>();
         startDateTimeDel = new ArrayList<>();
         endDateTimeDel = new ArrayList<>();
@@ -285,20 +289,6 @@ public class Manage_calendar extends AppCompatActivity {
                         clickCheckboxDiffDTLastDay(Integer.parseInt(timeCalGetEnd.get(i)));
                     }
                 }
-//                Log.d("dateAll ","selectedDateCompare : "+selectedDateCompare+" diffDateTime222 : "+ dateCalGetDiff.toString());
-                for (int i = 0; i < dateCalGetDiff.size(); i++) {
-//                    Log.d("diffDateTime", "dateCalGetDiff : " + dateCalGetDiff.toString());
-                    if (selectedDateCompare.equals(dateCalGetDiff.get(i))) {
-                        cbMorninig.setChecked(true);
-                        cbLate.setChecked(true);
-                        cbAfternoon.setChecked(true);
-                        cbEvening.setChecked(true);
-//                        cbMorninig.setClickable(false);
-//                        cbLate.setClickable(false);
-//                        cbAfternoon.setClickable(false);
-//                        cbEvening.setClickable(false);
-                    }
-                }
             }
 
             @Override
@@ -389,7 +379,7 @@ public class Manage_calendar extends AppCompatActivity {
                             protected void onPostExecute(String string1) {
 
                                 super.onPostExecute(string1);
-                                requestQueue.cancelAll(this);
+                                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
 
                                 // Dismiss the progress dialog after done uploading.
                                 progressDialog.dismiss();
@@ -410,9 +400,9 @@ public class Manage_calendar extends AppCompatActivity {
                                         Log.d("checkDBtest ", "startDateTimeSentToDB : " + startDateTime.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
                                         sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
                                     }
-                                    for (int i = 0; i < startDateTimeDel.size(); i++) {
+                                    for (int i = 0; i < startDateTimeDel.size(); i++) { // date fo delete
                                         Log.d("checkDBtest ", "startDateTimeEndSentToDB : " + startDateTimeDel.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
-                                        sentCustomDateToCalendar(startDateTimeDel.get(i), endDateTimeDel.get(i));
+//                                        sentCustomDateToCalendar(startDateTimeDel.get(i), endDateTimeDel.get(i));
                                     }
                                     for (int i = 0; i < dateForDB.size(); i++) {
                                         Log.d("checkDBtest ", "dateForDB : " + dateForDB.toString());//[Mon Apr 20 00:00:00 GMT+07:00 2020]
@@ -473,7 +463,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 super.onPostExecute(string1);
 
                                 // Dismiss the progress dialog after done uploading.
-                                requestQueue.cancelAll(this);
+                                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
                                 progressDialog.dismiss();
                                 calendarPicker.clearHighlightedDates();
                                 startActivity(getIntent());
@@ -576,6 +566,7 @@ public class Manage_calendar extends AppCompatActivity {
             c1.setTimeInMillis(Long.parseLong(s2));
 
             DateFormat simple = new SimpleDateFormat("dd/MM/yyyy:HH"); //dd/MM/yyyy/HH/mm
+            DateFormat simpleNoHour = new SimpleDateFormat("dd/MM/yyyy"); //dd/MM/yyyy/HH/mm
             all += s1 + "\n\t\t" + simple.format(c1.getTime()) + "---" + simple.format(c2.getTime()) + "\n\n";
 //            Log.d("dateTime ", "Calendar Name long : " + s1 + " - " + simple.format(c1.getTime()) + " + " + simple.format(c2.getTime()) + " : " + cursor.getString(6));
             startDateTime.add(simple.format(c1.getTime()));
@@ -605,7 +596,17 @@ public class Manage_calendar extends AppCompatActivity {
                     dateString.add(ddiff.toString());
                     dateDiffString.add(ddiff.toString());
                     diffDateTime.add(simple.format(ddiff));
+                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff)+":11");
+                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff)+":13");
+                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff)+":14");
+                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff)+":16");
+                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff)+":17");
+                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff)+":19");
+                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff)+":20");
+                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff)+":23");
                     Log.d("checkTime ", "date : " + dateDiffString.get(dateDiffString.size() - 1) + " date size: " + dateDiffString.size());
+                    Log.d("diffRange ", "date : " + diffRangeDateTimeStart.toString() );
+                    Log.d("diffRange ", "date end: " + diffRangeDateTimeEnd.toString() );
                 }
                 cutStringDateDiff(diffDateTime);
             }
@@ -666,10 +667,6 @@ public class Manage_calendar extends AppCompatActivity {
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
-//            cbMorninig.setClickable(false);
-//            cbLate.setClickable(false);
-//            cbAfternoon.setClickable(false);
-//            cbEvening.setClickable(false);
         } else {
             Log.d("calendar123", "date : " + daStart + " - " + daEnd);
             if (!daStart.equals(daEnd) && tiStart != tiEnd) {//no same dat No all time
@@ -682,30 +679,18 @@ public class Manage_calendar extends AppCompatActivity {
                     cbLate.setChecked(true);
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
-//                    cbMorninig.setClickable(false);
-//                    cbLate.setClickable(false);
-//                    cbAfternoon.setClickable(false);
-//                    cbEvening.setClickable(false);
-
-
                 } else if (tiStart >= 14 && tiStart < 17) {
                     //234
                     cbLate.setChecked(true);
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
-//                    cbLate.setClickable(false);
-//                    cbAfternoon.setClickable(false);
-//                    cbEvening.setClickable(false);
                 } else if (tiStart >= 17 && tiStart < 20) {
                     //34
                     cbAfternoon.setChecked(true);
                     cbEvening.setChecked(true);
-//                    cbAfternoon.setClickable(false);
-//                    cbEvening.setClickable(false);
                 } else if (tiStart >= 20 && tiStart < 24) {
                     //4
                     cbEvening.setChecked(true);
-//                    cbEvening.setClickable(false);
                 }
             } else {
                 if (tiStart >= 0 && tiStart < 14) {
@@ -714,69 +699,49 @@ public class Manage_calendar extends AppCompatActivity {
                     } else if (tiEnd >= 11 && tiEnd < 14) {
                         //1
                         cbMorninig.setChecked(true);
-//                        cbMorninig.setClickable(false);
                     } else if (tiEnd >= 14 && tiEnd < 17) {
                         //12
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
-//                        cbMorninig.setClickable(false);
-//                        cbLate.setClickable(false);
                     } else if (tiEnd >= 17 && tiEnd < 20) {
                         //123
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
-//                        cbMorninig.setClickable(false);
-//                        cbLate.setClickable(false);
-//                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //1234
                         cbMorninig.setChecked(true);
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
-//                        cbMorninig.setClickable(false);
-//                        cbLate.setClickable(false);
-//                        cbAfternoon.setClickable(false);
-//                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 14 && tiStart < 17) {
                     if (tiEnd >= 14 && tiEnd < 17) {
                         //2
                         cbLate.setChecked(true);
-//                        cbLate.setClickable(false);
                     } else if (tiEnd >= 17 && tiEnd < 20) {
                         //23
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
-//                        cbLate.setClickable(false);
-//                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //234
                         cbLate.setChecked(true);
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
-//                        cbLate.setClickable(false);
-//                        cbAfternoon.setClickable(false);
-//                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 17 && tiStart < 20) {
                     if (tiEnd >= 17 && tiEnd < 20) {
                         //3
                         cbAfternoon.setChecked(true);
-//                        cbAfternoon.setClickable(false);
                     } else if (tiEnd >= 20 && tiEnd < 24) {
                         //34
                         cbAfternoon.setChecked(true);
                         cbEvening.setChecked(true);
-//                        cbAfternoon.setClickable(false);
-//                        cbEvening.setClickable(false);
                     }
                 } else if (tiStart >= 20 && tiStart < 24) {
                     if (tiEnd >= 20 && tiEnd < 24) {
                         //4
                         cbEvening.setChecked(true);
-//                        cbEvening.setClickable(false);
                     }
                 }
             }
@@ -791,31 +756,21 @@ public class Manage_calendar extends AppCompatActivity {
         } else if (tiEnd >= 11 && tiEnd < 14) {
             //1
             cbMorninig.setChecked(true);
-//            cbMorninig.setClickable(false);
         } else if (tiEnd >= 14 && tiEnd < 17) {
             //12
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
-//            cbMorninig.setClickable(false);
-//            cbLate.setClickable(false);
         } else if (tiEnd >= 17 && tiEnd < 20) {
             //123
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
-//            cbMorninig.setClickable(false);
-//            cbLate.setClickable(false);
-//            cbAfternoon.setClickable(false);
         } else if (tiEnd >= 20 && tiEnd < 24) {
             //1234
             cbMorninig.setChecked(true);
             cbLate.setChecked(true);
             cbAfternoon.setChecked(true);
             cbEvening.setChecked(true);
-//            cbMorninig.setClickable(false);
-//            cbLate.setClickable(false);
-//            cbAfternoon.setClickable(false);
-//            cbEvening.setClickable(false);
         }
     }
 
@@ -951,6 +906,29 @@ public class Manage_calendar extends AppCompatActivity {
         url += "&edt=" + endDate;
         url += "&dcfs=" + dateCheckformatStart + "";
         url += "&dcfe=" + dateCheckformatEnd + "";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+    }
+    public void sentCalendarDiffToDB(String startDate, String endDate) {
+        Log.d("simpledate", "startDate : " + startDate);
+        String url = "http://www.groupupdb.com/android/addcalendar.php";
+        url += "?sId=" + uid;
+        url += "&sdt=" + startDate;
+        url += "&edt=" + endDate;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -1273,7 +1251,7 @@ public class Manage_calendar extends AppCompatActivity {
                         // Dismiss the progress dialog after done uploading.
                         progressDialog.dismiss();
 //                        requestQueue = null;
-                        requestQueue.cancelAll(this);
+                        requestQueue = Volley.newRequestQueue(Manage_calendar.this);
                         // Printing uploading success message coming from server on android app.
                         Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
                         addDateAvaliableTodb();
@@ -1286,6 +1264,10 @@ public class Manage_calendar extends AppCompatActivity {
                             for (int i = 0; i < startDateTime.size(); i++) {
                                 Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
                                 sentCalendarToDB(startDateTime.get(i), endDateTime.get(i));
+                            }
+                            for (int i = 0; i < diffRangeDateTimeStart.size(); i++) {
+                                Log.d("checkDB ", "diffRangeDateTime : " + diffRangeDateTimeStart.toString());
+                                sentCalendarDiffToDB(diffRangeDateTimeStart.get(i), diffRangeDateTimeEnd.get(i));
                             }
                             for (int i = 0; i < dateString.size(); i++) {
                                 Log.d("checkDB ", "dateString : " + dateString.toString());
@@ -1550,7 +1532,7 @@ public class Manage_calendar extends AppCompatActivity {
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
 //                requestQueue = null;
-                requestQueue.cancelAll(this);
+                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
 
