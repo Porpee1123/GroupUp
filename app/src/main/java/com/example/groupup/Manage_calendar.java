@@ -57,7 +57,7 @@ public class Manage_calendar extends AppCompatActivity {
     Button btnGetCalen, btnConfirmCalendar, btnDelCalendar;
     Manage_calendar.ResponseStr responseStr = new Manage_calendar.ResponseStr();
     private int CALENDAR_PERMISSION_CODE = 1;
-    private RequestQueue requestQueue;
+//    private RequestQueue requestQueue;
     ArrayList<String> dateString;
     ArrayList<String> dateDiffString;
     List<String> calendars = new ArrayList<>();
@@ -251,10 +251,10 @@ public class Manage_calendar extends AppCompatActivity {
                     public void onClick(View v) {
                         if (countEve[0] %2!=0){
                             if (cbEvening.isChecked()) {
-                                startDateTime.add(finalSelectedDateCompare + ":17");
-                                endDateTime.add(finalSelectedDateCompare + ":19");
-                                removeTime(finalSelectedDateCompare + ":17", startDateTimeDel);
-                                removeTime(finalSelectedDateCompare + ":19", endDateTimeDel);
+                                startDateTime.add(finalSelectedDateCompare + ":20");
+                                endDateTime.add(finalSelectedDateCompare + ":23");
+                                removeTime(finalSelectedDateCompare + ":20", startDateTimeDel);
+                                removeTime(finalSelectedDateCompare + ":23", endDateTimeDel);
 
                             } else {
                                 startDateTimeDel.add(finalSelectedDateCompare + ":20");
@@ -379,7 +379,7 @@ public class Manage_calendar extends AppCompatActivity {
                             protected void onPostExecute(String string1) {
 
                                 super.onPostExecute(string1);
-                                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
+//                                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
 
                                 // Dismiss the progress dialog after done uploading.
                                 progressDialog.dismiss();
@@ -388,6 +388,8 @@ public class Manage_calendar extends AppCompatActivity {
                                 Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
                                 Intent in = new Intent(Manage_calendar.this, Home.class);
                                 in.putExtra("email", email + "");
+                                in.putExtra("id", uid + "");
+//                                Manage_calendar.this.finish();
                                 startActivity(in);
 
                             }
@@ -463,7 +465,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 super.onPostExecute(string1);
 
                                 // Dismiss the progress dialog after done uploading.
-                                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
+//                                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
                                 progressDialog.dismiss();
                                 calendarPicker.clearHighlightedDates();
                                 startActivity(getIntent());
@@ -634,6 +636,7 @@ public class Manage_calendar extends AppCompatActivity {
     public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
         in.putExtra("email", email + "");
+//        Manage_calendar.this.finish();
         startActivity(in);
     }
 
@@ -919,9 +922,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        uploadData(stringRequest);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+//        uploadData(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
     public void sentCalendarDiffToDB(String startDate, String endDate) {
         Log.d("simpledate", "startDate : " + startDate);
@@ -942,9 +945,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        uploadData(stringRequest);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+//        uploadData(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public void getcalendarFromDB() {
@@ -1029,9 +1032,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        uploadData(stringRequest);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+//        uploadData(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public void getDateFromDB() {
@@ -1112,9 +1115,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        uploadData(stringRequest);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+//        uploadData(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public void getDateDiffFromDB() {
@@ -1251,7 +1254,7 @@ public class Manage_calendar extends AppCompatActivity {
                         // Dismiss the progress dialog after done uploading.
                         progressDialog.dismiss();
 //                        requestQueue = null;
-                        requestQueue = Volley.newRequestQueue(Manage_calendar.this);
+//                        requestQueue = Volley.newRequestQueue(Manage_calendar.this);
                         // Printing uploading success message coming from server on android app.
                         Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
                         addDateAvaliableTodb();
@@ -1427,9 +1430,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
-        uploadData(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+//        uploadData(stringRequest);
     }
 
     ///////////////////////////////////////////////// check range of year
@@ -1532,8 +1535,8 @@ public class Manage_calendar extends AppCompatActivity {
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
 //                requestQueue = null;
-                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
-                // Printing uploading success message coming from server on android app.
+//                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
+                //   Printing uploading success message coming from server on android app.
                 Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
 
             }
@@ -1553,14 +1556,14 @@ public class Manage_calendar extends AppCompatActivity {
         AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
         AsyncTaskUploadClassOBJ.execute();
     }
-
-    public void uploadData(StringRequest s) {
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(this);
-        } else {
-            requestQueue.add(s);
-        }
-    }
+//
+//    public void uploadData(StringRequest s) {
+//        if (requestQueue == null) {
+//            requestQueue = Volley.newRequestQueue(this);
+//        } else {
+//            requestQueue.add(s);
+//        }
+//    }
 
     public void functionInCreate() {
         //////////////////////////////////range date 1 year/////////////////////////////////////
