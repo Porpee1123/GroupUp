@@ -57,7 +57,8 @@ public class Manage_calendar extends AppCompatActivity {
     Button btnGetCalen, btnConfirmCalendar, btnDelCalendar;
     Manage_calendar.ResponseStr responseStr = new Manage_calendar.ResponseStr();
     private int CALENDAR_PERMISSION_CODE = 1;
-//    private RequestQueue requestQueue;
+    int countJSON;
+    //    private RequestQueue requestQueue;
     ArrayList<String> dateString;
     ArrayList<String> dateDiffString;
     List<String> calendars = new ArrayList<>();
@@ -82,6 +83,19 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> dateFromDB = new ArrayList<>();
     ArrayList<String> dateDiffFromDB = new ArrayList<>();
     ArrayList<String> dateForDB = new ArrayList<>();
+    JSONObject JSONid = new JSONObject();
+    JSONObject JSONdate = new JSONObject();
+    JSONObject JSONdateLast = new JSONObject();
+    JSONObject JSONdatecheck = new JSONObject();
+    JSONObject JSONdateFormat = new JSONObject();
+    JSONObject JSONmorning = new JSONObject();
+    JSONObject JSONlate = new JSONObject();
+    JSONObject JSONafternoon = new JSONObject();
+    JSONObject JSONevening = new JSONObject();
+    JSONObject JSONstatus = new JSONObject();
+
+
+    JSONObject EverythingJSON = new JSONObject();
     //Array for 1 year
     static ArrayList<String> dateInYear; // real Tue Sep 01 20:44:10 GMT+07:00 2020
     String uid, email;
@@ -107,6 +121,7 @@ public class Manage_calendar extends AppCompatActivity {
         dateInYear = new ArrayList<>();
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
+        countJSON = 1;
         //checkbox
         linearCheckbox.setVisibility(View.GONE);
         checkVisible = true;//close custom
@@ -174,7 +189,7 @@ public class Manage_calendar extends AppCompatActivity {
                 cbMorninig.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (countMor[0] %2!=0){
+                        if (countMor[0] % 2 != 0) {
                             if (cbMorninig.isChecked()) {
                                 startDateTime.add(finalSelectedDateCompare + ":11");
                                 endDateTime.add(finalSelectedDateCompare + ":13");
@@ -187,7 +202,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 removeTime(finalSelectedDateCompare + ":11", startDateTime);
                                 removeTime(finalSelectedDateCompare + ":13", endDateTime);
                             }
-                        }else{
+                        } else {
                             removeTime(finalSelectedDateCompare + ":11", startDateTime);
                             removeTime(finalSelectedDateCompare + ":13", endDateTime);
                             removeTime(finalSelectedDateCompare + ":11", startDateTimeDel);
@@ -199,7 +214,7 @@ public class Manage_calendar extends AppCompatActivity {
                 cbLate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (countLat[0] %2!=0){
+                        if (countLat[0] % 2 != 0) {
                             if (cbLate.isChecked()) {
                                 startDateTime.add(finalSelectedDateCompare + ":14");
                                 endDateTime.add(finalSelectedDateCompare + ":16");
@@ -212,7 +227,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 removeTime(finalSelectedDateCompare + ":14", startDateTime);
                                 removeTime(finalSelectedDateCompare + ":16", endDateTime);
                             }
-                        }else{
+                        } else {
                             removeTime(finalSelectedDateCompare + ":14", startDateTime);
                             removeTime(finalSelectedDateCompare + ":16", endDateTime);
                             removeTime(finalSelectedDateCompare + ":14", startDateTimeDel);
@@ -224,7 +239,7 @@ public class Manage_calendar extends AppCompatActivity {
                 cbAfternoon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (countAft[0] %2!=0){
+                        if (countAft[0] % 2 != 0) {
                             if (cbAfternoon.isChecked()) {
                                 startDateTime.add(finalSelectedDateCompare + ":17");
                                 endDateTime.add(finalSelectedDateCompare + ":19");
@@ -237,7 +252,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 removeTime(finalSelectedDateCompare + ":17", startDateTime);
                                 removeTime(finalSelectedDateCompare + ":19", endDateTime);
                             }
-                        }else{
+                        } else {
                             removeTime(finalSelectedDateCompare + ":17", startDateTime);
                             removeTime(finalSelectedDateCompare + ":19", endDateTime);
                             removeTime(finalSelectedDateCompare + ":17", startDateTimeDel);
@@ -249,7 +264,7 @@ public class Manage_calendar extends AppCompatActivity {
                 cbEvening.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (countEve[0] %2!=0){
+                        if (countEve[0] % 2 != 0) {
                             if (cbEvening.isChecked()) {
                                 startDateTime.add(finalSelectedDateCompare + ":20");
                                 endDateTime.add(finalSelectedDateCompare + ":23");
@@ -262,7 +277,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 removeTime(finalSelectedDateCompare + ":20", startDateTime);
                                 removeTime(finalSelectedDateCompare + ":23", endDateTime);
                             }
-                        }else{
+                        } else {
                             removeTime(finalSelectedDateCompare + ":20", startDateTime);
                             removeTime(finalSelectedDateCompare + ":23", endDateTime);
                             removeTime(finalSelectedDateCompare + ":20", startDateTimeDel);
@@ -400,7 +415,7 @@ public class Manage_calendar extends AppCompatActivity {
                                 if (startDateTime != null || endDateTime != null || dateString != null) {
                                     for (int i = 0; i < startDateTime.size(); i++) {
                                         Log.d("checkDBtest ", "startDateTimeSentToDB : " + startDateTime.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
-                                        sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
+//                                        sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
                                     }
                                     for (int i = 0; i < startDateTimeDel.size(); i++) { // date fo delete
                                         Log.d("checkDBtest ", "startDateTimeEndSentToDB : " + startDateTimeDel.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
@@ -408,11 +423,22 @@ public class Manage_calendar extends AppCompatActivity {
                                     }
                                     for (int i = 0; i < dateForDB.size(); i++) {
                                         Log.d("checkDBtest ", "dateForDB : " + dateForDB.toString());//[Mon Apr 20 00:00:00 GMT+07:00 2020]
-                                        sentDateToDB(dateForDB.get(i));
+//                                        sentDateToDB(dateForDB.get(i));
                                     }
                                     for (int i = 0; i < dateInYear.size(); i++) {
-                                        sentDateForCalToDB(dateInYear.get(i), "1", "1", "1", "1", "1");
+                                        arraylistToJson(dateInYear.get(i), "1", "1", "1", "1", "1");
+                                        addtoJsonEverything();
+//                                        sentDateForCalToDB(dateInYear.get(i), "1", "1", "1", "1", "1");
                                     }
+                                    Log.d("json",EverythingJSON.length()+"");
+                                    for (int i=0;i<EverythingJSON.length();i++){
+                                        try {
+                                            Log.d("json",EverythingJSON.get("date").toString()+"");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
                                     handlerSave.sendEmptyMessage(0);
 
                                 }
@@ -598,17 +624,17 @@ public class Manage_calendar extends AppCompatActivity {
                     dateString.add(ddiff.toString());
                     dateDiffString.add(ddiff.toString());
                     diffDateTime.add(simple.format(ddiff));
-                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff)+":11");
-                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff)+":13");
-                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff)+":14");
-                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff)+":16");
-                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff)+":17");
-                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff)+":19");
-                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff)+":20");
-                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff)+":23");
+                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff) + ":11");
+                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff) + ":13");
+                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff) + ":14");
+                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff) + ":16");
+                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff) + ":17");
+                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff) + ":19");
+                    diffRangeDateTimeStart.add(simpleNoHour.format(ddiff) + ":20");
+                    diffRangeDateTimeEnd.add(simpleNoHour.format(ddiff) + ":23");
                     Log.d("checkTime ", "date : " + dateDiffString.get(dateDiffString.size() - 1) + " date size: " + dateDiffString.size());
-                    Log.d("diffRange ", "date : " + diffRangeDateTimeStart.toString() );
-                    Log.d("diffRange ", "date end: " + diffRangeDateTimeEnd.toString() );
+                    Log.d("diffRange ", "date : " + diffRangeDateTimeStart.toString());
+                    Log.d("diffRange ", "date end: " + diffRangeDateTimeEnd.toString());
                 }
                 cutStringDateDiff(diffDateTime);
             }
@@ -926,6 +952,7 @@ public class Manage_calendar extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void sentCalendarDiffToDB(String startDate, String endDate) {
         Log.d("simpledate", "startDate : " + startDate);
         String url = "http://www.groupupdb.com/android/addcalendar.php";
@@ -1618,6 +1645,49 @@ public class Manage_calendar extends AppCompatActivity {
 
     }
 
+    public void arraylistToJson(String date, String morning, String late, String afternoon, String evening, String status) {
+        date1 = "";
+        date2 = "";
+        CutStringDateForSaveDB(date);
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
+        long dt = Date.parse(date);
+        Date d = new Date(dt);
+        String dateCheck = simpleHour.format(d);
+        String dateCheckformat = simpledate.format(d) + "";
+        try {
+            JSONid.put("Count:" + String.valueOf(countJSON), uid + "");
+            JSONdate.put("Count:" + String.valueOf(countJSON ), date1 + "");
+            JSONdateLast.put("Count:" + String.valueOf(countJSON), date2 + "");
+            JSONdatecheck.put("Count:" + String.valueOf(countJSON), dateCheck + "");
+            JSONdateFormat.put("Count:" + String.valueOf(countJSON), dateCheckformat + "");
+            JSONmorning.put("Count:" + String.valueOf(countJSON), morning + "");
+            JSONlate.put("Count:" + String.valueOf(countJSON), late + "");
+            JSONafternoon.put("Count:" + String.valueOf(countJSON), afternoon + "");
+            JSONevening.put("Count:" + String.valueOf(countJSON), evening + "");
+            JSONstatus.put("Count:" + String.valueOf(countJSON), status + "");
+            countJSON++;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void addtoJsonEverything(){
+        try {
+            EverythingJSON.put("id", JSONid);
+            EverythingJSON.put("date", JSONdate);
+            EverythingJSON.put("datelast", JSONdateLast);
+            EverythingJSON.put("datecheck", JSONdatecheck);
+            EverythingJSON.put("datecheckformat", JSONdateFormat);
+            EverythingJSON.put("morning", JSONmorning);
+            EverythingJSON.put("late", JSONlate);
+            EverythingJSON.put("afternoon", JSONafternoon);
+            EverythingJSON.put("evening", JSONevening);
+            EverythingJSON.put("status", JSONstatus);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 //    public void removeTimeSame2Array(ArrayList arrayList1, ArrayList arrayList2) {
 //        ArrayList<Integer> numberArr1 = new ArrayList<>();
 //        ArrayList<Integer> numberArr2 = new ArrayList<>();

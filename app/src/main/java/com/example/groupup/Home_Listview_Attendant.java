@@ -86,7 +86,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 sAdap = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_attend_home,
                         new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
                 listViewAttend.setAdapter(sAdap);
-
+                Home.handlerHome.sendEmptyMessage(0);
                 listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                         String eName= MyArrList.get(position).get("events_name");

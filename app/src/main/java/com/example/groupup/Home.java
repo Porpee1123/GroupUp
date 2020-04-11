@@ -63,7 +63,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     String name = "", id = "", email = "";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-    ProgressDialog progressDialog;
+    static ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +140,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    Handler handler = new Handler() {
+    static Handler handlerHome = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
@@ -177,7 +177,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 updateTabs();
             }
         });
-        handler.sendEmptyMessage(0);
+
 
     }
 
