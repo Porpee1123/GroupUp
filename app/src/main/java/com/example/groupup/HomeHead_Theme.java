@@ -33,40 +33,44 @@ import java.util.HashMap;
 
 public class HomeHead_Theme extends AppCompatActivity {
     HomeHead_Theme.ResponseStr responseStr = new HomeHead_Theme.ResponseStr();
-    String id,eid,nameE,monS,monE,email,transId;
+    String id, eid, nameE, monS, monE, email, transId;
     ArrayList<String> themeSelect = new ArrayList<>();
-    Button b,btn_con;
-    LinearLayout lShort,lCus;
+    Button b, btn_con;
+    LinearLayout lShort, lCus;
     ScrollView scrollView;
-    ImageView img_minimal,img_classic,img_buffet,img_river,img_karaoke,img_sky,img_kid;
+    ImageView img_minimal, img_classic, img_buffet, img_river, img_karaoke, img_sky, img_kid;
     boolean checkVisible;
-    ArrayList<String>  nameType ,idType;
+    ArrayList<String> nameType, idType;
+    CheckBox cafe, coffee, river, karaoke, clubs, pub, wine, night, vegeterian, hotelBuf, rooftop, izakaya, dessert, alacarte,
+            seafood, steak, iceCream, bakery, bbq, shabu, buffet, cleanFood, thaiBbq, pizza, sushi, burger, ramen, dimsum,
+            vegan, veget, original, bar, outdoor, cozy, family, minimal, warm, child;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
-        eid =getIntent().getStringExtra("eid");
+        eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
-        lShort =findViewById(R.id.linear_shortcut);
-        lCus =findViewById(R.id.linear_custom);
+        lShort = findViewById(R.id.linear_shortcut);
+        lCus = findViewById(R.id.linear_custom);
         b = findViewById(R.id.btn_customTheme);
         btn_con = findViewById(R.id.btn_confirmCustom);
         scrollView = findViewById(R.id.scroll_theme);
         lCus.setVisibility(View.GONE);
         btn_con.setVisibility(View.GONE);
-        img_minimal= findViewById(R.id.theme_minimal);
-        img_classic= findViewById(R.id.theme_classic);
-        img_buffet=findViewById(R.id.theme_buffet);
-        img_river=findViewById(R.id.theme_river);
-        img_karaoke=findViewById(R.id.theme_karaoke);
-        img_sky=findViewById(R.id.theme_sky);
-        img_kid=findViewById(R.id.theme_kid);
+        img_minimal = findViewById(R.id.theme_minimal);
+        img_classic = findViewById(R.id.theme_classic);
+        img_buffet = findViewById(R.id.theme_buffet);
+        img_river = findViewById(R.id.theme_river);
+        img_karaoke = findViewById(R.id.theme_karaoke);
+        img_sky = findViewById(R.id.theme_sky);
+        img_kid = findViewById(R.id.theme_kid);
         checkVisible = true;//close custom
-        getTransIDByTrans(id,eid,"3");
+        getTransIDByTrans(id, eid, "3");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,65 +80,71 @@ public class HomeHead_Theme extends AppCompatActivity {
         check();
         img_minimal.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(21+"",R.string.minimal);
+            public void onClick(View view) {
+                getTypeTheme(21 + "", R.string.minimal);
             }
         });
         img_classic.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(22+"",R.string.classic);
+            public void onClick(View view) {
+                getTypeTheme(22 + "", R.string.classic);
             }
         });
         img_buffet.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(15+"",R.string.buffet);
+            public void onClick(View view) {
+                getTypeTheme(15 + "", R.string.buffet);
             }
         });
         img_river.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(36+"",R.string.waterFront);
+            public void onClick(View view) {
+                getTypeTheme(36 + "", R.string.waterFront);
             }
         });
         img_karaoke.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(3+"",R.string.karaoke);
+            public void onClick(View view) {
+                getTypeTheme(3 + "", R.string.karaoke);
             }
         });
         img_sky.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(23+"",R.string.sky);
+            public void onClick(View view) {
+                getTypeTheme(23 + "", R.string.sky);
             }
         });
         img_kid.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { getTypeTheme(8+"",R.string.forkids);
+            public void onClick(View view) {
+                getTypeTheme(8 + "", R.string.forkids);
             }
         });
         btn_con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i =0; i< themeSelect.size(); i++){
-                    sentInviteToFriend(themeSelect.get(i).toString(),eid);
+                for (int i = 0; i < themeSelect.size(); i++) {
+                    sentInviteToFriend(themeSelect.get(i).toString(), eid);
                 }
-                Log.d("themeSelect","Remove : "+themeSelect.toString());
+                Log.d("themeSelect", "Remove : " + themeSelect.toString());
             }
         });
 
     }
 
-    public  void  check(){
-
-        final CheckBox cafe = findViewById(R.id.cafe);
+    public void check() {
+        cafe = findViewById(R.id.cafe);
         cafe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(cafe.isChecked()){
+                if (cafe.isChecked()) {
                     cafe.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820591");
 //                    Log.d("themeSelect",
 //                            cafe.getText()+"--"+R.string.cafe+"");
 
-                }else {
+                } else {
                     cafe.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820591");
                 }
@@ -142,15 +152,16 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox coffee = findViewById(R.id.coffee_tea);
+
+        coffee = findViewById(R.id.coffee_tea);
         coffee.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(coffee.isChecked()){
+                if (coffee.isChecked()) {
                     coffee.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820600");
-                }else {
+                } else {
                     coffee.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820600");
                 }
@@ -158,15 +169,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox river = findViewById(R.id.riverside);
+        river = findViewById(R.id.riverside);
         river.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(river.isChecked()){
+                if (river.isChecked()) {
                     river.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820742");
-                }else {
+                } else {
                     river.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820742");
                 }
@@ -174,15 +185,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox karaoke = findViewById(R.id.karaoke);
+        karaoke = findViewById(R.id.karaoke);
         karaoke.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(karaoke.isChecked()){
+                if (karaoke.isChecked()) {
                     karaoke.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820666");
-                }else {
+                } else {
                     karaoke.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820666");
                 }
@@ -190,15 +201,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox clubs = findViewById(R.id.clubs);
+        clubs = findViewById(R.id.clubs);
         clubs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(clubs.isChecked()){
+                if (clubs.isChecked()) {
                     clubs.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820734");
-                }else {
+                } else {
                     clubs.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820734");
                 }
@@ -206,15 +217,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox pub = findViewById(R.id.pub);
+        pub = findViewById(R.id.pub);
         pub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(pub.isChecked()){
+                if (pub.isChecked()) {
                     pub.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820599");
-                }else {
+                } else {
                     pub.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820599");
                 }
@@ -222,15 +233,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox wine = findViewById(R.id.wine_bar);
+        wine = findViewById(R.id.wine_bar);
         wine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(wine.isChecked()){
+                if (wine.isChecked()) {
                     wine.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820784");
-                }else {
+                } else {
                     wine.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820784");
                 }
@@ -238,15 +249,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox night = findViewById(R.id.late_night_rice);
+        night = findViewById(R.id.late_night_rice);
         night.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(night.isChecked()){
+                if (night.isChecked()) {
                     night.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820668");
-                }else {
+                } else {
                     night.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820668");
                 }
@@ -254,15 +265,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox vegeterian = findViewById(R.id.vegeterian);
+        vegeterian = findViewById(R.id.vegeterian);
         vegeterian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(vegeterian.isChecked()){
+                if (vegeterian.isChecked()) {
                     vegeterian.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820778");
-                }else {
+                } else {
                     vegeterian.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820778");
                 }
@@ -270,15 +281,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox hotelBuf = findViewById(R.id.hotel_buffet);
+        hotelBuf = findViewById(R.id.hotel_buffet);
         hotelBuf.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(hotelBuf.isChecked()){
+                if (hotelBuf.isChecked()) {
                     hotelBuf.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820657");
-                }else {
+                } else {
                     karaoke.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820657");
                 }
@@ -286,15 +297,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox rooftop = findViewById(R.id.rooftop);
+        rooftop = findViewById(R.id.rooftop);
         rooftop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(rooftop.isChecked()){
+                if (rooftop.isChecked()) {
                     rooftop.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820743");
-                }else {
+                } else {
                     rooftop.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820743");
                 }
@@ -302,15 +313,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox izakaya = findViewById(R.id.izakaya);
+        izakaya = findViewById(R.id.izakaya);
         izakaya.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(izakaya.isChecked()){
+                if (izakaya.isChecked()) {
                     izakaya.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820664");
-                }else {
+                } else {
                     izakaya.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820664");
                 }
@@ -318,15 +329,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox dessert = findViewById(R.id.dessert);
+        dessert = findViewById(R.id.dessert);
         dessert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(dessert.isChecked()){
+                if (dessert.isChecked()) {
                     dessert.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820630");
-                }else {
+                } else {
                     dessert.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820630");
                 }
@@ -334,15 +345,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox alacarte = findViewById(R.id.alacarte);
+        alacarte = findViewById(R.id.alacarte);
         alacarte.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(alacarte.isChecked()){
+                if (alacarte.isChecked()) {
                     alacarte.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820576");
-                }else {
+                } else {
                     alacarte.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820576");
                 }
@@ -350,15 +361,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox seafood = findViewById(R.id.seafood);
+        seafood = findViewById(R.id.seafood);
         seafood.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(seafood.isChecked()){
+                if (seafood.isChecked()) {
                     seafood.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820745");
-                }else {
+                } else {
                     seafood.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820745");
                 }
@@ -366,15 +377,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox steak = findViewById(R.id.steak);
+        steak = findViewById(R.id.steak);
         steak.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(steak.isChecked()){
+                if (steak.isChecked()) {
                     steak.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820764");
-                }else {
+                } else {
                     steak.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820764");
                 }
@@ -382,15 +393,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox iceCream = findViewById(R.id.iceCream);
+        iceCream = findViewById(R.id.iceCream);
         iceCream.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(iceCream.isChecked()){
+                if (iceCream.isChecked()) {
                     iceCream.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820658");
-                }else {
+                } else {
                     iceCream.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820658");
                 }
@@ -398,15 +409,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox bakery = findViewById(R.id.bakery_cake);
+        bakery = findViewById(R.id.bakery_cake);
         bakery.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(bakery.isChecked()){
+                if (bakery.isChecked()) {
                     bakery.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820582");
-                }else {
+                } else {
                     bakery.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820582");
                 }
@@ -414,15 +425,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox bbq = findViewById(R.id.bbq);
+        bbq = findViewById(R.id.bbq);
         bbq.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(bbq.isChecked()){
+                if (bbq.isChecked()) {
                     bbq.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820585");
-                }else {
+                } else {
                     bbq.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820585");
                 }
@@ -430,15 +441,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox shabu = findViewById(R.id.shabu);
+        shabu = findViewById(R.id.shabu);
         shabu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(shabu.isChecked()){
+                if (shabu.isChecked()) {
                     shabu.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820757");
-                }else {
+                } else {
                     shabu.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820757");
                 }
@@ -446,15 +457,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox buffet = findViewById(R.id.buffet);
+        buffet = findViewById(R.id.buffet);
         buffet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(buffet.isChecked()){
+                if (buffet.isChecked()) {
                     buffet.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820589");
-                }else {
+                } else {
                     buffet.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820589");
                 }
@@ -462,15 +473,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox cleanFood = findViewById(R.id.cleanFood);
+        cleanFood = findViewById(R.id.cleanFood);
         cleanFood.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(cleanFood.isChecked()){
+                if (cleanFood.isChecked()) {
                     cleanFood.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820597");
-                }else {
+                } else {
                     cleanFood.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820597");
                 }
@@ -478,15 +489,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox thaiBbq = findViewById(R.id.thai_bbq);
+        thaiBbq = findViewById(R.id.thai_bbq);
         thaiBbq.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(thaiBbq.isChecked()){
+                if (thaiBbq.isChecked()) {
                     thaiBbq.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820770");
-                }else {
+                } else {
                     thaiBbq.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820770");
                 }
@@ -494,15 +505,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox pizza = findViewById(R.id.pizza);
+        pizza = findViewById(R.id.pizza);
         pizza.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(pizza.isChecked()){
+                if (pizza.isChecked()) {
                     pizza.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820730");
-                }else {
+                } else {
                     pizza.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820730");
                 }
@@ -510,15 +521,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox sushi = findViewById(R.id.sushi);
+        sushi = findViewById(R.id.sushi);
         sushi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(sushi.isChecked()){
+                if (sushi.isChecked()) {
                     sushi.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820767");
-                }else {
+                } else {
                     sushi.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820767");
                 }
@@ -526,15 +537,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox burger = findViewById(R.id.burger);
+        burger = findViewById(R.id.burger);
         burger.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(burger.isChecked()){
+                if (burger.isChecked()) {
                     burger.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820590");
-                }else {
+                } else {
                     burger.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820590");
                 }
@@ -542,15 +553,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox ramen = findViewById(R.id.ramen);
+        ramen = findViewById(R.id.ramen);
         ramen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(ramen.isChecked()){
+                if (ramen.isChecked()) {
                     ramen.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820737");
-                }else {
+                } else {
                     ramen.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820737");
                 }
@@ -558,15 +569,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox dimsum = findViewById(R.id.dimsum);
+        dimsum = findViewById(R.id.dimsum);
         dimsum.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(dimsum.isChecked()){
+                if (dimsum.isChecked()) {
                     dimsum.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820633");
-                }else {
+                } else {
                     dimsum.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820633");
                 }
@@ -574,15 +585,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox vegan = findViewById(R.id.vegan);
+        vegan = findViewById(R.id.vegan);
         vegan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(vegan.isChecked()){
+                if (vegan.isChecked()) {
                     vegan.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820777");
-                }else {
+                } else {
                     vegan.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820777");
                 }
@@ -590,15 +601,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox veget = findViewById(R.id.vegeterian2);
+        veget = findViewById(R.id.vegeterian2);
         veget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(veget.isChecked()){
+                if (veget.isChecked()) {
                     veget.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820778");
-                }else {
+                } else {
                     veget.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820778");
                 }
@@ -606,15 +617,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox original = findViewById(R.id.original);
+        original = findViewById(R.id.original);
         original.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(original.isChecked()){
+                if (original.isChecked()) {
                     original.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820721");
-                }else {
+                } else {
                     original.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820721");
                 }
@@ -622,15 +633,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox bar = findViewById(R.id.bar);
+        bar = findViewById(R.id.bar);
         bar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(bar.isChecked()){
+                if (bar.isChecked()) {
                     bar.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820583");
-                }else {
+                } else {
                     bar.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820583");
                 }
@@ -638,15 +649,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox outdoor = findViewById(R.id.outdoor);
+        outdoor = findViewById(R.id.outdoor);
         outdoor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(outdoor.isChecked()){
+                if (outdoor.isChecked()) {
                     outdoor.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820722");
-                }else {
+                } else {
                     outdoor.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820722");
                 }
@@ -654,15 +665,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox cozy = findViewById(R.id.cozy);
+        cozy = findViewById(R.id.cozy);
         cozy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(cozy.isChecked()){
+                if (cozy.isChecked()) {
                     cozy.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820620");
-                }else {
+                } else {
                     cozy.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820620");
                 }
@@ -670,15 +681,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox family = findViewById(R.id.family);
+        family = findViewById(R.id.family);
         family.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(family.isChecked()){
+                if (family.isChecked()) {
                     family.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820647");
-                }else {
+                } else {
                     family.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820647");
                 }
@@ -686,15 +697,15 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox minimal = findViewById(R.id.minimal);
+        minimal = findViewById(R.id.minimal);
         minimal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(minimal.isChecked()){
+                if (minimal.isChecked()) {
                     minimal.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820673");
-                }else {
+                } else {
                     minimal.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820673");
                 }
@@ -702,16 +713,16 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox warm = findViewById(R.id.warm);
+        warm = findViewById(R.id.warm);
         warm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(warm.isChecked()){
+                if (warm.isChecked()) {
                     warm.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820782");
 //                    Log.d("box",warm+"");
-                }else {
+                } else {
                     warm.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820782");
                 }
@@ -719,63 +730,67 @@ public class HomeHead_Theme extends AppCompatActivity {
             }
         });
 
-        final CheckBox child = findViewById(R.id.child);
+        child = findViewById(R.id.child);
         child.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(child.isChecked()){
+                if (child.isChecked()) {
                     child.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820595");
 //                    Log.d("box",child+"");
-                }else {
+                } else {
                     child.setBackgroundResource(R.drawable.my_style);
                     removeTheme("2131820595");
                 }
 
             }
         });
-        Log.d("themeSelect",themeSelect.toString());
+        Log.d("themeSelect", themeSelect.toString());
 
     }
-    public void removeTheme(String id){
+
+    public void removeTheme(String id) {
         String number = "";
-        for (int i =0; i< themeSelect.size(); i++){
-            if (id.equals(themeSelect.get(i))){
-                number = i+"";
+        for (int i = 0; i < themeSelect.size(); i++) {
+            if (id.equals(themeSelect.get(i))) {
+                number = i + "";
             }
         }
         themeSelect.remove(Integer.parseInt(number));
 //        Log.d("themeSelect","Remove : "+themeSelect.toString());
     }
+
     public void backAppoint(View v) {
         Intent intent = new Intent(HomeHead_Theme.this, HomeHead_Appointment.class);
-        intent.putExtra("id", id+"");
-        intent.putExtra("email", email+"");
-        intent.putExtra("nEvent", nameE+"");
-        intent.putExtra("mStart", monS+"");
-        intent.putExtra("mEnd", monE+"");
-        intent.putExtra("eid", eid+"");
-        intent.putExtra("tab",0+"");
+        intent.putExtra("id", id + "");
+        intent.putExtra("email", email + "");
+        intent.putExtra("nEvent", nameE + "");
+        intent.putExtra("mStart", monS + "");
+        intent.putExtra("mEnd", monE + "");
+        intent.putExtra("eid", eid + "");
+        intent.putExtra("tab", 0 + "");
         startActivity(intent);
     }
-    public void visibleLinear(){
-        if (checkVisible){//show custom
+
+    public void visibleLinear() {
+        if (checkVisible) {//show custom
             lCus.setVisibility(View.VISIBLE);
             lShort.setVisibility(View.GONE);
             btn_con.setVisibility(View.VISIBLE);
             b.setText(R.string.group_theme);
             scrollView.setScrollY(0);
-            checkVisible=false;
+            checkVisible = false;
 
-        }else {//show group
+        } else {//show group
             lCus.setVisibility(View.GONE);
             lShort.setVisibility(View.VISIBLE);
             btn_con.setVisibility(View.GONE);
             b.setText(R.string.custom);
-            checkVisible=true;
+            checkVisible = true;
         }
     }
+
     public void getTypeTheme(final String tyid, final int head) {
         responseStr = new HomeHead_Theme.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -797,9 +812,9 @@ public class HomeHead_Theme extends AppCompatActivity {
                                 map.put("theme_name", c.getString("theme_name"));
                                 MyArrList.add(map);
                             }
-                            for (int i=0;i<MyArrList.size();i++){
-                                nameType.add(MyArrList.get(i).get("theme_name")+"\n");
-                                idType.add(MyArrList.get(i).get("theme_id")+"\n");
+                            for (int i = 0; i < MyArrList.size(); i++) {
+                                nameType.add(MyArrList.get(i).get("theme_name") + "\n");
+                                idType.add(MyArrList.get(i).get("theme_id") + "\n");
                             }
 //                            Log.d("themeSelect","myarr : "+MyArrList.toString());
                         } catch (JSONException e) {
@@ -817,48 +832,73 @@ public class HomeHead_Theme extends AppCompatActivity {
         queue.add(stringRequest);
         final AlertDialog viewDetail = new AlertDialog.Builder(HomeHead_Theme.this).create();
 //        Log.d("themeSelect","myarr : "+MyArrList.toString());
-        new CountDownTimer(300,300){
+        new CountDownTimer(300, 300) {
             @Override
             public void onTick(long l) {
 
             }
+
             @Override
             public void onFinish() {
 
                 viewDetail.setTitle(head);
-                Log.d("themeSelect","myarr : "+nameType.toString());
-                String s="";
-                for (int i=0;i<nameType.size();i++){
-                    s+= nameType.get(i);
+                Log.d("themeSelect", "myarr : " + nameType.toString());
+                String s = "";
+                for (int i = 0; i < nameType.size(); i++) {
+                    s += nameType.get(i);
                 }
-                viewDetail.setMessage(s+"\n");
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+                viewDetail.setMessage(s + "\n");
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
                     }
                 });
-                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        for (int i=0;i<idType.size();i++){
-                            sentInviteToFriend(idType.get(i),eid);
+                        for (int i = 0; i < idType.size(); i++) {
+                            sentInviteToFriend(idType.get(i), eid);
                         }
+
+                    }
+                });
+                viewDetail.setButton(viewDetail.BUTTON_NEUTRAL, "ปรับแต่ง", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < idType.size(); i++) {
+                            checkCustomTheme(idType.get(i).toString());
+                        }
+                        lShort.setVisibility(View.GONE);
+                        lCus.setVisibility(View.VISIBLE);
+                        btn_con.setVisibility(View.VISIBLE);
+
+                        b.setText(R.string.group_theme);
+                        checkVisible = false;
+
 
                     }
                 });
                 viewDetail.show();
                 Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
+                Button btnNeutral = viewDetail.getButton(AlertDialog.BUTTON_NEUTRAL);
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
+                btnNeutral.setLayoutParams(layoutParams);
+
+                btnPositive.setTextColor(getApplication().getResources().getColor(R.color.green));
+                btnNegative.setTextColor(getApplication().getResources().getColor(R.color.red));
+
+
             }
         }.start();
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -868,11 +908,12 @@ public class HomeHead_Theme extends AppCompatActivity {
         }
 
     }
-    public void sentInviteToFriend(String idTheme,String idEvent){
+
+    public void sentInviteToFriend(String idTheme, String idEvent) {
         String url = "http://www.groupupdb.com/android/addeventtheme.php";
         url += "?tId=" + idTheme;
         url += "&eId=" + idEvent;
-        Log.d("themeSelect",url);
+        Log.d("themeSelect", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -890,13 +931,14 @@ public class HomeHead_Theme extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        Log.d("themeSelect","transid: "+transId);
-        UpdateStateToDb(transId,5+"");
+        Log.d("themeSelect", "transid: " + transId);
+        UpdateStateToDb(transId, 5 + "");
     }
-    public void UpdateStateToDb(String transId,String statusId){
+
+    public void UpdateStateToDb(String transId, String statusId) {
         String url = "http://www.groupupdb.com/android/acceptEvent.php";
         url += "?tId=" + transId;
-        url += "&stId=" +statusId;
+        url += "&stId=" + statusId;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -914,14 +956,15 @@ public class HomeHead_Theme extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void getTransIDByTrans(String uid,String eid,String pid){
+
+    public void getTransIDByTrans(String uid, String eid, String pid) {
         responseStr = new HomeHead_Theme.ResponseStr();
-        Log.d("themeSelect","id : "+uid+" eid : "+eid+" pid : "+pid);
+        Log.d("themeSelect", "id : " + uid + " eid : " + eid + " pid : " + pid);
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/gettransid.php";
         url += "?uId=" + uid;
-        url += "&eId=" +eid;
-        url += "&pId=" +pid;
+        url += "&eId=" + eid;
+        url += "&pId=" + pid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -939,7 +982,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                                 map.put("pri_id", c.getString("pri_id"));
                                 MyArrList.add(map);
                             }
-                            transId =MyArrList.get(0).get("trans_id");
+                            transId = MyArrList.get(0).get("trans_id");
 //                            Log.d("themeSelect","myarr : "+MyArrList.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -956,5 +999,15 @@ public class HomeHead_Theme extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    public void checkCustomTheme(String idType) {
+        Log.d("Typeid", idType.toString());
+//        cafe.setChecked(true);
+        if (idType.equals("2131820591")) {
+            Log.d("Typeid", "cafe");
+            cafe.setChecked(true);
+        } else if ("2131820600".equals(idType)) {
+            coffee.setChecked(true);
+        }
+    }
 
 }
