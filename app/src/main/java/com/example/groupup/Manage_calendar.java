@@ -57,8 +57,7 @@ public class Manage_calendar extends AppCompatActivity {
     Button btnGetCalen, btnConfirmCalendar, btnDelCalendar;
     Manage_calendar.ResponseStr responseStr = new Manage_calendar.ResponseStr();
     private int CALENDAR_PERMISSION_CODE = 1;
-    int countJSON;
-    //    private RequestQueue requestQueue;
+    private RequestQueue requestQueue;
     ArrayList<String> dateString;
     ArrayList<String> dateDiffString;
     List<String> calendars = new ArrayList<>();
@@ -74,6 +73,8 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> startDateTime;
     ArrayList<String> diffRangeDateTimeStart;
     ArrayList<String> diffRangeDateTimeEnd;
+    ArrayList<String> endDateTimeGetCalen;
+    ArrayList<String> startDateTimeGetCalen;
     ArrayList<String> endDateTime;
     ArrayList<String> startDateTimeDel;
     ArrayList<String> endDateTimeDel;
@@ -83,19 +84,6 @@ public class Manage_calendar extends AppCompatActivity {
     ArrayList<String> dateFromDB = new ArrayList<>();
     ArrayList<String> dateDiffFromDB = new ArrayList<>();
     ArrayList<String> dateForDB = new ArrayList<>();
-    JSONObject JSONid = new JSONObject();
-    JSONObject JSONdate = new JSONObject();
-    JSONObject JSONdateLast = new JSONObject();
-    JSONObject JSONdatecheck = new JSONObject();
-    JSONObject JSONdateFormat = new JSONObject();
-    JSONObject JSONmorning = new JSONObject();
-    JSONObject JSONlate = new JSONObject();
-    JSONObject JSONafternoon = new JSONObject();
-    JSONObject JSONevening = new JSONObject();
-    JSONObject JSONstatus = new JSONObject();
-
-
-    JSONObject EverythingJSON = new JSONObject();
     //Array for 1 year
     static ArrayList<String> dateInYear; // real Tue Sep 01 20:44:10 GMT+07:00 2020
     String uid, email;
@@ -121,12 +109,13 @@ public class Manage_calendar extends AppCompatActivity {
         dateInYear = new ArrayList<>();
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
-        countJSON = 1;
         //checkbox
         linearCheckbox.setVisibility(View.GONE);
         checkVisible = true;//close custom
         newDate = new ArrayList();
         startDateTime = new ArrayList<>();
+        startDateTimeGetCalen = new ArrayList<>();
+        endDateTimeGetCalen = new ArrayList<>();
         diffRangeDateTimeStart = new ArrayList<>();
         diffRangeDateTimeEnd = new ArrayList<>();
         endDateTime = new ArrayList<>();
@@ -397,8 +386,8 @@ public class Manage_calendar extends AppCompatActivity {
 //                                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
 
                                 // Dismiss the progress dialog after done uploading.
+//                                requestQueue.stop();
                                 progressDialog.dismiss();
-
                                 // Printing uploading success message coming from server on android app.
                                 Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
                                 Intent in = new Intent(Manage_calendar.this, Home.class);
@@ -415,29 +404,27 @@ public class Manage_calendar extends AppCompatActivity {
                                 if (startDateTime != null || endDateTime != null || dateString != null) {
                                     for (int i = 0; i < startDateTime.size(); i++) {
                                         Log.d("checkDBtest ", "startDateTimeSentToDB : " + startDateTime.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
-//                                        sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
+                                        sentCustomDateToCalendar(startDateTime.get(i), endDateTime.get(i));
                                     }
                                     for (int i = 0; i < startDateTimeDel.size(); i++) { // date fo delete
                                         Log.d("checkDBtest ", "startDateTimeEndSentToDB : " + startDateTimeDel.toString());//[13/04/2020:11, 13/04/2020:17, 13/04/2020:14, 13/04/2020:20]
-//                                        sentCustomDateToCalendar(startDateTimeDel.get(i), endDateTimeDel.get(i));
+                                        sentCustomDateToCalendar(startDateTimeDel.get(i), endDateTimeDel.get(i));
                                     }
                                     for (int i = 0; i < dateForDB.size(); i++) {
                                         Log.d("checkDBtest ", "dateForDB : " + dateForDB.toString());//[Mon Apr 20 00:00:00 GMT+07:00 2020]
-//                                        sentDateToDB(dateForDB.get(i));
+                                        sentDateToDB(dateForDB.get(i));
                                     }
                                     for (int i = 0; i < dateInYear.size(); i++) {
-                                        arraylistToJson(dateInYear.get(i), "1", "1", "1", "1", "1");
-                                        addtoJsonEverything();
-//                                        sentDateForCalToDB(dateInYear.get(i), "1", "1", "1", "1", "1");
+                                        sentDateForCalToDB(dateInYear.get(i), "1", "1", "1", "1", "1");
                                     }
-                                    Log.d("json",EverythingJSON.length()+"");
-                                    for (int i=0;i<EverythingJSON.length();i++){
-                                        try {
-                                            Log.d("json",EverythingJSON.get("date").toString()+"");
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
+//                                    Log.d("json",EverythingJSON.length()+"");
+//                                    for (int i=0;i<EverythingJSON.length();i++){
+//                                        try {
+//                                            Log.d("json",EverythingJSON.get("date").toString()+"");
+//                                        } catch (JSONException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
 
                                     handlerSave.sendEmptyMessage(0);
 
@@ -597,6 +584,7 @@ public class Manage_calendar extends AppCompatActivity {
             DateFormat simpleNoHour = new SimpleDateFormat("dd/MM/yyyy"); //dd/MM/yyyy/HH/mm
             all += s1 + "\n\t\t" + simple.format(c1.getTime()) + "---" + simple.format(c2.getTime()) + "\n\n";
 //            Log.d("dateTime ", "Calendar Name long : " + s1 + " - " + simple.format(c1.getTime()) + " + " + simple.format(c2.getTime()) + " : " + cursor.getString(6));
+            cutStringForCalendarDB(simple.format(c1.getTime()), simple.format(c2.getTime()), cursor.getString(6));
             startDateTime.add(simple.format(c1.getTime()));
             endDateTime.add(simple.format(c2.getTime()));
             dateCalGetAllDay.add(cursor.getString(6));
@@ -646,6 +634,92 @@ public class Manage_calendar extends AppCompatActivity {
 //        Log.d("newDate","dateString "+dateString.toString());
 
         return calendars;
+    }
+
+    public void cutStringForCalendarDB(String dt, String edt, String fullday) {
+        Log.d("cutStringForCalendarDB", "dt before : " + dt.toString());
+        Log.d("cutStringForCalendarDB", "edt before : " + edt.toString());
+        String time1 = "", time2 = "";
+        int timeStart = 0, timeEnd = 0;
+        StringTokenizer st = new StringTokenizer(dt, ":");
+        StringTokenizer st2 = new StringTokenizer(edt, ":");
+        while (st.hasMoreTokens()) {
+            time1 += st.nextToken();
+            timeStart = Integer.parseInt(st.nextToken());
+        }
+        while (st2.hasMoreTokens()) {
+            time2 += st2.nextToken();
+            timeEnd = Integer.parseInt(st2.nextToken());
+        }
+        if (fullday.equals("1")) {//full daY
+            startDateTimeGetCalen.add(time1 + ":11");
+            startDateTimeGetCalen.add(time1 + ":14");
+            startDateTimeGetCalen.add(time1 + ":17");
+            startDateTimeGetCalen.add(time1 + ":20");
+            endDateTimeGetCalen.add(time1 + ":13");
+            endDateTimeGetCalen.add(time1 + ":16");
+            endDateTimeGetCalen.add(time1 + ":19");
+            endDateTimeGetCalen.add(time1 + ":23");
+            startDateTimeGetCalen.add(time2 + ":11");
+            startDateTimeGetCalen.add(time2 + ":14");
+            startDateTimeGetCalen.add(time2 + ":17");
+            startDateTimeGetCalen.add(time2 + ":20");
+            endDateTimeGetCalen.add(time2 + ":13");
+            endDateTimeGetCalen.add(time2 + ":16");
+            endDateTimeGetCalen.add(time1 + ":19");
+            endDateTimeGetCalen.add(time2 + ":23");
+        } else {
+            if (timeStart < 14) {
+                startDateTimeGetCalen.add(time1 + ":11");
+                endDateTimeGetCalen.add(time1 + ":13");
+            } else if (timeStart >= 14 && timeStart < 17) {
+                startDateTimeGetCalen.add(time1 + ":11");
+                startDateTimeGetCalen.add(time1 + ":14");
+                endDateTimeGetCalen.add(time1 + ":13");
+                endDateTimeGetCalen.add(time1 + ":16");
+            } else if (timeStart >= 17 && timeStart < 20) {
+                startDateTimeGetCalen.add(time1 + ":11");
+                startDateTimeGetCalen.add(time1 + ":14");
+                startDateTimeGetCalen.add(time1 + ":17");
+                endDateTimeGetCalen.add(time1 + ":13");
+                endDateTimeGetCalen.add(time1 + ":16");
+                endDateTimeGetCalen.add(time1 + ":19");
+            } else if (timeStart >= 20 && timeStart < 24) {
+                startDateTimeGetCalen.add(time1 + ":11");
+                startDateTimeGetCalen.add(time1 + ":14");
+                startDateTimeGetCalen.add(time1 + ":17");
+                startDateTimeGetCalen.add(time1 + ":20");
+                endDateTimeGetCalen.add(time1 + ":13");
+                endDateTimeGetCalen.add(time1 + ":16");
+                endDateTimeGetCalen.add(time1 + ":19");
+                endDateTimeGetCalen.add(time1 + ":23");
+            }
+            if (timeEnd < 14) {
+                startDateTimeGetCalen.add(time2 + ":11");
+                endDateTimeGetCalen.add(time2 + ":13");
+            } else if (timeEnd >= 14 && timeEnd < 17) {
+                startDateTimeGetCalen.add(time2 + ":11");
+                startDateTimeGetCalen.add(time2 + ":14");
+                endDateTimeGetCalen.add(time2 + ":13");
+                endDateTimeGetCalen.add(time2 + ":16");
+            } else if (timeEnd >= 17 && timeEnd < 20) {
+                startDateTimeGetCalen.add(time2 + ":11");
+                startDateTimeGetCalen.add(time2 + ":14");
+                startDateTimeGetCalen.add(time2 + ":17");
+                endDateTimeGetCalen.add(time2 + ":13");
+                endDateTimeGetCalen.add(time2 + ":16");
+                endDateTimeGetCalen.add(time2 + ":19");
+            } else if (timeEnd >= 20 && timeEnd < 24) {
+                startDateTimeGetCalen.add(time2 + ":11");
+                startDateTimeGetCalen.add(time2 + ":14");
+                startDateTimeGetCalen.add(time2 + ":17");
+                startDateTimeGetCalen.add(time2 + ":20");
+                endDateTimeGetCalen.add(time2 + ":13");
+                endDateTimeGetCalen.add(time2 + ":16");
+                endDateTimeGetCalen.add(time1 + ":19");
+                endDateTimeGetCalen.add(time2 + ":23");
+            }
+        }
     }
 
     @Override
@@ -948,9 +1022,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-//        uploadData(stringRequest);
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
 
     public void sentCalendarDiffToDB(String startDate, String endDate) {
@@ -972,9 +1046,9 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-//        uploadData(stringRequest);
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
 
     public void getcalendarFromDB() {
@@ -1280,6 +1354,7 @@ public class Manage_calendar extends AppCompatActivity {
                         super.onPostExecute(string1);
                         // Dismiss the progress dialog after done uploading.
                         progressDialog.dismiss();
+
 //                        requestQueue = null;
 //                        requestQueue = Volley.newRequestQueue(Manage_calendar.this);
                         // Printing uploading success message coming from server on android app.
@@ -1289,11 +1364,11 @@ public class Manage_calendar extends AppCompatActivity {
 
                     @Override
                     protected String doInBackground(Void... params) {
-                        if (startDateTime != null || endDateTime != null || dateString != null) {
+                        if (startDateTimeGetCalen != null || endDateTimeGetCalen != null || dateString != null) {
 //                    Log.d("dateSelect","start"+startDateTime.toString()+" "+dateString.toString()+" "+dateDiffString.toString());
-                            for (int i = 0; i < startDateTime.size(); i++) {
-                                Log.d("checkDB ", "startDateTime : " + startDateTime.toString());
-                                sentCalendarToDB(startDateTime.get(i), endDateTime.get(i));
+                            for (int i = 0; i < startDateTimeGetCalen.size(); i++) {
+                                Log.d("checkDB ", "startDateTime : " + startDateTimeGetCalen.toString());
+                                sentCalendarToDB(startDateTimeGetCalen.get(i), endDateTimeGetCalen.get(i));
                             }
                             for (int i = 0; i < diffRangeDateTimeStart.size(); i++) {
                                 Log.d("checkDB ", "diffRangeDateTime : " + diffRangeDateTimeStart.toString());
@@ -1457,9 +1532,53 @@ public class Manage_calendar extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-//        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+        uploadData(stringRequest);
+    }
+
+    public void DelDateForCalToDB(String date, String morning, String late, String afternoon, String evening, String status) {
+        Log.d("checkDB ", "dateString123 : " + date);
+        date1 = "";
+        date2 = "";
+        CutStringDateForSaveDB(date);
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
+        long dt = Date.parse(date);
+        Date d = new Date(dt);
+        String dateCheck = simpleHour.format(d);
+        String dateCheckformat = simpledate.format(d) + "";
+        Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
+        Log.d("checkDB ", "dateCheck : " + dateCheck);
+        String url = "http://www.groupupdb.com/android/removedbdateforcal.php";
+        url += "?sId=" + uid;
+        url += "&sdt=" + date1;
+        url += "&sdtl=" + date2;
+        url += "&sdc=" + dateCheck + "";
+        url += "&dcf=" + dateCheckformat + "";
+        url += "&mor=" + morning + "";
+        url += "&lat=" + late + "";
+        url += "&aft=" + afternoon + "";
+        url += "&eve=" + evening + "";
+        url += "&sta=" + status + "";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+        uploadData(stringRequest);
     }
 
     ///////////////////////////////////////////////// check range of year
@@ -1501,7 +1620,6 @@ public class Manage_calendar extends AppCompatActivity {
     }
 
     public void sentdateforcalcustom(ArrayList<String> dateEvent, ArrayList<String> dateForTime) {
-//        addDateAvaliableTodb();
 
         DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
         for (int i = 0; i < dateEvent.size(); i++) {//date
@@ -1540,6 +1658,47 @@ public class Manage_calendar extends AppCompatActivity {
         }
     }
 
+    public void sentDelDateforcalcustom(ArrayList<String> dateEvent, ArrayList<String> dateForTime) {
+
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
+        for (int i = 0; i < dateEvent.size(); i++) {//date
+            String date = dateEvent.get(i);
+            String dateformat = "";
+            String morning = "1";//ว่าง
+            String late = "1";
+            String afternoon = "1";
+            String evening = "1";
+            String status = "";
+            long dEat = Date.parse(dateEvent.get(i));
+            Date dEa = new Date(dEat);
+            dateformat = simpleHour.format(dEa);
+
+            for (int j = 0; j < dateForTime.size(); j++) {
+                if (dateForTime.get(j).equals(dateformat + ":11") || dateForTime.get(j).equals(dateformat + ":14") || dateForTime.get(j).equals(dateformat + ":17") || dateForTime.get(j).equals(dateformat + ":20")) {
+                    if ((dateformat + ":11").equals(dateForTime.get(j))) {
+                        morning = "0";//ไม่ว่าง
+                    }
+                    if ((dateformat + ":14").equals(dateForTime.get(j))) {
+                        late = "0";
+                    }
+                    if ((dateformat + ":17").equals(dateForTime.get(j))) {
+                        afternoon = "0";
+                    }
+                    if ((dateformat + ":20").equals(dateForTime.get(j))) {
+                        evening = "0";
+                    }
+                    if (morning.equals("0") && late.equals("0") && afternoon.equals("0") && evening.equals("0")) {
+                        status = "0";
+                    } else {
+                        status = "1";
+                    }
+                    DelDateForCalToDB(date, morning, late, afternoon, evening, status);
+                }
+            }
+
+        }
+    }
+
     public void addDateAvaliableTodb() {
         class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
             @Override
@@ -1560,10 +1719,8 @@ public class Manage_calendar extends AppCompatActivity {
                 super.onPostExecute(string1);
 
                 // Dismiss the progress dialog after done uploading.
+//                requestQueue.stop();
                 progressDialog.dismiss();
-//                requestQueue = null;
-//                requestQueue = Volley.newRequestQueue(Manage_calendar.this);
-                //   Printing uploading success message coming from server on android app.
                 Toast.makeText(Manage_calendar.this, string1, Toast.LENGTH_LONG).show();
 
             }
@@ -1583,14 +1740,14 @@ public class Manage_calendar extends AppCompatActivity {
         AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
         AsyncTaskUploadClassOBJ.execute();
     }
-//
-//    public void uploadData(StringRequest s) {
-//        if (requestQueue == null) {
-//            requestQueue = Volley.newRequestQueue(this);
-//        } else {
-//            requestQueue.add(s);
-//        }
-//    }
+
+    public void uploadData(StringRequest s) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        } else {
+            requestQueue.add(s);
+        }
+    }
 
     public void functionInCreate() {
         //////////////////////////////////range date 1 year/////////////////////////////////////
@@ -1644,74 +1801,4 @@ public class Manage_calendar extends AppCompatActivity {
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);//เซ็ตการเลือกว่าจะให้เลือกเป็นวัน เป็นช่วง เป็นหลายๆวัน
 
     }
-
-    public void arraylistToJson(String date, String morning, String late, String afternoon, String evening, String status) {
-        date1 = "";
-        date2 = "";
-        CutStringDateForSaveDB(date);
-        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
-        DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
-        long dt = Date.parse(date);
-        Date d = new Date(dt);
-        String dateCheck = simpleHour.format(d);
-        String dateCheckformat = simpledate.format(d) + "";
-        try {
-            JSONid.put("Count:" + String.valueOf(countJSON), uid + "");
-            JSONdate.put("Count:" + String.valueOf(countJSON ), date1 + "");
-            JSONdateLast.put("Count:" + String.valueOf(countJSON), date2 + "");
-            JSONdatecheck.put("Count:" + String.valueOf(countJSON), dateCheck + "");
-            JSONdateFormat.put("Count:" + String.valueOf(countJSON), dateCheckformat + "");
-            JSONmorning.put("Count:" + String.valueOf(countJSON), morning + "");
-            JSONlate.put("Count:" + String.valueOf(countJSON), late + "");
-            JSONafternoon.put("Count:" + String.valueOf(countJSON), afternoon + "");
-            JSONevening.put("Count:" + String.valueOf(countJSON), evening + "");
-            JSONstatus.put("Count:" + String.valueOf(countJSON), status + "");
-            countJSON++;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-    public void addtoJsonEverything(){
-        try {
-            EverythingJSON.put("id", JSONid);
-            EverythingJSON.put("date", JSONdate);
-            EverythingJSON.put("datelast", JSONdateLast);
-            EverythingJSON.put("datecheck", JSONdatecheck);
-            EverythingJSON.put("datecheckformat", JSONdateFormat);
-            EverythingJSON.put("morning", JSONmorning);
-            EverythingJSON.put("late", JSONlate);
-            EverythingJSON.put("afternoon", JSONafternoon);
-            EverythingJSON.put("evening", JSONevening);
-            EverythingJSON.put("status", JSONstatus);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-//    public void removeTimeSame2Array(ArrayList arrayList1, ArrayList arrayList2) {
-//        ArrayList<Integer> numberArr1 = new ArrayList<>();
-//        ArrayList<Integer> numberArr2 = new ArrayList<>();
-//        boolean same = false;
-//        Log.d("dateSelectClick", "arrayList1 : " + arrayList1.isEmpty()+"");
-//        Log.d("dateSelectClick", "arrayList2 : " + arrayList2.isEmpty()+"");
-//        for (int i = 0; i < arrayList1.size(); i++) {
-//            for (int j=0;j<arrayList2.size();j++){
-//                if (arrayList1.get(i).equals(arrayList2.get(j))) {
-//                    numberArr1.add(i);
-//                    numberArr2.add(j);
-//                }
-//            }
-//        }
-//        Log.d("dateSelectClick", "numberArr1 : " + numberArr1.toString());
-//        Log.d("dateSelectClick", "numberArr2 : " + numberArr2.toString());
-//        Log.d("dateSelectClick", "isEmpty : " + numberArr1.isEmpty()+"");
-//        if (!numberArr1.isEmpty()) {
-//            Log.d("dateSelectClick", "size : " + numberArr1.size()+"");
-//            for (int i =0;i<numberArr1.size();i++){
-//                arrayList1.remove(numberArr1.get(i));
-//                arrayList2.remove(numberArr2.get(i));
-//            }
-//        }
-//    }
-
 }
