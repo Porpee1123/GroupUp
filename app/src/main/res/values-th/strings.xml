@@ -153,4 +153,7 @@
     <string name="voteOn">เสร็จสิ้น</string>
     <string name="getCalen">ดึงข้อมูลจากปฏิทิน</string>
     <string name="delCalen">ลบข้อมูลปฏิทินทั้งหมด</string>
+    <string name="addtype">เพิ่มประเภทเพื่อน</string>
+    <string name="dia_nametype">ชื่อประเภท</string>
+    <string name="err_nametype">กรุณาระบุชื่อประเภท</string>
 </resources>

@@ -2,9 +2,11 @@ package com.example.groupup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -165,11 +168,12 @@ public class ManageFriend extends AppCompatActivity {
     ArrayList<String> typefriend;
     ArrayAdapter<String> dataAdapter;
     ImageButton addTypeFriend;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_manage_friend);
         listViewFriend = findViewById(R.id.listview_friend);
         uid = getIntent().getStringExtra("id");
@@ -177,39 +181,55 @@ Extend_MyHelper.checkInternetLost(this);
         frientArray = new ArrayList<>();
         spinnerType = findViewById(R.id.spinner_type);
         typefriend = new ArrayList<>();
-        addTypeFriend = findViewById(R.id.addTypeFriend);
+        addTypeFriend = findViewById(R.id.btn_addTypeFriend);
         Log.d("listA", "idA " + uid);
         getFriend();
         getType();
+
         addTypeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog viewDetail = new AlertDialog.Builder(ManageFriend.this).create();
-                viewDetail.setTitle("เพิ่มประเภทเพื่อน");
-
-
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"ยกเลิก", new DialogInterface.OnClickListener() {
+                AlertDialog viewDetail = new AlertDialog.Builder(ManageFriend.this).create();
+                View mView = getLayoutInflater().inflate(R.layout.layout_addtype_dialog,null);
+                final EditText mNameType = mView.findViewById(R.id.addNameType);
+                Button btn_confirmType = mView.findViewById(R.id.btn_ConfirmAddType);
+                btn_confirmType.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onClick(View v) {
+                        if (!mNameType.getText().toString().isEmpty()){
+                            class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+                                @Override
+                                protected void onPreExecute() {
+                                    super.onPreExecute();
+                                    progressDialog = ProgressDialog.show(ManageFriend.this, "Type name is Uploading", "Please Wait", false, false);
+                                }
 
+                                @Override
+                                protected void onPostExecute(String string1) {
+                                    super.onPostExecute(string1);
+                                    progressDialog.dismiss();
+                                    startActivity(getIntent());
+                                    Toast.makeText(ManageFriend.this, string1, Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                @Override
+                                protected String doInBackground(Void... params) {
+
+                                    AddTypeFriend(mNameType.getText().toString());
+                                    return "Add successful!!!";
+                                }
+                            }
+                            AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+                            AsyncTaskUploadClassOBJ.execute();
+                        }else {
+                            Toast.makeText(ManageFriend.this,R.string.err_nametype,Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-                viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"ยืนยัน", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                    }
-                });
+                viewDetail.setView(mView);
                 viewDetail.show();
-                Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-                layoutParams.weight = 10;
-                btnPositive.setLayoutParams(layoutParams);
-                btnNegative.setLayoutParams(layoutParams);
             }
         });
         dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, typefriend);
@@ -227,6 +247,7 @@ Extend_MyHelper.checkInternetLost(this);
                         String selectedItemText = (String) parent.getItemAtPosition(position);
                         Toast.makeText(getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT).show();
                         getFriendType(selectedItemText);//get ได้แล้ว เหลือหาวิธีให้แสดง
+
                     }
 
                     @Override
@@ -242,12 +263,25 @@ Extend_MyHelper.checkInternetLost(this);
         }.start();
         writeFile(uid, email);
     }
-
-    public void checkBoxClick(ArrayList position, ArrayList positionId) {
-        Log.d("position", "position size: " + position.size() + "");
-        dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, position);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerType.setAdapter(dataAdapter);
+    public void AddTypeFriend(String name){
+        String url = "http://www.groupupdb.com/android/addtypefriend.php";
+        url += "?sId=" + uid;
+        url += "&nTy=" + name;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public void getFriend() {
@@ -292,17 +326,6 @@ Extend_MyHelper.checkInternetLost(this);
         new CountDownTimer(500, 500) {
             public void onFinish() {
                 // When timer is finished
-//                listViewFriend.setVisibility(View.VISIBLE);
-//                SimpleAdapter sAdap;
-//                sAdap = new SimpleAdapter(ManageFriend.this, frientArray, R.layout.activity_showfriend,
-//                        new String[]{"friend_name"}, new int[]{R.id.rowTextView});
-//                listViewFriend.setAdapter(sAdap);
-//                listViewFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-////                    Toast.makeText(ManageFriend.this, ((Item)(myAdapter.getItemAtPosition(position))).ItemString, Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//                myItemsListAdapter = new ItemsListAdapter(this, items);
             }
 
             public void onTick(long millisUntilFinished) {
@@ -340,7 +363,6 @@ Extend_MyHelper.checkInternetLost(this);
             String s = frientArray.get(i).get("friend_name");
             boolean b = false;
             Item item = new Item(s, b);
-            ;
             items.add(item);
         }
     }
@@ -358,30 +380,6 @@ Extend_MyHelper.checkInternetLost(this);
                         Toast.LENGTH_LONG).show();
             }
         });
-
-//        btnLookup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String str = "Check items:\n";
-//
-//                for (int i=0; i<items.size(); i++){
-//                    if (items.get(i).isChecked()){
-//                        str += i + "\n";
-//                    }
-//                }
-//
-//                /*
-//                int cnt = myItemsListAdapter.getCount();
-//                for (int i=0; i<cnt; i++){
-//                    if(myItemsListAdapter.isChecked(i)){
-//                        str += i + "\n";
-//                    }
-//                }
-//                */
-//
-//                Toast.makeText(ManageFriend.this, str,Toast.LENGTH_LONG).show();
-//            }
-//        });
     }
 
     public void getType() {
@@ -469,12 +467,14 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("fid", c.getString("fid"));
                                 map.put("friend_name", c.getString("friend_name"));
                                 MyArrList.add(map);
+                                frientArray.add(map);
                             }
                             Log.d("position", "MyArrList " + MyArrList.size() + "");
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 position.add(MyArrList.get(i).get("friend_name"));
                                 positionId.add(MyArrList.get(i).get("fid"));
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -490,9 +490,11 @@ Extend_MyHelper.checkInternetLost(this);
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+
         new CountDownTimer(500, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
+
             }
 
             @Override
