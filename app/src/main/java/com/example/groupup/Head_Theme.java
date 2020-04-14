@@ -12,6 +12,7 @@ public class Head_Theme extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_head__theme);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");

@@ -21,6 +21,7 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_appoint_set_item);
         inviteFriend = findViewById(R.id.select_friend);
         selectTheme = findViewById(R.id.selectTheme);

@@ -33,6 +33,7 @@ public class Home_CreateEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_create_group);
         //Spinner
         Spinner sp = findViewById(R.id.spin_wait);

@@ -35,6 +35,7 @@ public class SlipCheck_waitUpload extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_slip_check_wait_upload);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");

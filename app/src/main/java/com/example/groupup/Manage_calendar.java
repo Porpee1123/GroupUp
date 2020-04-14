@@ -99,6 +99,7 @@ public class Manage_calendar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_manage_calendar);
         btnGetCalen = findViewById(R.id.btnGetCalendar);
         calendarPicker = findViewById(R.id.calendarPickerView);

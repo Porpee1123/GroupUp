@@ -40,6 +40,7 @@ public class Home_Alert extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_alert);
         id = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");

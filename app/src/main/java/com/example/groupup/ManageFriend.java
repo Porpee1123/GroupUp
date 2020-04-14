@@ -169,6 +169,7 @@ public class ManageFriend extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_manage_friend);
         listViewFriend = findViewById(R.id.listview_friend);
         uid = getIntent().getStringExtra("id");

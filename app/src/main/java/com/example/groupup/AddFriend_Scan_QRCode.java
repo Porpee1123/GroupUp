@@ -11,6 +11,7 @@ public class AddFriend_Scan_QRCode extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_scan_qr);
         Log.d("QrTest","AddFriend_Scan_QRCode");
         email = getIntent().getStringExtra("email");

@@ -62,6 +62,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_add_friends);
         searchFriend = findViewById(R.id.searchEmail);
         nameFriend = findViewById(R.id.nameFriend);

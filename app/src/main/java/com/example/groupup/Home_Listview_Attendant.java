@@ -33,6 +33,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_attendant);
         listViewAttend = findViewById(R.id.listView_attend);
         id = getIntent().getStringExtra("id");

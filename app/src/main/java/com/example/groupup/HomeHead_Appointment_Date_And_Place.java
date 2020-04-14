@@ -14,6 +14,7 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_appoint_date_and_place);
         id = getIntent().getStringExtra("id");
         eid =getIntent().getStringExtra("eid");

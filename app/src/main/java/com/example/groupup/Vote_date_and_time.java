@@ -11,6 +11,7 @@ public class Vote_date_and_time extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_vote_date_and_time);
         id = getIntent().getStringExtra("id");
         eId = getIntent().getStringExtra("eid");

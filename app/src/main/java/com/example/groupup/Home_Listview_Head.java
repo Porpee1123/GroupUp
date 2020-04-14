@@ -34,6 +34,7 @@ public class Home_Listview_Head extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_header);
         listViewHeader = findViewById(R.id.listView_Header);
         id = getIntent().getStringExtra("id");

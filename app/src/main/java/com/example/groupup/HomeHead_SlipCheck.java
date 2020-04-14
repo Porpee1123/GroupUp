@@ -15,6 +15,7 @@ public class HomeHead_SlipCheck extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_appoint_slip_check);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
