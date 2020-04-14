@@ -691,8 +691,7 @@ public class Manage_calendar extends AppCompatActivity {
                     endDateTimeGetCalen.add(time1 + ":19");
                     endDateTimeGetCalen.add(time1 + ":23");
                 }
-            }
-            else {
+            } else {
                 if (timeStart < 14) {
                     startDateTimeGetCalen.add(time1 + ":11");
                     startDateTimeGetCalen.add(time1 + ":14");
@@ -718,7 +717,7 @@ public class Manage_calendar extends AppCompatActivity {
                     startDateTimeGetCalen.add(time1 + ":20");
                     endDateTimeGetCalen.add(time1 + ":23");
                 }
-                if (timeEnd>=11&&timeEnd < 14) {
+                if (timeEnd >= 11 && timeEnd < 14) {
                     startDateTimeGetCalen.add(time2 + ":11");
                     endDateTimeGetCalen.add(time2 + ":13");
                 } else if (timeEnd >= 14 && timeEnd < 17) {
