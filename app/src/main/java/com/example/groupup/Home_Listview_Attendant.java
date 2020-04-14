@@ -29,7 +29,8 @@ import java.util.HashMap;
 public class Home_Listview_Attendant extends AppCompatActivity {
     Home_Listview_Attendant.ResponseStr responseStr = new Home_Listview_Attendant.ResponseStr();
     String name = "", id = "",email="";
-    ListView listViewAttend;
+    static  ListView listViewAttend;
+    static SimpleAdapter sAdapAttend;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ Extend_MyHelper.checkInternetLost(this);
         email = getIntent().getStringExtra("email");
         Log.d("footer","attend : id "+id );
         getEventAttend();
+        getEventHeader();
     }
     public void getEventAttend() {
         responseStr = new Home_Listview_Attendant.ResponseStr();
@@ -64,6 +66,10 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("states_name", c.getString("states_name"));
                                 MyArrList.add(map);
                             }
+                            for (int i =0;i<MyArrList.size();i++){
+                                Home.nameAttend.add(MyArrList.get(i).get("events_name"));
+                            }
+                            Log.d("arry","attend : "+Home.nameAttend.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -83,10 +89,9 @@ Extend_MyHelper.checkInternetLost(this);
             public void onFinish() {
                 // When timer is finished
                 listViewAttend.setVisibility(View.VISIBLE);
-                SimpleAdapter sAdap;
-                sAdap = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_attend_home,
+                sAdapAttend = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_attend_home,
                         new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
-                listViewAttend.setAdapter(sAdap);
+                listViewAttend.setAdapter(sAdapAttend);
                 Home.handlerHome.sendEmptyMessage(0);
                 listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
@@ -109,6 +114,59 @@ Extend_MyHelper.checkInternetLost(this);
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
+    }
+    public void getEventHeader() {
+        responseStr = new Home_Listview_Attendant.ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+
+        String url = "http://www.groupupdb.com/android/gethomehead.php";
+        url += "?sId=" + id;//รอเอาIdจากfirebase
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("events_name", c.getString("events_name"));
+                                map.put("states_name", c.getString("states_name"));
+                                MyArrList.add(map);
+                            }
+                            for (int i =0;i<MyArrList.size();i++){
+                                Home.nameHead.add(MyArrList.get(i).get("events_name"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(500, 500) {
+            public void onFinish() {
+                Home_Listview_Head.sAdapHead = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_header_home,
+                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
+            }
+
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
+
+
     }
     public class ResponseStr {
         private String str;

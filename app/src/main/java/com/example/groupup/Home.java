@@ -11,9 +11,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -59,9 +63,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private GoogleSignInClient mGoogleSignInClient;
     ResponseStr responseStr = new ResponseStr();
     JSONArray data;
-    ListView listViewInvite, listViewHeader, listViewAttend;
+ //   ListView listViewInvite, listViewHeader;
+//    ListView listViewAttend;
     TextView hName;
     TextView hEmail;
+    EditText searchText;
+    static ArrayList<String> nameHead =new ArrayList<>();
+    static ArrayList<String> nameAttend =new ArrayList<>();
+    public static ArrayAdapter adapterHead;
+    public static ArrayAdapter adapterAttend;
     private RequestQueue requestQueue;
     String name = "", id = "", email = "";
     LocalActivityManager mLocalActivityManager;
@@ -75,9 +85,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
-        listViewInvite = new ListView(this);
-        listViewHeader = findViewById(R.id.listView_Header);
-        listViewAttend = findViewById(R.id.listView_attend);
+//        listViewInvite = new ListView(this);
+//        listViewHeader = findViewById(R.id.listView_Header);
+//        listViewAttend = findViewById(R.id.listView_attend);
+        searchText = findViewById(R.id.editTextSearch);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
         navigationView.setNavigationItemSelectedListener(Home.this);
@@ -119,6 +130,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onFinish() {
 //                getUser();
                 createTab();
+                search();
             }
             public void onTick(long millisUntilFinished) {
                 // millisUntilFinished    The amount of time until finished.
@@ -141,6 +153,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(in);
             }
         });
+
+
 
     }
 
@@ -221,7 +235,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         startActivity(intent);
     }
 
-    public void search(View v) {
+    public void search() {
+        Log.d("arry",nameAttend.toString());
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("arry",nameAttend.toString());
+                Log.d("arry","s "+s);
+//                (Home.this).adapterAttend.getFilter().filter(s);
+                Home_Listview_Attendant.sAdapAttend.getFilter().filter(s);
+                Home_Listview_Head.sAdapHead.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     public void menuHamberger(View v) {
