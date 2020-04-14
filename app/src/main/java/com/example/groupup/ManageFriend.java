@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,24 +50,19 @@ import java.util.List;
 public class ManageFriend extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
     public class Item {
-        boolean checked;
         ImageView ItemDrawable;
         String ItemString;
 
         //        Item(ImageView drawable, String t, boolean b){
-        Item(String t, boolean b) {
+        Item(String t) {
 //            ItemDrawable = drawable;
             ItemString = t;
-            checked = b;
         }
 
-        public boolean isChecked() {
-            return checked;
-        }
+
     }
 
     static class ViewHolder {
-        CheckBox checkBox;
         ImageView icon;
         TextView text;
     }
@@ -96,9 +92,6 @@ public class ManageFriend extends AppCompatActivity {
             return position;
         }
 
-        public boolean isChecked(int position) {
-            return list.get(position).checked;
-        }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -108,9 +101,8 @@ public class ManageFriend extends AppCompatActivity {
             ViewHolder viewHolder = new ViewHolder();
             if (rowView == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                rowView = inflater.inflate(R.layout.activity_showfriend, null);
+                rowView = inflater.inflate(R.layout.activity_showfriendnocheckbox, null);
 
-                viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.rowCheckBox);
                 viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
                 viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextViewName);
                 rowView.setTag(viewHolder);
@@ -119,39 +111,9 @@ public class ManageFriend extends AppCompatActivity {
             }
 
 //        viewHolder.icon.setImageBitmap(list.get(position).ItemDrawable);
-            viewHolder.checkBox.setChecked(list.get(position).checked);
 
             final String itemStr = list.get(position).ItemString;
             viewHolder.text.setText(itemStr);
-
-            viewHolder.checkBox.setTag(position);
-
-            /*
-            viewHolder.checkBox.setOnCheckedChangeListener(
-                    new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    list.get(position).checked = b;
-
-                    Toast.makeText(getApplicationContext(),
-                            itemStr + "onCheckedChanged\nchecked: " + b,
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-            */
-
-            viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    boolean newState = !list.get(position).isChecked();
-                    list.get(position).checked = newState;
-                    Toast.makeText(context.getApplicationContext(),
-                            itemStr + "setOnClickListener\nchecked: " + newState,
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-
-            viewHolder.checkBox.setChecked(isChecked(position));
 
             return rowView;
         }
@@ -246,7 +208,13 @@ public class ManageFriend extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         String selectedItemText = (String) parent.getItemAtPosition(position);
                         Toast.makeText(getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT).show();
-                        getFriendType(selectedItemText);//get ได้แล้ว เหลือหาวิธีให้แสดง
+                        if (selectedItemText.equals("ALL")) {
+                            getFriendType(selectedItemText);
+                        } else {
+
+                            getFriendType(selectedItemText);//get ได้แล้ว เหลือหาวิธีให้แสดง
+                        }
+
 
                     }
 
@@ -323,9 +291,22 @@ public class ManageFriend extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        new CountDownTimer(500, 500) {
+        new CountDownTimer(300, 300) {
             public void onFinish() {
                 // When timer is finished
+//                SimpleAdapter sAdap = new SimpleAdapter(ManageFriend.this, MyArrList, R.layout.activity_showfriendnocheckbox,
+//                        new String[]{"user_names", "states_name"}, new int[]{R.id.col_name_attend});
+//                listViewFriend.setAdapter(sAdap);
+//                listViewFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+//                        String eName= MyArrList.get(position).get("events_name");
+//                        String eId= MyArrList.get(position).get("events_id");
+//                        String eStatus= MyArrList.get(position).get("states_name");
+//                        Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
+//
+//                    }
+//                });
+
             }
 
             public void onTick(long millisUntilFinished) {
@@ -333,7 +314,18 @@ public class ManageFriend extends AppCompatActivity {
             }
         }.start();
     }
-
+    public void checkBoxClick(ArrayList position, ArrayList positionId) {
+        Log.d("position", "position size: " + position.size() + "");
+        items = new ArrayList<ManageFriend.Item>();
+        for (int i = 0; i < position.size(); i++) {
+            String s = position.get(i).toString();
+            String id = positionId.get(i).toString();
+            ManageFriend.Item item = new ManageFriend.Item(s);
+            items.add(item);
+        }
+        myItemsListAdapter = new ManageFriend.ItemsListAdapter(this, items);
+        listViewFriend.setAdapter(myItemsListAdapter);
+    }
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -361,8 +353,7 @@ public class ManageFriend extends AppCompatActivity {
         items = new ArrayList<Item>();
         for (int i = 0; i < frientArray.size(); i++) {
             String s = frientArray.get(i).get("friend_name");
-            boolean b = false;
-            Item item = new Item(s, b);
+            Item item = new Item(s);
             items.add(item);
         }
     }
@@ -448,9 +439,15 @@ public class ManageFriend extends AppCompatActivity {
         final ArrayList<String> position = new ArrayList<>();
         final ArrayList<String> positionId = new ArrayList<>();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/getfriendIntype.php";
-        url += "?sId=" + uid;
-        url += "&tname=" + typeName;
+        String url = "";
+        if (typeName.equals("ALL")) {
+            url = "http://www.groupupdb.com/android/getFriend.php";
+            url += "?sId=" + uid;//รอเอาIdจากfirebase
+        }else {
+            url = "http://www.groupupdb.com/android/getfriendIntype.php";
+            url += "?sId=" + uid;
+            url += "&tname=" + typeName;
+        }
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -499,7 +496,8 @@ public class ManageFriend extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-//                checkBoxClick(position,positionId);
+//                checkBoxClick
+                checkBoxClick(position,positionId);
             }
         }.start();
 

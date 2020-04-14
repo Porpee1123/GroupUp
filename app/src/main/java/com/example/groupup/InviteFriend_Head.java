@@ -407,15 +407,15 @@ Extend_MyHelper.checkInternetLost(this);
             ImageView v = new ImageView(this);
             if (typefriend.get(i).equals("ALL")) {
                 b.setBackgroundResource(R.drawable.all_button);
-            } else if (typefriend.get(i).equals("red")) {
+            } else if (typefriend.get(i).equals("เพื่อนอนุบาล")) {
                 b.setBackgroundResource(R.drawable.red_button);
-            } else if (typefriend.get(i).equals("green")) {
+            } else if (typefriend.get(i).equals("เพื่อนประถม")) {
                 b.setBackgroundResource(R.drawable.green_button);
-            } else if (typefriend.get(i).equals("blue")) {
+            } else if (typefriend.get(i).equals("เพื่อนมัธยมต้น")) {
                 b.setBackgroundResource(R.drawable.blue_button);
-            } else if (typefriend.get(i).equals("yellow")) {
+            } else if (typefriend.get(i).equals("เพื่อนมัธยมปลาย")) {
                 b.setBackgroundResource(R.drawable.yellow_button);
-            } else if (typefriend.get(i).equals("gray")) {
+            } else if (typefriend.get(i).equals("เพื่อนมหาลัย")) {
                 b.setBackgroundResource(R.drawable.gray_button);
             } else {
                 b.setBackgroundResource(R.drawable.custom_button);
