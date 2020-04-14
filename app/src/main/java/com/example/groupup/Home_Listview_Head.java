@@ -30,7 +30,8 @@ import java.util.HashMap;
 public class Home_Listview_Head extends AppCompatActivity {
     Home_Listview_Head.ResponseStr responseStr = new Home_Listview_Head.ResponseStr();
     String email = "", id = "";
-    ListView listViewHeader;
+    static ListView listViewHeader;
+    static SimpleAdapter sAdapHead;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,9 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("states_name", c.getString("states_name"));
                                 MyArrList.add(map);
                             }
+                            for (int i =0;i<MyArrList.size();i++){
+                                Home.nameHead.add(MyArrList.get(i).get("events_name"));
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -94,10 +98,9 @@ Extend_MyHelper.checkInternetLost(this);
         new CountDownTimer(500, 500) {
             public void onFinish() {
                 listViewHeader.setVisibility(View.VISIBLE);//เปิด
-                SimpleAdapter sAdap;
-                sAdap = new SimpleAdapter(Home_Listview_Head.this, MyArrList, R.layout.activity_header_home,
+                sAdapHead = new SimpleAdapter(Home_Listview_Head.this, MyArrList, R.layout.activity_header_home,
                         new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
-                listViewHeader.setAdapter(sAdap);
+                listViewHeader.setAdapter(sAdapHead);
                 listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                         // เข้าสู่ event
