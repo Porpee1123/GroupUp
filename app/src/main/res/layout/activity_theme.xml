@@ -63,6 +63,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -85,7 +86,7 @@
                         app:srcCompat="@drawable/ic_search_black_24dp" />
 
                     <EditText
-                        android:id="@+id/editTextSearch"
+                        android:id="@+id/searchText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -98,14 +99,15 @@
 
 
                 </LinearLayout>
-            </LinearLayout>
 
-            <View
-                android:id="@+id/view1"
-                android:layout_width="match_parent"
-                android:layout_height="1dip"
-                android:layout_marginTop="10dp"
-                android:background="#CCCCCC" />
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:layout_marginTop="10dp"
+                    android:background="#CCCCCC" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linear_shortcut"
@@ -197,6 +199,7 @@
                 </LinearLayout>
 
                 <TableLayout
+                    android:id="@+id/restauratType"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
@@ -363,6 +366,7 @@
                 </LinearLayout>
 
                 <TableLayout
+                    android:id="@+id/foodType"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
@@ -568,7 +572,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/atmosphere"
+                        android:id="@+id/atmosphere_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
@@ -582,6 +586,7 @@
                 </LinearLayout>
 
                 <TableLayout
+                    android:id="@+id/atmosphereType"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"

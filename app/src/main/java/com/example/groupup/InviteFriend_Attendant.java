@@ -154,14 +154,14 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     View gab;
     String uid, eid, nameE, monS, monE, email;
     int countType = 0;
-    ListView listViewFriend;
+    static ListView listViewFriend;
     List<InviteFriend_Attendant.Item> items;
     ArrayList<HashMap<String, String>> frientArray;
     ArrayList<String> typefriend;
     ArrayList<String> typefriendId;
     ArrayList<String> friendInDb;
     InviteFriend_Attendant.ResponseStr responseStr = new InviteFriend_Attendant.ResponseStr();
-    InviteFriend_Attendant.ItemsListAdapter myItemsListAdapter;
+    static InviteFriend_Attendant.ItemsListAdapter myItemsListAdapter;
     LinearLayout lShortcut;
     ProgressDialog progressDialog;
 

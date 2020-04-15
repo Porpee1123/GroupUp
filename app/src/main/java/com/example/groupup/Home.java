@@ -2,11 +2,7 @@ package com.example.groupup;
 
 import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -19,10 +15,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -88,7 +82,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //        listViewInvite = new ListView(this);
 //        listViewHeader = findViewById(R.id.listView_Header);
 //        listViewAttend = findViewById(R.id.listView_attend);
-        searchText = findViewById(R.id.editTextSearch);
+        searchText = findViewById(R.id.searchText);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
         navigationView.setNavigationItemSelectedListener(Home.this);

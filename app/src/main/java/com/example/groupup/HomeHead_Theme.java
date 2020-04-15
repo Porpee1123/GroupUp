@@ -5,13 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -23,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.xeoh.android.texthighlighter.TextHighlighter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,19 +41,20 @@ public class HomeHead_Theme extends AppCompatActivity {
     String id, eid, nameE, monS, monE, email, transId;
     ArrayList<String> themeSelect = new ArrayList<>();
     Button b, btn_con;
-    LinearLayout lShort, lCus;
+    LinearLayout lShort, lCus, lSearch;
     ScrollView scrollView;
     ImageView img_minimal, img_classic, img_buffet, img_river, img_karaoke, img_sky, img_kid;
     boolean checkVisible;
     ArrayList<String> nameType, idType;
-    CheckBox cafe, coffee, river, karaoke, clubs, pub, wine, night, vegeterian, hotelBuf, rooftop, izakaya, dessert, alacarte,
-            seafood, steak, iceCream, bakery, bbq, shabu, buffet, cleanFood, thaiBbq, pizza, sushi, burger, ramen, dimsum,
-            vegan, veget, original, bar, outdoor, cozy, family, minimal, warm, child;
+    CheckBox cafe, coffee, river, karaoke, clubs, pub, wine, night, vegeterian, hotelBuf, rooftop, izakaya, dessert, alacarte, seafood, steak, iceCream, bakery,
+            bbq, shabu, buffet, cleanFood, thaiBbq, pizza, sushi, burger, ramen, dimsum, vegan, veget, original, bar, outdoor, cozy, family, minimal, warm, child;
+    EditText searchText;
+    TextHighlighter textHighlighter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_theme);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
@@ -58,10 +64,13 @@ Extend_MyHelper.checkInternetLost(this);
         monE = getIntent().getStringExtra("mEnd");
         lShort = findViewById(R.id.linear_shortcut);
         lCus = findViewById(R.id.linear_custom);
+        lSearch = findViewById(R.id.linear_search);
         b = findViewById(R.id.btn_customTheme);
         btn_con = findViewById(R.id.btn_confirmCustom);
         scrollView = findViewById(R.id.scroll_theme);
+        searchText = findViewById(R.id.searchText);
         lCus.setVisibility(View.GONE);
+        lSearch.setVisibility(View.GONE);
         btn_con.setVisibility(View.GONE);
         img_minimal = findViewById(R.id.theme_minimal);
         img_classic = findViewById(R.id.theme_classic);
@@ -71,6 +80,7 @@ Extend_MyHelper.checkInternetLost(this);
         img_sky = findViewById(R.id.theme_sky);
         img_kid = findViewById(R.id.theme_kid);
         checkVisible = true;//close custom
+
         getTransIDByTrans(id, eid, "3");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +140,7 @@ Extend_MyHelper.checkInternetLost(this);
                 Log.d("themeSelect", "Remove : " + themeSelect.toString());
             }
         });
+        search();
 
     }
 
@@ -146,7 +157,7 @@ Extend_MyHelper.checkInternetLost(this);
 //                            cafe.getText()+"--"+R.string.cafe+"");
 
                 } else {
-                    cafe.setBackgroundResource(R.drawable.my_style);
+                    cafe.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820591");
                 }
 
@@ -163,7 +174,7 @@ Extend_MyHelper.checkInternetLost(this);
                     coffee.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820600");
                 } else {
-                    coffee.setBackgroundResource(R.drawable.my_style);
+                    coffee.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820600");
                 }
 
@@ -179,7 +190,7 @@ Extend_MyHelper.checkInternetLost(this);
                     river.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820742");
                 } else {
-                    river.setBackgroundResource(R.drawable.my_style);
+                    river.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820742");
                 }
 
@@ -195,7 +206,7 @@ Extend_MyHelper.checkInternetLost(this);
                     karaoke.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820666");
                 } else {
-                    karaoke.setBackgroundResource(R.drawable.my_style);
+                    karaoke.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820666");
                 }
 
@@ -211,7 +222,7 @@ Extend_MyHelper.checkInternetLost(this);
                     clubs.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820734");
                 } else {
-                    clubs.setBackgroundResource(R.drawable.my_style);
+                    clubs.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820734");
                 }
 
@@ -227,7 +238,7 @@ Extend_MyHelper.checkInternetLost(this);
                     pub.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820599");
                 } else {
-                    pub.setBackgroundResource(R.drawable.my_style);
+                    pub.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820599");
                 }
 
@@ -243,7 +254,7 @@ Extend_MyHelper.checkInternetLost(this);
                     wine.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820784");
                 } else {
-                    wine.setBackgroundResource(R.drawable.my_style);
+                    wine.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820784");
                 }
 
@@ -259,7 +270,7 @@ Extend_MyHelper.checkInternetLost(this);
                     night.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820668");
                 } else {
-                    night.setBackgroundResource(R.drawable.my_style);
+                    night.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820668");
                 }
 
@@ -275,7 +286,7 @@ Extend_MyHelper.checkInternetLost(this);
                     vegeterian.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820778");
                 } else {
-                    vegeterian.setBackgroundResource(R.drawable.my_style);
+                    vegeterian.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820778");
                 }
 
@@ -291,7 +302,7 @@ Extend_MyHelper.checkInternetLost(this);
                     hotelBuf.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820657");
                 } else {
-                    karaoke.setBackgroundResource(R.drawable.my_style);
+                    hotelBuf.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820657");
                 }
 
@@ -307,7 +318,7 @@ Extend_MyHelper.checkInternetLost(this);
                     rooftop.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820743");
                 } else {
-                    rooftop.setBackgroundResource(R.drawable.my_style);
+                    rooftop.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820743");
                 }
 
@@ -323,7 +334,7 @@ Extend_MyHelper.checkInternetLost(this);
                     izakaya.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820664");
                 } else {
-                    izakaya.setBackgroundResource(R.drawable.my_style);
+                    izakaya.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820664");
                 }
 
@@ -339,7 +350,7 @@ Extend_MyHelper.checkInternetLost(this);
                     dessert.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820630");
                 } else {
-                    dessert.setBackgroundResource(R.drawable.my_style);
+                    dessert.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820630");
                 }
 
@@ -355,7 +366,7 @@ Extend_MyHelper.checkInternetLost(this);
                     alacarte.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820576");
                 } else {
-                    alacarte.setBackgroundResource(R.drawable.my_style);
+                    alacarte.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820576");
                 }
 
@@ -371,7 +382,7 @@ Extend_MyHelper.checkInternetLost(this);
                     seafood.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820745");
                 } else {
-                    seafood.setBackgroundResource(R.drawable.my_style);
+                    seafood.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820745");
                 }
 
@@ -387,7 +398,7 @@ Extend_MyHelper.checkInternetLost(this);
                     steak.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820764");
                 } else {
-                    steak.setBackgroundResource(R.drawable.my_style);
+                    steak.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820764");
                 }
 
@@ -403,7 +414,7 @@ Extend_MyHelper.checkInternetLost(this);
                     iceCream.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820658");
                 } else {
-                    iceCream.setBackgroundResource(R.drawable.my_style);
+                    iceCream.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820658");
                 }
 
@@ -419,7 +430,7 @@ Extend_MyHelper.checkInternetLost(this);
                     bakery.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820582");
                 } else {
-                    bakery.setBackgroundResource(R.drawable.my_style);
+                    bakery.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820582");
                 }
 
@@ -435,7 +446,7 @@ Extend_MyHelper.checkInternetLost(this);
                     bbq.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820585");
                 } else {
-                    bbq.setBackgroundResource(R.drawable.my_style);
+                    bbq.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820585");
                 }
 
@@ -451,7 +462,7 @@ Extend_MyHelper.checkInternetLost(this);
                     shabu.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820757");
                 } else {
-                    shabu.setBackgroundResource(R.drawable.my_style);
+                    shabu.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820757");
                 }
 
@@ -467,7 +478,7 @@ Extend_MyHelper.checkInternetLost(this);
                     buffet.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820589");
                 } else {
-                    buffet.setBackgroundResource(R.drawable.my_style);
+                    buffet.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820589");
                 }
 
@@ -483,7 +494,7 @@ Extend_MyHelper.checkInternetLost(this);
                     cleanFood.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820597");
                 } else {
-                    cleanFood.setBackgroundResource(R.drawable.my_style);
+                    cleanFood.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820597");
                 }
 
@@ -499,7 +510,7 @@ Extend_MyHelper.checkInternetLost(this);
                     thaiBbq.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820770");
                 } else {
-                    thaiBbq.setBackgroundResource(R.drawable.my_style);
+                    thaiBbq.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820770");
                 }
 
@@ -515,7 +526,7 @@ Extend_MyHelper.checkInternetLost(this);
                     pizza.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820730");
                 } else {
-                    pizza.setBackgroundResource(R.drawable.my_style);
+                    pizza.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820730");
                 }
 
@@ -531,7 +542,7 @@ Extend_MyHelper.checkInternetLost(this);
                     sushi.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820767");
                 } else {
-                    sushi.setBackgroundResource(R.drawable.my_style);
+                    sushi.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820767");
                 }
 
@@ -547,7 +558,7 @@ Extend_MyHelper.checkInternetLost(this);
                     burger.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820590");
                 } else {
-                    burger.setBackgroundResource(R.drawable.my_style);
+                    burger.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820590");
                 }
 
@@ -563,7 +574,7 @@ Extend_MyHelper.checkInternetLost(this);
                     ramen.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820737");
                 } else {
-                    ramen.setBackgroundResource(R.drawable.my_style);
+                    ramen.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820737");
                 }
 
@@ -579,7 +590,7 @@ Extend_MyHelper.checkInternetLost(this);
                     dimsum.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820633");
                 } else {
-                    dimsum.setBackgroundResource(R.drawable.my_style);
+                    dimsum.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820633");
                 }
 
@@ -595,7 +606,7 @@ Extend_MyHelper.checkInternetLost(this);
                     vegan.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820777");
                 } else {
-                    vegan.setBackgroundResource(R.drawable.my_style);
+                    vegan.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820777");
                 }
 
@@ -611,7 +622,7 @@ Extend_MyHelper.checkInternetLost(this);
                     veget.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820778");
                 } else {
-                    veget.setBackgroundResource(R.drawable.my_style);
+                    veget.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820778");
                 }
 
@@ -627,7 +638,7 @@ Extend_MyHelper.checkInternetLost(this);
                     original.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820721");
                 } else {
-                    original.setBackgroundResource(R.drawable.my_style);
+                    original.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820721");
                 }
 
@@ -643,7 +654,7 @@ Extend_MyHelper.checkInternetLost(this);
                     bar.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820583");
                 } else {
-                    bar.setBackgroundResource(R.drawable.my_style);
+                    bar.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820583");
                 }
 
@@ -659,7 +670,7 @@ Extend_MyHelper.checkInternetLost(this);
                     outdoor.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820722");
                 } else {
-                    outdoor.setBackgroundResource(R.drawable.my_style);
+                    outdoor.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820722");
                 }
 
@@ -675,7 +686,7 @@ Extend_MyHelper.checkInternetLost(this);
                     cozy.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820620");
                 } else {
-                    cozy.setBackgroundResource(R.drawable.my_style);
+                    cozy.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820620");
                 }
 
@@ -691,7 +702,7 @@ Extend_MyHelper.checkInternetLost(this);
                     family.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820647");
                 } else {
-                    family.setBackgroundResource(R.drawable.my_style);
+                    family.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820647");
                 }
 
@@ -707,7 +718,7 @@ Extend_MyHelper.checkInternetLost(this);
                     minimal.setBackgroundResource(R.color.blueWhite);
                     themeSelect.add("2131820673");
                 } else {
-                    minimal.setBackgroundResource(R.drawable.my_style);
+                    minimal.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820673");
                 }
 
@@ -724,7 +735,7 @@ Extend_MyHelper.checkInternetLost(this);
                     themeSelect.add("2131820782");
 //                    Log.d("box",warm+"");
                 } else {
-                    warm.setBackgroundResource(R.drawable.my_style);
+                    warm.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820782");
                 }
 
@@ -741,7 +752,7 @@ Extend_MyHelper.checkInternetLost(this);
                     themeSelect.add("2131820595");
 //                    Log.d("box",child+"");
                 } else {
-                    child.setBackgroundResource(R.drawable.my_style);
+                    child.setBackgroundResource(R.drawable.frame);
                     removeTheme("2131820595");
                 }
 
@@ -762,6 +773,32 @@ Extend_MyHelper.checkInternetLost(this);
 //        Log.d("themeSelect","Remove : "+themeSelect.toString());
     }
 
+    public void search() {
+        // Log.d("arry",nameAttend.toString());
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //               Log.d("arry",nameAttend.toString());
+                //               Log.d("arry","s "+s);
+                textHighlighter = new TextHighlighter();
+
+                textHighlighter.setBackgroundColor(Color.parseColor("#FFED54"))
+                        .setForegroundColor(Color.RED)
+                        .addTarget(cafe).addTarget(coffee).addTarget(pub).addTarget(river).addTarget(karaoke).addTarget(clubs).addTarget(pub).addTarget(wine).addTarget(night).addTarget(vegeterian)
+                        .addTarget(hotelBuf).addTarget(rooftop).addTarget(izakaya).addTarget(dessert).addTarget(alacarte).addTarget(seafood).addTarget(steak).addTarget(iceCream).addTarget(bakery)
+                        .addTarget(bbq).addTarget(shabu).addTarget(buffet).addTarget(cleanFood).addTarget(thaiBbq).addTarget(pizza).addTarget(sushi).addTarget(burger).addTarget(ramen).addTarget(dimsum)
+                        .addTarget(vegan).addTarget(veget).addTarget(original).addTarget(bar).addTarget(outdoor).addTarget(cozy).addTarget(family).addTarget(minimal).addTarget(warm).addTarget(child)
+                        .highlight(searchText.getText().toString(), TextHighlighter.BASE_MATCHER);
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+    }
+
     public void backAppoint(View v) {
         Intent intent = new Intent(HomeHead_Theme.this, HomeHead_Appointment.class);
         intent.putExtra("id", id + "");
@@ -778,6 +815,7 @@ Extend_MyHelper.checkInternetLost(this);
         if (checkVisible) {//show custom
             lCus.setVisibility(View.VISIBLE);
             lShort.setVisibility(View.GONE);
+            lSearch.setVisibility(View.VISIBLE);
             btn_con.setVisibility(View.VISIBLE);
             b.setText(R.string.group_theme);
             scrollView.setScrollY(0);
@@ -786,6 +824,7 @@ Extend_MyHelper.checkInternetLost(this);
         } else {//show group
             lCus.setVisibility(View.GONE);
             lShort.setVisibility(View.VISIBLE);
+            lSearch.setVisibility(View.GONE);
             btn_con.setVisibility(View.GONE);
             b.setText(R.string.custom);
             checkVisible = true;
@@ -873,6 +912,7 @@ Extend_MyHelper.checkInternetLost(this);
                         }
                         lShort.setVisibility(View.GONE);
                         lCus.setVisibility(View.VISIBLE);
+                        lSearch.setVisibility(View.VISIBLE);
                         btn_con.setVisibility(View.VISIBLE);
 
                         b.setText(R.string.group_theme);

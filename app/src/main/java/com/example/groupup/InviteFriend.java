@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TabHost;
+
+import java.util.ArrayList;
 
 
 public class InviteFriend extends AppCompatActivity {
@@ -15,6 +20,9 @@ public class InviteFriend extends AppCompatActivity {
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     String uid,eid,nameE,monS,monE,email;
+    static ArrayList<String> nameHead =new ArrayList<>();
+    static ArrayList<String> nameAttend =new ArrayList<>();
+    EditText searchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +98,32 @@ Extend_MyHelper.checkInternetLost(this);
 
             }
         }
+
+    }
+
+    public void search() {
+        Log.d("arry",nameAttend.toString());
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("arry",nameAttend.toString());
+                Log.d("arry","s "+s);
+//                (Home.this).adapterAttend.getFilter().filter(s);
+//                InviteFriend_Attendant.myItemsListAdapter.getFilter().filter(s);
+//                InviteFriend_Head.myItemsListAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 

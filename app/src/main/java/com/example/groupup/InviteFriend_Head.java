@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -153,15 +154,16 @@ public class InviteFriend_Head extends AppCompatActivity {
     Button btnConfirmHead;
     int countType = 0;
     String uid, eid, nameE, monS, monE, email;
-    ListView listViewFriend;
+    static ListView listViewFriend;
     List<InviteFriend_Head.Item> items;
     ArrayList<String> typefriend;
     ArrayList<String> friendInDb;
     ArrayList<HashMap<String, String>> frientArray;
     InviteFriend_Head.ResponseStr responseStr = new InviteFriend_Head.ResponseStr();
-    InviteFriend_Head.ItemsListAdapter myItemsListAdapter;
+    static InviteFriend_Head.ItemsListAdapter myItemsListAdapter;
     LinearLayout lShortcut;
     ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,6 +277,8 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("fid", c.getString("fid"));
                                 MyArrList.add(map);
                                 frientArray.add(map);
+                            }for (int i =0;i<MyArrList.size();i++){
+                                InviteFriend.nameHead.add(MyArrList.get(i).get("events_name"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
