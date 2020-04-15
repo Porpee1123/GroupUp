@@ -159,6 +159,8 @@
     <string name="err_nametype">plese input name type</string>
     <string name="del">delete friend \n in type</string>
     <string name="delAll">delete friend \n all type</string>
+    <string name="noteEvent">Note Event</string>
+    <string name="sent">sent</string>
 
 
 </resources>

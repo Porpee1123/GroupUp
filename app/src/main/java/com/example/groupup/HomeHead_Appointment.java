@@ -1,5 +1,6 @@
 package com.example.groupup;
 
+import android.app.AlertDialog;
 import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TabHost;
@@ -41,7 +43,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
     int tab = 0;
     TextView tName, mStart, mEnd, headAppoint;
     EditText editText;
-    ImageButton sentDetail;
+    ImageButton sentDetail,btn_note;
     ProgressDialog progressDialog;
 
     @Override
@@ -57,6 +59,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         mEnd = findViewById(R.id.endMonth);
         editText = findViewById(R.id.edt_eventDetail);
         sentDetail = findViewById(R.id.btn_sentDetail);
+        btn_note = findViewById(R.id.btn_note);
         id = getIntent().getStringExtra("id");
         eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
@@ -145,6 +148,59 @@ public class HomeHead_Appointment extends AppCompatActivity {
 
             }
         });
+        btn_note.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog viewNote = new AlertDialog.Builder(HomeHead_Appointment.this).create();
+                View mViewnote = getLayoutInflater().inflate(R.layout.layout_addnote_dialog,null);
+                final EditText mNameType = mViewnote.findViewById(R.id.note_edit);
+
+                if (note.equals("") || note.equals("null")) {
+                    mNameType.setText("");
+                } else {
+                    mNameType.setText(note);
+                }
+                Button btn_confirmType = mViewnote.findViewById(R.id.btn_ConfirmAddNote);
+                btn_confirmType.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final String noteText = mNameType.getText().toString();
+                        Toast.makeText(HomeHead_Appointment.this, noteText, Toast.LENGTH_SHORT).show();
+                        if (!noteText.isEmpty()){
+                            class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+                                @Override
+                                protected void onPreExecute() {
+                                    super.onPreExecute();
+                                    progressDialog = ProgressDialog.show(HomeHead_Appointment.this, "Note is Uploading", "Please Wait", false, false);
+                                }
+
+                                @Override
+                                protected void onPostExecute(String string1) {
+                                    super.onPostExecute(string1);
+                                    progressDialog.dismiss();
+                                    startActivity(getIntent());
+                                    Toast.makeText(HomeHead_Appointment.this, string1, Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                @Override
+                                protected String doInBackground(Void... params) {
+
+                                    addNoteToDB(noteText);
+                                    return "Add successful!!!";
+                                }
+                            }
+                            AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+                            AsyncTaskUploadClassOBJ.execute();
+                        }else {
+                            Toast.makeText(HomeHead_Appointment.this,"Note is empty",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                viewNote.setView(mViewnote);
+                viewNote.show();
+            }
+        });
 
     }
 
@@ -158,7 +214,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        eventData();
+//        eventData();
         tabHost.setCurrentTab(tab);
         mLocalActivityManager.dispatchResume();
     }
@@ -205,7 +261,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
                                 editText.setText(detail);
                             }
 
-                            writeFile(id, eid, nameE, monS, monS, email);
+//                            writeFile(id, eid, nameE, monS, monS, email);
 //                            Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
 //                            Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
                         } catch (JSONException e) {
@@ -313,6 +369,27 @@ public class HomeHead_Appointment extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void addNoteToDB(String note) {
+        Log.d("detail", note);
+        String url = "http://www.groupupdb.com/android/addNoteEvent.php";
+        url += "?eid=" + eid;
+        url += "&nt=" + note;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
