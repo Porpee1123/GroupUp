@@ -1,26 +1,18 @@
 package com.example.groupup;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -44,93 +36,21 @@ import org.json.JSONObject;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class ManageFriend extends AppCompatActivity {
-    //*******************************TextView with checkbox******************************************//
-    public class Item {
-        ImageView ItemDrawable;
-        String ItemString;
-
-        //        Item(ImageView drawable, String t, boolean b){
-        Item(String t) {
-//            ItemDrawable = drawable;
-            ItemString = t;
-        }
-
-
-    }
-
-    static class ViewHolder {
-        ImageView icon;
-        TextView text;
-    }
-
-    public class ItemsListAdapter extends BaseAdapter {
-
-        private Context context;
-        private List<Item> list;
-
-        ItemsListAdapter(Context c, List<Item> l) {
-            context = c;
-            list = l;
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            View rowView = convertView;
-
-            // reuse views
-            ViewHolder viewHolder = new ViewHolder();
-            if (rowView == null) {
-                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                rowView = inflater.inflate(R.layout.activity_showfriendnocheckbox, null);
-
-                viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
-                viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextViewName);
-                rowView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) rowView.getTag();
-            }
-
-//        viewHolder.icon.setImageBitmap(list.get(position).ItemDrawable);
-
-            final String itemStr = list.get(position).ItemString;
-            viewHolder.text.setText(itemStr);
-
-            return rowView;
-        }
-    }
-//***********************************************************************************************//
 
     ManageFriend.ResponseStr responseStr = new ManageFriend.ResponseStr();
     String uid = "", email = "";
-    ListView listViewFriend;
-    List<Item> items;
+    static ListView listViewFriend;
     ArrayList<HashMap<String, String>> frientArray;
-    ItemsListAdapter myItemsListAdapter;
     Spinner spinnerType;
     ArrayList<String> typefriend;
     ArrayAdapter<String> dataAdapter;
     ImageButton addTypeFriend;
     ProgressDialog progressDialog;
+    static SimpleAdapter sAdapFriendType;
+    LinearLayout lf ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +65,8 @@ public class ManageFriend extends AppCompatActivity {
         typefriend = new ArrayList<>();
         addTypeFriend = findViewById(R.id.btn_addTypeFriend);
         Log.d("listA", "idA " + uid);
-        getFriend();
         getType();
+        getFriendType("ALL");
 
         addTypeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,11 +74,12 @@ public class ManageFriend extends AppCompatActivity {
                 AlertDialog viewDetail = new AlertDialog.Builder(ManageFriend.this).create();
                 View mView = getLayoutInflater().inflate(R.layout.layout_addtype_dialog,null);
                 final EditText mNameType = mView.findViewById(R.id.addNameType);
+                final String mName = mNameType.getText().toString();
                 Button btn_confirmType = mView.findViewById(R.id.btn_ConfirmAddType);
                 btn_confirmType.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!mNameType.getText().toString().isEmpty()){
+                        if (!mName.isEmpty()){
                             class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
                                 @Override
                                 protected void onPreExecute() {
@@ -178,7 +99,7 @@ public class ManageFriend extends AppCompatActivity {
                                 @Override
                                 protected String doInBackground(Void... params) {
 
-                                    AddTypeFriend(mNameType.getText().toString());
+                                    AddTypeFriend(mName);
                                     return "Add successful!!!";
                                 }
                             }
@@ -197,8 +118,7 @@ public class ManageFriend extends AppCompatActivity {
         dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, typefriend);
         new CountDownTimer(500, 500) {
             public void onFinish() {
-                initItems();
-                click();
+//                initItems();
 
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerType.setAdapter(dataAdapter);
@@ -212,7 +132,7 @@ public class ManageFriend extends AppCompatActivity {
                             getFriendType(selectedItemText);
                         } else {
 
-                            getFriendType(selectedItemText);//get ได้แล้ว เหลือหาวิธีให้แสดง
+                            getFriendType(selectedItemText);
                         }
 
 
@@ -251,81 +171,6 @@ public class ManageFriend extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-
-    public void getFriend() {
-        responseStr = new ManageFriend.ResponseStr();
-
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-
-        String url = "http://www.groupupdb.com/android/getFriend.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("afid", c.getString("afid"));
-                                map.put("user_names", c.getString("user_names"));
-                                map.put("friend_name", c.getString("friend_name"));
-                                map.put("friend_email", c.getString("friend_email"));
-                                map.put("type_name", c.getString("type_name"));
-                                MyArrList.add(map);
-                                frientArray.add(map);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-        new CountDownTimer(300, 300) {
-            public void onFinish() {
-                // When timer is finished
-//                SimpleAdapter sAdap = new SimpleAdapter(ManageFriend.this, MyArrList, R.layout.activity_showfriendnocheckbox,
-//                        new String[]{"user_names", "states_name"}, new int[]{R.id.col_name_attend});
-//                listViewFriend.setAdapter(sAdap);
-//                listViewFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-//                        String eName= MyArrList.get(position).get("events_name");
-//                        String eId= MyArrList.get(position).get("events_id");
-//                        String eStatus= MyArrList.get(position).get("states_name");
-//                        Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
-//
-//                    }
-//                });
-
-            }
-
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
-    }
-    public void checkBoxClick(ArrayList position, ArrayList positionId) {
-        Log.d("position", "position size: " + position.size() + "");
-        items = new ArrayList<ManageFriend.Item>();
-        for (int i = 0; i < position.size(); i++) {
-            String s = position.get(i).toString();
-            String id = positionId.get(i).toString();
-            ManageFriend.Item item = new ManageFriend.Item(s);
-            items.add(item);
-        }
-        myItemsListAdapter = new ManageFriend.ItemsListAdapter(this, items);
-        listViewFriend.setAdapter(myItemsListAdapter);
-    }
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -347,30 +192,6 @@ public class ManageFriend extends AppCompatActivity {
         in.putExtra("id", uid + "");
         in.putExtra("email", email + "");
         startActivity(in);
-    }
-
-    private void initItems() {
-        items = new ArrayList<Item>();
-        for (int i = 0; i < frientArray.size(); i++) {
-            String s = frientArray.get(i).get("friend_name");
-            Item item = new Item(s);
-            items.add(item);
-        }
-    }
-
-    public void click() {
-        myItemsListAdapter = new ItemsListAdapter(this, items);
-        listViewFriend.setAdapter(myItemsListAdapter);
-        Log.d("listA", items.toString());
-        Log.d("listA", "size" + myItemsListAdapter.getCount() + "");
-        listViewFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ManageFriend.this,
-                        ((Item) (parent.getItemAtPosition(position))).ItemString,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     public void getType() {
@@ -433,11 +254,12 @@ public class ManageFriend extends AppCompatActivity {
         }
     }
 
-    public void getFriendType(String typeName) {
+    public void getFriendType(final String typeName) {
         Log.d("position", "uid " + uid + " typeName " + typeName);
         responseStr = new ManageFriend.ResponseStr();
         final ArrayList<String> position = new ArrayList<>();
         final ArrayList<String> positionId = new ArrayList<>();
+        final ArrayList<String> positionEmail = new ArrayList<>();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "";
         if (typeName.equals("ALL")) {
@@ -463,6 +285,8 @@ public class ManageFriend extends AppCompatActivity {
                                 map.put("afid", c.getString("afid"));
                                 map.put("fid", c.getString("fid"));
                                 map.put("friend_name", c.getString("friend_name"));
+                                map.put("friend_email", c.getString("friend_email"));
+
                                 MyArrList.add(map);
                                 frientArray.add(map);
                             }
@@ -470,6 +294,7 @@ public class ManageFriend extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 position.add(MyArrList.get(i).get("friend_name"));
                                 positionId.add(MyArrList.get(i).get("fid"));
+                                positionEmail.add(MyArrList.get(i).get("friend_email"));
                             }
 
                         } catch (JSONException e) {
@@ -487,7 +312,6 @@ public class ManageFriend extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-
         new CountDownTimer(500, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -496,10 +320,149 @@ public class ManageFriend extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-//                checkBoxClick
-                checkBoxClick(position,positionId);
+                sAdapFriendType = new SimpleAdapter(ManageFriend.this, MyArrList, R.layout.activity_showfriendnocheckbox,
+                        new String[]{"friend_name"}, new int[]{R.id.rowTextViewName});
+                listViewFriend.setAdapter(sAdapFriendType);
+                listViewFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+                        final AlertDialog viewDetail = new AlertDialog.Builder(ManageFriend.this).create();
+                        View mView = getLayoutInflater().inflate(R.layout.layout_deletefriend_dialog,null);
+                        final TextView mName = mView.findViewById(R.id.nameHeadDel);
+                        final TextView mEmail = mView.findViewById(R.id.emailFriend);
+                        final String fid =MyArrList.get(position).get("fid");
+                        final String fname =MyArrList.get(position).get("friend_name");
+                        final String femail =MyArrList.get(position).get("friend_email");
+                        mName.setText(fname);
+                        mEmail.setText(femail);
+                        Button btn_confirmDel = mView.findViewById(R.id.btn_delFriend);
+                        Button btn_confirmDelAll = mView.findViewById(R.id.btn_delAllFriend);
+                        Button btn_cancle = mView.findViewById(R.id.btn_cancleDel);
+
+                        btn_confirmDel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                    class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+                                        @Override
+                                        protected void onPreExecute() {
+                                            super.onPreExecute();
+                                            progressDialog = ProgressDialog.show(ManageFriend.this, "Deleting friend", "Please Wait", false, false);
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(String string1) {
+                                            super.onPostExecute(string1);
+                                            startActivity(getIntent());
+                                            progressDialog.dismiss();
+                                            viewDetail.dismiss();
+                                            Toast.makeText(ManageFriend.this, string1, Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                        @Override
+                                        protected String doInBackground(Void... params) {
+                                            if (typeName.equals("ALL")){
+                                                deleteFriendAll(fid);
+                                            }else{
+                                                deleteFriendInType(fid,typeName);
+                                            }
+
+//                                            AddTypeFriend(mNameString);
+                                            return "delete successful!!!";
+                                        }
+                                    }
+                                    AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+                                    AsyncTaskUploadClassOBJ.execute();
+                            }
+                        });
+                        btn_confirmDelAll.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+                                    @Override
+                                    protected void onPreExecute() {
+                                        super.onPreExecute();
+                                        progressDialog = ProgressDialog.show(ManageFriend.this, "Deleting All Friend", "Please Wait", false, false);
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(String string1) {
+                                        super.onPostExecute(string1);
+                                        startActivity(getIntent());
+                                        progressDialog.dismiss();
+                                        viewDetail.dismiss();
+                                        Toast.makeText(ManageFriend.this, string1, Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                    @Override
+                                    protected String doInBackground(Void... params) {
+                                        deleteFriendAll(fid);
+                                        return "delete successful!!!";
+                                    }
+                                }
+                                AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+                                AsyncTaskUploadClassOBJ.execute();
+                            }
+                        });
+                        btn_cancle.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                viewDetail.dismiss();
+                            }
+                        });
+
+                        viewDetail.setView(mView);
+                        viewDetail.show();
+
+                    }});
+
             }
         }.start();
 
+    }
+
+    public void deleteFriendAll(String fid){
+
+        responseStr = new ManageFriend.ResponseStr();
+        String url = "http://www.groupupdb.com/android/delFriendAllType.php";
+        url += "?sId=" + uid;
+        url += "&fId=" + fid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.d("deleteDateOldDay", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void deleteFriendInType(String fid,String type){
+        responseStr = new ManageFriend.ResponseStr();
+        String url = "http://www.groupupdb.com/android/delFriendInType.php";
+        url += "?sId=" + uid;
+        url += "&fId=" + fid;
+        url += "&type=" + type;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.d("deleteDateOldDay", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }

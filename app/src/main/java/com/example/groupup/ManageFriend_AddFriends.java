@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -266,8 +267,6 @@ Extend_MyHelper.checkInternetLost(this);
                             }
                             final Extend_SpinnerAdapter exSpin = new Extend_SpinnerAdapter(ManageFriend_AddFriends.this, type, "Plese select");
                             spTypeFriend.setAdapter(exSpin);
-
-//                            spTypeFriend.set
                             btnAddFriend.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -485,6 +484,17 @@ Extend_MyHelper.checkInternetLost(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void setSpinText(Spinner spin, String text)
+    {
+        for(int i= 0; i < spin.getAdapter().getCount(); i++)
+        {
+            if(spin.getAdapter().getItem(i).toString().contains(text))
+            {
+                spin.setSelection(i);
+            }
+        }
+
     }
 }
 

@@ -14,131 +14,138 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/classicBlue"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" /> ̰
-
-            <ImageButton
-                android:id="@+id/back_home"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/classicBlue"
-                android:onClick="backHome"
-                android:src="@drawable/ic_chevron_left_black_24dp" />
-
-            <View
-                android:id="@+id/view4"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-            <View
-                android:id="@+id/view17"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/SlipCheck"
-                style="@style/Style"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="3"
-                android:fontFamily="sans-serif"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/manage_friend" />
-
-            <View
-                android:id="@+id/view1"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 android:background="@color/classicBlue"
-                android:onClick="addFriend"
-                app:srcCompat="@drawable/ic_person_add_black_24dp" />
-
-            <View
-                android:id="@+id/view9"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/frame"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:fontFamily="sans-serif"
-            android:hint="@string/search"
-            android:inputType="textPersonName">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                app:srcCompat="@drawable/ic_search_black_24dp" />
-
-            <EditText
-                android:id="@+id/editTextSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:ems="15"
-                android:fontFamily="@font/pridi_extralight"
-                android:hint="@string/search"
-                android:inputType="textPersonName" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/frame"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/frame"
                 android:gravity="center"
-                android:text="Type Friend : "
-                android:textSize="18sp" />
+                android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/spinner_type"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:gravity="center" />
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" /> ̰
 
-            <ImageButton
-                android:id="@+id/btn_addTypeFriend"
-                android:layout_width="wrap_content"
+                <ImageButton
+                    android:id="@+id/back_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/classicBlue"
+                    android:onClick="backHome"
+                    android:src="@drawable/ic_chevron_left_black_24dp" />
+
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:id="@+id/view17"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/SlipCheck"
+                    style="@style/Style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/manage_friend" />
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/classicBlue"
+                    android:onClick="addFriend"
+                    app:srcCompat="@drawable/ic_person_add_black_24dp" />
+
+                <View
+                    android:id="@+id/view9"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/classicBlue"
-                app:srcCompat="@drawable/ic_group_add_black_24dp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/frame"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fontFamily="sans-serif"
+                android:hint="@string/search"
+                android:inputType="textPersonName">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    app:srcCompat="@drawable/ic_search_black_24dp" />
+
+                <EditText
+                    android:id="@+id/editTextSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:ems="15"
+                    android:fontFamily="@font/pridi_extralight"
+                    android:hint="@string/search"
+                    android:inputType="textPersonName" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/frame"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/frame"
+                    android:gravity="center"
+                    android:text="Type Friend : "
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+                <ImageButton
+                    android:id="@+id/btn_addTypeFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/classicBlue"
+                    app:srcCompat="@drawable/ic_group_add_black_24dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

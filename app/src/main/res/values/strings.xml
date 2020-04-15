@@ -157,6 +157,8 @@
     <string name="addtype">Add Type Friend</string>
     <string name="dia_nametype">name type</string>
     <string name="err_nametype">plese input name type</string>
+    <string name="del">delete friend \n in type</string>
+    <string name="delAll">delete friend \n all type</string>
 
 
 </resources>

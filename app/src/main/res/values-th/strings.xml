@@ -156,4 +156,6 @@
     <string name="addtype">เพิ่มประเภทเพื่อน</string>
     <string name="dia_nametype">ชื่อประเภท</string>
     <string name="err_nametype">กรุณาระบุชื่อประเภท</string>
+    <string name="del">ลบเพื่อนเ\nฉพาะในกลุ่ม</string>
+    <string name="delAll">ลบเพื่อน\nจากทั้งหมด</string>
 </resources>
