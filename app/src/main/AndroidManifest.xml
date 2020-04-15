@@ -37,7 +37,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".Head_Theme" />
+        <activity android:name=".Head_Place" />
         <activity android:name=".Head_Date" />
         <activity android:name=".SlipCheck_finish" />
         <activity android:name=".SlipCheck_waitCheck" />
