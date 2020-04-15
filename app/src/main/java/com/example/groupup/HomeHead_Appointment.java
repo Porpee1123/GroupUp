@@ -1,15 +1,19 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.LocalActivityManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,13 +37,17 @@ public class HomeHead_Appointment extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-    String id,eid,nameE,monS,monE,email;
-    int tab=0;
-    TextView tName,mStart,mEnd,headAppoint;
+    String id, eid, nameE, monS, monE, email, note, detail;
+    int tab = 0;
+    TextView tName, mStart, mEnd, headAppoint;
+    EditText editText;
+    ImageButton sentDetail;
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_appointment);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
@@ -47,38 +55,39 @@ Extend_MyHelper.checkInternetLost(this);
         tName = findViewById(R.id.nameEvent);
         mStart = findViewById(R.id.startMonth);
         mEnd = findViewById(R.id.endMonth);
+        editText = findViewById(R.id.edt_eventDetail);
+        sentDetail = findViewById(R.id.btn_sentDetail);
         id = getIntent().getStringExtra("id");
-        eid =getIntent().getStringExtra("eid");
+        eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         email = getIntent().getStringExtra("email");
-        tab =Integer.parseInt(getIntent().getStringExtra("tab")+"") ;
-        Log.d("tab","tab "+tab);
+        tab = Integer.parseInt(getIntent().getStringExtra("tab") + "");
+        Log.d("tab", "tab " + tab);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tName.setText(nameE);
         mStart.setText(monS);
         mEnd.setText(monE);
         headAppoint.setText(nameE);
-
         getEvent();
 
         tabHost.setup(mLocalActivityManager);
-        Intent intentS = new Intent(this,HomeHead_Appointment_SetItem.class);
-        intentS.putExtra("id", id+"");
-        intentS.putExtra("email", email+"");
-        intentS.putExtra("nEvent", nameE+"");
-        intentS.putExtra("mStart", monS+"");
-        intentS.putExtra("mEnd", monE+"");
-        intentS.putExtra("eid", eid+"");
+        Intent intentS = new Intent(this, HomeHead_Appointment_SetItem.class);
+        intentS.putExtra("id", id + "");
+        intentS.putExtra("email", email + "");
+        intentS.putExtra("nEvent", nameE + "");
+        intentS.putExtra("mStart", monS + "");
+        intentS.putExtra("mEnd", monE + "");
+        intentS.putExtra("eid", eid + "");
 
-        Intent intentdp  = new Intent(this,HomeHead_Appointment_Date_And_Place.class);
-        intentdp.putExtra("id", id+"");
-        intentdp.putExtra("email", email+"");
-        intentdp.putExtra("nEvent", nameE+"");
-        intentdp.putExtra("mStart", monS+"");
-        intentdp.putExtra("mEnd", monE+"");
-        intentdp.putExtra("eid", eid+"");
+        Intent intentdp = new Intent(this, HomeHead_Appointment_Date_And_Place.class);
+        intentdp.putExtra("id", id + "");
+        intentdp.putExtra("email", email + "");
+        intentdp.putExtra("nEvent", nameE + "");
+        intentdp.putExtra("mStart", monS + "");
+        intentdp.putExtra("mEnd", monE + "");
+        intentdp.putExtra("eid", eid + "");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("กำหนดรายการ ")
                 .setContent(intentS);
@@ -101,7 +110,44 @@ Extend_MyHelper.checkInternetLost(this);
                 updateTabs();
             }
         });
+        sentDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String detail = editText.getText().toString();
+                if (!detail.isEmpty()) {
+                    class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            progressDialog = ProgressDialog.show(HomeHead_Appointment.this, "Deleting All Friend", "Please Wait", false, false);
+                        }
+
+                        @Override
+                        protected void onPostExecute(String string1) {
+                            super.onPostExecute(string1);
+                            progressDialog.dismiss();
+                            startActivity(getIntent());
+                            Toast.makeText(HomeHead_Appointment.this, string1, Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        @Override
+                        protected String doInBackground(Void... params) {
+                            addDetailToDB(detail);
+                            return "update successful!!!";
+                        }
+                    }
+                    AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+                    AsyncTaskUploadClassOBJ.execute();
+                } else {
+                    Toast.makeText(HomeHead_Appointment.this, "Details is empty", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -141,15 +187,25 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("states_name", c.getString("states_name"));
                                 map.put("events_month_start", c.getString("events_month_start"));
                                 map.put("events_month_end", c.getString("events_month_end"));
+                                map.put("events_detail", c.getString("events_detail"));
+                                map.put("events_note", c.getString("events_note"));
                                 MyArrList.add(map);
                             }
                             nameE = MyArrList.get(0).get("events_name");
                             monS = MyArrList.get(0).get("events_month_start");
                             monE = MyArrList.get(0).get("events_month_end");
+                            note = MyArrList.get(0).get("events_note");
+                            detail = MyArrList.get(0).get("events_detail");
                             tName.setText(nameE);
                             mStart.setText(monS);
                             mEnd.setText(monE);
-                            writeFile(id,eid,nameE,monS,monS,email);
+                            if (detail.equals("") || detail.equals("null")) {
+                                editText.setText("-");
+                            } else {
+                                editText.setText(detail);
+                            }
+
+                            writeFile(id, eid, nameE, monS, monS, email);
 //                            Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
 //                            Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
                         } catch (JSONException e) {
@@ -167,6 +223,7 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     protected void updateTabs() {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
 
@@ -175,8 +232,7 @@ Extend_MyHelper.checkInternetLost(this);
                         .getChildAt(i)
                         .setBackgroundResource(
                                 R.drawable.shape_tab);
-            }
-            else {
+            } else {
 
                 tabHost.getTabWidget()
                         .getChildAt(i)
@@ -187,38 +243,40 @@ Extend_MyHelper.checkInternetLost(this);
         }
 
     }
+
     public void backHomepage(View v) {
         Intent intent = new Intent(HomeHead_Appointment.this, Home.class);
-        intent.putExtra("id", id+"");
-        intent.putExtra("email", email+"");
+        intent.putExtra("id", id + "");
+        intent.putExtra("email", email + "");
         startActivity(intent);
     }
 
-    public void writeFile(String id,String eid,String nameE,String monS,String monE,String email) {
-    String filename = "eventData.txt";
-    String sid = id+ ":";
-    String seid = eid+ ":";
-    String snameE = nameE+ ":";
-    String smonS = monS+ ":";
-    String smonE = monE+ ":";
-    String semail = email + "\n";
-    FileOutputStream outputStream;
-    try {
-        outputStream = openFileOutput(filename, MODE_PRIVATE);
-        outputStream.write(sid.getBytes());
-        outputStream.write(seid.getBytes());
-        outputStream.write(snameE.getBytes());
-        outputStream.write(smonS.getBytes());
-        outputStream.write(smonE.getBytes());
-        outputStream.write(semail.getBytes());
-        outputStream.close();
+    public void writeFile(String id, String eid, String nameE, String monS, String monE, String email) {
+        String filename = "eventData.txt";
+        String sid = id + ":";
+        String seid = eid + ":";
+        String snameE = nameE + ":";
+        String smonS = monS + ":";
+        String smonE = monE + ":";
+        String semail = email + "\n";
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(filename, MODE_PRIVATE);
+            outputStream.write(sid.getBytes());
+            outputStream.write(seid.getBytes());
+            outputStream.write(snameE.getBytes());
+            outputStream.write(smonS.getBytes());
+            outputStream.write(smonE.getBytes());
+            outputStream.write(semail.getBytes());
+            outputStream.close();
 //            Log.d("AddFriend","write file : id "+sid +" / status "+ semail);
 
-    } catch (Exception e) {
-        e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-}
-    public void eventData(){
+
+    public void eventData() {
         String filename = "eventData.txt";
         try {
             BufferedReader inputReader = new BufferedReader(
@@ -232,18 +290,42 @@ Extend_MyHelper.checkInternetLost(this);
             for (int i = 0; i < his.size(); i++) {
                 StringTokenizer st = new StringTokenizer(his.get(i), ":");
                 id = st.nextToken();
-                eid =st.nextToken();
+                eid = st.nextToken();
                 nameE = st.nextToken();
                 monS = st.nextToken();
                 monE = st.nextToken();
                 email = st.nextToken();
             }
-            Log.d("appoint","readfile home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
+            Log.d("appoint", "readfile home appoint " + email + "/" + id + "/" + eid + "/" + nameE + "/" + monS + "/" + monE);
             headAppoint.setText(nameE);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public void addDetailToDB(String detail) {
+        Log.d("detail", detail);
+        String url = "http://www.groupupdb.com/android/adddetailEvent.php";
+        url += "?eid=" + eid;
+        url += "&dt=" + detail;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+
 }
 
 

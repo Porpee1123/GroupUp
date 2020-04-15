@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class Head_Theme extends AppCompatActivity {
+public class Head_Place extends AppCompatActivity {
 
     String uid,eid,nameE,monS,monE,email;
     @Override
@@ -22,7 +22,7 @@ Extend_MyHelper.checkInternetLost(this);
         monE = getIntent().getStringExtra("mEnd");
     }
     public void backAppoint(View v) {
-        Intent intent = new Intent(Head_Theme.this, HomeHead_Appointment.class);
+        Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
         intent.putExtra("id", uid+"");
         intent.putExtra("email", email+"");
         intent.putExtra("eid",eid+"");

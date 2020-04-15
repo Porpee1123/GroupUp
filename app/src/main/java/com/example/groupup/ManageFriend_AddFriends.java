@@ -360,32 +360,7 @@ Extend_MyHelper.checkInternetLost(this);
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            String strStatusID = "0";
-                            String strError = "Unknow Status!";
-                            JSONObject c;
-                            JSONArray data = new JSONArray("[" + response.toString() + "]");
-                            for (int i = 0; i < data.length(); i++) {
-                                c = data.getJSONObject(i);
-                                strStatusID = c.getString("StatusID");
-                                strError = c.getString("Error");
-                            }
-                            if (strStatusID.equals("0")) {
-//                                dialog.setMessage(strError);
-//                                dialog.show();
-//                                Toast.makeText(ManageFriend_AddFriends.this, "Cannot Add Friend to DB", Toast.LENGTH_SHORT).show();
-                                re[0] =false;
-                            } else {
-//                                dialog.setTitle(R.string.submit_title);
-//                                dialog.setMessage(R.string.submit_result);
-//                                dialog.show();
-//                                Toast.makeText(ManageFriend_AddFriends.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
-                                searchFriend.setText("");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(ManageFriend_AddFriends.this, "Submission Error!", Toast.LENGTH_LONG).show();
-                        }
+                        Toast.makeText(ManageFriend_AddFriends.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -408,25 +383,7 @@ Extend_MyHelper.checkInternetLost(this);
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            String strStatusID = "0";
-                            String strError = "Unknow Status!";
-                            JSONObject c;
-                            JSONArray data = new JSONArray("[" + response.toString() + "]");
-                            for (int i = 0; i < data.length(); i++) {
-                                c = data.getJSONObject(i);
-                                strStatusID = c.getString("StatusID");
-                                strError = c.getString("Error");
-                            }
-                            if (strStatusID.equals("0")) {
-                            } else {
-                                Toast.makeText(ManageFriend_AddFriends.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
-                                searchFriend.setText("");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(ManageFriend_AddFriends.this, "Submission Error!", Toast.LENGTH_LONG).show();
-                        }
+                        Toast.makeText(ManageFriend_AddFriends.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -484,17 +441,6 @@ Extend_MyHelper.checkInternetLost(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void setSpinText(Spinner spin, String text)
-    {
-        for(int i= 0; i < spin.getAdapter().getCount(); i++)
-        {
-            if(spin.getAdapter().getItem(i).toString().contains(text))
-            {
-                spin.setSelection(i);
-            }
-        }
-
     }
 }
 
