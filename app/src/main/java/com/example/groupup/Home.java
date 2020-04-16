@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,40 +115,42 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //                        Toast.makeText(Home.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getUser();
-                deleteDateOldDay();
-            }
-        }).start();
-        new CountDownTimer(1000, 1000) {
-            public void onFinish() {
-//                getUser();
-                createTab();
-                search();
-            }
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
 
-        //firebase signin
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        ImageButton btnNoti = findViewById(R.id.btn_notification);
-        btnNoti.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(Home.this, Home_Alert.class);
-                in.putExtra("id", id + "");
-                in.putExtra("email", email + "");
-                startActivity(in);
-            }
-        });
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getUser();
+                    deleteDateOldDay();
+                }
+            }).start();
+            new CountDownTimer(1000, 1000) {
+                public void onFinish() {
+    //                getUser();
+                    createTab();
+                    search();
+                }
+                public void onTick(long millisUntilFinished) {
+                    // millisUntilFinished    The amount of time until finished.
+                }
+            }.start();
+
+            //firebase signin
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            ImageButton btnNoti = findViewById(R.id.btn_notification);
+            btnNoti.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent in = new Intent(Home.this, Home_Alert.class);
+                    in.putExtra("id", id + "");
+                    in.putExtra("email", email + "");
+                    startActivity(in);
+                }
+            });
 
 
 

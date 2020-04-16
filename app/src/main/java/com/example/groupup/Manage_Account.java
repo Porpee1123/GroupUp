@@ -22,6 +22,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -40,21 +47,24 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Manage_Account extends AppCompatActivity {
     final int PIC_CROP = 1;
-    final int READ_EXTERNAL_PERMISSION_CODE =1;
+    final int READ_EXTERNAL_PERMISSION_CODE = 1;
     ImageButton SelectImageGallery;
     Bitmap bitmap;
     boolean check = true;
-    ProgressDialog progressDialog ;
-    String ServerUploadPath ="http://www.groupupdb.com/android/registerwithimages.php" ;
-    String name ,email;
-
+    ProgressDialog progressDialog;
+    String ServerUploadPath = "http://www.groupupdb.com/android/manageaccount.php";
+    String name, email, id;
+    EditText txtName,txtEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_register);
         name = getIntent().getStringExtra("name");
-        email =getIntent().getStringExtra("email");
+        email = getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
+        txtEmail = findViewById(R.id.email);
+        txtName = findViewById(R.id.name);
         SelectImageGallery = findViewById(R.id.addPicture);
         SelectImageGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +72,7 @@ Extend_MyHelper.checkInternetLost(this);
                 if (ContextCompat.checkSelfPermission(Manage_Account.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(Manage_Account.this, "You have already permission access gallery", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
-                    intent.putExtra("email", email+"");
+                    intent.putExtra("email", email + "");
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Select Image From Gallery"), 1);
@@ -82,14 +92,16 @@ Extend_MyHelper.checkInternetLost(this);
         edt_email.setFocusable(false);
         edt_email.setEnabled(false);
 
-        final Button bcon = (Button)findViewById(R.id.account_confirm);
+        final Button bcon = (Button) findViewById(R.id.account_confirm);
         bcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ImageUploadToServerFunction();
-                    Intent intent = new Intent(Manage_Account.this, Home.class);
-                    intent.putExtra("email", email+"");
-                    startActivity(intent);
+                ImageUploadToServerFunction();
+                Intent in = new Intent(Manage_Account.this, Home.class);
+                in.putExtra("id", id + "");
+                in.putExtra("name", name + "");
+                in.putExtra("email", email + "");
+                startActivity(in);
             }
         });
 
@@ -109,27 +121,27 @@ Extend_MyHelper.checkInternetLost(this);
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 Bitmap dstBmp;
-                if (bitmap.getWidth() >= bitmap.getHeight()){
+                if (bitmap.getWidth() >= bitmap.getHeight()) {
 
                     dstBmp = Bitmap.createBitmap(
                             bitmap,
-                            bitmap.getWidth()/2 - bitmap.getHeight()/2,
+                            bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
                             0,
                             bitmap.getHeight(),
                             bitmap.getHeight()
                     );
 
-                }else{
+                } else {
 
                     dstBmp = Bitmap.createBitmap(
                             bitmap,
                             0,
-                            bitmap.getHeight()/2 - bitmap.getWidth()/2,
+                            bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
                             bitmap.getWidth(),
                             bitmap.getWidth()
                     );
                 }
-                Bitmap lbp =scaleDown(dstBmp,375,false);
+                Bitmap lbp = scaleDown(dstBmp, 375, false);
 
                 SelectImageGallery.setImageBitmap(lbp);
 //                SelectImageGallery.setAlpha(0.5f);
@@ -140,6 +152,7 @@ Extend_MyHelper.checkInternetLost(this);
             }
         }
     }
+
     public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
         float ratio = Math.min(
                 (float) maxImageSize / realImage.getWidth(),
@@ -151,6 +164,7 @@ Extend_MyHelper.checkInternetLost(this);
                 height, filter);
         return newBitmap;
     }
+
     public void requestImagePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             new androidx.appcompat.app.AlertDialog.Builder(this)
@@ -166,82 +180,115 @@ Extend_MyHelper.checkInternetLost(this);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_PERMISSION_CODE);
         }
     }
-    public void ImageUploadToServerFunction(){
 
-        ByteArrayOutputStream byteArrayOutputStreamObject ;
+    public void ImageUploadToServerFunction() {
+
+        ByteArrayOutputStream byteArrayOutputStreamObject;
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
+        if (bitmap == null) {
+            class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+                @Override
+                protected void onPreExecute() {
 
-        byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
+                    super.onPreExecute();
 
-        final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+                    progressDialog = ProgressDialog.show(Manage_Account.this, "Image is Uploading", "Please Wait", false, false);
+                }
+
+                @Override
+                protected void onPostExecute(String string1) {
+
+                    super.onPostExecute(string1);
+
+                    // Dismiss the progress dialog after done uploading.
+                    progressDialog.dismiss();
 
 
-        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
-            final EditText txtName = findViewById(R.id.name);
-            final EditText txtEmail = findViewById(R.id.email);
-            String name =txtName.getText().toString();
-            String email =txtEmail.getText().toString();
-            @Override
-            protected void onPreExecute() {
 
-                super.onPreExecute();
+                    // Printing uploading success message coming from server on android app.
+                    Toast.makeText(Manage_Account.this, string1, Toast.LENGTH_LONG).show();
 
-                progressDialog = ProgressDialog.show(Manage_Account.this,"Image is Uploading","Please Wait",false,false);
+                    // Setting image as transparent after done uploading.
+                    SelectImageGallery.setImageResource(android.R.color.transparent);
+
+                }
+
+                @Override
+                protected String doInBackground(Void... params) {
+                    String name = txtName.getText().toString();
+                    updateNoimage(name);
+                    return "finish update name";
+                }
             }
+            AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+            AsyncTaskUploadClassOBJ.execute();
 
-            @Override
-            protected void onPostExecute(String string1) {
+        } else {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+            byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
+            final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+            class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
-                super.onPostExecute(string1);
+                @Override
+                protected void onPreExecute() {
 
-                // Dismiss the progress dialog after done uploading.
-                progressDialog.dismiss();
+                    super.onPreExecute();
 
-                // Printing uploading success message coming from server on android app.
-                Toast.makeText(Manage_Account.this,string1,Toast.LENGTH_LONG).show();
+                    progressDialog = ProgressDialog.show(Manage_Account.this, "Image is Uploading", "Please Wait", false, false);
+                }
 
-                // Setting image as transparent after done uploading.
-                SelectImageGallery.setImageResource(android.R.color.transparent);
+                @Override
+                protected void onPostExecute(String string1) {
 
+                    super.onPostExecute(string1);
+
+                    // Dismiss the progress dialog after done uploading.
+                    progressDialog.dismiss();
+
+                    // Printing uploading success message coming from server on android app.
+                    Toast.makeText(Manage_Account.this, string1, Toast.LENGTH_LONG).show();
+
+                    // Setting image as transparent after done uploading.
+                    SelectImageGallery.setImageResource(android.R.color.transparent);
+
+                }
+
+                @Override
+                protected String doInBackground(Void... params) {
+
+                    ImageProcessClass imageProcessClass = new ImageProcessClass();
+                    HashMap<String, String> HashMapParams = new HashMap<String, String>();
+                    String name = txtName.getText().toString();
+                    HashMapParams.put("name", name);
+                    HashMapParams.put("email", email);
+                    HashMapParams.put("photo", ConvertImage);
+                    Log.d("hashmap", HashMapParams.toString());
+                    String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+                    return FinalData;
+                }
             }
-
-            @Override
-            protected String doInBackground(Void... params) {
-
-                ImageProcessClass imageProcessClass = new ImageProcessClass();
-
-                HashMap<String,String> HashMapParams = new HashMap<String,String>();
-                HashMapParams.put("name", name);
-                HashMapParams.put("email", email);
-                HashMapParams.put("photo", ConvertImage);
-                Log.d("hashmap",HashMapParams.toString());
-
-                String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
-
-                return FinalData;
-            }
+            AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+            AsyncTaskUploadClassOBJ.execute();
         }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
 
-        AsyncTaskUploadClassOBJ.execute();
     }
-    public class ImageProcessClass{
 
-        public String ImageHttpRequest(String requestURL,HashMap<String, String> PData) {
+    public class ImageProcessClass {
+
+        public String ImageHttpRequest(String requestURL, HashMap<String, String> PData) {
 
             StringBuilder stringBuilder = new StringBuilder();
 
             try {
 
                 URL url;
-                HttpURLConnection httpURLConnectionObject ;
+                HttpURLConnection httpURLConnectionObject;
                 OutputStream OutPutStream;
-                BufferedWriter bufferedWriterObject ;
-                BufferedReader bufferedReaderObject ;
-                int RC ;
+                BufferedWriter bufferedWriterObject;
+                BufferedReader bufferedReaderObject;
+                int RC;
 
                 url = new URL(requestURL);
 
@@ -281,7 +328,7 @@ Extend_MyHelper.checkInternetLost(this);
 
                     String RC2;
 
-                    while ((RC2 = bufferedReaderObject.readLine()) != null){
+                    while ((RC2 = bufferedReaderObject.readLine()) != null) {
 
                         stringBuilder.append(RC2);
                     }
@@ -319,9 +366,31 @@ Extend_MyHelper.checkInternetLost(this);
 
     }
 
-    public void backHome(View v){
+    public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
-        in.putExtra("email", email+"");
+        in.putExtra("email", email + "");
+        in.putExtra("id", id + "");
         startActivity(in);
+    }
+
+    public void updateNoimage(String name) {
+        String url = "http://www.groupupdb.com/android/managefriendnoimage.php";
+        url += "?name=" + name;
+        url += "&email=" + email;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
