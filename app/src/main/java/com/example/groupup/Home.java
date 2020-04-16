@@ -56,17 +56,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     NavigationView navigationView;
     private GoogleSignInClient mGoogleSignInClient;
     ResponseStr responseStr = new ResponseStr();
-    JSONArray data;
- //   ListView listViewInvite, listViewHeader;
-//    ListView listViewAttend;
     TextView hName;
     TextView hEmail;
     EditText searchText;
     static ArrayList<String> nameHead =new ArrayList<>();
     static ArrayList<String> nameAttend =new ArrayList<>();
-    public static ArrayAdapter adapterHead;
-    public static ArrayAdapter adapterAttend;
-    private RequestQueue requestQueue;
     String name = "", id = "", email = "";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
@@ -147,8 +141,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(in);
             }
         });
-
-
 
     }
 
@@ -234,23 +226,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Log.d("arry",nameAttend.toString());
                 Log.d("arry","s "+s);
-//                (Home.this).adapterAttend.getFilter().filter(s);
                 Home_Listview_Attendant.sAdapAttend.getFilter().filter(s);
                 Home_Listview_Head.sAdapHead.getFilter().filter(s);
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
     }

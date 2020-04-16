@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TabHost;
 
 public class HomeHead_SlipCheck extends AppCompatActivity {
     String id,eid,nameE,monS,monE,email;
     TabHost tabHost;
     LocalActivityManager mLocalActivityManager;
+    EditText searchText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +30,7 @@ Extend_MyHelper.checkInternetLost(this);
         monE = getIntent().getStringExtra("mEnd");
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
+        searchText = findViewById(R.id.searchText);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
         Intent intentWU = new Intent(this,SlipCheck_waitUpload.class);
@@ -72,6 +78,7 @@ Extend_MyHelper.checkInternetLost(this);
                 updateTabs();
             }
         });
+        search();
     }
     protected void updateTabs() {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
@@ -81,6 +88,7 @@ Extend_MyHelper.checkInternetLost(this);
                         .getChildAt(i)
                         .setBackgroundResource(
                                 R.drawable.shape_tab);
+                searchText.setText("");
             }
             else {
 
@@ -88,11 +96,32 @@ Extend_MyHelper.checkInternetLost(this);
                         .getChildAt(i)
                         .setBackgroundResource(
                                 R.drawable.visible);
+                searchText.setText("");
 
             }
         }
 
     }
+    public void search() {
+//        Log.d("arry",nameAttend.toString());
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                Log.d("arry",nameAttend.toString());
+                Log.d("arry","s "+s);
+                SlipCheck_waitUpload.sAdap.getFilter().filter(s);
+                SlipCheck_waitCheck.sAdap.getFilter().filter(s);
+                SlipCheck_finish.sAdap.getFilter().filter(s);
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+    }
+
     public void backAppoint(View v) {
         Intent intent = new Intent(HomeHead_SlipCheck.this, HomeHead_Appointment.class);
         intent.putExtra("id", id+"");
