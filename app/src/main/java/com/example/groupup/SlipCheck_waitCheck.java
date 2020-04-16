@@ -29,7 +29,8 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
     String id,eid,nameE,monS,monE,email;
     SlipCheck_waitCheck.ResponseStr responseStr = new SlipCheck_waitCheck.ResponseStr();
 
-    ListView slipCheck ;
+    static ListView slipCheck ;
+    static SimpleAdapter sAdap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,6 @@ Extend_MyHelper.checkInternetLost(this);
 
             @Override
             public void onFinish() {
-                SimpleAdapter sAdap;
                 Log.d("slipUpload","12346 : "+MyArrList.toString()) ;
                 sAdap = new SimpleAdapter(SlipCheck_waitCheck.this, MyArrList, R.layout.activity_slip_check,
                         new String[]{"events_name", "states_name"}, new int[]{R.id.rowTextViewName, R.id.rowTextViewTag});

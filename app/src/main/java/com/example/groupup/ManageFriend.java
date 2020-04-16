@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,8 +51,8 @@ public class ManageFriend extends AppCompatActivity {
     ArrayAdapter<String> dataAdapter;
     ImageButton addTypeFriend;
     ProgressDialog progressDialog;
+    EditText searchText;
     static SimpleAdapter sAdapFriendType;
-    LinearLayout lf ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class ManageFriend extends AppCompatActivity {
         Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_manage_friend);
         listViewFriend = findViewById(R.id.listview_friend);
+        searchText = findViewById(R.id.searchText);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         frientArray = new ArrayList<>();
@@ -134,13 +137,9 @@ public class ManageFriend extends AppCompatActivity {
 
                             getFriendType(selectedItemText);
                         }
-
-
                     }
-
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
-
                     }
                 });
             }
@@ -150,6 +149,7 @@ public class ManageFriend extends AppCompatActivity {
             }
         }.start();
         writeFile(uid, email);
+        search();
     }
     public void AddTypeFriend(String name){
         String url = "http://www.groupupdb.com/android/addtypefriend.php";
@@ -464,5 +464,21 @@ public class ManageFriend extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+    public void search() {
+//        Log.d("arry",nameAttend.toString());
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("arry","s "+s);
+                ManageFriend.sAdapFriendType.getFilter().filter(s);
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
     }
 }

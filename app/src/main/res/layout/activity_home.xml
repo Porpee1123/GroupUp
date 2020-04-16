@@ -144,14 +144,15 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </LinearLayout>
 
-        <View
-            android:id="@+id/view6"
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_marginTop="10dp"
-            android:background="#CCCCCC" />
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginTop="10dp"
+                android:background="#CCCCCC" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

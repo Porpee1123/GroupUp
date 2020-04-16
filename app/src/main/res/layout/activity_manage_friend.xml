@@ -99,14 +99,13 @@
                     app:srcCompat="@drawable/ic_search_black_24dp" />
 
                 <EditText
-                    android:id="@+id/editTextSearch"
+                    android:id="@+id/searchText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:ems="15"
-                    android:fontFamily="@font/pridi_extralight"
                     android:hint="@string/search"
                     android:inputType="textPersonName" />
 

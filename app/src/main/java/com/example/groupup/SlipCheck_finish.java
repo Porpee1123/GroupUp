@@ -29,7 +29,8 @@ public class SlipCheck_finish extends AppCompatActivity {
     String id,eid,nameE,monS,monE,email;
     SlipCheck_finish.ResponseStr responseStr = new SlipCheck_finish.ResponseStr();
 
-    ListView slipFinish ;
+    static ListView slipFinish ;
+    static SimpleAdapter sAdap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +90,6 @@ Extend_MyHelper.checkInternetLost(this);
 
             @Override
             public void onFinish() {
-                SimpleAdapter sAdap;
                 Log.d("slipUpload","12346 : "+MyArrList.toString()) ;
                 sAdap = new SimpleAdapter(SlipCheck_finish.this, MyArrList, R.layout.activity_slip_finish,
                         new String[]{"events_name", "states_name"}, new int[]{R.id.rowTextViewName, R.id.rowTextViewTag});
