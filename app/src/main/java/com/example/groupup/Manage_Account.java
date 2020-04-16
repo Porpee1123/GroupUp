@@ -193,8 +193,8 @@ public class Manage_Account extends AppCompatActivity {
                 protected void onPreExecute() {
 
                     super.onPreExecute();
-
                     progressDialog = ProgressDialog.show(Manage_Account.this, "Image is Uploading", "Please Wait", false, false);
+                    name = txtName.getText().toString();
                 }
 
                 @Override
@@ -217,7 +217,6 @@ public class Manage_Account extends AppCompatActivity {
 
                 @Override
                 protected String doInBackground(Void... params) {
-                    String name = txtName.getText().toString();
                     updateNoimage(name);
                     return "finish update name";
                 }
