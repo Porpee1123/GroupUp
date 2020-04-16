@@ -1,7 +1,5 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -80,12 +81,13 @@ public class HomeHead_Theme extends AppCompatActivity {
         img_sky = findViewById(R.id.theme_sky);
         img_kid = findViewById(R.id.theme_kid);
         checkVisible = true;//close custom
-
+        searchText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         getTransIDByTrans(id, eid, "3");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 visibleLinear();
+                clearCheckBox();
             }
         });
         check();
@@ -778,7 +780,9 @@ public class HomeHead_Theme extends AppCompatActivity {
 
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //               Log.d("arry",nameAttend.toString());
@@ -793,8 +797,10 @@ public class HomeHead_Theme extends AppCompatActivity {
                         .addTarget(vegan).addTarget(veget).addTarget(original).addTarget(bar).addTarget(outdoor).addTarget(cozy).addTarget(family).addTarget(minimal).addTarget(warm).addTarget(child)
                         .highlight(searchText.getText().toString(), TextHighlighter.BASE_MATCHER);
             }
+
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void afterTextChanged(Editable s) {
+            }
         });
 
     }
@@ -837,7 +843,7 @@ public class HomeHead_Theme extends AppCompatActivity {
         nameType = new ArrayList<>();
         idType = new ArrayList<>();
         String url = "http://www.groupupdb.com/android/getthemebygroup.php";
-        url += "?tyId=" + tyid;//รอเอาIdจากfirebase
+        url += "?tyId=" + tyid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -907,17 +913,14 @@ public class HomeHead_Theme extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_NEUTRAL, "ปรับแต่ง", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        for (int i = 0; i < idType.size(); i++) {
-                            checkCustomTheme(idType.get(i).toString());
-                        }
                         lShort.setVisibility(View.GONE);
                         lCus.setVisibility(View.VISIBLE);
                         lSearch.setVisibility(View.VISIBLE);
                         btn_con.setVisibility(View.VISIBLE);
-
                         b.setText(R.string.group_theme);
                         checkVisible = false;
-
+                        Log.d("idType", idType.toString());
+                        checkCustomTheme(tyid);
 
                     }
                 });
@@ -1042,13 +1045,94 @@ public class HomeHead_Theme extends AppCompatActivity {
 
     public void checkCustomTheme(String idType) {
         Log.d("Typeid", idType.toString());
-//        cafe.setChecked(true);
-        if (idType.equals("2131820591")) {
-            Log.d("Typeid", "cafe");
-            cafe.setChecked(true);
-        } else if ("2131820600".equals(idType)) {
+        if (idType.equals("21")) {
+            bakery.setChecked(true);
             coffee.setChecked(true);
+            minimal.setChecked(true);
+            cafe.setChecked(true);
+            dessert.setChecked(true);
+        } else if (idType.equals("22")) {
+            vegan.setChecked(true);
+            original.setChecked(true);
+            night.setChecked(true);
+            dimsum.setChecked(true);
+            veget.setChecked(true);
+            vegeterian.setChecked(true);
+        } else if (idType.equals("15")) {
+            river.setChecked(true);
+            seafood.setChecked(true);
+            family.setChecked(true);
+            alacarte.setChecked(true);
+            cozy.setChecked(true);
+        } else if (idType.equals("36")) {
+            warm.setChecked(true);
+            sushi.setChecked(true);
+            shabu.setChecked(true);
+            buffet.setChecked(true);
+            ramen.setChecked(true);
+            bbq.setChecked(true);
+            izakaya.setChecked(true);
+            hotelBuf.setChecked(true);
+        } else if (idType.equals("3")) {
+            karaoke.setChecked(true);
+            bar.setChecked(true);
+            pub.setChecked(true);
+            wine.setChecked(true);
+            clubs.setChecked(true);
+        } else if (idType.equals("23")) {
+            rooftop.setChecked(true);
+            cleanFood.setChecked(true);
+            thaiBbq.setChecked(true);
+            steak.setChecked(true);
+            outdoor.setChecked(true);
+        } else if (idType.equals("8")) {
+            pizza.setChecked(true);
+            child.setChecked(true);
+            iceCream.setChecked(true);
+            burger.setChecked(true);
         }
+    }
+
+    public void clearCheckBox() {
+        dessert.setChecked(false);
+        bakery.setChecked(false);
+        minimal.setChecked(false);
+        coffee.setChecked(false);
+        cafe.setChecked(false);
+        vegan.setChecked(false);
+        vegan.setChecked(false);
+        original.setChecked(false);
+        night.setChecked(false);
+        dimsum.setChecked(false);
+        veget.setChecked(false);
+        vegeterian.setChecked(false);
+        river.setChecked(false);
+        seafood.setChecked(false);
+        family.setChecked(false);
+        alacarte.setChecked(false);
+        cozy.setChecked(false);
+        warm.setChecked(false);
+        sushi.setChecked(false);
+        shabu.setChecked(false);
+        buffet.setChecked(false);
+        ramen.setChecked(false);
+        bbq.setChecked(false);
+        izakaya.setChecked(false);
+        hotelBuf.setChecked(false);
+        karaoke.setChecked(false);
+        bar.setChecked(false);
+        pub.setChecked(false);
+        wine.setChecked(false);
+        clubs.setChecked(false);
+        rooftop.setChecked(false);
+        cleanFood.setChecked(false);
+        thaiBbq.setChecked(false);
+        steak.setChecked(false);
+        outdoor.setChecked(false);
+        pizza.setChecked(false);
+        child.setChecked(false);
+        iceCream.setChecked(false);
+        burger.setChecked(false);
     }
 
 }
