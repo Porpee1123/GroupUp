@@ -72,6 +72,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.deleteCache(this);
         setContentView(R.layout.activity_home);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
@@ -92,6 +93,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
         progressDialog.show();
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
