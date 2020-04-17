@@ -177,12 +177,17 @@ Extend_MyHelper.checkInternetLost(this);
 
     public void nextNewGroup() {
         Intent intent = new Intent(Home_CreateEvent.this, HomeHead_Appointment.class);
+        final Spinner spst = findViewById(R.id.spin_start);
+        final Spinner sped = findViewById(R.id.spin_end);
+        startId = spst.getSelectedItemPosition();
+        endId = sped.getSelectedItemPosition();
         intent.putExtra("nameEvent",nEvent+"");
         intent.putExtra("mStart",startId+"");
         intent.putExtra("mEnd",endId+"");
         intent.putExtra("id",id+"");
         intent.putExtra("email",email+"");
         intent.putExtra("tab",0+"");
+        intent.putExtra("create","create");
         Log.d("inten12",nEvent+":"+startId+":"+endId+":"+id+":"+email);
         startActivity(intent);
     }

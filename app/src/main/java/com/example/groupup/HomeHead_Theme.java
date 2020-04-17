@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -886,33 +887,30 @@ public class HomeHead_Theme extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
-                viewDetail.setTitle(head);
-                Log.d("themeSelect", "myarr : " + nameType.toString());
+                final AlertDialog viewDetail = new AlertDialog.Builder(HomeHead_Theme.this).create();
+                View mView = getLayoutInflater().inflate(R.layout.layout_showtheme_dialog, null);
+                final TextView headTheme = mView.findViewById(R.id.nameTheme);
+                final TextView detailTheme = mView.findViewById(R.id.detailTheme);
+                final TextView typeTheme = mView.findViewById(R.id.typeTheme);
+                final Button btn_cancle = mView.findViewById(R.id.btn_cancleTheme);
+                final Button btn_custom = mView.findViewById(R.id.btn_customTheme);
+                final Button btn_confirm = mView.findViewById(R.id.btn_confirmTheme);
                 String s = "";
                 for (int i = 0; i < nameType.size(); i++) {
-                    s += nameType.get(i);
+                    s += " - "+nameType.get(i);
                 }
-                viewDetail.setMessage(s + "\n");
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
+                typeTheme.setText(s);
+                headTheme.setText(head);
+                detailTheme.setText(showDetail(tyid));
+                btn_cancle.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
+                    public void onClick(View v) {
+                        viewDetail.dismiss();
                     }
                 });
-                viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
+                btn_custom.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        for (int i = 0; i < idType.size(); i++) {
-                            sentInviteToFriend(idType.get(i), eid);
-                        }
-
-                    }
-                });
-                viewDetail.setButton(viewDetail.BUTTON_NEUTRAL, "ปรับแต่ง", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         lShort.setVisibility(View.GONE);
                         lCus.setVisibility(View.VISIBLE);
                         lSearch.setVisibility(View.VISIBLE);
@@ -921,24 +919,18 @@ public class HomeHead_Theme extends AppCompatActivity {
                         checkVisible = false;
                         Log.d("idType", idType.toString());
                         checkCustomTheme(tyid);
-
                     }
                 });
+                btn_confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for (int i = 0; i < idType.size(); i++) {
+                            sentInviteToFriend(idType.get(i), eid);
+                        }
+                    }
+                });
+                viewDetail.setView(mView);
                 viewDetail.show();
-                Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
-                Button btnNeutral = viewDetail.getButton(AlertDialog.BUTTON_NEUTRAL);
-
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-                layoutParams.weight = 10;
-                btnPositive.setLayoutParams(layoutParams);
-                btnNegative.setLayoutParams(layoutParams);
-                btnNeutral.setLayoutParams(layoutParams);
-
-                btnPositive.setTextColor(getApplication().getResources().getColor(R.color.green));
-                btnNegative.setTextColor(getApplication().getResources().getColor(R.color.red));
-
-
             }
         }.start();
     }
@@ -1091,6 +1083,33 @@ public class HomeHead_Theme extends AppCompatActivity {
             iceCream.setChecked(true);
             burger.setChecked(true);
         }
+    }
+
+    public String showDetail(String idType) {
+        Log.d("Typeid", idType.toString());
+        if (idType.equals("21")) {
+            String detail ="ร้านสไตล์มินิมอลเป็นร้านแนวคาเฟ่เบเกอร์รี่ที่มีบรรยากาศสบายๆมีมุมถ่ายรูปมากมายเน้นพบปะพูดคุยกันในหมู่เพื่อนๆ";
+            return detail;
+        } else if (idType.equals("22")) {
+            String detail ="ร้านอาหารแนวคลาสสิคเป็นร้านอาหารที่เน้นอาหารในเชิงสุขภาพและมีบรรยากาศที่เป็นกันเองโดยเสามารถพบปะพูดคุยทางการหรือเล่นๆก็ได้";
+            return detail;
+        } else if (idType.equals("36")) {
+            String detail ="ร้านอาหารริมแม่น้ำเป็นร้านอาหารที่ให้บรรยากาศอบอุ่นและโรแมนติกในที่เดียวกันให้ความรู้สึกเป็นแบบครอบครัวเพื่อการพักผ่อนโดยเฉพาะ";
+            return detail;
+        } else if (idType.equals("15")) {
+            String detail ="ร้านอาหารสไตล์บุฟเฟ่เป็นร้านอาหารที่เน้นความคุ้มค่าและความอร่อยไปในที่เดียวกันโดยจะให้บรรยากาศเพลิดเพลินและได้รับประทาหลากหลายไปในที่เดียวกัน";
+            return detail;
+        } else if (idType.equals("3")) {
+            String detail ="ร้านอาหารแนวคาราโอเกะเป็นร้านอาหารแนวสนุกสนานให้ความผ่อนคลายเพลิดเพลินและสนุกไปในที่เดียวกันโดยเน้นการพบปะมากกว่าการรับประทานอาหารแบบจริงจัง";
+            return detail;
+        } else if (idType.equals("23")) {
+            String detail ="ร้านอาหารบนชั้นดาดฟ้าเป็นร้านอาหารที่ให้ความเป็นส่วนตัวและโรแมนติกเหมาะกับการออกเดทหรืองานเลี้ยงที่ต้องการความเป็นส่วนตัวและได้มองท้องฟ้าไปพร้อมๆกัน";
+            return detail;
+        } else if (idType.equals("8")) {
+            String detail ="ร้านอาหารแนวสำหรับเด็กจะเป็นร้านอาหารที่เน้นทานง่ายมีของเล่นสำหรับเด็กเพื่อให้เด็กๆเล่นของเล่นโดยผู้ปกครองสามารถพูดคุยหรือทำงานได้ในที่เดียวกัน";
+            return detail;
+        }
+        return "-";
     }
 
     public void clearCheckBox() {

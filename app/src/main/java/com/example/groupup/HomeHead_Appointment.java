@@ -68,15 +68,18 @@ public class HomeHead_Appointment extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         email = getIntent().getStringExtra("email");
+         String create = getIntent().getStringExtra("create");
         getEvent();
         tab = Integer.parseInt(getIntent().getStringExtra("tab") + "");
-        Log.d("inten12",nameE+":"+monS+":"+monE+":"+email+":"+id+":"+eid);
+        Log.d("inten12",nameE+":"+monS+":"+monE+":"+email+":"+id+":"+eid+":"+create);
         Log.d("tab", "tab " + tab);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tName.setText(nameE);
-        if (monS!=null&&monE!=null){
+        if (create != null && create.equalsIgnoreCase("create")){
             mStart.setText(some_array[Integer.parseInt(monS)]);
             mEnd.setText(some_array[Integer.parseInt(monE)]);
+        }else {
+
         }
 
         Log.d("tab", "mons " + monS+"mone "+monE);
