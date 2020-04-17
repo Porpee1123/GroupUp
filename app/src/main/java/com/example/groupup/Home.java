@@ -87,6 +87,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
         email = getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
         progressDialog = new ProgressDialog(Home.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");

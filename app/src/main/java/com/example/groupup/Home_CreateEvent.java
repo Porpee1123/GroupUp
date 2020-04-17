@@ -24,12 +24,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Home_CreateEvent extends AppCompatActivity {
     String name="",id="",email="";
     String nEvent,mStart,mEnd;
+    int startId,endId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ Extend_MyHelper.checkInternetLost(this);
         spms.setSelection(sdate);
         spme.setSelection(edate);
 
+//        Log.d("array",some_array[4]+"");
         //start 3 end 2 คือ 3 2020 - 2 2021
         Button btn_create = findViewById(R.id.newGroup_confirm);
         btn_create.setOnClickListener(new View.OnClickListener() {
@@ -109,14 +112,17 @@ Extend_MyHelper.checkInternetLost(this);
         }
         String url = "http://www.groupupdb.com/android/creategroup.php";
         url += "?sName=" + txtName.getText().toString();
-        url += "&sStart=" + spst.getSelectedItem().toString();
-        url += "&sEnd=" + sped.getSelectedItem().toString();
+        url += "&sStart=" + spst.getSelectedItemPosition()+"";
+        url += "&sEnd=" + sped.getSelectedItemPosition()+"";
         url += "&sWait=" + spwa.getSelectedItem().toString();
         url += "&sProvi=" +name;
         url += "&sProid=" +id;
+        String[] some_array = getResources().getStringArray(R.array.month);
         nEvent =txtName.getText().toString();
-        mStart = spst.getSelectedItem().toString();
-        mEnd =sped.getSelectedItem().toString();
+        startId = spst.getSelectedItemPosition();
+        endId = sped.getSelectedItemPosition();
+        mStart = some_array[startId];
+        mEnd =some_array[endId];
         Log.d("footer",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -171,11 +177,13 @@ Extend_MyHelper.checkInternetLost(this);
 
     public void nextNewGroup() {
         Intent intent = new Intent(Home_CreateEvent.this, HomeHead_Appointment.class);
-        intent.putExtra("nameEvent",nEvent);
-        intent.putExtra("mStart",mStart);
-        intent.putExtra("mEnd",mEnd);
-        intent.putExtra("id",id);
+        intent.putExtra("nameEvent",nEvent+"");
+        intent.putExtra("mStart",startId+"");
+        intent.putExtra("mEnd",endId+"");
+        intent.putExtra("id",id+"");
+        intent.putExtra("email",email+"");
         intent.putExtra("tab",0+"");
+        Log.d("inten12",nEvent+":"+startId+":"+endId+":"+id+":"+email);
         startActivity(intent);
     }
 

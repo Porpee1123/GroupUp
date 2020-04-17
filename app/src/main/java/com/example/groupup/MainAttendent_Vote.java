@@ -7,15 +7,17 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MainAttendent_Vote extends AppCompatActivity {
-    String id="",eId="",eName="";
+    String id="",eId="",eName="",email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_attend_vote);
         id = getIntent().getStringExtra("id");
-        eId = getIntent().getStringExtra("eid");
         eName = getIntent().getStringExtra("nameEvent");
+        eId = getIntent().getStringExtra("eid");
+        email = getIntent().getStringExtra("email");
+
     }
     public void voteDate(View v) {
         Intent intent = new Intent(MainAttendent_Vote.this, Vote_date_and_time.class);

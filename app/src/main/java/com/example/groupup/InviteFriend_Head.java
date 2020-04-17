@@ -198,7 +198,7 @@ Extend_MyHelper.checkInternetLost(this);
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
                 // Printing uploading success message coming from server on android app.
-                Toast.makeText(InviteFriend_Head.this,string1,Toast.LENGTH_LONG).show();
+//                Toast.makeText(InviteFriend_Head.this,string1,Toast.LENGTH_LONG).show();
             }
 
             @Override

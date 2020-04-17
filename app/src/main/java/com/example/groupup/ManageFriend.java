@@ -77,11 +77,11 @@ public class ManageFriend extends AppCompatActivity {
                 AlertDialog viewDetail = new AlertDialog.Builder(ManageFriend.this).create();
                 View mView = getLayoutInflater().inflate(R.layout.layout_addtype_dialog,null);
                 final EditText mNameType = mView.findViewById(R.id.addNameType);
-                final String mName = mNameType.getText().toString();
                 Button btn_confirmType = mView.findViewById(R.id.btn_ConfirmAddType);
                 btn_confirmType.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        final String mName = mNameType.getText().toString();
                         if (!mName.isEmpty()){
                             class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
                                 @Override

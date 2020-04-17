@@ -45,7 +45,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
     EditText editText;
     ImageButton sentDetail,btn_note;
     ProgressDialog progressDialog;
-
+    String[] some_array;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,20 +60,30 @@ public class HomeHead_Appointment extends AppCompatActivity {
         editText = findViewById(R.id.edt_eventDetail);
         sentDetail = findViewById(R.id.btn_sentDetail);
         btn_note = findViewById(R.id.btn_note);
+
+        some_array = getResources().getStringArray(R.array.month);
         id = getIntent().getStringExtra("id");
         eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         email = getIntent().getStringExtra("email");
+        getEvent();
         tab = Integer.parseInt(getIntent().getStringExtra("tab") + "");
+        Log.d("inten12",nameE+":"+monS+":"+monE+":"+email+":"+id+":"+eid);
         Log.d("tab", "tab " + tab);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tName.setText(nameE);
-        mStart.setText(monS);
-        mEnd.setText(monE);
+        if (monS!=null&&monE!=null){
+            mStart.setText(some_array[Integer.parseInt(monS)]);
+            mEnd.setText(some_array[Integer.parseInt(monE)]);
+        }
+
+        Log.d("tab", "mons " + monS+"mone "+monE);
+//        mStart.setText(monS);
+//        mEnd.setText(monE);
         headAppoint.setText(nameE);
-        getEvent();
+
 
         tabHost.setup(mLocalActivityManager);
         Intent intentS = new Intent(this, HomeHead_Appointment_SetItem.class);
@@ -214,7 +224,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        eventData();
+        eventData();
         tabHost.setCurrentTab(tab);
         mLocalActivityManager.dispatchResume();
     }
@@ -252,16 +262,20 @@ public class HomeHead_Appointment extends AppCompatActivity {
                             monE = MyArrList.get(0).get("events_month_end");
                             note = MyArrList.get(0).get("events_note");
                             detail = MyArrList.get(0).get("events_detail");
+                            Log.d("tab", "get mons " + monS+"mone "+monE);
                             tName.setText(nameE);
-                            mStart.setText(monS);
-                            mEnd.setText(monE);
+//                            mStart.setText(monS);
+//                            mEnd.setText(monE);
+                            mStart.setText(some_array[Integer.parseInt(monS)]);
+                            mEnd.setText(some_array[Integer.parseInt(monE)]);
+                            Log.d("tab", "get mons " + mStart.getText()+"mone "+mEnd.getText());
                             if (detail.equals("") || detail.equals("null")) {
                                 editText.setText("-");
                             } else {
                                 editText.setText(detail);
                             }
 
-//                            writeFile(id, eid, nameE, monS, monS, email);
+                            writeFile(id, eid, nameE, monS, monS, email);
 //                            Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
 //                            Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
                         } catch (JSONException e) {
@@ -302,13 +316,14 @@ public class HomeHead_Appointment extends AppCompatActivity {
 
     public void backHomepage(View v) {
         Intent intent = new Intent(HomeHead_Appointment.this, Home.class);
+        Log.d("inten12",email+":"+id);
         intent.putExtra("id", id + "");
         intent.putExtra("email", email + "");
         startActivity(intent);
     }
 
     public void writeFile(String id, String eid, String nameE, String monS, String monE, String email) {
-        String filename = "eventData.txt";
+        String filename = id+":"+eid+":"+"eventData.txt";
         String sid = id + ":";
         String seid = eid + ":";
         String snameE = nameE + ":";
@@ -333,7 +348,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
     }
 
     public void eventData() {
-        String filename = "eventData.txt";
+        String filename = id+":"+eid+":"+"eventData.txt";
         try {
             BufferedReader inputReader = new BufferedReader(
                     new InputStreamReader(openFileInput(filename)));
