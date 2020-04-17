@@ -422,7 +422,7 @@ Extend_MyHelper.checkInternetLost(this);
         }
     }
     public void readFile(){
-        String filename = "userFriend.txt";
+        String filename = "MangeFriend"+uid+"userFriend.txt";
         try {
             BufferedReader inputReader = new BufferedReader(
                     new InputStreamReader(openFileInput(filename)));

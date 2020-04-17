@@ -238,7 +238,7 @@ public class ManageFriend extends AppCompatActivity {
     }
 
     public void writeFile(String id, String email) {
-        String filename = "userFriend.txt";
+        String filename = "MangeFriend"+id+"userFriend.txt";
         String sid = id + ":";
         String semail = email + "\n";
         FileOutputStream outputStream;
