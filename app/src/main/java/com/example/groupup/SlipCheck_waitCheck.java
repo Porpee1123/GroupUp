@@ -46,6 +46,7 @@ Extend_MyHelper.checkInternetLost(this);
         slipCheck = findViewById(R.id.listView_slipCheck);
 
         getSlipCheck();
+        getSlipFinish();
     }
     public void getSlipCheck() {
         responseStr = new SlipCheck_waitCheck.ResponseStr();
@@ -110,6 +111,58 @@ Extend_MyHelper.checkInternetLost(this);
                         startActivity(intent);
                     }
                 });
+
+            }
+        }.start();
+
+    }
+    public void getSlipFinish() {
+        responseStr = new SlipCheck_waitCheck.ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+
+        String url = "http://www.groupupdb.com/android/gethomeattend.php";
+        url += "?sId=" + id;//รอเอาIdจากfirebase
+        Log.d("footer","id : id "+id) ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("events_name", c.getString("events_name"));
+                                map.put("states_name", c.getString("states_name"));
+                                MyArrList.add(map);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("footer","arraylist : id "+MyArrList.toString()) ;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
+        new CountDownTimer(500, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) { }
+
+            @Override
+            public void onFinish() {
+                Log.d("slipUpload","12346 : "+MyArrList.toString()) ;
+                SlipCheck_finish.sAdap = new SimpleAdapter(SlipCheck_waitCheck.this, MyArrList, R.layout.activity_slip_finish,
+                        new String[]{"events_name", "states_name"}, new int[]{R.id.rowTextViewName, R.id.rowTextViewTag});
 
             }
         }.start();

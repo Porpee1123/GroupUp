@@ -5,12 +5,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SimpleAdapter;
 import android.widget.TabHost;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HomeHead_SlipCheck extends AppCompatActivity {
     String id,eid,nameE,monS,monE,email;
@@ -33,13 +49,13 @@ Extend_MyHelper.checkInternetLost(this);
         searchText = findViewById(R.id.searchText);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
-        Intent intentWU = new Intent(this,SlipCheck_waitUpload.class);
-        intentWU.putExtra("id", id+"");
-        intentWU.putExtra("email", email+"");
-        intentWU.putExtra("nEvent", nameE+"");
-        intentWU.putExtra("mStart", monS+"");
-        intentWU.putExtra("mEnd", monE+"");
-        intentWU.putExtra("eid", eid+"");
+//        Intent intentWU = new Intent(this,SlipCheck_waitUpload.class);
+//        intentWU.putExtra("id", id+"");
+//        intentWU.putExtra("email", email+"");
+//        intentWU.putExtra("nEvent", nameE+"");
+//        intentWU.putExtra("mStart", monS+"");
+//        intentWU.putExtra("mEnd", monE+"");
+//        intentWU.putExtra("eid", eid+"");
         Intent intentWC = new Intent(this,SlipCheck_waitCheck.class);
         intentWC.putExtra("id", id+"");
         intentWC.putExtra("email", email+"");
@@ -54,17 +70,17 @@ Extend_MyHelper.checkInternetLost(this);
         intentFi.putExtra("mStart", monS+"");
         intentFi.putExtra("mEnd", monE+"");
         intentFi.putExtra("eid", eid+"");
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
-                .setIndicator("รอดำเนินการ\nอัปโหลด")
-                .setContent(intentWU);
+//        TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
+//                .setIndicator("รอดำเนินการ\nอัปโหลด")
+//                .setContent(intentWU);
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
-                .setIndicator("รอดำเนินการ\nตรวจสอบ")
+                .setIndicator("ส่งสลิปแล้ว")
                 .setContent(intentWC);
         TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab2")
-                .setIndicator("อัปโหลด\nเสร็จสิ้น")
+                .setIndicator("ดำเนินการเสร็จสิ้น")
                 .setContent(intentFi);
 
-        tabHost.addTab(tabSpec);
+//        tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
         tabHost.addTab(tabSpec3);
         tabHost.getTabWidget()
@@ -112,7 +128,7 @@ Extend_MyHelper.checkInternetLost(this);
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 //                Log.d("arry",nameAttend.toString());
                 Log.d("arry","s "+s);
-                SlipCheck_waitUpload.sAdap.getFilter().filter(s);
+//                SlipCheck_waitUpload.sAdap.getFilter().filter(s);
                 SlipCheck_waitCheck.sAdap.getFilter().filter(s);
                 SlipCheck_finish.sAdap.getFilter().filter(s);
             }
@@ -133,4 +149,5 @@ Extend_MyHelper.checkInternetLost(this);
         intent.putExtra("tab",0+"");
         startActivity(intent);
     }
+
 }

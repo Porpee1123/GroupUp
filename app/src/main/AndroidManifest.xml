@@ -41,7 +41,6 @@
         <activity android:name=".Head_Date" />
         <activity android:name=".SlipCheck_finish" />
         <activity android:name=".SlipCheck_waitCheck" />
-        <activity android:name=".SlipCheck_waitUpload" />
         <activity android:name=".Vote_place" />
         <activity android:name=".Vote_date_and_time" />
         <activity android:name=".ManageFriend" />
