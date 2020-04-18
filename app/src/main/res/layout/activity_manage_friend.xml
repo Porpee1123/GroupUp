@@ -105,6 +105,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:backgroundTint="#FFFFFF"
                     android:ems="15"
                     android:hint="@string/search"
                     android:inputType="textPersonName" />

@@ -115,8 +115,8 @@ Extend_MyHelper.checkInternetLost(this);
                 Log.d("arry",nameAttend.toString());
                 Log.d("arry","s "+s);
 //                (Home.this).adapterAttend.getFilter().filter(s);
-//                InviteFriend_Attendant.myItemsListAdapter.getFilter().filter(s);
-//                InviteFriend_Head.myItemsListAdapter.getFilter().filter(s);
+//               InviteFriend_Attendant.myItemsListAdapter.getFilter().filter(s);
+//               InviteFriend_Head.myItemsListAdapter.getFilter().filter(s);
             }
 
             @Override

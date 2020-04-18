@@ -66,6 +66,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/frame"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -73,7 +77,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/frame"
                     android:orientation="horizontal">
 
                     <EditText
@@ -81,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif"
+                        android:backgroundTint="#FFFFFF"
                         android:hint="@string/search_friends"
                         android:imeOptions="actionSend"
                         android:inputType="textPersonName"
@@ -102,9 +105,9 @@
                     android:id="@+id/searchQrcodebtn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="#FFFFFF"
                     app:srcCompat="@drawable/ic_qr_code" />
             </LinearLayout>
 

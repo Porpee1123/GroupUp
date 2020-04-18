@@ -43,15 +43,13 @@ public class HomeHead_Theme extends AppCompatActivity {
     String id, eid, nameE, monS, monE, email, transId;
     ArrayList<String> themeSelect = new ArrayList<>();
     Button b, btn_con;
-    LinearLayout lShort, lCus, lSearch;
+    LinearLayout lShort, lCus;
     ScrollView scrollView;
     ImageView img_minimal, img_classic, img_buffet, img_river, img_karaoke, img_sky, img_kid;
     boolean checkVisible;
     ArrayList<String> nameType, idType;
     CheckBox cafe, coffee, river, karaoke, clubs, pub, wine, night, vegeterian, hotelBuf, rooftop, izakaya, dessert, alacarte, seafood, steak, iceCream, bakery,
             bbq, shabu, buffet, cleanFood, thaiBbq, pizza, sushi, burger, ramen, dimsum, vegan, veget, original, bar, outdoor, cozy, family, minimal, warm, child;
-    EditText searchText;
-    TextHighlighter textHighlighter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +64,10 @@ public class HomeHead_Theme extends AppCompatActivity {
         monE = getIntent().getStringExtra("mEnd");
         lShort = findViewById(R.id.linear_shortcut);
         lCus = findViewById(R.id.linear_custom);
-        lSearch = findViewById(R.id.linear_search);
         b = findViewById(R.id.btn_customTheme);
         btn_con = findViewById(R.id.btn_confirmCustom);
         scrollView = findViewById(R.id.scroll_theme);
-        searchText = findViewById(R.id.searchText);
         lCus.setVisibility(View.GONE);
-        lSearch.setVisibility(View.GONE);
         btn_con.setVisibility(View.GONE);
         img_minimal = findViewById(R.id.theme_minimal);
         img_classic = findViewById(R.id.theme_classic);
@@ -82,7 +77,6 @@ public class HomeHead_Theme extends AppCompatActivity {
         img_sky = findViewById(R.id.theme_sky);
         img_kid = findViewById(R.id.theme_kid);
         checkVisible = true;//close custom
-        searchText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         getTransIDByTrans(id, eid, "3");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +137,6 @@ public class HomeHead_Theme extends AppCompatActivity {
                 Log.d("themeSelect", "Remove : " + themeSelect.toString());
             }
         });
-        search();
 
     }
 
@@ -776,35 +769,6 @@ public class HomeHead_Theme extends AppCompatActivity {
 //        Log.d("themeSelect","Remove : "+themeSelect.toString());
     }
 
-    public void search() {
-        // Log.d("arry",nameAttend.toString());
-
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //               Log.d("arry",nameAttend.toString());
-                //               Log.d("arry","s "+s);
-                textHighlighter = new TextHighlighter();
-
-                textHighlighter.setBackgroundColor(Color.parseColor("#FFED54"))
-                        .setForegroundColor(Color.RED)
-                        .addTarget(cafe).addTarget(coffee).addTarget(pub).addTarget(river).addTarget(karaoke).addTarget(clubs).addTarget(pub).addTarget(wine).addTarget(night).addTarget(vegeterian)
-                        .addTarget(hotelBuf).addTarget(rooftop).addTarget(izakaya).addTarget(dessert).addTarget(alacarte).addTarget(seafood).addTarget(steak).addTarget(iceCream).addTarget(bakery)
-                        .addTarget(bbq).addTarget(shabu).addTarget(buffet).addTarget(cleanFood).addTarget(thaiBbq).addTarget(pizza).addTarget(sushi).addTarget(burger).addTarget(ramen).addTarget(dimsum)
-                        .addTarget(vegan).addTarget(veget).addTarget(original).addTarget(bar).addTarget(outdoor).addTarget(cozy).addTarget(family).addTarget(minimal).addTarget(warm).addTarget(child)
-                        .highlight(searchText.getText().toString(), TextHighlighter.BASE_MATCHER);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-    }
 
     public void backAppoint(View v) {
         Intent intent = new Intent(HomeHead_Theme.this, HomeHead_Appointment.class);
@@ -822,7 +786,6 @@ public class HomeHead_Theme extends AppCompatActivity {
         if (checkVisible) {//show custom
             lCus.setVisibility(View.VISIBLE);
             lShort.setVisibility(View.GONE);
-            lSearch.setVisibility(View.VISIBLE);
             btn_con.setVisibility(View.VISIBLE);
             b.setText(R.string.group_theme);
             scrollView.setScrollY(0);
@@ -831,7 +794,6 @@ public class HomeHead_Theme extends AppCompatActivity {
         } else {//show group
             lCus.setVisibility(View.GONE);
             lShort.setVisibility(View.VISIBLE);
-            lSearch.setVisibility(View.GONE);
             btn_con.setVisibility(View.GONE);
             b.setText(R.string.custom);
             checkVisible = true;
@@ -913,7 +875,6 @@ public class HomeHead_Theme extends AppCompatActivity {
                     public void onClick(View v) {
                         lShort.setVisibility(View.GONE);
                         lCus.setVisibility(View.VISIBLE);
-                        lSearch.setVisibility(View.VISIBLE);
                         btn_con.setVisibility(View.VISIBLE);
                         b.setText(R.string.group_theme);
                         checkVisible = false;

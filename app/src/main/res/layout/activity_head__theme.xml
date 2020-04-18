@@ -80,6 +80,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:backgroundTint="#FFFFFF"
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:hint="@string/search"

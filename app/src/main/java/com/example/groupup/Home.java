@@ -3,6 +3,7 @@ package com.example.groupup;
 import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -40,6 +41,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.xeoh.android.texthighlighter.TextHighlighter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +69,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     static ProgressDialog progressDialog;
+//    TextHighlighter textHighlighter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,10 +239,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d("arry",nameAttend.toString());
-                Log.d("arry","s "+s);
+//                Log.d("arry",nameAttend.toString());
+//                Log.d("arry","s "+s);
+//                textHighlighter = new TextHighlighter();
                 Home_Listview_Attendant.sAdapAttend.getFilter().filter(s);
                 Home_Listview_Head.sAdapHead.getFilter().filter(s);
+
+//                textHighlighter.setBackgroundColor(Color.parseColor("#FFED54"))
+//                        .setForegroundColor(Color.RED)
+//                        .addTarget(cafe).highlight(searchText.getText().toString(), TextHighlighter.BASE_MATCHER);
             }
             @Override
             public void afterTextChanged(Editable s) { }
