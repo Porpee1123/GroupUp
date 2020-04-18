@@ -1531,7 +1531,7 @@ public class Manage_calendar extends AppCompatActivity {
         date1 = "";
         date2 = "";
         CutStringDateForSaveDB(date);
-        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
         long dt = Date.parse(date);
         Date d = new Date(dt);
@@ -1575,7 +1575,7 @@ public class Manage_calendar extends AppCompatActivity {
         date1 = "";
         date2 = "";
         CutStringDateForSaveDB(date);
-        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy:HH");
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat simpledate = new SimpleDateFormat("yyyy-MM-dd");
         long dt = Date.parse(date);
         Date d = new Date(dt);
