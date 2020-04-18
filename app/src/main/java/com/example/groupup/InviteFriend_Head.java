@@ -344,19 +344,19 @@ Extend_MyHelper.checkInternetLost(this);
         }
         AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
         AsyncTaskUploadClassOBJ.execute();
-        String str = "Check items:\n";
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).isChecked()) {
-                String fid = items.get(i).Id;
-                str += i + " " + items.get(i).ItemString + "-" + fid + "\n";
-                Log.d("friend", "item : " + items.get(i).ItemString + "");
-
-                sentInviteToFriend(fid, eid);
-            }
-        }
-        Log.d("friend", str);
-
-        Toast.makeText(InviteFriend_Head.this, str, Toast.LENGTH_LONG).show();
+//        String str = "Check items:\n";
+//        for (int i = 0; i < items.size(); i++) {
+//            if (items.get(i).isChecked()) {
+//                String fid = items.get(i).Id;
+//                str += i + " " + items.get(i).ItemString + "-" + fid + "\n";
+//                Log.d("friend", "item : " + items.get(i).ItemString + "");
+//
+//                sentInviteToFriend(fid, eid);
+//            }
+//        }
+//        Log.d("friend", str);
+//
+//        Toast.makeText(InviteFriend_Head.this, str, Toast.LENGTH_LONG).show();
     }
 
     public void getType() {
