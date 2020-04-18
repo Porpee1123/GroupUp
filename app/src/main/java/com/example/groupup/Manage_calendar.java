@@ -346,7 +346,7 @@ public class Manage_calendar extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (ContextCompat.checkSelfPermission(Manage_calendar.this, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(Manage_calendar.this, "You have already permission", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Manage_calendar.this, "You have already permission", Toast.LENGTH_SHORT).show();
                     SaveCalenGettoDB();
 
                 } else {
@@ -360,7 +360,6 @@ public class Manage_calendar extends AppCompatActivity {
             public void onClick(View v) {
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
                 viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
-                viewDetail.setMessage("เมื่อยืนยันแล้วคุณจะไม่สามารถแก้ไขได้");
                 viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -769,15 +768,15 @@ public class Manage_calendar extends AppCompatActivity {
     public void requestCalendarPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CALENDAR)) {
             new AlertDialog.Builder(this)
-                    .setTitle("Permission needed")
-                    .setMessage("This permission is needed for access the calendar")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setTitle("ต้องการการเข้าถึง")
+                    .setMessage("ขออนุญาติเข้าถึงปฏิทินในโทรสัพท์")
+                    .setPositiveButton(R.string.btn, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(Manage_calendar.this, new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_PERMISSION_CODE);
                             Toast.makeText(Manage_calendar.this, "Plese put Get Calendar Again", Toast.LENGTH_SHORT).show();
                         }
-                    }).setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(R.string.btn_cancle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -1368,7 +1367,7 @@ public class Manage_calendar extends AppCompatActivity {
     public void SaveCalenGettoDB() {
 
         final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Manage_calendar.this).create();
-        viewDetail.setTitle("Confirm Add Calendar to DataBase");
+        viewDetail.setTitle("ยืนยันการเพิ่มวันที่เข้าสู่ปฏิทิน");
 
         viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
             @Override

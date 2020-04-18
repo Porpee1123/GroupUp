@@ -198,7 +198,19 @@ Extend_MyHelper.checkInternetLost(this);
 
                 super.onPostExecute(string1);
                 // Dismiss the progress dialog after done uploading.
-                progressDialog.dismiss();
+
+//                shortCutAddFriend();
+//                setItemsListView();
+                new CountDownTimer(300, 300) {
+                    public void onFinish() {
+                        initItems();
+                        shortCutAddFriend();
+                        setItemsListView();
+                        progressDialog.dismiss();
+                    }
+                    public void onTick(long millisUntilFinished) {}
+                }.start();
+
                 // Printing uploading success message coming from server on android app.
 //                Toast.makeText(InviteFriend_Attendant.this,string1,Toast.LENGTH_LONG).show();
             }
@@ -208,6 +220,7 @@ Extend_MyHelper.checkInternetLost(this);
                 getType();
                 getFriend();
                 getFriendIDByTrans(uid, eid, 3 + "");
+                initItems();
                 return "Finish";
             }
         }
@@ -393,7 +406,7 @@ Extend_MyHelper.checkInternetLost(this);
             Log.d("friend", "i : " + i + "");
             final Button b = new Button(this);
             ImageView v = new ImageView(this);
-            if (typefriend.get(i).equals("ทั้งหมด")) {
+            if (typefriend.get(i).equals("ALL")) {
                 b.setBackgroundResource(R.drawable.all_button);
             } else if (typefriend.get(i).equals("เพื่อนอนุบาล")) {
                 b.setBackgroundResource(R.drawable.red_button);

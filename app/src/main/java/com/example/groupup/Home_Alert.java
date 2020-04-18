@@ -34,25 +34,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Home_Alert extends AppCompatActivity {
-    String id="",email="";
+    String id = "", email = "";
     ListView listViewInvite;
     Home_Alert.ResponseStr responseStr = new Home_Alert.ResponseStr();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_alert);
         id = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         listViewInvite = findViewById(R.id.listView_slipCheck);
         getEventInvitation();
     }
+
     public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
-        in.putExtra("email", email+"");
+        in.putExtra("email", email + "");
         startActivity(in);
 //        addNotification();
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -116,7 +119,7 @@ Extend_MyHelper.checkInternetLost(this);
                 listViewInvite.setVisibility(View.VISIBLE);
                 SimpleAdapter sAdap;
                 sAdap = new SimpleAdapter(Home_Alert.this, MyArrList, R.layout.activity_invitation_home,
-                        new String[]{"event_creater", "events_name", "events_month_start", "events_month_end","pri_name"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end,R.id.col_pri});
+                        new String[]{"event_creater", "events_name", "events_month_start", "events_month_end", "pri_name"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end, R.id.col_pri});
                 listViewInvite.setAdapter(sAdap);
                 final AlertDialog viewDetail = new AlertDialog.Builder(Home_Alert.this).create();
 
@@ -124,29 +127,31 @@ Extend_MyHelper.checkInternetLost(this);
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                         String sCreater = MyArrList.get(position).get("event_creater").toString();
                         String sName = MyArrList.get(position).get("events_name").toString();
+                        final String eid = MyArrList.get(position).get("events_id").toString();
                         String sSta = MyArrList.get(position).get("events_month_start").toString();
                         String sEnd = MyArrList.get(position).get("events_month_end").toString();
                         String sPri = MyArrList.get(position).get("pri_name").toString();
                         String sTim = sSta + " - " + sEnd;
                         final String tranId = MyArrList.get(position).get("trans_id").toString();
                         viewDetail.setIcon(android.R.drawable.btn_star_big_on);
-                        viewDetail.setTitle("รายละเอียด"+tranId);
+                        viewDetail.setTitle("รายละเอียด" + tranId);
                         viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
                                 + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n"
-                                +"สถานะ : " + sPri + "\n");
+                                + "สถานะ : " + sPri + "\n");
 
 
-                        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE,"เอาไว้ก่อน", new DialogInterface.OnClickListener() {
+                        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เอาไว้ก่อน", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
                             }
                         });
-                        viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"เข้าร่วม", new DialogInterface.OnClickListener() {
+                        viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "เข้าร่วม", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                UpdateStateToDb(tranId,3+"");
+                                UpdateStateToDb(tranId, 3 + "");
+                                addEventFriend(id,eid);
 
                             }
                         });
@@ -169,6 +174,7 @@ Extend_MyHelper.checkInternetLost(this);
         }.start();
 
     }
+
     private void addNotification() {
         // Builds your notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -185,15 +191,39 @@ Extend_MyHelper.checkInternetLost(this);
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }
-    public void UpdateStateToDb(String transId,String statusId){
+
+    public void UpdateStateToDb(String transId, String statusId) {
         String url = "http://www.groupupdb.com/android/acceptEvent.php";
         url += "?tId=" + transId;
-        url += "&stId=" +statusId;
+        url += "&stId=" + statusId;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        startActivity(getIntent());
+    }
+
+    public void addEventFriend(String id, String eid) {
+        String url = "http://www.groupupdb.com/android/adduserevent.php";
+        url += "?sId=" + id;
+        url += "&eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updateeventfrienddb", response);
 //                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
                     }
                 },
