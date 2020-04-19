@@ -234,7 +234,7 @@ public class Manage_Account extends AppCompatActivity {
                 protected void onPreExecute() {
 
                     super.onPreExecute();
-
+                    name = txtName.getText().toString();
                     progressDialog = ProgressDialog.show(Manage_Account.this, "Image is Uploading", "Please Wait", false, false);
                 }
 
