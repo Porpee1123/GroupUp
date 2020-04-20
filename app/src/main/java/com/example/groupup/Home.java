@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,10 +63,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     ResponseStr responseStr = new ResponseStr();
     TextView hName;
     TextView hEmail;
+    ImageView img ;
     EditText searchText;
     static ArrayList<String> nameHead =new ArrayList<>();
     static ArrayList<String> nameAttend =new ArrayList<>();
-    String name = "", id = "", email = "";
+    String name = "", id = "", email = "",image ="";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     static ProgressDialog progressDialog;
@@ -90,6 +92,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
+        img = v.findViewById(R.id.image_user);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
         progressDialog = new ProgressDialog(Home.this);
@@ -293,6 +296,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Intent intent = new Intent(Home.this, Manage_Account.class);
         intent.putExtra("email", email + "");
         intent.putExtra("name", name + "");
+        intent.putExtra("photo", image + "");
         startActivity(intent);
     }
 
@@ -344,10 +348,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             Log.d("footer", MyArrList.get(0).get("user_id"));
                             Log.d("footer", MyArrList.get(0).get("user_names"));
                             Log.d("footer", MyArrList.get(0).get("user_email"));
+                            Log.d("footer", MyArrList.get(0).get("user_photo"));
                             hName.setText(MyArrList.get(0).get("user_names"));
                             name = MyArrList.get(0).get("user_names");
                             id = MyArrList.get(0).get("user_id");
+                            image = MyArrList.get(0).get("user_photo");
                             hEmail.setText(MyArrList.get(0).get("user_email"));
+                            Log.d("imageview",image);
+                            new Extend_MyHelper.SendHttpRequestTask(image,img,250).execute();
 //                            writeFile(id,name,email);
                         } catch (JSONException e) {
                             e.printStackTrace();

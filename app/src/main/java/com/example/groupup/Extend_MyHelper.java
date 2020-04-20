@@ -1,9 +1,14 @@
 package com.example.groupup;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -16,17 +21,33 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Extend_MyHelper {
-    public static void checkInternetLost(Context context){
+    public static void checkInternetLost(Context context) {
         //////////////////////check status internet///////////////////////
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -38,7 +59,8 @@ public class Extend_MyHelper {
         }
         //////////////////////check status internet///////////////////////
     }
-    public static ArrayList getEventStatusPriorty(String uid,String eid,String pri,Context context){
+
+    public static ArrayList getEventStatusPriorty(String uid, String eid, String pri, Context context) {
         final ArrayList allId = new ArrayList(); //format = eid:statusid:priority->0:1:2
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getidintran.php";
@@ -84,11 +106,14 @@ public class Extend_MyHelper {
         queue.add(stringRequest);
         return allId;
     }
+
     public static void deleteCache(Context context) {
         try {
             File dir = context.getCacheDir();
             deleteDir(dir);
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean deleteDir(File dir) {
@@ -101,10 +126,56 @@ public class Extend_MyHelper {
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;
         }
     }
+   public static class SendHttpRequestTask extends AsyncTask<String, Void, Bitmap> {
+        String urlImg ;
+        ImageView imb;
+        float imgSize;
+        public SendHttpRequestTask(String url ,ImageView image,float size){
+            urlImg=url;
+            imb=image;
+            imgSize =size;
+        }
+            @Override
+            protected Bitmap doInBackground(String... params) {
+
+                try {
+                    URL url = new URL(urlImg);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                    Bitmap lbp = scaleDown(myBitmap, imgSize, false);
+                    Log.d("http123", connection.toString());
+                    return lbp;
+
+                } catch (Exception e) {
+                    Log.d("http123", e.getMessage());
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result) {
+                imb.setImageBitmap(result);
+            }
+    }
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
+    }
+
 }

@@ -53,8 +53,9 @@ public class Manage_Account extends AppCompatActivity {
     boolean check = true;
     ProgressDialog progressDialog;
     String ServerUploadPath = "http://www.groupupdb.com/android/manageaccount.php";
-    String name, email, id;
-    EditText txtName,txtEmail;
+    String name, email, id, photo;
+    EditText txtName, txtEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +64,7 @@ public class Manage_Account extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
+        photo = getIntent().getStringExtra("photo");
         txtEmail = findViewById(R.id.email);
         txtName = findViewById(R.id.name);
         SelectImageGallery = findViewById(R.id.addPicture);
@@ -85,12 +87,15 @@ public class Manage_Account extends AppCompatActivity {
                 }
             }
         });
+        new Extend_MyHelper.SendHttpRequestTask(photo,SelectImageGallery,400).execute();
+
         EditText edt_name = findViewById(R.id.name);
         EditText edt_email = findViewById(R.id.email);
         edt_name.setText(name);
         edt_email.setText(email);
         edt_email.setFocusable(false);
         edt_email.setEnabled(false);
+
 
         final Button bcon = (Button) findViewById(R.id.account_confirm);
         bcon.setOnClickListener(new View.OnClickListener() {
@@ -204,7 +209,6 @@ public class Manage_Account extends AppCompatActivity {
 
                     // Dismiss the progress dialog after done uploading.
                     progressDialog.dismiss();
-
 
 
                     // Printing uploading success message coming from server on android app.
