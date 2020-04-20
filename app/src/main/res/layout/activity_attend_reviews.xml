@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
-                android:background="@color/classicBlue"
+                android:background="@drawable/button"
                 android:text="Button"
                 android:textColor="#FFFFFF" />
         </LinearLayout>

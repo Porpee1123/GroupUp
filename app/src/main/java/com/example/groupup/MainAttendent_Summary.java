@@ -3,6 +3,7 @@ package com.example.groupup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class MainAttendent_Summary extends AppCompatActivity {
         btn_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                sumJob();
             }
         });
         btn_qrcode.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +51,14 @@ public class MainAttendent_Summary extends AppCompatActivity {
                 viewDetail.show();
             }
         });
+    }
+
+    public void sumJob() {
+        Intent intent = new Intent(MainAttendent_Summary.this, JobSummary.class);
+        intent.putExtra("id",id+"");
+        intent.putExtra("eid",eId+"");
+        intent.putExtra("nameEvent",eName+"");
+        startActivity(intent);
     }
 
     public void qrcodeReader(String data,ImageView myqr) {

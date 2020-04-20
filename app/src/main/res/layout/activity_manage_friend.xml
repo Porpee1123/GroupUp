@@ -126,9 +126,9 @@
                     android:id="@+id/textView23"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/frame"
+                    android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="Type Friend : "
+                    android:text="@string/type_friend"
                     android:textSize="18sp" />
 
                 <Spinner

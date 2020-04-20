@@ -52,8 +52,10 @@
             android:id="@+id/slide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/button"
             android:gravity="center"
-            android:text="confirm" />
+            android:text="@string/btn"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 
