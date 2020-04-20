@@ -381,7 +381,7 @@ Extend_MyHelper.checkInternetLost(this);
 
                             }
                             //set Header menu name email;
-                            typefriend.add("ALL");
+                            typefriend.add("ทั้งหมด");
                             countType = MyArrList.size();
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 typefriend.add(MyArrList.get(i).get("type_name"));
@@ -409,7 +409,7 @@ Extend_MyHelper.checkInternetLost(this);
             Log.d("friend", "i : " + i + "");
             final Button b = new Button(this);
             ImageView v = new ImageView(this);
-            if (typefriend.get(i).equals("ALL")) {
+            if (typefriend.get(i).equals("ทั้งหมด")) {
                 b.setBackgroundResource(R.drawable.all_button);
             } else if (typefriend.get(i).equals("เพื่อนอนุบาล")) {
                 b.setBackgroundResource(R.drawable.red_button);
@@ -433,7 +433,7 @@ Extend_MyHelper.checkInternetLost(this);
                 @Override
                 public void onClick(View view) {
                     Log.d("friend", "btn : " + b.getText() + "");
-                    if (b.getText().equals("ALL")) {
+                    if (b.getText().equals("ทั้งหมด")) {
                         b.setAlpha((float) 0.5);
                         showAllCheckboxClick();
                         new CountDownTimer(200, 200) {
@@ -451,6 +451,16 @@ Extend_MyHelper.checkInternetLost(this);
                     } else {
                         b.setAlpha((float) 0.5);
                         getFriendType(b.getText().toString());
+                        new CountDownTimer(200, 200) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                b.setAlpha(1);
+                            }
+                        }.start();
                     }
                 }
             });

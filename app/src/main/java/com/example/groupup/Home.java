@@ -95,6 +95,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         img = v.findViewById(R.id.image_user);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
+        image = getIntent().getStringExtra("id");
+        new Extend_MyHelper.SendHttpRequestTask(image,img,250).execute();
         progressDialog = new ProgressDialog(Home.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");

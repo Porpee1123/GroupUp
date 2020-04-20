@@ -880,6 +880,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                         checkVisible = false;
                         Log.d("idType", idType.toString());
                         checkCustomTheme(tyid);
+                        viewDetail.dismiss();
                     }
                 });
                 btn_confirm.setOnClickListener(new View.OnClickListener() {

@@ -102,10 +102,12 @@ public class Manage_Account extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ImageUploadToServerFunction();
+                name = txtName.getText().toString();
                 Intent in = new Intent(Manage_Account.this, Home.class);
                 in.putExtra("id", id + "");
                 in.putExtra("name", name + "");
                 in.putExtra("email", email + "");
+                in.putExtra("photo", "http://www.groupupdb.com/android/images/"+id);
                 startActivity(in);
             }
         });
