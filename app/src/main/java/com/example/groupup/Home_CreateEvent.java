@@ -1,7 +1,9 @@
 package com.example.groupup;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,19 +26,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class Home_CreateEvent extends AppCompatActivity {
-    String name="",id="",email="";
-    String nEvent,mStart,mEnd;
-    int startId,endId;
+    String name = "", id = "", email = "";
+    String nEvent, mStart, mEnd,eid;
+    int startId, endId;
+    Spinner spms, spme;
+    ArrayList<String> dateLange;
+    ProgressDialog progressDialog ;
+    private RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_create_group);
+        dateLange = new ArrayList<>();
         //Spinner
         Spinner sp = findViewById(R.id.spin_wait);
         ArrayAdapter<CharSequence> adp = ArrayAdapter.createFromResource(this, R.array.number, android.R.layout.simple_spinner_item);
@@ -44,17 +56,17 @@ Extend_MyHelper.checkInternetLost(this);
         sp.setAdapter(adp);
         sp.setSelection(1);
         //Spinner month start
-        Spinner spms = findViewById(R.id.spin_start);
-        Spinner spme = findViewById(R.id.spin_end);
+        spms = findViewById(R.id.spin_start);
+        spme = findViewById(R.id.spin_end);
         Date date = new Date();
-        int sdate,edate;
-        sdate = date.getMonth()+1;
-        edate = date.getMonth()+4;
-        if (sdate>11){
-            sdate-=11;
+        int sdate, edate;
+        sdate = date.getMonth() + 1;
+        edate = date.getMonth() + 4;
+        if (sdate > 11) {
+            sdate -= 11;
         }
-        if (edate>11){
-            edate-=11;
+        if (edate > 11) {
+            edate -= 11;
         }
         ArrayAdapter<CharSequence> adm = ArrayAdapter.createFromResource(this, R.array.month, android.R.layout.simple_spinner_item);
         adm.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -62,29 +74,51 @@ Extend_MyHelper.checkInternetLost(this);
         spme.setAdapter(adm);
         spms.setSelection(sdate);
         spme.setSelection(edate);
-
-//        Log.d("array",some_array[4]+"");
-        //start 3 end 2 คือ 3 2020 - 2 2021
         Button btn_create = findViewById(R.id.newGroup_confirm);
+
+
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int finalEdate = spme.getSelectedItemPosition();
+                int finalSdate = spms.getSelectedItemPosition();
+
+                if (finalSdate <= finalEdate) {
+                    int rangemonth = (finalEdate - finalSdate) + 1;
+                    Log.d("rangemonth", " start : " + finalSdate + " end : " + finalEdate);
+                    Log.d("rangemonth", "range : " + rangemonth);
+                    Calendar cal = Calendar.getInstance();
+                    Date today1 = cal.getTime();
+                    cal.add(Calendar.MONTH, rangemonth);
+                    Date nextYear1 = cal.getTime();
+                    Log.d("rangemonth", " today1 : " + today1 + " nextYear1 : " + nextYear1);
+                    getDatesBetweenInYear(today1, nextYear1);
+                    Log.d("rangemonth", "dateLange : " + dateLange.size() + " " + dateLange.toString());
+
+                } else {
+                    int rangemonth = (finalEdate - finalSdate) + 13;
+                    Log.d("rangemonth", " start : " + finalSdate + " end : " + finalEdate);
+                    Log.d("rangemonth", "range : " + rangemonth);
+                    Calendar cal = Calendar.getInstance();
+                    Date today1 = cal.getTime();
+                    cal.add(Calendar.MONTH, rangemonth);
+                    Date nextYear1 = cal.getTime();
+                    Log.d("rangemonth", " today1 : " + today1 + " nextYear1 : " + nextYear1);
+                    getDatesBetweenInYear(today1, nextYear1);
+                    Log.d("rangemonth", "dateLange : " + dateLange.size() + " " + dateLange.toString());
+
+                }
                 if (saveData()) {
-                    nextNewGroup();
                 }
             }
         });
         name = getIntent().getStringExtra("name");
         id = getIntent().getStringExtra("id");
-        email =getIntent().getStringExtra("email");
-        Log.d("footer",name);
-        Log.d("footer",id);
-        Log.d("footer",email);
-
+        email = getIntent().getStringExtra("email");
     }
 
     public boolean saveData() {
-        final EditText txtName = (EditText) findViewById(R.id.title);
+        final EditText txtName = findViewById(R.id.title);
         final Spinner spst = findViewById(R.id.spin_start);
         final Spinner sped = findViewById(R.id.spin_end);
         final Spinner spwa = findViewById(R.id.spin_wait);
@@ -110,20 +144,26 @@ Extend_MyHelper.checkInternetLost(this);
             sped.requestFocus();
             return false;
         }
+        if (spst.getSelectedItemId() == sped.getSelectedItemId()) {
+            dialog.setMessage("เดือนเริ่มต้นและสิ้นสุดไม่สามารถเป็นเดือนเดียวกันได้");
+            dialog.show();
+            sped.requestFocus();
+            return false;
+        }
         String url = "http://www.groupupdb.com/android/creategroup.php";
         url += "?sName=" + txtName.getText().toString();
-        url += "&sStart=" + spst.getSelectedItemPosition()+"";
-        url += "&sEnd=" + sped.getSelectedItemPosition()+"";
+        url += "&sStart=" + spst.getSelectedItemPosition() + "";
+        url += "&sEnd=" + sped.getSelectedItemPosition() + "";
         url += "&sWait=" + spwa.getSelectedItem().toString();
-        url += "&sProvi=" +name;
-        url += "&sProid=" +id;
+        url += "&sProvi=" + name;
+        url += "&sProid=" + id;
         String[] some_array = getResources().getStringArray(R.array.month);
-        nEvent =txtName.getText().toString();
+        nEvent = txtName.getText().toString();
         startId = spst.getSelectedItemPosition();
         endId = sped.getSelectedItemPosition();
         mStart = some_array[startId];
-        mEnd =some_array[endId];
-        Log.d("footer",url);
+        mEnd = some_array[endId];
+        Log.d("footer", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -141,16 +181,45 @@ Extend_MyHelper.checkInternetLost(this);
                                 strError = c.getString("Error");
                             }
                             if (strStatusID.equals("0")) {
+
 //                                dialog.setMessage(strError);
 //                                dialog.show();
                             } else {
 //                                dialog.setTitle(R.string.submit_title);
 //                                dialog.setMessage(R.string.submit_result);
 //                                dialog.show();
-                                txtName.setText("");
-                                spst.setSelection(0);
-                                sped.setSelection(0);
-                                spwa.setSelection(0);
+                                eid = strError;
+                                class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+                                    @Override
+                                    protected void onPreExecute() {
+
+                                        super.onPreExecute();
+
+                                        progressDialog = ProgressDialog.show(Home_CreateEvent.this, " กำลังสร้างกลุ่ม", "กรุณารอสักครู่", false, false);
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(String string1) {
+
+                                        super.onPostExecute(string1);
+                                        txtName.setText("");
+                                        spst.setSelection(0);
+                                        sped.setSelection(0);
+                                        spwa.setSelection(0);
+                                        nextNewGroup();
+                                        progressDialog.dismiss();
+                                    }
+
+                                    @Override
+                                    protected String doInBackground(Void... params) {
+                                        addDateAvaliableTodb();
+                                        return "Finish";
+                                    }
+                                }
+                                AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+                                AsyncTaskUploadClassOBJ.execute();
+
+                                Log.d("rangemonth", "eid : " + eid.toString());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -166,12 +235,15 @@ Extend_MyHelper.checkInternetLost(this);
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+
+        Log.d("rangemonth", "queue : " + queue.getCache());
+        Log.d("rangemonth", "stringRequest : " + stringRequest.getErrorListener());
         return true;
     }
 
     public void backHome(View v) {
         Intent intent = new Intent(Home_CreateEvent.this, Home.class);
-        intent.putExtra("email", email+"");
+        intent.putExtra("email", email + "");
         startActivity(intent);
     }
 
@@ -181,15 +253,79 @@ Extend_MyHelper.checkInternetLost(this);
         final Spinner sped = findViewById(R.id.spin_end);
         startId = spst.getSelectedItemPosition();
         endId = sped.getSelectedItemPosition();
-        intent.putExtra("nameEvent",nEvent+"");
-        intent.putExtra("mStart",startId+"");
-        intent.putExtra("mEnd",endId+"");
-        intent.putExtra("id",id+"");
-        intent.putExtra("email",email+"");
-        intent.putExtra("tab",0+"");
-        intent.putExtra("create","create");
-        Log.d("inten12",nEvent+":"+startId+":"+endId+":"+id+":"+email);
+        intent.putExtra("nameEvent", nEvent + "");
+        intent.putExtra("mStart", startId + "");
+        intent.putExtra("mEnd", endId + "");
+        intent.putExtra("id", id + "");
+        intent.putExtra("email", email + "");
+        intent.putExtra("tab", 0 + "");
+        intent.putExtra("create", "create");
+        Log.d("inten12", nEvent + ":" + startId + ":" + endId + ":" + id + ":" + email);
         startActivity(intent);
     }
 
+    public void addDateAvaliableTodb() {
+        Log.d("url", "dateLange: " +dateLange.size());
+        for (int i = 0; i < dateLange.size(); i++) {
+            sentDateForCalToDB(dateLange.get(i), "0", "0", "0", "0");
+        }
+    }
+
+    public List<Date> getDatesBetweenInYear(Date startDate, Date endDate) {
+        List<Date> datesInRange = new ArrayList<>();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startDate);
+
+        Calendar endCalendar = new GregorianCalendar();
+        endCalendar.setTime(endDate);
+
+        while (calendar.before(endCalendar)) {
+            Date result = calendar.getTime();
+            datesInRange.add(result);
+            dateLange.add(result.toString());
+            calendar.add(Calendar.DATE, 1);
+        }
+        return datesInRange;
+    }
+    public void sentDateForCalToDB(String date, String morning, String late, String afternoon, String evening) {
+        Log.d("checkDB ", "dateString123 : " + date);
+        DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
+        long dt = Date.parse(date);
+        Date d = new Date(dt);
+        String dateCheck = simpleHour.format(d);
+        Log.d("checkDB ", "eid : " + eid);
+        String url = "http://www.groupupdb.com/android/adddateevent.php";
+        url += "?eId=" + eid+"";
+        url += "&sdc=" + dateCheck + "";
+        url += "&mor=" + morning + "";
+        url += "&lat=" + late + "";
+        url += "&aft=" + afternoon + "";
+        url += "&eve=" + evening + "";
+        Log.d("url",url);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Manage_calendar.this, response, Toast.LENGTH_LONG).show();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+        uploadData(stringRequest);
+    }
+    public void uploadData(StringRequest s) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        } else {
+            requestQueue.add(s);
+        }
+    }
 }
