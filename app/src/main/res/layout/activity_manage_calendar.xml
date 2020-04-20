@@ -65,6 +65,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -83,13 +84,21 @@
                 android:id="@+id/btnGetCalendar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/getCalen" />
+                android:layout_marginRight="5dp"
+                android:alpha="0.9"
+                android:background="@drawable/button"
+                android:text="@string/getCalen"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/btnDelCalendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/delCalen" />
+                android:alpha="0.6"
+                android:background="@drawable/button"
+                android:backgroundTint="@color/red"
+                android:text="@string/delCalen"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
         <com.squareup.timessquare.CalendarPickerView
             android:id="@+id/calendarPickerView"
@@ -161,7 +170,9 @@
             android:id="@+id/btn_confirmCalendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn" />
+            android:background="@drawable/button"
+            android:text="@string/btn"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

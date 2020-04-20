@@ -161,6 +161,16 @@
     <string name="delAll">delete friend \n all type</string>
     <string name="noteEvent">Note Event</string>
     <string name="sent">sent</string>
-
+    <string name="type_friend">Type Friend : </string>
+    <string name="dateApp">Appointment Date : </string>
+    <string name="timeApp">Appointment Time : </string>
+    <string name="placeApp">Appointment Place : </string>
+    <string name="gotoEvent">Number Of People go to Event : </string>
+    <string name="numberOfPeople">People</string>
+    <string name="uploadSlip">Upload a Money Slip : </string>
+    <string name="join">Join</string>
+    <string name="notJoin">Do Not Join</string>
+    <string name="after">After</string>
+    <string name="upload">Upload</string>
 
 </resources>

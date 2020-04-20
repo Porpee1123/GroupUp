@@ -33,7 +33,7 @@ public class Vote_place extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_vote_place);
         id = getIntent().getStringExtra("id");
         eid = getIntent().getStringExtra("eid");

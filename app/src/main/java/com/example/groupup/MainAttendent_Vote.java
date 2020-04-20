@@ -11,7 +11,7 @@ public class MainAttendent_Vote extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_attend_vote);
         id = getIntent().getStringExtra("id");
         eName = getIntent().getStringExtra("nameEvent");

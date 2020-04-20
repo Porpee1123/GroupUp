@@ -160,4 +160,15 @@
     <string name="delAll">ลบเพื่อน\nจากทั้งหมด</string>
     <string name="noteEvent">โน้ตกลุ่ม</string>
     <string name="sent">ส่ง</string>
+    <string name="type_friend">ประเภทของเพื่อน : </string>
+    <string name="dateApp">วันที่นัดหมาย : </string>
+    <string name="timeApp">เวลานัดหมาย : </string>
+    <string name="placeApp">สถานที่นัดหมาย : </string>
+    <string name="gotoEvent">จำนวนคนผู้เข้าร่วมงานตอนนี้ : </string>
+    <string name="numberOfPeople">คน</string>
+    <string name="uploadSlip">อัปโหลดสลิปการโอนเงิน : </string>
+    <string name="join">เข้าร่วม</string>
+    <string name="notJoin">ไม่เข้าร่วม</string>
+    <string name="after">ภายหลัง</string>
+    <string name="upload">อัปโหลด</string>
 </resources>

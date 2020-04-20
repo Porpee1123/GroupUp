@@ -6,19 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class Vote_date_and_time extends AppCompatActivity {
+public class JobSummary extends AppCompatActivity {
     String id="",eId="",eName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Extend_MyHelper.checkInternetLost(this);
-        setContentView(R.layout.activity_vote_date_and_time);
+        setContentView(R.layout.activity_job_summary);
         id = getIntent().getStringExtra("id");
         eId = getIntent().getStringExtra("eid");
         eName = getIntent().getStringExtra("nameEvent");
     }
-    public void backVote(View v) {
-        Intent intent = new Intent(Vote_date_and_time.this, MainAttendent.class);
+    public void backSum(View v) {
+        Intent intent = new Intent(JobSummary.this, MainAttendent.class);
         intent.putExtra("id",id+"");
         intent.putExtra("eid",eId+"");
         intent.putExtra("nameEvent",eName+"");
