@@ -40,13 +40,13 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
     public class Item {
         boolean checked;
-        ImageView ItemDrawable;
+        String ItemDrawable;
         String ItemString;
         String Id;
 
         //        Item(ImageView drawable, String t, boolean b){
-        Item(String t, boolean b, String i) {
-//            ItemDrawable = drawable;
+        Item(String t, boolean b, String i, String drawable) {
+            ItemDrawable = drawable;
             ItemString = t;
             checked = b;
             Id = i;
@@ -105,12 +105,13 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.rowCheckBox);
                 viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
                 viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextViewName);
+
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (InviteFriend_Attendant.ViewHolder) rowView.getTag();
             }
-
-//        viewHolder.icon.setImageBitmap(list.get(position).ItemDrawable);
+            new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
+//            viewHolder.icon.setImageBitmap(list.get(position).ItemDrawable);
             viewHolder.checkBox.setChecked(list.get(position).checked);
 
             final String itemStr = list.get(position).ItemString;
@@ -168,7 +169,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_invite_attendant);
         // LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear);
         // linearLayout.setBackgroundColor(Color.parseColor("#BCD0ED"));
@@ -186,11 +187,11 @@ Extend_MyHelper.checkInternetLost(this);
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         frientArray = new ArrayList<>();
-        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this,"Friend is Dowloading","Please Wait",false,false);
+                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this, "Friend is Dowloading", "Please Wait", false, false);
             }
 
             @Override
@@ -208,7 +209,9 @@ Extend_MyHelper.checkInternetLost(this);
                         setItemsListView();
                         progressDialog.dismiss();
                     }
-                    public void onTick(long millisUntilFinished) {}
+
+                    public void onTick(long millisUntilFinished) {
+                    }
                 }.start();
 
                 // Printing uploading success message coming from server on android app.
@@ -232,7 +235,9 @@ Extend_MyHelper.checkInternetLost(this);
                 shortCutAddFriend();
                 setItemsListView();
             }
-            public void onTick(long millisUntilFinished) {}
+
+            public void onTick(long millisUntilFinished) {
+            }
         }.start();
         btnConfirmAttendant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,9 +252,10 @@ Extend_MyHelper.checkInternetLost(this);
         for (int i = 0; i < frientArray.size(); i++) {
             String s = frientArray.get(i).get("friend_name");
             String id = frientArray.get(i).get("fid");
+            String path = frientArray.get(i).get("friend_image");
             boolean b = checkFriendAlreadysent(id);
 
-            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b, id);
+            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b, id, path);
             items.add(item);
         }
     }
@@ -271,6 +277,7 @@ Extend_MyHelper.checkInternetLost(this);
 
         String url = "http://www.groupupdb.com/android/getFriend.php";
         url += "?sId=" + uid;//รอเอาIdจากfirebase
+        Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -286,6 +293,7 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("friend_name", c.getString("friend_name"));
                                 map.put("friend_email", c.getString("friend_email"));
                                 map.put("type_name", c.getString("type_name"));
+                                map.put("friend_image", c.getString("friend_image"));
                                 map.put("fid", c.getString("fid"));
 
                                 MyArrList.add(map);
@@ -468,10 +476,12 @@ Extend_MyHelper.checkInternetLost(this);
         responseStr = new InviteFriend_Attendant.ResponseStr();
         final ArrayList<String> position = new ArrayList<>();
         final ArrayList<String> positionId = new ArrayList<>();
+        final ArrayList<String> positionImage = new ArrayList<>();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getfriendIntype.php";
         url += "?sId=" + uid;
         url += "&tname=" + typeName;
+        Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -486,13 +496,15 @@ Extend_MyHelper.checkInternetLost(this);
                                 map = new HashMap<String, String>();
                                 map.put("afid", c.getString("afid"));
                                 map.put("fid", c.getString("fid"));
-                                map.put("friend_name", c.getString("friend_name"));
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_photo", c.getString("user_photo"));
                                 MyArrList.add(map);
                             }
                             Log.d("position", MyArrList.size() + "");
                             for (int i = 0; i < MyArrList.size(); i++) {
-                                position.add(MyArrList.get(i).get("friend_name"));
+                                position.add(MyArrList.get(i).get("user_names"));
                                 positionId.add(MyArrList.get(i).get("fid"));
+                                positionImage.add(MyArrList.get(i).get("user_photo"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -510,7 +522,7 @@ Extend_MyHelper.checkInternetLost(this);
         queue.add(stringRequest);
         new CountDownTimer(300, 300) {
             public void onFinish() {
-                checkBoxClick(position, positionId);
+                checkBoxClick(position, positionId, positionImage);
             }
 
             public void onTick(long millisUntilFinished) {
@@ -519,14 +531,15 @@ Extend_MyHelper.checkInternetLost(this);
         }.start();
     }
 
-    public void checkBoxClick(ArrayList position, ArrayList positionId) {
+    public void checkBoxClick(ArrayList position, ArrayList positionId, ArrayList positionImage) {
         Log.d("position", "position size: " + position.size() + "");
         items = new ArrayList<InviteFriend_Attendant.Item>();
         for (int i = 0; i < position.size(); i++) {
             String s = position.get(i).toString();
             String id = positionId.get(i).toString();
+            String path = positionImage.get(i).toString();
             boolean b = true;
-            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b, id);
+            InviteFriend_Attendant.Item item = new InviteFriend_Attendant.Item(s, b, id, path);
             items.add(item);
         }
         myItemsListAdapter = new InviteFriend_Attendant.ItemsListAdapter(this, items);
@@ -606,7 +619,7 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("pri_id", c.getString("pri_id"));
                                 MyArrList.add(map);
                             }
-                            for (int i=0;i<MyArrList.size();i++){
+                            for (int i = 0; i < MyArrList.size(); i++) {
                                 friendInDb.add(MyArrList.get(i).get("user_id"));
                             }
                             Log.d("friendselect", "myarrAttend : " + friendInDb.toString());
@@ -624,6 +637,7 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public boolean checkFriendAlreadysent(String id) {
         Log.d("friendselect", "id : " + id);
         Log.d("friendselect", "friendInDb : " + friendInDb.toString());
