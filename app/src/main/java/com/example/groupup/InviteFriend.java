@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TabHost;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class InviteFriend extends AppCompatActivity {
@@ -29,6 +30,7 @@ public class InviteFriend extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_invite);
+        searchText = findViewById(R.id.searchText);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
         uid = getIntent().getStringExtra("id");
@@ -38,6 +40,7 @@ Extend_MyHelper.checkInternetLost(this);
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         createTab();
+        search();
 
     }
     public void createTab(){
@@ -76,6 +79,7 @@ Extend_MyHelper.checkInternetLost(this);
 
             @Override
             public void onTabChanged(String tabId) {
+                searchHead();
                 updateTabs();
             }
         });
@@ -98,32 +102,6 @@ Extend_MyHelper.checkInternetLost(this);
 
             }
         }
-
-    }
-
-    public void search() {
-        Log.d("arry",nameAttend.toString());
-
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d("arry",nameAttend.toString());
-                Log.d("arry","s "+s);
-//                (Home.this).adapterAttend.getFilter().filter(s);
-//               InviteFriend_Attendant.myItemsListAdapter.getFilter().filter(s);
-//               InviteFriend_Head.myItemsListAdapter.getFilter().filter(s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
     }
 
@@ -150,5 +128,55 @@ Extend_MyHelper.checkInternetLost(this);
         intent.putExtra("tab",0+"");
         tabHost.setCurrentTab(1);
         startActivity(intent);
+    }
+    public void search() {
+        searchText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+//                InviteFriend_Head.myItemsListAdapter.filter(text);
+                InviteFriend_Attendant.myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+    }
+    public void searchHead() {
+        searchText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+                InviteFriend_Head.myItemsListAdapter.filter(text);
+//                InviteFriend_Attendant.myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+        });
+
     }
 }
