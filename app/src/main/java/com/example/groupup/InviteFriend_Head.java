@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,13 +40,13 @@ public class InviteFriend_Head extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
     public class Item {
         boolean checked;
-        ImageView ItemDrawable;
+        String ItemDrawable;
         String ItemString;
-        String Id;
+        String Id;;
 
         //        Item(ImageView drawable, String t, boolean b){
-        Item(String t, boolean b, String i) {
-//            ItemDrawable = drawable;
+        Item(String t, boolean b, String i, String drawable) {
+            ItemDrawable = drawable;
             ItemString = t;
             checked = b;
             Id = i;
@@ -110,7 +109,7 @@ public class InviteFriend_Head extends AppCompatActivity {
             } else {
                 viewHolder = (InviteFriend_Head.ViewHolder) rowView.getTag();
             }
-
+            new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
 //        viewHolder.icon.setImageBitmap(list.get(position).ItemDrawable);
             viewHolder.checkBox.setChecked(list.get(position).checked);
 
@@ -236,8 +235,9 @@ Extend_MyHelper.checkInternetLost(this);
         for (int i = 0; i < frientArray.size(); i++) {
             String s = frientArray.get(i).get("friend_name");
             String id = frientArray.get(i).get("fid");
+            String path = frientArray.get(i).get("friend_image");
             boolean b = checkFriendAlreadysent(id);
-            InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id);
+            InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id,path);
             items.add(item);
         }
     }
@@ -274,6 +274,7 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("friend_name", c.getString("friend_name"));
                                 map.put("friend_email", c.getString("friend_email"));
                                 map.put("type_name", c.getString("type_name"));
+                                map.put("friend_image", c.getString("friend_image"));
                                 map.put("fid", c.getString("fid"));
                                 MyArrList.add(map);
                                 frientArray.add(map);
@@ -472,6 +473,7 @@ Extend_MyHelper.checkInternetLost(this);
         responseStr = new InviteFriend_Head.ResponseStr();
         final ArrayList<String> position = new ArrayList<>();
         final ArrayList<String> positionId = new ArrayList<>();
+        final ArrayList<String> positionImage = new ArrayList<>();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getfriendIntype.php";
         url += "?sId=" + uid;
@@ -490,13 +492,15 @@ Extend_MyHelper.checkInternetLost(this);
                                 map = new HashMap<String, String>();
                                 map.put("afid", c.getString("afid"));
                                 map.put("fid", c.getString("fid"));
-                                map.put("friend_name", c.getString("friend_name"));
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_photo", c.getString("user_photo"));
                                 MyArrList.add(map);
                             }
                             Log.d("position", MyArrList.size() + "");
                             for (int i = 0; i < MyArrList.size(); i++) {
-                                position.add(MyArrList.get(i).get("friend_name"));
+                                position.add(MyArrList.get(i).get("user_names"));
                                 positionId.add(MyArrList.get(i).get("fid"));
+                                positionImage.add(MyArrList.get(i).get("user_photo"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -515,7 +519,7 @@ Extend_MyHelper.checkInternetLost(this);
 
         new CountDownTimer(300, 300) {
             public void onFinish() {
-                checkBoxClick(position, positionId);
+                checkBoxClick(position, positionId,positionImage);
             }
 
             public void onTick(long millisUntilFinished) {
@@ -524,14 +528,15 @@ Extend_MyHelper.checkInternetLost(this);
         }.start();
     }
 
-    public void checkBoxClick(ArrayList position, ArrayList positionId) {
+    public void checkBoxClick(ArrayList position, ArrayList positionId,ArrayList positionImage) {
         Log.d("position", "position size: " + position.size() + "");
         items = new ArrayList<InviteFriend_Head.Item>();
         for (int i = 0; i < position.size(); i++) {
             String s = position.get(i).toString();
             String id = positionId.get(i).toString();
             boolean b = true;
-            InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id);
+            String path = positionImage.get(i).toString();
+            InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id,path);
             items.add(item);
         }
         myItemsListAdapter = new InviteFriend_Head.ItemsListAdapter(this, items);
