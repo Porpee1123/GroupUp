@@ -30,16 +30,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="detail : "
-                android:textStyle="bold"
                 android:textSize="18sp"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detailTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -49,10 +48,19 @@
 
             <TextView
                 android:id="@+id/typeTheme"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="TextView"
                 android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageTheme"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/icon_theme_buffe" />
         </LinearLayout>
 
         <LinearLayout

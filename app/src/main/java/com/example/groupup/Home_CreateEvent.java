@@ -84,7 +84,7 @@ public class Home_CreateEvent extends AppCompatActivity {
                 int finalSdate = spms.getSelectedItemPosition();
 
                 if (finalSdate <= finalEdate) {
-                    int rangemonth = (finalEdate - finalSdate) + 1;
+                    int rangemonth = (finalEdate - finalSdate);//+1
                     Log.d("rangemonth", " start : " + finalSdate + " end : " + finalEdate);
                     Log.d("rangemonth", "range : " + rangemonth);
                     Calendar cal = Calendar.getInstance();
@@ -96,7 +96,7 @@ public class Home_CreateEvent extends AppCompatActivity {
                     Log.d("rangemonth", "dateLange : " + dateLange.size() + " " + dateLange.toString());
 
                 } else {
-                    int rangemonth = (finalEdate - finalSdate) + 13;
+                    int rangemonth = (finalEdate - finalSdate)+12 ; //+13
                     Log.d("rangemonth", " start : " + finalSdate + " end : " + finalEdate);
                     Log.d("rangemonth", "range : " + rangemonth);
                     Calendar cal = Calendar.getInstance();

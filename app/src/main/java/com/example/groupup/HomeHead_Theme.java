@@ -854,6 +854,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                 final TextView headTheme = mView.findViewById(R.id.nameTheme);
                 final TextView detailTheme = mView.findViewById(R.id.detailTheme);
                 final TextView typeTheme = mView.findViewById(R.id.typeTheme);
+                final ImageView imgTheme = mView.findViewById(R.id.imageTheme);
                 final Button btn_cancle = mView.findViewById(R.id.btn_cancleTheme);
                 final Button btn_custom = mView.findViewById(R.id.btn_customTheme);
                 final Button btn_confirm = mView.findViewById(R.id.btn_confirmTheme);
@@ -864,6 +865,9 @@ public class HomeHead_Theme extends AppCompatActivity {
                 typeTheme.setText(s);
                 headTheme.setText(head);
                 detailTheme.setText(showDetail(tyid));
+                imgTheme.setImageResource(imageDetail(tyid));
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(350, 350,1);
+                imgTheme.setLayoutParams(layoutParams);
                 btn_cancle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1047,7 +1051,26 @@ public class HomeHead_Theme extends AppCompatActivity {
         }
     }
 
-    public String showDetail(String idType) {
+    public int imageDetail(String idType) {
+        Log.d("Typeid", idType.toString());
+        if (idType.equals("21")) {
+            return R.drawable.icon_theme_minimal;
+        } else if (idType.equals("22")) {
+            return R.drawable.icon_theme_classic;
+        } else if (idType.equals("36")) {
+            return R.drawable.icon_theme_water;
+        } else if (idType.equals("15")) {
+            return R.drawable.icon_theme_buffe;
+        } else if (idType.equals("3")) {
+            return R.drawable.icon_theme_karaoke;
+        } else if (idType.equals("23")) {
+            return R.drawable.icon_theme_rooftop;
+        } else if (idType.equals("8")) {
+            return R.drawable.icon_theme_kids;
+        }
+        return R.drawable.icon_theme_minimal;
+    }
+    public String showDetail (String idType) {
         Log.d("Typeid", idType.toString());
         if (idType.equals("21")) {
             String detail ="ร้านสไตล์มินิมอลเป็นร้านแนวคาเฟ่เบเกอร์รี่ที่มีบรรยากาศสบายๆมีมุมถ่ายรูปมากมายเน้นพบปะพูดคุยกันในหมู่เพื่อนๆ";
