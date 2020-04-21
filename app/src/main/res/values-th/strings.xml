@@ -166,7 +166,8 @@
     <string name="placeApp">สถานที่นัดหมาย : </string>
     <string name="gotoEvent">จำนวนคนผู้เข้าร่วมงานตอนนี้ : </string>
     <string name="numberOfPeople">คน</string>
-    <string name="uploadSlip">อัปโหลดสลิปการโอนเงิน : </string>
+    <string name="uploadSlip">อัปโหลดสลิปการโอนเงิน</string>
+    <string name="payment">ชำระเงินในงาน</string>
     <string name="join">เข้าร่วม</string>
     <string name="notJoin">ไม่เข้าร่วม</string>
     <string name="after">ภายหลัง</string>
