@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class InviteFriend_Attendant extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
@@ -64,13 +65,15 @@ public class InviteFriend_Attendant extends AppCompatActivity {
     }
 
     public class ItemsListAdapter extends BaseAdapter {
-
+        private ArrayList<InviteFriend_Attendant.Item> arraylist;
         private Context context;
         private List<InviteFriend_Attendant.Item> list;
 
         ItemsListAdapter(Context c, List<InviteFriend_Attendant.Item> l) {
             context = c;
             list = l;
+            arraylist = new ArrayList<InviteFriend_Attendant.Item>();
+            arraylist.addAll(l);
         }
 
         @Override
@@ -119,20 +122,6 @@ public class InviteFriend_Attendant extends AppCompatActivity {
 
             viewHolder.checkBox.setTag(position);
 
-            /*
-            viewHolder.checkBox.setOnCheckedChangeListener(
-                    new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    list.get(position).checked = b;
-
-                    Toast.makeText(getApplicationContext(),
-                            itemStr + "onCheckedChanged\nchecked: " + b,
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-            */
-
             viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -147,6 +136,22 @@ public class InviteFriend_Attendant extends AppCompatActivity {
             viewHolder.checkBox.setChecked(isChecked(position));
 
             return rowView;
+        }
+        // Filter Class
+        public void filter(String charText) {
+            charText = charText.toLowerCase(Locale.getDefault());
+            list.clear();
+            if (charText.length() == 0) {
+                list.addAll(arraylist);
+            } else {
+                for (InviteFriend_Attendant.Item wp : arraylist) {
+                    if (wp.ItemString.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list.add(wp);
+                    }
+                }
+            }
+            notifyDataSetChanged();
         }
     }
 

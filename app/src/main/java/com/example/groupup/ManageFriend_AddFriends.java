@@ -1,7 +1,6 @@
 package com.example.groupup;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,10 +11,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,19 +50,20 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     Button btnAddFriend;
     Spinner spTypeFriend;
     ManageFriend_AddFriends.ResponseStr responseStr = new ManageFriend_AddFriends.ResponseStr();
-    String TAG = "addfriend", uid = "",email="",emailScan;
-    String fScanid="",fid="",fname="",fimage;
+    String TAG = "addfriend", uid = "", email = "", emailScan;
+    String fScanid = "", fid = "", fname = "", fimage;
     SparseArray<String> type = new SparseArray<>();
     ArrayList<String> arSt;
-    String fileEmail,fileId;
+    String fileEmail, fileId;
+    ImageView img ;
 
 
-    int MY_PERMISSIONS_REQUEST_CAMERA=0;
+    int MY_PERMISSIONS_REQUEST_CAMERA = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_add_friends);
         searchFriend = findViewById(R.id.searchEmail);
         nameFriend = findViewById(R.id.nameFriend);
@@ -74,22 +74,23 @@ Extend_MyHelper.checkInternetLost(this);
         showType = findViewById(R.id.show_type);
         btnAddFriend = findViewById(R.id.btnAddFriend);
         spTypeFriend = findViewById(R.id.typeFriend);
+        img = findViewById(R.id.imag);
         arSt = new ArrayList<>();
-        emailScan="";
+        emailScan = "";
         uid = getIntent().getStringExtra("id");
         fScanid = getIntent().getStringExtra("fid");
         email = getIntent().getStringExtra("email");
         emailScan = getIntent().getStringExtra("emailScan");
-        Log.d("AddFriend","emailScan : "+emailScan);
+        Log.d("AddFriend", "emailScan : " + emailScan);
         searchFriend.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handle = false;
-                if (actionId== EditorInfo.IME_ACTION_SEND){
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
                     closeKeyboard();
                     getUser();
                     getType();
-                    handle=true;
+                    handle = true;
                 }
                 return handle;
             }
@@ -97,19 +98,19 @@ Extend_MyHelper.checkInternetLost(this);
         qrcodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                writeFile(uid,email);
+                writeFile(uid, email);
                 if (ContextCompat.checkSelfPermission(ManageFriend_AddFriends.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(ManageFriend_AddFriends.this, "You have already permission access Camera", Toast.LENGTH_SHORT).show();
                     scanQr();
                 } else {
-                    if (requestImagePermission()){
+                    if (requestImagePermission()) {
 //                        scanQr();
                     }
 
                 }
             }
         });
-        if (emailScan!=null){
+        if (emailScan != null) {
             getUserByQrcode(emailScan);
             getType();
         }
@@ -118,17 +119,19 @@ Extend_MyHelper.checkInternetLost(this);
     @Override
     protected void onResume() {
         super.onResume();
-        if (emailScan!=""){
+        if (emailScan != "") {
             readFile();
         }
 
     }
+
     public void backHome(View v) {
         Intent intent = new Intent(this, ManageFriend.class);
-        intent.putExtra("id", uid+"");
-        intent.putExtra("email", email+"");
+        intent.putExtra("id", uid + "");
+        intent.putExtra("email", email + "");
         startActivity(intent);
     }
+
     public void getUser() {
         responseStr = new ManageFriend_AddFriends.ResponseStr();
         final String[] user = {""};
@@ -158,7 +161,8 @@ Extend_MyHelper.checkInternetLost(this);
                             fid = MyArrList.get(0).get("user_id");
                             fname = MyArrList.get(0).get("user_names");
                             fimage = MyArrList.get(0).get("user_photo");
-                            Log.d("getuser","id: "+fid+" name : "+fname+" image: "+fimage);
+                            new Extend_MyHelper.SendHttpRequestTask(fimage,img,350 ).execute();
+                                    Log.d("getuser", "id: " + fid + " name : " + fname + " image: " + fimage);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -184,6 +188,7 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void getUserByQrcode(String s) {
         responseStr = new ManageFriend_AddFriends.ResponseStr();
         final String[] user = {""};
@@ -214,6 +219,7 @@ Extend_MyHelper.checkInternetLost(this);
                             fid = MyArrList.get(0).get("user_id");
                             fname = MyArrList.get(0).get("user_names");
                             fimage = MyArrList.get(0).get("user_photo");
+                            new Extend_MyHelper.SendHttpRequestTask(fimage,img,350 ).execute();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -239,6 +245,7 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void getType() {
         responseStr = new ManageFriend_AddFriends.ResponseStr();
         final String[] user = {""};
@@ -263,7 +270,7 @@ Extend_MyHelper.checkInternetLost(this);
                             //set Header menu name email
                             Log.d(TAG, "data " + MyArrList);
                             for (int i = 0; i < MyArrList.size(); i++) {
-                                type.append(i,MyArrList.get(i).get("type_name"));
+                                type.append(i, MyArrList.get(i).get("type_name"));
                             }
                             final Extend_SpinnerAdapter exSpin = new Extend_SpinnerAdapter(ManageFriend_AddFriends.this, type, "Plese select");
                             spTypeFriend.setAdapter(exSpin);
@@ -272,16 +279,16 @@ Extend_MyHelper.checkInternetLost(this);
                                 public void onClick(View view) {
                                     Log.d(TAG, "checkbox " + exSpin.getCheckedValues());
                                     arSt = cutString(exSpin.getCheckedValues());
-                                    Log.d(TAG,arSt.toString());
-                                    if (addFriendToDb()){
+                                    Log.d(TAG, arSt.toString());
+                                    if (addFriendToDb()) {
                                         exSpin.getCheckedValues();
                                         arSt = cutString(exSpin.getCheckedValues());
-                                        for (int i=0;i<arSt.size();i++){
+                                        for (int i = 0; i < arSt.size(); i++) {
                                             addAllFriendToDb(arSt.get(i));
                                         }
                                         Intent in = new Intent(ManageFriend_AddFriends.this, Home.class);
-                                        in.putExtra("id", uid+"");
-                                        in.putExtra("email", email+"");
+                                        in.putExtra("id", uid + "");
+                                        in.putExtra("email", email + "");
                                         startActivity(in);
                                     }
                                 }
@@ -302,11 +309,13 @@ Extend_MyHelper.checkInternetLost(this);
         queue.add(stringRequest);
 
     }
-    public void searchFriend(View v){
+
+    public void searchFriend(View v) {
         closeKeyboard();
         getUser();
         getType();
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -316,19 +325,22 @@ Extend_MyHelper.checkInternetLost(this);
         }
 
     }
-    public void closeKeyboard(){
+
+    public void closeKeyboard() {
         View v = this.getCurrentFocus();
-        if (v!= null){
-            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
     }
-    public void scanQr(){
+
+    public void scanQr() {
         Intent intent = new Intent(this, AddFriend_QRCode.class);
-        intent.putExtra("email", email+"");
-        intent.putExtra("id", uid+"");
+        intent.putExtra("email", email + "");
+        intent.putExtra("id", uid + "");
         startActivity(intent);
     }
+
     public boolean requestImagePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
             new androidx.appcompat.app.AlertDialog.Builder(this)
@@ -346,16 +358,17 @@ Extend_MyHelper.checkInternetLost(this);
             return true;
         }
     }
+
     public boolean addFriendToDb() {
         final boolean[] re = {true};
-        Log.d(TAG,"addFriendToDb : true");
+        Log.d(TAG, "addFriendToDb : true");
         String url = "http://www.groupupdb.com/android/addfriend.php";
-        Log.d("getuser","id: "+fid+" name : "+fname+" image: "+fimage);
+        Log.d("getuser", "id: " + fid + " name : " + fname + " image: " + fimage);
         url += "?sEmail=" + searchFriend.getText();
-        url += "&sId=" +uid;
-        url += "&fId=" +fid;
-        url += "&sName=" +fname;
-        url += "&sImage=" +fimage;
+        url += "&sId=" + uid;
+        url += "&fId=" + fid;
+        url += "&sName=" + fname;
+        url += "&sImage=" + fimage;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -373,12 +386,13 @@ Extend_MyHelper.checkInternetLost(this);
         queue.add(stringRequest);
         return re[0];
     }
+
     public boolean addAllFriendToDb(String tfid) {
-        Log.d(TAG,"sid : "+uid +" ifs : "+fid+" tifs : "+tfid);
+        Log.d(TAG, "sid : " + uid + " ifs : " + fid + " tifs : " + tfid);
         String url = "http://www.groupupdb.com/android/addallfriend.php";
         url += "?sId=" + uid;
-        url += "&fId=" +fid;
-        url += "&tfId=" +tfid;
+        url += "&fId=" + fid;
+        url += "&tfId=" + tfid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -396,18 +410,20 @@ Extend_MyHelper.checkInternetLost(this);
         queue.add(stringRequest);
         return true;
     }
-    public ArrayList cutString(String s){
-        StringTokenizer st = new StringTokenizer(s,",");
+
+    public ArrayList cutString(String s) {
+        StringTokenizer st = new StringTokenizer(s, ",");
         ArrayList<String> as = new ArrayList<>();
-        while (st.hasMoreTokens()){
+        while (st.hasMoreTokens()) {
             as.add(st.nextToken());
         }
         return as;
 
     }
-    public void writeFile(String id,String email) {
+
+    public void writeFile(String id, String email) {
         String filename = "userFriend.txt";
-        String sid = id+ ":";
+        String sid = id + ":";
         String semail = email + "\n";
         FileOutputStream outputStream;
         try {
@@ -415,14 +431,15 @@ Extend_MyHelper.checkInternetLost(this);
             outputStream.write(sid.getBytes());
             outputStream.write(semail.getBytes());
             outputStream.close();
-            Log.d("AddFriend","write file : id "+sid +" / status "+ semail);
+            Log.d("AddFriend", "write file : id " + sid + " / status " + semail);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void readFile(){
-        String filename = "MangeFriend"+uid+"userFriend.txt";
+
+    public void readFile() {
+        String filename = "MangeFriend" + uid + "userFriend.txt";
         try {
             BufferedReader inputReader = new BufferedReader(
                     new InputStreamReader(openFileInput(filename)));
@@ -437,7 +454,7 @@ Extend_MyHelper.checkInternetLost(this);
                 uid = st.nextToken().toString();
                 email = st.nextToken().toString();
             }
-            Log.d("AddFriend","read file : id "+uid +" / name "+email);
+            Log.d("AddFriend", "read file : id " + uid + " / name " + email);
         } catch (Exception e) {
             e.printStackTrace();
         }

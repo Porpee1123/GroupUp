@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class InviteFriend_Head extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
@@ -64,13 +65,15 @@ public class InviteFriend_Head extends AppCompatActivity {
     }
 
     public class ItemsListAdapter extends BaseAdapter {
-
+        private ArrayList<InviteFriend_Head.Item> arraylist;
         private Context context;
         private List<InviteFriend_Head.Item> list;
 
         ItemsListAdapter(Context c, List<InviteFriend_Head.Item> l) {
             context = c;
             list = l;
+            arraylist = new ArrayList<InviteFriend_Head.Item>();
+            arraylist.addAll(l);
         }
 
         @Override
@@ -146,6 +149,22 @@ public class InviteFriend_Head extends AppCompatActivity {
             viewHolder.checkBox.setChecked(isChecked(position));
 
             return rowView;
+        }
+        // Filter Class
+        public void filter(String charText) {
+            charText = charText.toLowerCase(Locale.getDefault());
+            list.clear();
+            if (charText.length() == 0) {
+                list.addAll(arraylist);
+            } else {
+                for (InviteFriend_Head.Item wp : arraylist) {
+                    if (wp.ItemString.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list.add(wp);
+                    }
+                }
+            }
+            notifyDataSetChanged();
         }
     }
 

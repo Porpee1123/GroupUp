@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +43,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ManageFriend extends AppCompatActivity {
@@ -71,13 +71,15 @@ public class ManageFriend extends AppCompatActivity {
     }
 
     public class ItemsListAdapter extends BaseAdapter {
-
+        private ArrayList<Item> arraylist;
         private Context context;
         private List<ManageFriend.Item> list;
 
         ItemsListAdapter(Context c, List<ManageFriend.Item> l) {
             context = c;
             list = l;
+            arraylist = new ArrayList<Item>();
+            arraylist.addAll(l);
         }
 
         @Override
@@ -118,7 +120,25 @@ public class ManageFriend extends AppCompatActivity {
 
             return rowView;
         }
+        // Filter Class
+        public void filter(String charText) {
+            charText = charText.toLowerCase(Locale.getDefault());
+            list.clear();
+            if (charText.length() == 0) {
+                list.addAll(arraylist);
+            } else {
+                for (Item wp : arraylist) {
+                    if (wp.ItemString.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list.add(wp);
+                    }
+                }
+            }
+            notifyDataSetChanged();
+        }
     }
+
+
 
     //***********************************************************************************************//
 
@@ -263,7 +283,7 @@ public class ManageFriend extends AppCompatActivity {
             }
         }.start();
         writeFile(uid, email);
-//        search();
+        search();
     }
 
     public void AddTypeFriend(String name) {
@@ -647,26 +667,30 @@ public class ManageFriend extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-//    public void search() {
-////        Log.d("arry",nameAttend.toString());
-//
-//        searchText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                Log.d("arry", "s " + s);
-//                ManageFriend.sAdapFriendType.getFilter().filter(s);
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//        });
-//
-//    }
+    public void search() {
+        searchText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+                myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+    }
 
     public void getFriend() {
         responseStr = new ManageFriend.ResponseStr();
