@@ -213,7 +213,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button7"
+                    android:id="@+id/btn_join"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -226,7 +226,7 @@
                     android:textColor="#FFFFFF" />
 
                 <Button
-                    android:id="@+id/button10"
+                    android:id="@+id/btn_notJoin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -247,20 +247,21 @@
             android:orientation="vertical">
 
             <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
 
                 <RadioButton
-                    android:id="@+id/radioButton3"
+                    android:id="@+id/payment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/payment"
                     android:textSize="16sp" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/upSlip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -277,6 +278,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/upload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -296,7 +298,7 @@
                     android:inputType="textPersonName" />
 
                 <Button
-                    android:id="@+id/button13"
+                    android:id="@+id/btn_upload"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@drawable/button"
@@ -307,7 +309,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button14"
+            android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -167,8 +167,8 @@
     <string name="placeApp">Appointment Place : </string>
     <string name="gotoEvent">Number Of People go to Event : </string>
     <string name="numberOfPeople">People</string>
-    <string name="uploadSlip">Upload a Money Slip</string>
-    <string name="payment">Payment on Event</string>
+    <string name="uploadSlip">Transfer</string>
+    <string name="payment">Cash</string>
     <string name="join">Join</string>
     <string name="notJoin">Do Not Join</string>
     <string name="after">After</string>
