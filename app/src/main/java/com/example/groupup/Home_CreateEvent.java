@@ -267,7 +267,8 @@ public class Home_CreateEvent extends AppCompatActivity {
     public void addDateAvaliableTodb() {
         Log.d("url", "dateLange: " +dateLange.size());
         for (int i = 0; i < dateLange.size(); i++) {
-            sentDateForCalToDB(dateLange.get(i), "0", "0", "0", "0");
+            int num = i+1;
+            sentDateForCalToDB(dateLange.get(i), "0", "0", "0", "0",num+"");
         }
     }
 
@@ -287,7 +288,7 @@ public class Home_CreateEvent extends AppCompatActivity {
         }
         return datesInRange;
     }
-    public void sentDateForCalToDB(String date, String morning, String late, String afternoon, String evening) {
+    public void sentDateForCalToDB(String date, String morning, String late, String afternoon, String evening,String num) {
         Log.d("checkDB ", "dateString123 : " + date);
         DateFormat simpleHour = new SimpleDateFormat("dd/MM/yyyy");
         long dt = Date.parse(date);
@@ -301,6 +302,7 @@ public class Home_CreateEvent extends AppCompatActivity {
         url += "&lat=" + late + "";
         url += "&aft=" + afternoon + "";
         url += "&eve=" + evening + "";
+        url += "&num=" + num + "";
         Log.d("url",url);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

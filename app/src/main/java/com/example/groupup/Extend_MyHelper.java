@@ -177,5 +177,25 @@ public class Extend_MyHelper {
                 height, filter);
         return newBitmap;
     }
-
+    public  static void UpdateStateToDb(String transId, String statusId,Context context) {
+        String url = "http://www.groupupdb.com/android/acceptEvent.php";
+        url += "?tId=" + transId;
+        url += "&stId=" + statusId;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
+    }
 }

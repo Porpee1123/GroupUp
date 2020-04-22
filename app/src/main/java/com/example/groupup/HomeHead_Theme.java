@@ -1,9 +1,11 @@
 package com.example.groupup;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -53,6 +55,7 @@ public class HomeHead_Theme extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        addDateevent(); //หาที่ใส่
         super.onCreate(savedInstanceState);
         Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_theme);
@@ -134,6 +137,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                 for (int i = 0; i < themeSelect.size(); i++) {
                     sentInviteToFriend(themeSelect.get(i).toString(), eid);
                 }
+                addDateevent();
                 Log.d("themeSelect", "Remove : " + themeSelect.toString());
             }
         });
@@ -781,6 +785,17 @@ public class HomeHead_Theme extends AppCompatActivity {
         intent.putExtra("tab", 0 + "");
         startActivity(intent);
     }
+    public void backAppoint() {
+        Intent intent = new Intent(HomeHead_Theme.this, HomeHead_Appointment.class);
+        intent.putExtra("id", id + "");
+        intent.putExtra("email", email + "");
+        intent.putExtra("nEvent", nameE + "");
+        intent.putExtra("mStart", monS + "");
+        intent.putExtra("mEnd", monE + "");
+        intent.putExtra("eid", eid + "");
+        intent.putExtra("tab", 0 + "");
+        startActivity(intent);
+    }
 
     public void visibleLinear() {
         if (checkVisible) {//show custom
@@ -893,6 +908,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                         for (int i = 0; i < idType.size(); i++) {
                             sentInviteToFriend(idType.get(i), eid);
                         }
+                        addDateevent();
                     }
                 });
                 viewDetail.setView(mView);
@@ -934,30 +950,10 @@ public class HomeHead_Theme extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
         Log.d("themeSelect", "transid: " + transId);
-        UpdateStateToDb(transId, 5 + "");
+
+        Extend_MyHelper.UpdateStateToDb(transId, 5 + "",this);
     }
 
-    public void UpdateStateToDb(String transId, String statusId) {
-        String url = "http://www.groupupdb.com/android/acceptEvent.php";
-        url += "?tId=" + transId;
-        url += "&stId=" + statusId;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("updatedb", response);
-//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
 
     public void getTransIDByTrans(String uid, String eid, String pid) {
         responseStr = new HomeHead_Theme.ResponseStr();
@@ -1137,6 +1133,72 @@ public class HomeHead_Theme extends AppCompatActivity {
         child.setChecked(false);
         iceCream.setChecked(false);
         burger.setChecked(false);
+    }
+    public void addDateevent(){
+        //add date user to EventDateCal
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+//                progressDialog = ProgressDialog.show(ManageFriend.this, "Deleting All Friend", "Please Wait", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String string1) {
+                super.onPostExecute(string1);
+                backAppoint();
+                getHeadSelectCal();
+                Log.d("eventSelect",string1);
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                responseStr = new HomeHead_Theme.ResponseStr();
+                String url = "http://www.groupupdb.com/android/caldateforheader.php";
+                url += "?eid=" + eid;
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("eventSelect","addDateevent "+response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                            }
+                        });
+                RequestQueue queue = Volley.newRequestQueue(HomeHead_Theme.this);
+                queue.add(stringRequest);
+                return "addDateevent successful!!!";
+            }
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
+    }
+    public void getHeadSelectCal(){
+        //add date for Header select
+        responseStr = new HomeHead_Theme.ResponseStr();
+        String url = "http://www.groupupdb.com/android/getheaderselectcal.php";
+        url += "?eid=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.d("deleteDateOldDay", response);
+                        Log.d("eventSelect","getHeadSelectCal "+response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
     }
 
 }

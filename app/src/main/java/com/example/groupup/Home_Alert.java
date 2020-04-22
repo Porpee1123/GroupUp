@@ -150,7 +150,8 @@ public class Home_Alert extends AppCompatActivity {
                         viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "เข้าร่วม", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                UpdateStateToDb(tranId, 3 + "");
+                                Extend_MyHelper.UpdateStateToDb(tranId, 3 + "",Home_Alert.this);
+
                                 addEventFriend(id,eid);
 
                             }
@@ -190,29 +191,6 @@ public class Home_Alert extends AppCompatActivity {
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
-    }
-
-    public void UpdateStateToDb(String transId, String statusId) {
-        String url = "http://www.groupupdb.com/android/acceptEvent.php";
-        url += "?tId=" + transId;
-        url += "&stId=" + statusId;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("updatedb", response);
-//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-        startActivity(getIntent());
     }
 
     public void addEventFriend(String id, String eid) {
