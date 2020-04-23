@@ -172,4 +172,10 @@
     <string name="notJoin">ไม่เข้าร่วม</string>
     <string name="after">ภายหลัง</string>
     <string name="upload">อัปโหลด</string>
+    <string name="detailColon">รายละเอียด : </string>
+    <string name="inviter">ผู้เชิญ : </string>
+    <string name="timeColon">เวลา : </string>
+    <string name="time">เวลา</string>
+    <string name="statusInvite">สถานะคำเชิญเข้าร่วม : </string>
+    <string name="later">เอาไว้ก่อน</string>
 </resources>

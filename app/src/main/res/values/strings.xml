@@ -2,18 +2,18 @@
     <string name="app_name">GroupUp</string>
     <string name="left">left</string>
     <string name="right">right</string>
-    <string name="descriptionPlace">Description :</string>
+    <string name="descriptionPlace">Description : </string>
     <string name="detail_customer">Detail_customer</string>
     <string name="signout">Signout</string>
     <string name="account">Manage Account</string>
     <string name="addImg">+ Add Picture</string>
     <string name="name">Name</string>
-    <string name="name_title">Name :</string>
+    <string name="name_title">Name : </string>
     <string name="email">Email</string>
-    <string name="email_title">Email :</string>
+    <string name="email_title">Email : </string>
     <string name="colon">:</string>
-    <string name="status">Status: Create Appointment</string>
-    <string name="statusEvent">Status :</string>
+    <string name="status">Status : Create Appointment</string>
+    <string name="statusEvent">Status : </string>
     <string name="btn">Confirm</string>
     <string name="inviteFriends">Invite Friends</string>
     <string name="addFriends">Add Friends</string>
@@ -28,7 +28,7 @@
     <string name="home">Home</string>
     <string name="manage_friend">Manage Friend</string>
     <string name="manage_calendar">Manage calendar</string>
-    <string name="facility">Facility :</string>
+    <string name="facility">Facility : </string>
     <string name="parking">Parking</string>
     <string name="wifi">Wi-Fi</string>
     <string name="credit">Credit Card</string>
@@ -40,7 +40,7 @@
     <string name="nameFriends">Name Friends</string>
     <string name="newGroup">New Meet</string>
     <string name="title">Title</string>
-    <string name="titleEvent">Title Event :</string>
+    <string name="titleEvent">Title Event : </string>
     <string name="note">Note</string>
     <string name="stMonth">Appointment Start Month</string>
     <string name="endMonth">Appointment End Month</string>
@@ -126,9 +126,9 @@
     <string name="job_summary">Job summary</string>
     <string name="qrCode_attend_the_event">QR Code Attend The Event</string>
     <string name="select">Select</string>
-    <string name="namePlace">Name Place :</string>
-    <string name="rating">Rating :</string>
-    <string name="review_details">Review Details :</string>
+    <string name="namePlace">Name Place : </string>
+    <string name="rating">Rating : </string>
+    <string name="review_details">Review Details : </string>
     <string name="group_theme">Group</string>
     <string name="btn_cancle">cancle</string>
     <string name="slipCheck">Slip Check</string>
@@ -173,5 +173,11 @@
     <string name="notJoin">Do Not Join</string>
     <string name="after">After</string>
     <string name="upload">Upload</string>
+    <string name="detailColon">Details : </string>
+    <string name="inviter">Inviter : </string>
+    <string name="timeColon">Time : </string>
+    <string name="time">Time</string>
+    <string name="statusInvite">Status Invite : </string>
+    <string name="later">Later</string>
 
 </resources>
