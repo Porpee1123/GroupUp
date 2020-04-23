@@ -179,5 +179,6 @@
     <string name="time">Time</string>
     <string name="statusInvite">Status Invite : </string>
     <string name="later">Later</string>
+    <string name="save">Save</string>
 
 </resources>

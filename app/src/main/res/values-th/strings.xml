@@ -178,4 +178,5 @@
     <string name="time">เวลา</string>
     <string name="statusInvite">สถานะคำเชิญเข้าร่วม : </string>
     <string name="later">เอาไว้ก่อน</string>
+    <string name="save">บันทึก</string>
 </resources>

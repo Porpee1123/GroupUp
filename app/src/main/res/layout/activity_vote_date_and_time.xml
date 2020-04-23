@@ -75,6 +75,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
+                    android:alpha="0.9"
                     android:background="#662196F3"
                     android:text="Button" />
 
@@ -87,6 +88,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
+                    android:alpha="0.9"
                     android:background="#AB8BC34A"
                     android:text="Button" />
 
@@ -107,6 +109,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
+                    android:alpha="0.9"
                     android:background="#A8FFEB3B"
                     android:text="Button" />
 
@@ -119,6 +122,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
+                    android:alpha="0.9"
                     android:background="#8AFF5722"
                     android:text="Button" />
             </LinearLayout>
