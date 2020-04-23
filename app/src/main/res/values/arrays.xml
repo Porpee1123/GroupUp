@@ -38,4 +38,10 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+    <string-array name="allday">
+        <item>All Day</item>
+    </string-array>
+    <string-array name="random">
+        <item>Random</item>
+    </string-array>
 </resources>

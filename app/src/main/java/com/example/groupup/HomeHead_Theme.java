@@ -55,7 +55,6 @@ public class HomeHead_Theme extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        addDateevent(); //หาที่ใส่
         super.onCreate(savedInstanceState);
         Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_theme);
@@ -135,10 +134,11 @@ public class HomeHead_Theme extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 for (int i = 0; i < themeSelect.size(); i++) {
-                    sentInviteToFriend(themeSelect.get(i).toString(), eid);
+                    sentInviteTheme(themeSelect.get(i).toString(), eid);
                 }
                 addDateevent();
                 Log.d("themeSelect", "Remove : " + themeSelect.toString());
+                backAppoint();
             }
         });
 
@@ -794,6 +794,7 @@ public class HomeHead_Theme extends AppCompatActivity {
         intent.putExtra("mEnd", monE + "");
         intent.putExtra("eid", eid + "");
         intent.putExtra("tab", 0 + "");
+
         startActivity(intent);
     }
 
@@ -906,9 +907,10 @@ public class HomeHead_Theme extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         for (int i = 0; i < idType.size(); i++) {
-                            sentInviteToFriend(idType.get(i), eid);
+                            sentInviteTheme(idType.get(i), eid);
                         }
                         addDateevent();
+                        backAppoint();
                     }
                 });
                 viewDetail.setView(mView);
@@ -927,7 +929,7 @@ public class HomeHead_Theme extends AppCompatActivity {
 
     }
 
-    public void sentInviteToFriend(String idTheme, String idEvent) {
+    public void sentInviteTheme(String idTheme, String idEvent) {
         String url = "http://www.groupupdb.com/android/addeventtheme.php";
         url += "?tId=" + idTheme;
         url += "&eId=" + idEvent;
@@ -938,7 +940,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                     public void onResponse(String response) {
                         //str = new String(response, StandardCharsets.UTF_8);
                         //String reader = new String(response, StandardCharsets.UTF_8);
-                        Toast.makeText(HomeHead_Theme.this, response, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(HomeHead_Theme.this, response, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -1135,47 +1137,24 @@ public class HomeHead_Theme extends AppCompatActivity {
         burger.setChecked(false);
     }
     public void addDateevent(){
-        //add date user to EventDateCal
-        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-//                progressDialog = ProgressDialog.show(ManageFriend.this, "Deleting All Friend", "Please Wait", false, false);
-            }
-
-            @Override
-            protected void onPostExecute(String string1) {
-                super.onPostExecute(string1);
-                backAppoint();
-                getHeadSelectCal();
-                Log.d("eventSelect",string1);
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                responseStr = new HomeHead_Theme.ResponseStr();
-                String url = "http://www.groupupdb.com/android/caldateforheader.php";
-                url += "?eid=" + eid;
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("eventSelect","addDateevent "+response);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                            }
-                        });
-                RequestQueue queue = Volley.newRequestQueue(HomeHead_Theme.this);
-                queue.add(stringRequest);
-                return "addDateevent successful!!!";
-            }
-        }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-        AsyncTaskUploadClassOBJ.execute();
+        String url = "http://www.groupupdb.com/android/caldateforheader.php";
+        url += "?eid=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("eventSelect1234","addDaevent "+response);
+                        Toast.makeText(HomeHead_Theme.this, "addDaevent Finish", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(HomeHead_Theme.this);
+        queue.add(stringRequest);
     }
     public void getHeadSelectCal(){
         //add date for Header select
