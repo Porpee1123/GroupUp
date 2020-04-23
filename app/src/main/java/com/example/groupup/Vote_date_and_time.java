@@ -238,6 +238,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                     y= st.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
                     btn1.setText(date+"\n ช่วงเวลา "+MyArrList.get(0).get("timerange"));
+                    btn1.setTextSize(18);
                 }
                 while (st1.hasMoreTokens()){
                     String d,m,y,date;
@@ -247,6 +248,8 @@ public class Vote_date_and_time extends AppCompatActivity {
                     y= st1.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
                     btn2.setText(date+"\n ช่วงเวลา "+MyArrList.get(1).get("timerange"));
+                    btn2.setTextSize(18);
+
                 }
                 while (st2.hasMoreTokens()){
                     String d,m,y,date;
@@ -256,9 +259,11 @@ public class Vote_date_and_time extends AppCompatActivity {
                     y= st2.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
                     btn3.setText(date+"\n ช่วงเวลา "+MyArrList.get(2).get("timerange"));
+                    btn3.setTextSize(18);
                 }
                 String[] array = getResources().getStringArray(R.array.random);
                 btn4.setText(array[0]);
+                btn4.setTextSize(24);
                 dateDB.add(MyArrList.get(0).get("time"));
                 dateDB.add(MyArrList.get(1).get("time"));
                 dateDB.add(MyArrList.get(2).get("time"));
