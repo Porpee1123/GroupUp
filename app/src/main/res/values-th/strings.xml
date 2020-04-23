@@ -140,6 +140,8 @@
     <string name="time_late">14:00 - 16:59</string>
     <string name="time_afternoon">17:00 - 19:59</string>
     <string name="time_evening">20:00 - 23:59</string>
+    <string name="time_allday">   ทั้งวัน   </string>
+
     <string name="send_notification">ส่งการแจ้งเตือน</string>
     <string name="verification">ตรวจสอบ</string>
     <string name="choice">ตัวเลือก : (เลือก 3 ตัวเลือก)</string>
