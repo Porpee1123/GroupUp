@@ -34,7 +34,7 @@ public class Head_Date extends AppCompatActivity {
     String uid, eid, nameE, monS, monE, email;
     CheckBox cb1, cb2, cb3, cb4, cb5;
     CalendarView cv;
-    ArrayList<String> dataDB, dateSelect;
+    ArrayList<String> dataDB, dateSelect,timeDB , timeSelect;
     Button conDateVote ;
 
     @Override
@@ -51,6 +51,8 @@ public class Head_Date extends AppCompatActivity {
         conDateVote = findViewById(R.id.confirmDateVote);
         dataDB = new ArrayList<>();
         dateSelect = new ArrayList<>();
+        timeDB = new ArrayList<>();
+        timeSelect = new ArrayList<>();
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
@@ -74,8 +76,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(0));
+                        timeSelect.add(timeDB.get(0));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(0));
+                        removeTime(timeDB.get(0));
                         count[0]--;
                     }
                 }else {
@@ -88,8 +92,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(0));
+                        timeSelect.add(timeDB.get(0));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(0));
+                        removeTime(timeDB.get(0));
                         count[0]--;
                     }
                 }
@@ -108,8 +114,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(1));
+                        timeSelect.add(timeDB.get(1));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(1));
+                        removeTime(timeDB.get(1));
                         count[0]--;
                     }
                 }else {
@@ -122,8 +130,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(1));
+                        timeSelect.add(timeDB.get(1));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(1));
+                        removeTime(timeDB.get(1));
                         count[0]--;
                     }
                 }
@@ -142,8 +152,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(2));
+                        timeSelect.add(timeDB.get(2));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(2));
+                        removeTime(timeDB.get(2));
                         count[0]--;
                     }
                 }else {
@@ -156,8 +168,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(2));
+                        timeSelect.add(timeDB.get(2));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(2));
+                        removeTime(timeDB.get(2));
                         count[0]--;
                     }
                 }
@@ -176,8 +190,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(3));
+                        timeSelect.add(timeDB.get(3));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(3));
+                        removeTime(timeDB.get(3));
                         count[0]--;
                     }
                 }else {
@@ -190,8 +206,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(3));
+                        timeSelect.add(timeDB.get(3));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(3));
+                        removeTime(timeDB.get(3));
                         count[0]--;
                     }
                 }
@@ -210,8 +228,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(4));
+                        timeSelect.add(timeDB.get(4));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(4));
+                        removeTime(timeDB.get(4));
                         count[0]--;
                     }
                 }else {
@@ -224,8 +244,10 @@ public class Head_Date extends AppCompatActivity {
                     } else if (isChecked) {
                         count[0]++;
                         dateSelect.add(dataDB.get(4));
+                        timeSelect.add(timeDB.get(4));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(4));
+                        removeTime(timeDB.get(4));
                         count[0]--;
                     }
                 }
@@ -234,9 +256,9 @@ public class Head_Date extends AppCompatActivity {
         conDateVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("dateSelect",dateSelect.toString());
+                Log.d("dateSelect",dateSelect.toString()+" "+timeSelect.toString());
                 for (int i=0;i< dateSelect.size();i++){
-                    setVoteDateforUser(dateSelect.get(i));
+                    setVoteDateforUser(dateSelect.get(i),timeSelect.get(i));
                 }
                 backAppoint();
             }
@@ -284,10 +306,12 @@ public class Head_Date extends AppCompatActivity {
                                 map = new HashMap<String, String>();
                                 map.put("events_id", c.getString("events_id"));
                                 map.put("time", c.getString("time"));
+                                map.put("timerange", c.getString("timerange"));
                                 MyArrList.add(map);
                             }
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 dataDB.add(MyArrList.get(i).get("time"));
+                                timeDB.add(MyArrList.get(i).get("timerange"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -324,7 +348,7 @@ public class Head_Date extends AppCompatActivity {
                     m= st.nextToken();
                     y= st.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb1.setText(date+" ช่วงเวลา 11:00 - 13:59");
+                    cb1.setText(date+" ช่วงเวลา "+timeDB.get(0));
                 }
                 while (st1.hasMoreTokens()){
                     String d,m,y,date;
@@ -333,7 +357,7 @@ public class Head_Date extends AppCompatActivity {
                     m= st1.nextToken();
                     y= st1.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb2.setText(date+" ช่วงเวลา 14:00 - 16:59");
+                    cb2.setText(date+" ช่วงเวลา "+timeDB.get(1));
                 }
                 while (st2.hasMoreTokens()){
                     String d,m,y,date;
@@ -342,7 +366,7 @@ public class Head_Date extends AppCompatActivity {
                     m= st2.nextToken();
                     y= st2.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb3.setText(date+" ช่วงเวลา 17:00 - 19:59");
+                    cb3.setText(date+" ช่วงเวลา "+timeDB.get(2));
                 }
                 while (st3.hasMoreTokens()){
                     String d,m,y,date;
@@ -351,16 +375,17 @@ public class Head_Date extends AppCompatActivity {
                     m= st3.nextToken();
                     y= st3.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb4.setText(date+" ช่วงเวลา 20:00 - 23:59");
+                    cb4.setText(date+" ช่วงเวลา "+timeDB.get(3));
                 }
                 while (st4.hasMoreTokens()){
                     String d,m,y,date;
                     String[] some_array = getResources().getStringArray(R.array.month);
+                    String[] array = getResources().getStringArray(R.array.allday);
                     d= st4.nextToken();
                     m= st4.nextToken();
                     y= st4.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb5.setText(date+" ช่วงเวลา ทั้งวัน");
+                    cb5.setText(date+" ช่วงเวลา "+array[0]);
                 }
             }
         }.start();
@@ -375,6 +400,16 @@ public class Head_Date extends AppCompatActivity {
         }
         dateSelect.remove(Integer.parseInt(number));
         Log.d("dateselect", dateSelect.toString());
+    }
+    public void removeTime(String id) {
+        String number = "";
+        for (int i = 0; i < timeSelect.size(); i++) {
+            if (id.equals(timeSelect.get(i))) {
+                number = i + "";
+            }
+        }
+        timeSelect.remove(Integer.parseInt(number));
+        Log.d("dateselect", timeSelect.toString());
     }
 
     public class ResponseStr {
@@ -409,9 +444,10 @@ public class Head_Date extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
-    public void setVoteDateforUser(String s){
+    public void setVoteDateforUser(String s,String time){
         String url = "http://www.groupupdb.com/android/addvotedateforuser.php";
         url += "?vdid=" + s;
+        url += "&vtid=" + time;
         url += "&eId=" + eid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

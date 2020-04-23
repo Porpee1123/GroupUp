@@ -180,5 +180,7 @@
     <string name="time">Time</string>
     <string name="statusInvite">Status Invite : </string>
     <string name="later">Later</string>
+    <string name="random">Random</string>
+    <string name="con_vote">confirm vote</string>
 
 </resources>
