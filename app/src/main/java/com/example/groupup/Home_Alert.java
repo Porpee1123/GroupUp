@@ -126,7 +126,7 @@ public class Home_Alert extends AppCompatActivity {
                 listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                         String sCreater = MyArrList.get(position).get("event_creater").toString();
-                        String sName = MyArrList.get(position).get("events_name").toString();
+                        final String sName = MyArrList.get(position).get("events_name").toString();
                         final String eid = MyArrList.get(position).get("events_id").toString();
                         String sSta = MyArrList.get(position).get("events_month_start").toString();
                         String sEnd = MyArrList.get(position).get("events_month_end").toString();
@@ -152,7 +152,7 @@ public class Home_Alert extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 Extend_MyHelper.UpdateStateToDb(tranId, 3 + "",Home_Alert.this);
 
-                                addEventFriend(id,eid);
+                                addEventFriend(id,eid,sName);
 
                             }
                         });
@@ -193,7 +193,7 @@ public class Home_Alert extends AppCompatActivity {
         manager.notify(0, builder.build());
     }
 
-    public void addEventFriend(String id, String eid) {
+    public void addEventFriend(String id, String eid,String eName) {
         String url = "http://www.groupupdb.com/android/adduserevent.php";
         url += "?sId=" + id;
         url += "&eId=" + eid;
@@ -213,6 +213,11 @@ public class Home_Alert extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        startActivity(getIntent());
+        Intent intent = new Intent(Home_Alert.this, MainAttendent.class);
+        intent.putExtra("id",id+"");
+        intent.putExtra("eid",eid+"");
+        intent.putExtra("nameEvent",eName+"");
+        intent.putExtra("email",email);
+        startActivity(intent);
     }
 }

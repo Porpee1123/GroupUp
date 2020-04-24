@@ -254,7 +254,7 @@ Extend_MyHelper.checkInternetLost(this);
         for (int i = 0; i < frientArray.size(); i++) {
             String s = frientArray.get(i).get("friend_name");
             String id = frientArray.get(i).get("fid");
-            String path = frientArray.get(i).get("friend_image");
+            String path = frientArray.get(i).get("user_photo");
             boolean b = checkFriendAlreadysent(id);
             InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id,path);
             items.add(item);
@@ -293,7 +293,7 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("friend_name", c.getString("friend_name"));
                                 map.put("friend_email", c.getString("friend_email"));
                                 map.put("type_name", c.getString("type_name"));
-                                map.put("friend_image", c.getString("friend_image"));
+                                map.put("user_photo", c.getString("user_photo"));
                                 map.put("fid", c.getString("fid"));
                                 MyArrList.add(map);
                                 frientArray.add(map);
@@ -497,6 +497,7 @@ Extend_MyHelper.checkInternetLost(this);
         String url = "http://www.groupupdb.com/android/getfriendIntype.php";
         url += "?sId=" + uid;
         url += "&tname=" + typeName;
+        Log.d("pathinvite",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -511,13 +512,13 @@ Extend_MyHelper.checkInternetLost(this);
                                 map = new HashMap<String, String>();
                                 map.put("afid", c.getString("afid"));
                                 map.put("fid", c.getString("fid"));
-                                map.put("user_names", c.getString("user_names"));
+                                map.put("friend_name", c.getString("friend_name"));
                                 map.put("user_photo", c.getString("user_photo"));
                                 MyArrList.add(map);
                             }
                             Log.d("position", MyArrList.size() + "");
                             for (int i = 0; i < MyArrList.size(); i++) {
-                                position.add(MyArrList.get(i).get("user_names"));
+                                position.add(MyArrList.get(i).get("friend_name"));
                                 positionId.add(MyArrList.get(i).get("fid"));
                                 positionImage.add(MyArrList.get(i).get("user_photo"));
                             }
