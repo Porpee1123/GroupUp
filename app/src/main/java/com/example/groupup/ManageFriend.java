@@ -556,11 +556,12 @@ public class ManageFriend extends AppCompatActivity {
 
                             @Override
                             protected String doInBackground(Void... params) {
-//                                if (typeName.equals("ALL")) {
-//                                    deleteFriendAll(fid);
-//                                } else {
-//                                    deleteFriendInType(fid, typeName);
-//                                }
+                                Log.d("typeChange",typeChange);
+                                if (typeChange.equals("ALL")) {
+                                    deleteFriendAll(fid);
+                                } else {
+                                    deleteFriendInType(fid, typeChange);
+                                }
 
 //                                            AddTypeFriend(mNameString);
                                 return "delete successful!!!";

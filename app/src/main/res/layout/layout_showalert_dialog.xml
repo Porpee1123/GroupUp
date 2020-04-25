@@ -32,11 +32,12 @@
                     android:text="@string/titleEvent" />
 
                 <TextView
-                    android:id="@+id/textView36"
+                    android:id="@+id/alt_title_Invite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -53,7 +54,7 @@
                     android:text="@string/detailColon" />
 
                 <TextView
-                    android:id="@+id/textView49"
+                    android:id="@+id/alt_detail_Invite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -75,13 +76,13 @@
                     android:text="@string/inviter" />
 
                 <ImageView
-                    android:id="@+id/imageView12"
+                    android:id="@+id/alt_image_invite"
                     android:layout_width="44dp"
                     android:layout_height="48dp"
                     app:srcCompat="@drawable/account" />
 
                 <TextView
-                    android:id="@+id/textView39"
+                    android:id="@+id/alt_name_invite"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
@@ -104,7 +105,7 @@
                     android:text="@string/timeColon" />
 
                 <TextView
-                    android:id="@+id/textView42"
+                    android:id="@+id/alt_start_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -125,7 +126,7 @@
                     android:text="@string/statusInvite" />
 
                 <TextView
-                    android:id="@+id/textView45"
+                    android:id="@+id/alt_state_invite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -139,7 +140,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button6"
+                    android:id="@+id/btn_invite_later"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -148,7 +149,7 @@
                     android:textColor="#FFFFFF" />
 
                 <Button
-                    android:id="@+id/button7"
+                    android:id="@+id/btn_invite_notjoin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -157,7 +158,7 @@
                     android:textColor="#FFFFFF" />
 
                 <Button
-                    android:id="@+id/button10"
+                    android:id="@+id/btn_invite_join"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
