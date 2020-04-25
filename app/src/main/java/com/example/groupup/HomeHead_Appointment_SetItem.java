@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
 
 public class HomeHead_Appointment_SetItem extends AppCompatActivity {
     Button inviteFriend , selectTheme;
-    String id,eid,nameE,monS,monE,email;
+    String id,eid,nameE,monS,monE,email,wait;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +31,7 @@ Extend_MyHelper.checkInternetLost(this);
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+        wait = getIntent().getStringExtra("wait");
 //        Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
     }
 
@@ -54,6 +55,7 @@ Extend_MyHelper.checkInternetLost(this);
         intent.putExtra("nameEvent",nameE+"");
         intent.putExtra("mStart",monS+"");
         intent.putExtra("mEnd",monE+"");
+        intent.putExtra("wait", wait + "");
         startActivity(intent);
     }
     public void selectSlip(View v) {
