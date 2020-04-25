@@ -38,6 +38,7 @@ public class MainAttendent extends AppCompatActivity {
     TextView nHead;
     ImageButton btn_note;
     String note ;
+    int tab = 0;
     ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ Extend_MyHelper.checkInternetLost(this);
         nEvent = getIntent().getStringExtra("nameEvent");
         eid = getIntent().getStringExtra("eid");
         email = getIntent().getStringExtra("email");
+        tab = Integer.parseInt( getIntent().getStringExtra("tab"));
         nHead.setText(nEvent);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         btn_note = findViewById(R.id.btn_noteAttend);
@@ -161,6 +163,7 @@ Extend_MyHelper.checkInternetLost(this);
         eid = getIntent().getStringExtra("eid");
         email = getIntent().getStringExtra("email");
         nHead.setText(nEvent);
+        tabHost.setCurrentTab(tab);
     }
 
     public void backHome(View v) {

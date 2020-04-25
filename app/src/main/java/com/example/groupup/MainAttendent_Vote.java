@@ -23,7 +23,9 @@ public class MainAttendent_Vote extends AppCompatActivity {
         Intent intent = new Intent(MainAttendent_Vote.this, Vote_date_and_time.class);
         intent.putExtra("id",id+"");
         intent.putExtra("eid",eId+"");
+        intent.putExtra("email",email+"");
         intent.putExtra("nameEvent",eName+"");
+        intent.putExtra("tab",0+"");
         startActivity(intent);
     }
 
@@ -31,7 +33,9 @@ public class MainAttendent_Vote extends AppCompatActivity {
         Intent intent = new Intent(MainAttendent_Vote.this, Vote_place.class);
         intent.putExtra("id",id+"");
         intent.putExtra("eid",eId+"");
+        intent.putExtra("email",email+"");
         intent.putExtra("nameEvent",eName+"");
+        intent.putExtra("tab",0+"");
         startActivity(intent);
     }
 }

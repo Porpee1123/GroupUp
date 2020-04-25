@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 public class JobSummary extends AppCompatActivity {
-    String id="",eId="",eName="";
+    String id="",eId="",eName="",email;
     Button bJoin,bNotJoin,btn;
     boolean checkVisible, isChecked;
     RadioButton payment,upSlip;
@@ -25,6 +25,7 @@ public class JobSummary extends AppCompatActivity {
         id = getIntent().getStringExtra("id");
         eId = getIntent().getStringExtra("eid");
         eName = getIntent().getStringExtra("nameEvent");
+        email = getIntent().getStringExtra("email");
         checkVisible = true;
         bJoin = findViewById(R.id.btn_join);
         bNotJoin = findViewById(R.id.btn_notJoin);
@@ -59,7 +60,9 @@ public class JobSummary extends AppCompatActivity {
         Intent intent = new Intent(JobSummary.this, MainAttendent.class);
         intent.putExtra("id",id+"");
         intent.putExtra("eid",eId+"");
+        intent.putExtra("email",email+"");
         intent.putExtra("nameEvent",eName+"");
+        intent.putExtra("tab",1+"");
         startActivity(intent);
     }
 
