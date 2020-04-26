@@ -67,6 +67,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 VoteDate(dateDB.get(0),timeDB.get(0));
+                                backVote();
 
                             }
                         });
@@ -98,6 +99,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         VoteDate(dateDB.get(1),timeDB.get(1));
+                        backVote();
 
                     }
                 });
@@ -129,6 +131,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         VoteDate(dateDB.get(2),timeDB.get(2));
+                        backVote();
 
                     }
                 });
@@ -160,6 +163,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         VoteDate(dateDB.get(3),timeDB.get(3));
+                        backVote();
 
                     }
                 });
@@ -175,11 +179,22 @@ public class Vote_date_and_time extends AppCompatActivity {
         });
     }
 
+    public void backVote() {
+        Intent intent = new Intent(Vote_date_and_time.this, MainAttendent.class);
+        intent.putExtra("id", id + "");
+        intent.putExtra("eid", eId + "");
+        intent.putExtra("email",email+"");
+        intent.putExtra("nameEvent", eName + "");
+        intent.putExtra("tab",0+"");
+        startActivity(intent);
+    }
     public void backVote(View v) {
         Intent intent = new Intent(Vote_date_and_time.this, MainAttendent.class);
         intent.putExtra("id", id + "");
         intent.putExtra("eid", eId + "");
+        intent.putExtra("email",email+"");
         intent.putExtra("nameEvent", eName + "");
+        intent.putExtra("tab",0+"");
         startActivity(intent);
     }
     public void getDate() {

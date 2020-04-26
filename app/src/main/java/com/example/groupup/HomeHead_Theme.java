@@ -25,9 +25,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -37,12 +44,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class HomeHead_Theme extends AppCompatActivity {
     HomeHead_Theme.ResponseStr responseStr = new HomeHead_Theme.ResponseStr();
-    String id, eid, nameE, monS, monE, email, transId;
+    String id, eid, nameE, monS, monE, email, transId,wait;
     ArrayList<String> themeSelect = new ArrayList<>();
     Button b, btn_con;
     LinearLayout lShort, lCus;
@@ -64,6 +75,7 @@ public class HomeHead_Theme extends AppCompatActivity {
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+        wait = getIntent().getStringExtra("wait");
         lShort = findViewById(R.id.linear_shortcut);
         lCus = findViewById(R.id.linear_custom);
         b = findViewById(R.id.btn_customTheme);
@@ -79,6 +91,8 @@ public class HomeHead_Theme extends AppCompatActivity {
         img_sky = findViewById(R.id.theme_sky);
         img_kid = findViewById(R.id.theme_kid);
         checkVisible = true;//close custom
+        Log.d("wait",wait);
+//        calwait(3);
         getTransIDByTrans(id, eid, "3");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -794,7 +808,6 @@ public class HomeHead_Theme extends AppCompatActivity {
         intent.putExtra("mEnd", monE + "");
         intent.putExtra("eid", eid + "");
         intent.putExtra("tab", 0 + "");
-
         startActivity(intent);
     }
 
@@ -1136,48 +1149,62 @@ public class HomeHead_Theme extends AppCompatActivity {
         iceCream.setChecked(false);
         burger.setChecked(false);
     }
-    public void addDateevent(){
+    private void addDateevent(){
         String url = "http://www.groupupdb.com/android/caldateforheader.php";
-        url += "?eid=" + eid;
+        url += "?eid=" + eid+"";
+        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+        Log.d("testAPi",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("eventSelect1234","addDaevent "+response);
+                        Log.d("testAPi","addDaevent "+response);
                         Toast.makeText(HomeHead_Theme.this, "addDaevent Finish", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//                            Toast.makeText(this,
+//                                    error.getString(R.string.error_network_timeout),
+//                                    Toast.LENGTH_LONG).show();
+                            Log.d("testAPi","TimeoutError"+error.getMessage());
+//                            Log.d("testAPi",error.getMessage());
+                        } else if (error instanceof AuthFailureError) {
+                            //TODO
+                            Log.d("testAPi","AuthFailureError"+error.getMessage());
+                        } else if (error instanceof ServerError) {
+                            Log.d("testAPi","ServerError"+error.getMessage());
+                            //TODO
+                        } else if (error instanceof NetworkError) {
+                            Log.d("testAPi","NetworkError"+error.getMessage());
+                            //TODO
+                        } else if (error instanceof ParseError) {
+                            //TODO
+                            Log.d("testAPi","ParseError"+error.getMessage());
+                        } else{
+                            Log.d("testAPi","else "+error.getMessage());
+                        }
                     }
                 });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                6000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue queue = Volley.newRequestQueue(HomeHead_Theme.this);
         queue.add(stringRequest);
     }
-    public void getHeadSelectCal(){
-        //add date for Header select
-        responseStr = new HomeHead_Theme.ResponseStr();
-        String url = "http://www.groupupdb.com/android/getheaderselectcal.php";
-        url += "?eid=" + eid;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-//                        Log.d("deleteDateOldDay", response);
-                        Log.d("eventSelect","getHeadSelectCal "+response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
 
+    public String calwait(int wait){
+        Calendar cal = Calendar.getInstance();
+        Date today1 = cal.getTime();
+        cal.add(Calendar.DATE, wait); // to get previous year add -1
+        Date nextYear1 = cal.getTime();
+        DateFormat simpleNoHour = new SimpleDateFormat("yyyy-MM-dd");
+        simpleNoHour.format(nextYear1);
+        Log.d("wait",nextYear1+"");
+        return simpleNoHour.format(nextYear1)+"";
     }
 
 }

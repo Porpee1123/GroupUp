@@ -416,9 +416,13 @@ public class ManageFriend extends AppCompatActivity {
                 View mView = getLayoutInflater().inflate(R.layout.layout_deletefriend_dialog, null);
                 final TextView mName = mView.findViewById(R.id.nameHeadDel);
                 final TextView mEmail = mView.findViewById(R.id.emailFriend);
+                final ImageView imgF = mView.findViewById(R.id.imageViewDelFriend);
                 final String fid = items.get(position).Id;
                 final String fname = items.get(position).ItemString;
                 final String femail = items.get(position).Itememail;
+                final String path = items.get(position).ItemDrawable;
+                Log.d("pathimage","path "+path);
+                new Extend_MyHelper.SendHttpRequestTask(path,imgF,250).execute();
                 mName.setText(fname);
                 mEmail.setText(femail);
                 Button btn_confirmDel = mView.findViewById(R.id.btn_delFriend);
@@ -517,9 +521,13 @@ public class ManageFriend extends AppCompatActivity {
                 View mView = getLayoutInflater().inflate(R.layout.layout_deletefriend_dialog, null);
                 final TextView mName = mView.findViewById(R.id.nameHeadDel);
                 final TextView mEmail = mView.findViewById(R.id.emailFriend);
+                final ImageView imgF = mView.findViewById(R.id.imageViewDelFriend);
                 final String fid = frientArray.get(position).get("fid");
                 final String fname = frientArray.get(position).get("friend_name");
                 final String femail = frientArray.get(position).get("friend_email");
+                final String path = frientArray.get(position).get("user_photo");
+                Log.d("pathimage","path "+path);
+                new Extend_MyHelper.SendHttpRequestTask(path,imgF,250).execute();
                 mName.setText(fname);
                 mEmail.setText(femail);
                 Button btn_confirmDel = mView.findViewById(R.id.btn_delFriend);
@@ -548,11 +556,12 @@ public class ManageFriend extends AppCompatActivity {
 
                             @Override
                             protected String doInBackground(Void... params) {
-//                                if (typeName.equals("ALL")) {
-//                                    deleteFriendAll(fid);
-//                                } else {
-//                                    deleteFriendInType(fid, typeName);
-//                                }
+                                Log.d("typeChange",typeChange);
+                                if (typeChange.equals("ALL")) {
+                                    deleteFriendAll(fid);
+                                } else {
+                                    deleteFriendInType(fid, typeChange);
+                                }
 
 //                                            AddTypeFriend(mNameString);
                                 return "delete successful!!!";
@@ -612,7 +621,7 @@ public class ManageFriend extends AppCompatActivity {
         for (int i = 0; i < frientArray.size(); i++) {
             String s = frientArray.get(i).get("friend_name");
             String id = frientArray.get(i).get("fid");
-            String path = frientArray.get(i).get("friend_image");
+            String path = frientArray.get(i).get("user_photo");
             String email = frientArray.get(i).get("friend_email");
 
 
@@ -717,7 +726,7 @@ public class ManageFriend extends AppCompatActivity {
                                 map.put("friend_name", c.getString("friend_name"));
                                 map.put("friend_email", c.getString("friend_email"));
                                 map.put("type_name", c.getString("type_name"));
-                                map.put("friend_image", c.getString("friend_image"));
+                                map.put("user_photo", c.getString("user_photo"));
                                 map.put("fid", c.getString("fid"));
 
                                 MyArrList.add(map);
@@ -766,14 +775,14 @@ public class ManageFriend extends AppCompatActivity {
                                 map = new HashMap<String, String>();
                                 map.put("afid", c.getString("afid"));
                                 map.put("fid", c.getString("fid"));
-                                map.put("user_names", c.getString("user_names"));
+                                map.put("friend_name", c.getString("friend_name"));
                                 map.put("user_photo", c.getString("user_photo"));
                                 map.put("friend_email", c.getString("friend_email"));
                                 MyArrList.add(map);
                             }
                             Log.d("position", MyArrList.size() + "");
                             for (int i = 0; i < MyArrList.size(); i++) {
-                                position.add(MyArrList.get(i).get("user_names"));
+                                position.add(MyArrList.get(i).get("friend_name"));
                                 positionId.add(MyArrList.get(i).get("fid"));
                                 positionImage.add(MyArrList.get(i).get("user_photo"));
                                 positionEmail.add(MyArrList.get(i).get("friend_email"));

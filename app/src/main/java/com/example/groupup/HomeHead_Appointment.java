@@ -39,7 +39,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-    String id, eid, nameE, monS, monE, email, note, detail;
+    String id, eid, nameE, monS, monE, email, note, detail,wait;
     int tab = 0;
     TextView tName, mStart, mEnd, headAppoint;
     EditText editText;
@@ -68,10 +68,11 @@ public class HomeHead_Appointment extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         email = getIntent().getStringExtra("email");
+        wait = getIntent().getStringExtra("wait");
          String create = getIntent().getStringExtra("create");
         getEvent();
         tab = Integer.parseInt(getIntent().getStringExtra("tab") + "");
-        Log.d("inten12",nameE+":"+monS+":"+monE+":"+email+":"+id+":"+eid+":"+create);
+        Log.d("inten12",nameE+":"+monS+":"+monE+":"+email+":"+id+":"+eid+":"+create+":"+wait);
         Log.d("tab", "tab " + tab);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tName.setText(nameE);
@@ -96,6 +97,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         intentS.putExtra("mStart", monS + "");
         intentS.putExtra("mEnd", monE + "");
         intentS.putExtra("eid", eid + "");
+        intentS.putExtra("wait", wait + "");
 
         Intent intentdp = new Intent(this, HomeHead_Appointment_Date_And_Place.class);
         intentdp.putExtra("id", id + "");
@@ -258,6 +260,8 @@ public class HomeHead_Appointment extends AppCompatActivity {
                                 map.put("events_month_end", c.getString("events_month_end"));
                                 map.put("events_detail", c.getString("events_detail"));
                                 map.put("events_note", c.getString("events_note"));
+                                map.put("events_wait", c.getString("events_wait"));
+
                                 MyArrList.add(map);
                             }
                             nameE = MyArrList.get(0).get("events_name");
@@ -265,6 +269,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
                             monE = MyArrList.get(0).get("events_month_end");
                             note = MyArrList.get(0).get("events_note");
                             detail = MyArrList.get(0).get("events_detail");
+                            wait = MyArrList.get(0).get("events_wait");
                             Log.d("tab", "get mons " + monS+"mone "+monE);
                             tName.setText(nameE);
 //                            mStart.setText(monS);

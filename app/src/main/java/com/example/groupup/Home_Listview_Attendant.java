@@ -104,6 +104,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         intent.putExtra("eid",eId+"");
                         intent.putExtra("nameEvent",eName+"");
                         intent.putExtra("email",email);
+                        intent.putExtra("tab",0+"");
                         startActivity(intent);
                     }
                 });

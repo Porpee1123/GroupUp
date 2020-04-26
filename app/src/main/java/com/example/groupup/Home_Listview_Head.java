@@ -76,6 +76,7 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("events_id", c.getString("events_id"));
                                 map.put("events_name", c.getString("events_name"));
                                 map.put("states_name", c.getString("states_name"));
+                                map.put("events_wait", c.getString("events_wait"));
                                 MyArrList.add(map);
                             }
                             for (int i =0;i<MyArrList.size();i++){
@@ -107,6 +108,7 @@ Extend_MyHelper.checkInternetLost(this);
                         String eName= MyArrList.get(position).get("events_name");
                         String eId= MyArrList.get(position).get("events_id");
                         String eStatus= MyArrList.get(position).get("states_name");
+                        String ewait= MyArrList.get(position).get("events_wait");
                         Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
                         Intent intent = new Intent(Home_Listview_Head.this, HomeHead_Appointment.class);
                         intent.putExtra("id",id+"");
@@ -114,6 +116,7 @@ Extend_MyHelper.checkInternetLost(this);
                         intent.putExtra("nameEvent",eName+"");
                         intent.putExtra("email",email+"");
                         intent.putExtra("tab",0+"");
+                        intent.putExtra("wait", ewait + "");
                         startActivity(intent);
                     }
                 });

@@ -104,6 +104,7 @@ public class Vote_place extends AppCompatActivity {
                         intent.putExtra("eid",eId+"");
                         intent.putExtra("nameEvent",eName+"");
                         intent.putExtra("email",email);
+                        intent.putExtra("tab",0+"");
                         startActivity(intent);
                     }
                 });
@@ -127,6 +128,7 @@ public class Vote_place extends AppCompatActivity {
         intent.putExtra("eid",eid+"");
         intent.putExtra("nameEvent",nameE+"");
         intent.putExtra("email", email+"");
+        intent.putExtra("tab",0+"");
 
         startActivity(intent);
     }
