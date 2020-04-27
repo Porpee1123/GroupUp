@@ -144,6 +144,7 @@ public class Home_Alert extends AppCompatActivity {
     public void backHome(View v) {
         Intent in = new Intent(this, Home.class);
         in.putExtra("email", email + "");
+        in.putExtra("tab", 0 + "");
         startActivity(in);
 //        addNotification();
     }
@@ -307,12 +308,6 @@ public class Home_Alert extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        Intent intent = new Intent(Home_Alert.this, MainAttendent.class);
-        intent.putExtra("id",id+"");
-        intent.putExtra("eid",eid+"");
-        intent.putExtra("nameEvent",eName+"");
-        intent.putExtra("email",email);
-        startActivity(intent);
     }
 
     public void setItemsListView() {
@@ -362,7 +357,13 @@ public class Home_Alert extends AppCompatActivity {
                             @Override
                             protected void onPostExecute(String string1) {
                                 super.onPostExecute(string1);
-                                startActivity(getIntent());
+                                Intent intent = new Intent(Home_Alert.this, MainAttendent.class);
+                                intent.putExtra("id",id+"");
+                                intent.putExtra("eid",eid+"");
+                                intent.putExtra("nameEvent",ename+"");
+                                intent.putExtra("email",email);
+                                intent.putExtra("tab", 0 + "");
+                                startActivity(intent);
                                 viewDetail.dismiss();
                                 Toast.makeText(Home_Alert.this, string1, Toast.LENGTH_SHORT).show();
 

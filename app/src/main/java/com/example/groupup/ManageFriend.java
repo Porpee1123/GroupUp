@@ -185,7 +185,7 @@ public class ManageFriend extends AppCompatActivity {
                 super.onPostExecute(string1);
                 new CountDownTimer(300, 300) {
                     public void onFinish() {
-
+                        initItems();
                         progressDialog.dismiss();
                     }
 
@@ -198,7 +198,7 @@ public class ManageFriend extends AppCompatActivity {
             protected String doInBackground(Void... params) {
                 getType();
                 getFriend();
-                initItems();
+
                 return "Finish";
             }
         }

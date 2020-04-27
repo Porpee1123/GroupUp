@@ -110,6 +110,7 @@ Extend_MyHelper.checkInternetLost(this);
                         String eStatus= MyArrList.get(position).get("states_name");
                         String ewait= MyArrList.get(position).get("events_wait");
                         Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
+                        checkCloseVote(eId);
                         Intent intent = new Intent(Home_Listview_Head.this, HomeHead_Appointment.class);
                         intent.putExtra("id",id+"");
                         intent.putExtra("eid",eId+"");
@@ -126,12 +127,24 @@ Extend_MyHelper.checkInternetLost(this);
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
-
-
-
-//            }
-//        });
-
-
+    }
+    public void checkCloseVote(String eid) {
+        String url = "http://www.groupupdb.com/android/closevotetime.php";
+        url += "?eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }

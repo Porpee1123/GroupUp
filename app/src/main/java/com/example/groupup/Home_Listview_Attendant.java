@@ -98,6 +98,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         String eName= MyArrList.get(position).get("events_name");
                         String eId= MyArrList.get(position).get("events_id");
                         String eStatus= MyArrList.get(position).get("states_name");
+                        checkCloseVote(eId);
                         Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
                         Intent intent = new Intent(Home_Listview_Attendant.this, MainAttendent.class);
                         intent.putExtra("id",id+"");
@@ -177,5 +178,24 @@ public class Home_Listview_Attendant extends AppCompatActivity {
             this.jsonArray = jsonArr;
         }
 
+    }
+    public void checkCloseVote(String eid) {
+        String url = "http://www.groupupdb.com/android/closevotetime.php";
+        url += "?eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
