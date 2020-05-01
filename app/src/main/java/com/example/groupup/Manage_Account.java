@@ -265,7 +265,6 @@ public class Manage_Account extends AppCompatActivity {
 
                     ImageProcessClass imageProcessClass = new ImageProcessClass();
                     HashMap<String, String> HashMapParams = new HashMap<String, String>();
-                    String name = txtName.getText().toString();
                     HashMapParams.put("name", name);
                     HashMapParams.put("email", email);
                     HashMapParams.put("photo", ConvertImage);

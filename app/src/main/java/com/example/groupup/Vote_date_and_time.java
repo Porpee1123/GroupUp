@@ -202,6 +202,7 @@ public class Vote_date_and_time extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getdateforvote.php";
         url += "?eId=" + eId;
+        Log.d("getdateforvote",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
