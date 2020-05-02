@@ -44,4 +44,27 @@
     <string-array name="random">
         <item>Random</item>
     </string-array>
+    <string-array name="day">
+        <item></item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+        <item>Sat-Sun</item>
+        <item>Mon-Fri</item>
+        <item>Everyday</item>
+    </string-array>
+    <string-array name="facility">
+        <item>Parking</item>
+        <item>Wi-Fi</item>
+        <item>Credit Card</item>
+        <item>Good for Kids</item>
+        <item>Air conditioning</item>
+        <item>Private Room</item>
+        <item>Near BTS</item>
+        <item>Near MRT</item>
+    </string-array>
 </resources>

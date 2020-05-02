@@ -44,4 +44,27 @@
     <string-array name="random">
         <item>อะไรก็ได้</item>
     </string-array>
+    <string-array name="day">
+        <item></item>
+        <item>จันทร์</item>
+        <item>อังคาร</item>
+        <item>พุธ</item>
+        <item>พฤหัสบดี</item>
+        <item>ศุกร์</item>
+        <item>เสาร์</item>
+        <item>อาทิตย์</item>
+        <item>เสาร์-อาทิตย์</item>
+        <item>จันทร์-ศุกร์</item>
+        <item>ทุกวัน</item>
+    </string-array>
+    <string-array name="facility">
+        <item>ที่จอดรถ</item>
+        <item>Wi-Fi</item>
+        <item>รับบัตรเครดิต</item>
+        <item>มีของเล่นเด็ก</item>
+        <item>มีเครื่องปรับอากาศ</item>
+        <item>มีห้องส่วนตัว</item>
+        <item>ใกล้ BTS</item>
+        <item>ใกล้ MRT</item>
+    </string-array>
 </resources>
