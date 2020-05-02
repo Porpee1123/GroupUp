@@ -1,15 +1,19 @@
 package com.example.groupup;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.TextView;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,17 +30,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class Head_Date extends AppCompatActivity {
     Head_Date.ResponseStr responseStr = new Head_Date.ResponseStr();
     String uid, eid, nameE, monS, monE, email;
-    CheckBox cb1, cb2, cb3, cb4, cb5;
+    CheckBox cb1, cb2, cb3, cb4, cb5,cb6;
     CalendarView cv;
     ArrayList<String> dataDB, dateSelect,timeDB , timeSelect;
     Button conDateVote ;
-
+    EditText edt_mshowCustomDate;
+    Spinner spCusTime;
+    int cb6Click;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +54,18 @@ public class Head_Date extends AppCompatActivity {
         cb3 = findViewById(R.id.checkBox3);
         cb4 = findViewById(R.id.checkBox4);
         cb5 = findViewById(R.id.checkBox5);
+        cb6 = findViewById(R.id.checkBox6);
         cv = findViewById(R.id.calendarView);
+        edt_mshowCustomDate = findViewById(R.id.dateCustomShow);
+        edt_mshowCustomDate.setFocusable(false);
         conDateVote = findViewById(R.id.confirmDateVote);
+        spCusTime = findViewById(R.id.sp_customTime);
+        spCusTime.setEnabled(false);
         dataDB = new ArrayList<>();
         dateSelect = new ArrayList<>();
         timeDB = new ArrayList<>();
         timeSelect = new ArrayList<>();
+        cb6Click =99;
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
@@ -63,6 +76,17 @@ public class Head_Date extends AppCompatActivity {
         getDate();
         final int[] count = {0};
         final int maxLimit = 3;
+        //set spinner time
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.range_time, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCusTime.setAdapter(adapter);
+        spCusTime.setSelection(0);
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+         final int mYear = c.get(Calendar.YEAR);
+         final int mMonth = c.get(Calendar.MONTH);
+         final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
         cb1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -79,7 +103,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(0));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(0));
-                        removeTime(timeDB.get(0));
+//                        removeTime(timeDB.get(0));
                         count[0]--;
                     }
                 }else {
@@ -95,7 +119,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(0));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(0));
-                        removeTime(timeDB.get(0));
+//                        removeTime(timeDB.get(0));
                         count[0]--;
                     }
                 }
@@ -117,7 +141,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(1));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(1));
-                        removeTime(timeDB.get(1));
+//                        removeTime(timeDB.get(1));
                         count[0]--;
                     }
                 }else {
@@ -133,7 +157,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(1));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(1));
-                        removeTime(timeDB.get(1));
+//                        removeTime(timeDB.get(1));
                         count[0]--;
                     }
                 }
@@ -155,7 +179,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(2));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(2));
-                        removeTime(timeDB.get(2));
+//                        removeTime(timeDB.get(2));
                         count[0]--;
                     }
                 }else {
@@ -171,7 +195,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(2));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(2));
-                        removeTime(timeDB.get(2));
+//                        removeTime(timeDB.get(2));
                         count[0]--;
                     }
                 }
@@ -193,7 +217,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(3));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(3));
-                        removeTime(timeDB.get(3));
+//                        removeTime(timeDB.get(3));
                         count[0]--;
                     }
                 }else {
@@ -209,7 +233,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(3));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(3));
-                        removeTime(timeDB.get(3));
+//                        removeTime(timeDB.get(3));
                         count[0]--;
                     }
                 }
@@ -231,7 +255,7 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(4));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(4));
-                        removeTime(timeDB.get(4));
+//                        removeTime(timeDB.get(4));
                         count[0]--;
                     }
                 }else {
@@ -247,19 +271,115 @@ public class Head_Date extends AppCompatActivity {
                         timeSelect.add(timeDB.get(4));
                     } else if (!isChecked) {
                         removeDate(dataDB.get(4));
-                        removeTime(timeDB.get(4));
+//                        removeTime(timeDB.get(4));
                         count[0]--;
                     }
                 }
+
+            }
+        });
+        final String[] datecus = {""};
+        cb6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (count[0]==maxLimit-1){
+
+                    conDateVote.setVisibility(View.VISIBLE);
+                    if (count[0] == maxLimit && isChecked) {
+                        conDateVote.setVisibility(View.VISIBLE);
+                        buttonView.setChecked(false);
+                        Toast.makeText(getApplicationContext(),
+                                "สามารถเลือกได้สูงสุด 3 วัน", Toast.LENGTH_SHORT).show();
+                    } else if (isChecked) {
+                        spCusTime.setEnabled(true);
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(Head_Date.this,
+                                new DatePickerDialog.OnDateSetListener() {
+
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year,
+                                                          int monthOfYear, int dayOfMonth) {
+                                        String date = checkCalendarDate(dayOfMonth+"");
+                                        String month = checkCalendar((monthOfYear)+"");
+                                        edt_mshowCustomDate.setText(date + "/" + month+ "/" + year);
+
+                                        datecus[0] = date + "/" + month+ "/" + year;
+                                        dateSelect.add(datecus[0]);
+                                        timeSelect.add(spCusTime.getSelectedItem().toString());
+//                                        timeSelect.add(timeDB.get(3));
+                                        cb6Click =dateSelect.size()-1;
+                                    }
+                                }, mYear, mMonth, mDay);
+
+                        datePickerDialog.show();
+                        count[0]++;
+
+                    } else if (!isChecked) {
+                        spCusTime.setEnabled(false);
+                        cb6Click =99;
+                        edt_mshowCustomDate.setText("");
+                        removeDate(datecus[0]);
+//                        removeTime(timeDB.get(4));
+                        count[0]--;
+                        }
+                }else {
+                    conDateVote.setVisibility(View.INVISIBLE);
+                    if (count[0] == maxLimit && isChecked) {
+                        conDateVote.setVisibility(View.VISIBLE);
+                        buttonView.setChecked(false);
+                        Toast.makeText(getApplicationContext(),
+                                "สามารถเลือกได้สูงสุด 3 วัน", Toast.LENGTH_SHORT).show();
+                    } else if (isChecked) {
+                        spCusTime.setEnabled(true);
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(Head_Date.this,
+                                new DatePickerDialog.OnDateSetListener() {
+
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year,
+                                                          int monthOfYear, int dayOfMonth) {
+                                        String date = checkCalendarDate(dayOfMonth+"");
+                                        String month = checkCalendar((monthOfYear)+"");
+                                        edt_mshowCustomDate.setText(date + "/" + month+ "/" + year);
+                                       datecus[0] = date + "/" + month+ "/" + year;
+                                        dateSelect.add(datecus[0]);
+                                        timeSelect.add(spCusTime.getSelectedItem().toString());
+                                        cb6Click =dateSelect.size()-1;
+                                    }
+                                }, mYear, mMonth, mDay);
+                        datePickerDialog.show();
+
+                        count[0]++;
+                    } else if (!isChecked) {
+                        spCusTime.setEnabled(false);
+                        cb6Click =99;
+                        edt_mshowCustomDate.setText("");
+                        removeDate(datecus[0]);
+                        count[0]--;
+                    }
+                }
+
             }
         });
         conDateVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("dateSelect",dateSelect.toString()+" "+timeSelect.toString());
-                for (int i=0;i< dateSelect.size();i++){
-                    setVoteDateforUser(dateSelect.get(i),timeSelect.get(i));
+                if (cb6Click==99){
+                    Log.d("cb6Click",cb6Click+"");
+                    Log.d("cb6Click",dateSelect.toString());
+                    Log.d("cb6Click",timeSelect.toString());
+                    for (int i=0;i< dateSelect.size();i++){
+                        setVoteDateforUser(dateSelect.get(i),timeSelect.get(i));
+                    }
+                }else {
+                    timeSelect.set(cb6Click,spCusTime.getSelectedItem().toString());
+                    Log.d("cb6Click",spCusTime.getSelectedItem().toString());
+                    Log.d("cb6Click",dateSelect.toString());
+                    Log.d("cb6Click",timeSelect.toString());
+                    for (int i=0;i< dateSelect.size();i++){
+                        setVoteDateforUser(dateSelect.get(i),timeSelect.get(i));
+                    }
                 }
+
                 backAppoint();
             }
         });
@@ -399,18 +519,19 @@ public class Head_Date extends AppCompatActivity {
             }
         }
         dateSelect.remove(Integer.parseInt(number));
+        timeSelect.remove(Integer.parseInt(number));
         Log.d("dateselect", dateSelect.toString());
     }
-    public void removeTime(String id) {
-        String number = "";
-        for (int i = 0; i < timeSelect.size(); i++) {
-            if (id.equals(timeSelect.get(i))) {
-                number = i + "";
-            }
-        }
-        timeSelect.remove(Integer.parseInt(number));
-        Log.d("dateselect", timeSelect.toString());
-    }
+//    public void removeTime(String id) {
+//        String number = "";
+//        for (int i = 0; i < timeSelect.size(); i++) {
+//            if (id.equals(timeSelect.get(i))) {
+//                number = i + "";
+//            }
+//        }
+//        timeSelect.remove(Integer.parseInt(number));
+//        Log.d("dateselect", timeSelect.toString());
+//    }
 
     public class ResponseStr {
         private String str;
@@ -464,5 +585,61 @@ public class Head_Date extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+    public String checkCalendar(String monthNumber) {
+        Log.d("dateselect",monthNumber);
+        switch (monthNumber) {
+            case "0":
+                return "01";
+            case "1":
+                return "02";
+            case "2":
+                return "03";
+            case "3":
+                return "04";
+            case "4":
+                return "05";
+            case "5":
+                return "06";
+            case "6":
+                return "07";
+            case "7":
+                return "08";
+            case "8":
+                return "09";
+            case "9":
+                return "10";
+            case "10":
+                return "11";
+            case "11":
+                return "12";
+            default:
+                return "00";
+        }
+    }
+
+    public String checkCalendarDate(String dateNumber) {
+        switch (dateNumber) {
+            case "1":
+                return "01";
+            case "2":
+                return "02";
+            case "3":
+                return "03";
+            case "4":
+                return "04";
+            case "5":
+                return "05";
+            case "6":
+                return "06";
+            case "7":
+                return "07";
+            case "8":
+                return "08";
+            case "9":
+                return "09";
+            default:
+                return dateNumber;
+        }
     }
 }

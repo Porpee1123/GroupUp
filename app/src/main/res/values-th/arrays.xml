@@ -67,4 +67,11 @@
         <item>ใกล้ BTS</item>
         <item>ใกล้ MRT</item>
     </string-array>
+    <string-array name="range_time">
+        <item>11:00 - 13:59</item>
+        <item>14:00 - 16:59</item>
+        <item>17:00 - 19:59</item>
+        <item>20:00 - 23:59</item>
+        <item>ทั้งวัน</item>
+    </string-array>
 </resources>
