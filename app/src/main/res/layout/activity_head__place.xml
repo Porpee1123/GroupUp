@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
@@ -28,8 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@color/classicBlue"
-                android:src="@drawable/ic_chevron_left_black_24dp"
-                android:onClick="backAppoint"/>
+                android:onClick="backAppoint"
+                android:src="@drawable/ic_chevron_left_black_24dp" />
 
             <TextView
                 android:id="@+id/select_place"
@@ -155,9 +156,19 @@
         <ListView
             android:id="@+id/listView_showPlace"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
         </ListView>
+
+        <Button
+            android:id="@+id/btn_conPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="@string/btn"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

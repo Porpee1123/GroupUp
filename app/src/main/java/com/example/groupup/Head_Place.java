@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import com.bumptech.glide.Glide;
@@ -19,8 +21,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -41,7 +46,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -245,6 +254,8 @@ public class Head_Place extends AppCompatActivity {
             }
             new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
 
+            final int maxLimit = 3;
+
             final String ItemName = list.get(position).ItemName;
             final String ItemDest = list.get(position).ItemDest;
             final String ItemFaci = list.get(position).ItemFaci;
@@ -293,13 +304,9 @@ public class Head_Place extends AppCompatActivity {
                     String sVisit = placeArray.get(position).get("place_visit").toString();
                     sliderView = mView.findViewById(R.id.imageSlider);
                     getPlacePhotoPid(sId);
-
-
-
                     title.setText(sTitle);
                     detail.setText(sDetail);
                     ArrayList<String> s =spiltGetDate(sDay);
-
                     time.setText(showStringDay(s)+ " \n" + sSTime + " - " + sETime);
                     tel.setText(sTel);
                     price.setText(sPrice);
@@ -307,7 +314,6 @@ public class Head_Place extends AppCompatActivity {
                     facility.setText(showFacility(sFacility));
                     rt.setRating(Float.parseFloat(sRating));
                     visit.setText("( " + sVisit + " คน)");
-//                    new Extend_MyHelper.SendHttpRequestTask(sImage, img, 450).execute();
                     viewDetail.setView(mView);
                     viewDetail.show();
                     btn_close.setOnClickListener(new View.OnClickListener() {
@@ -318,9 +324,40 @@ public class Head_Place extends AppCompatActivity {
                     });
                 }
             });
+            viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (count[0]==maxLimit-1){
+                        if (count[0] == maxLimit && isChecked) {
+                            buttonView.setChecked(false);
+                            Toast.makeText(getApplicationContext(),
+                                    "สามารถเลือกได้สูงสุด 3 วัน", Toast.LENGTH_SHORT).show();
+                        } else if (isChecked) {
+                            count[0]++;
+                            placeSelect.add(ItemId);
+                        } else if (!isChecked) {
+                            removePlace(ItemId);
+                            count[0]--;
+                        }
+                    }else {
+                        if (count[0] == maxLimit && isChecked) {
+                            buttonView.setChecked(false);
+                            Toast.makeText(getApplicationContext(),
+                                    "สามารถเลือกได้สูงสุด 3 วัน", Toast.LENGTH_SHORT).show();
+                        } else if (isChecked) {
+                            count[0]++;
+                            placeSelect.add(ItemId);
+                        } else if (!isChecked) {
+                            removePlace(ItemId);
+                            count[0]--;
+                        }
+                    }
+                }
+            });
             viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
 //                    ItemId,ItemDrawable,ItemName,ItemDest,ItemFaci,Rating,ItemUserId,ItemPrice,ItemPhone,ItemSeat,ItemDeposite,ItemDay,ItemStartTime,ItemEndTime,
 //                    Intent in = new Intent(Head_Place.this, Edit_place.class);
 //                    in.putExtra("ItemId", ItemId + "");
@@ -371,13 +408,16 @@ public class Head_Place extends AppCompatActivity {
     ArrayList<HashMap<String, String>> placeArray, placeImage;
     ProgressDialog progressDialog;
     ResponseStr responseStr = new ResponseStr();
-    String uid, eid, nameE, monS, monE, email;
+    String uid, eid, nameE, monS, monE, email,wait;
     String[] some_array;
     static Head_Place.ItemsListAdapter myItemsListAdapter;
     List<Head_Place.Item> items = new ArrayList<Head_Place.Item>();
     ListView placeList;
     SliderView sliderView;
+    ArrayList<String> placeSelect;
     private SliderAdapterExample adapter;
+    final int[] count = {0};
+    Button btn_con;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -390,15 +430,46 @@ public class Head_Place extends AppCompatActivity {
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+        wait ="";
         placeList = findViewById(R.id.listView_showPlace);
+        btn_con= findViewById(R.id.btn_conPlace);
         placeArray = new ArrayList<>();
         placeImage = new ArrayList<>();
+        placeSelect = new ArrayList<>();
         some_array = getResources().getStringArray(R.array.facility);
         progressDialog = new ProgressDialog(Head_Place.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
 //        progressDialog.show();
         getplace();
+        getEvent();
+        btn_con.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (count[0]==3){
+                    for (int i=0;i<placeSelect.size();i++){
+                        saveToVotePlace(placeSelect.get(i));
+                    }
+                    saveToVotePlaceRandom();
+                    finish();
+                }else {
+                    final AlertDialog viewDetail = new AlertDialog.Builder(Head_Place.this).create();
+
+                    viewDetail.setTitle("กรุณาเลือกให้ครบ 3 ตัวเลือก");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            viewDetail.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    btnPositive.setLayoutParams(layoutParams);
+                }
+
+            }
+        });
     }
 
     public void backAppoint(View v) {
@@ -663,7 +734,116 @@ public class Head_Place extends AppCompatActivity {
         }
         adapter.renewItems(sliderItemList);
     }
+    public void removePlace(String id) {
+        String number = "";
+        for (int i = 0; i < placeSelect.size(); i++) {
+            if (id.equals(placeSelect.get(i))) {
+                number = i + "";
+            }
+        }
+        placeSelect.remove(Integer.parseInt(number));
+        Log.d("dateselect", placeSelect.toString());
+    }
+    public void saveToVotePlace(String pid){
+        Log.d("saveToVotePlace",pid);
+        String url = "http://www.groupupdb.com/android/addplaceforvote.php";
+        url += "?pid=" + pid;
+        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+        url += "&eid=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Head_Place.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void saveToVotePlaceRandom(){
+        String url = "http://www.groupupdb.com/android/addplaceforvote.php";
+        url += "?pid=" + "random";
+        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+        url += "&eid=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(Head_Place.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public String calwait(int wait){
+        Calendar cal = Calendar.getInstance();
+        Date today1 = cal.getTime();
+        cal.add(Calendar.DATE, wait); // to get previous year add -1
+        Date nextYear1 = cal.getTime();
+        DateFormat simpleNoHour = new SimpleDateFormat("yyyy-MM-dd");
+        simpleNoHour.format(nextYear1);
+        Log.d("wait",nextYear1+"");
+        return simpleNoHour.format(nextYear1)+"";
+    }
+    public void getEvent() {
 
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+//        Log.d("footer", "email " + email);
+        String url = "http://www.groupupdb.com/android/geteventHeader.php";
+        url += "?sId=" + uid;//ร  อเอาIdหรือ email จากfirebase
+        url += "&eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("trans_id", c.getString("trans_id"));
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("events_name", c.getString("events_name"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("states_name", c.getString("states_name"));
+                                map.put("events_month_start", c.getString("events_month_start"));
+                                map.put("events_month_end", c.getString("events_month_end"));
+                                map.put("events_detail", c.getString("events_detail"));
+                                map.put("events_note", c.getString("events_note"));
+                                map.put("events_wait", c.getString("events_wait"));
+
+                                MyArrList.add(map);
+                            }
+                            wait = MyArrList.get(0).get("events_wait");
+                            Log.d("tab","wait : "+ wait);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 //    public void removeLastItem(View view) {
 //        if (adapter.getCount() - 1 >= 0)
 //            adapter.deleteItem(adapter.getCount() - 1);
