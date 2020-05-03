@@ -182,4 +182,7 @@
     <string name="later">เอาไว้ก่อน</string>
     <string name="con_vote">ยืนยันการโหวต</string>
     <string name="save">บันทึก</string>
+    <string name="see_detail">ดูรายละเอียด</string>
+    <string name="review">รีวิว</string>
+    <string name="score_review">คะแนนรีวิว</string>
 </resources>

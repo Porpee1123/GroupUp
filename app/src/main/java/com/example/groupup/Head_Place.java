@@ -3,20 +3,28 @@ package com.example.groupup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import com.bumptech.glide.Glide;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,6 +32,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
+import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +48,103 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 public class Head_Place extends AppCompatActivity {
+    //************************************** Slide View *********************************************//
+    public class SliderItem {
+
+        private String description;
+        private String imageUrl;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+    }
+    public class SliderAdapterExample extends
+            SliderViewAdapter<SliderAdapterExample.SliderAdapterVH> {
+
+        private Context context;
+        private List<SliderItem> mSliderItems = new ArrayList<>();
+
+        public SliderAdapterExample(Context context) {
+            this.context = context;
+        }
+
+        public void renewItems(List<SliderItem> sliderItems) {
+            this.mSliderItems = sliderItems;
+            notifyDataSetChanged();
+        }
+
+        public void deleteItem(int position) {
+            this.mSliderItems.remove(position);
+            notifyDataSetChanged();
+        }
+
+        public void addItem(SliderItem sliderItem) {
+            this.mSliderItems.add(sliderItem);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public SliderAdapterVH onCreateViewHolder(ViewGroup parent) {
+            View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slider_layout_item, null);
+            return new SliderAdapterVH(inflate);
+        }
+
+        @Override
+        public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
+
+            SliderItem sliderItem = mSliderItems.get(position);
+
+            viewHolder.textViewDescription.setText(sliderItem.getDescription());
+            viewHolder.textViewDescription.setTextSize(16);
+            viewHolder.textViewDescription.setTextColor(Color.WHITE);
+            Glide.with(viewHolder.itemView)
+                    .load(sliderItem.getImageUrl())
+                    .fitCenter()
+                    .into(viewHolder.imageViewBackground);
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        public int getCount() {
+            //slider view count could be dynamic size
+            return mSliderItems.size();
+        }
+
+        class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
+
+            View itemView;
+            ImageView imageViewBackground;
+            ImageView imageGifContainer;
+            TextView textViewDescription;
+
+            public SliderAdapterVH(View itemView) {
+                super(itemView);
+                imageViewBackground = itemView.findViewById(R.id.iv_auto_image_slider);
+                imageGifContainer = itemView.findViewById(R.id.iv_gif_container);
+                textViewDescription = itemView.findViewById(R.id.tv_auto_image_slider);
+                this.itemView = itemView;
+            }
+        }
+
+    }
     //*******************************TextView with checkbox******************************************//
     public class Item {
         String ItemId;
@@ -82,9 +191,12 @@ public class Head_Place extends AppCompatActivity {
         TextView description;
         TextView facility;
         RatingBar rating;
-        Button checkbox;
+        CheckBox checkbox;
+        Button seedetail;
     }
+
     public class ItemsListAdapter extends BaseAdapter {
+
         private ArrayList<Head_Place.Item> arraylist;
         private Context context;
         private List<Head_Place.Item> list;
@@ -110,6 +222,7 @@ public class Head_Place extends AppCompatActivity {
         public long getItemId(int position) {
             return position;
         }
+
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View rowView = convertView;
@@ -125,6 +238,7 @@ public class Head_Place extends AppCompatActivity {
                 viewHolder.facility = rowView.findViewById(R.id.rowFacilityHeadPlace);
                 viewHolder.rating = rowView.findViewById(R.id.rowRatingHeadPlace);
                 viewHolder.checkbox = rowView.findViewById(R.id.rowCheckboxHeadPlace);
+                viewHolder.seedetail = rowView.findViewById(R.id.rowButtonSeeDetail);
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (Head_Place.ViewHolder) rowView.getTag();
@@ -147,8 +261,63 @@ public class Head_Place extends AppCompatActivity {
             viewHolder.text.setText(ItemName);
             viewHolder.rating.setRating(ItemRating);
             viewHolder.description.setText(ItemDest);
-
             viewHolder.facility.setText(showFacility(ItemFaci));
+            viewHolder.seedetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final AlertDialog viewDetail = new AlertDialog.Builder(Head_Place.this).create();
+                    View mView = getLayoutInflater().inflate(R.layout.layout_showplace_dialog, null);
+                    final TextView title = mView.findViewById(R.id.showplace_Title);
+                    final TextView detail = mView.findViewById(R.id.showplace_detail);
+                    final TextView time = mView.findViewById(R.id.showplace_time);
+                    final TextView tel = mView.findViewById(R.id.showplace_tel);
+                    final TextView price = mView.findViewById(R.id.showplace_price);
+                    final TextView people = mView.findViewById(R.id.showplace_people);
+                    final TextView facility = mView.findViewById(R.id.showplace_facility);
+                    final TextView visit = mView.findViewById(R.id.showplace_PeopleVisit);
+                    placeImage.clear();
+                    final ImageButton btn_close = mView.findViewById(R.id.showplace_btnClose);
+                    final RatingBar rt = mView.findViewById(R.id.showplace_ratingBar);
+                    String sId = placeArray.get(position).get("place_id").toString();
+                    String sTitle = placeArray.get(position).get("place_name").toString();
+                    String sDetail = placeArray.get(position).get("place_detail").toString();
+                    String sTel = placeArray.get(position).get("place_phone").toString();
+                    String sPrice = placeArray.get(position).get("place_price").toString();
+                    String sPeople = placeArray.get(position).get("place_numofseat").toString();
+                    String sFacility = placeArray.get(position).get("place_facility").toString();
+                    String sImage = placeArray.get(position).get("place_photoShow").toString();
+                    String sRating = placeArray.get(position).get("place_score").toString();
+                    String sDay = placeArray.get(position).get("place_date").toString();
+                    String sSTime = placeArray.get(position).get("place_stime").toString();
+                    String sETime = placeArray.get(position).get("place_etime").toString();
+                    String sVisit = placeArray.get(position).get("place_visit").toString();
+                    sliderView = mView.findViewById(R.id.imageSlider);
+                    getPlacePhotoPid(sId);
+
+
+
+                    title.setText(sTitle);
+                    detail.setText(sDetail);
+                    ArrayList<String> s =spiltGetDate(sDay);
+
+                    time.setText(showStringDay(s)+ " \n" + sSTime + " - " + sETime);
+                    tel.setText(sTel);
+                    price.setText(sPrice);
+                    people.setText(sPeople);
+                    facility.setText(showFacility(sFacility));
+                    rt.setRating(Float.parseFloat(sRating));
+                    visit.setText("( " + sVisit + " คน)");
+//                    new Extend_MyHelper.SendHttpRequestTask(sImage, img, 450).execute();
+                    viewDetail.setView(mView);
+                    viewDetail.show();
+                    btn_close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewDetail.dismiss();
+                        }
+                    });
+                }
+            });
             viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -187,8 +356,7 @@ public class Head_Place extends AppCompatActivity {
                     if (wp.ItemName.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
-                    }
-                    else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
+                    } else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
                     }
@@ -198,15 +366,19 @@ public class Head_Place extends AppCompatActivity {
             notifyDataSetChanged();
         }
     }
+
     //***********************************************************************************************//
-    ArrayList<HashMap<String, String>> placeArray;
+    ArrayList<HashMap<String, String>> placeArray, placeImage;
     ProgressDialog progressDialog;
     ResponseStr responseStr = new ResponseStr();
-    String uid,eid,nameE,monS,monE,email;
+    String uid, eid, nameE, monS, monE, email;
     String[] some_array;
     static Head_Place.ItemsListAdapter myItemsListAdapter;
     List<Head_Place.Item> items = new ArrayList<Head_Place.Item>();
     ListView placeList;
+    SliderView sliderView;
+    private SliderAdapterExample adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -214,12 +386,13 @@ public class Head_Place extends AppCompatActivity {
         setContentView(R.layout.activity_head__place);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
-        eid =getIntent().getStringExtra("eid");
+        eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         placeList = findViewById(R.id.listView_showPlace);
         placeArray = new ArrayList<>();
+        placeImage = new ArrayList<>();
         some_array = getResources().getStringArray(R.array.facility);
         progressDialog = new ProgressDialog(Head_Place.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
@@ -227,6 +400,7 @@ public class Head_Place extends AppCompatActivity {
 //        progressDialog.show();
         getplace();
     }
+
     public void backAppoint(View v) {
 //        Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
 //        intent.putExtra("id", uid+"");
@@ -239,6 +413,7 @@ public class Head_Place extends AppCompatActivity {
 //        startActivity(intent);
         finish();
     }
+
     public String showFacility(String d) {
         StringTokenizer st = new StringTokenizer(d, ":");
         String s = "";
@@ -255,6 +430,7 @@ public class Head_Place extends AppCompatActivity {
         }
         return s;
     }
+
     public void getplace() {
         responseStr = new Head_Place.ResponseStr();
 
@@ -319,6 +495,77 @@ public class Head_Place extends AppCompatActivity {
             }
         }.start();
     }
+
+    public void getPlacePhotoPid(String pId) {
+        responseStr = new Head_Place.ResponseStr();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getplacephotobypid.php";
+        url += "?sId=" + pId;
+        Log.d("position", "stringRequest  " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("photoplace_id", c.getString("photoplace_id"));
+                                map.put("place_id", c.getString("place_id"));
+                                map.put("photoplace_path", c.getString("photoplace_path"));
+                                map.put("place_upid", c.getString("place_upid"));
+                                MyArrList.add(map);
+                                placeImage.add(map);
+
+                            }
+                            Log.d("editplce", placeImage.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(500, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                adapter = new SliderAdapterExample(Head_Place.this);
+                sliderView.setSliderAdapter(adapter);
+                renewItems(sliderView,placeImage);
+                sliderView.setIndicatorAnimation(IndicatorAnimations.THIN_WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
+                sliderView.setIndicatorSelectedColor(Color.WHITE);
+                sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                sliderView.setScrollTimeInSec(3);
+                sliderView.setAutoCycle(true);
+//                if (placeImage.size() == 0) {
+//
+//                } else {
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(0).get("photoplace_path"), img1, 450).execute();
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(1).get("photoplace_path"), img2, 450).execute();
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(2).get("photoplace_path"), img3, 450).execute();
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(3).get("photoplace_path"), img4, 450).execute();
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(4).get("photoplace_path"), img5, 450).execute();
+//                }
+            }
+        }.start();
+    }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -328,15 +575,18 @@ public class Head_Place extends AppCompatActivity {
         }
 
     }
+
     public void setItemsListView() {
         myItemsListAdapter = new Head_Place.ItemsListAdapter(this, items);
         placeList.setAdapter(myItemsListAdapter);
         Log.d("friend", "size" + myItemsListAdapter.getCount() + "");
     }
+
     public void showAllCheckboxClick() {
         initItems();
         setItemsListView();
     }
+
     private void initItems() {
         items = new ArrayList<Head_Place.Item>();
         Log.d("pathimage", "placeArray " + placeArray.toString());
@@ -366,4 +616,70 @@ public class Head_Place extends AppCompatActivity {
         }
 
     }
+    public ArrayList spiltGetDate(String s){
+        ArrayList<String> arrayList = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(s,":");
+        while (st.hasMoreTokens()){
+            arrayList.add(st.nextToken());
+        }
+        return arrayList;
+    }
+    public String showStringDay(ArrayList<String> date) {
+        String day = "";
+        for (int i = 0; i < date.size(); i++) {
+            if (Integer.parseInt(date.get(i)) == 1) {
+                day += "จันทร์ ";
+
+            } else if (Integer.parseInt(date.get(i)) == 2) {
+                day += "อังคาร ";
+            } else if (Integer.parseInt(date.get(i)) == 3) {
+                day += "พุธ ";
+            } else if (Integer.parseInt(date.get(i)) == 4) {
+                day += "พฤหัสบดี ";
+            } else if (Integer.parseInt(date.get(i)) == 5) {
+                day += "ศุกร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 6) {
+                day += "เสาร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 7) {
+                day += "อาทิตย์ ";
+            } else if (Integer.parseInt(date.get(i)) == 8) {
+                day += "วันเสาร์อาทิตย์ ";
+            } else if (Integer.parseInt(date.get(i)) == 9) {
+                day += "จันทร์ - ศุกร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 10) {
+                day += "ทุกวัน ";
+            }
+        }
+        return day;
+    }
+    public void renewItems(View view,ArrayList<HashMap<String, String>> image) {
+        List<SliderItem> sliderItemList = new ArrayList<>();
+        for (int i =0;i<image.size();i++){
+            SliderItem sliderItem = new SliderItem();
+            sliderItem.setImageUrl(image.get(i).get("photoplace_path"));
+            Log.d("photoplace_path",image.get(i).get("photoplace_path"));
+            sliderItem.setDescription("Slider Item " + i);
+            sliderItemList.add(sliderItem);
+        }
+        adapter.renewItems(sliderItemList);
+    }
+
+//    public void removeLastItem(View view) {
+//        if (adapter.getCount() - 1 >= 0)
+//            adapter.deleteItem(adapter.getCount() - 1);
+//    }
+//
+//    public void addNewItem(View view,ArrayList<HashMap<String, String>> image) {
+//        SliderItem sliderItem = new SliderItem();
+//        List<SliderItem> sliderItemList = new ArrayList<>();
+//        sliderItem.setDescription("Slider Item Added Manually");
+//        sliderItem.setImageUrl(image.get(0).get("photoplace_path"));
+//        sliderItem.setImageUrl(image.get(1).get("photoplace_path"));
+//        sliderItem.setImageUrl(image.get(2).get("photoplace_path"));
+//        sliderItem.setImageUrl(image.get(3).get("photoplace_path"));
+//        sliderItem.setImageUrl(image.get(4).get("photoplace_path"));
+//        sliderItemList.add(sliderItem);
+//        adapter.addItem(sliderItem);
+//    }
+
 }

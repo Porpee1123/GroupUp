@@ -183,5 +183,8 @@
     <string name="save">Save</string>
     <string name="random">Random</string>
     <string name="con_vote">Confirm Vote</string>
+    <string name="see_detail">See detail Vote</string>
+    <string name="review">Review</string>
+    <string name="score_review">Score View</string>
 
 </resources>
