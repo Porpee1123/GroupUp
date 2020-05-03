@@ -8,26 +8,32 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import com.bumptech.glide.Glide;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -171,6 +177,7 @@ public class Head_Place extends AppCompatActivity {
         String ItemStartTime;
         String ItemEndTime;
         String ItemFaciString;
+        String RatingString;
 
         //        upid,pPrice,pPhone,pSeat,pDepo,pDate,pStartTime,pEndTime
         //        Item(ImageView drawable, String t, boolean b){
@@ -190,6 +197,8 @@ public class Head_Place extends AppCompatActivity {
             ItemStartTime = sTime;
             ItemEndTime = eTime;
             ItemFaciString = showFacility(ItemFaci);
+            RatingString = Rating+"";
+
         }
 
     }
@@ -354,31 +363,6 @@ public class Head_Place extends AppCompatActivity {
                     }
                 }
             });
-            viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-//                    ItemId,ItemDrawable,ItemName,ItemDest,ItemFaci,Rating,ItemUserId,ItemPrice,ItemPhone,ItemSeat,ItemDeposite,ItemDay,ItemStartTime,ItemEndTime,
-//                    Intent in = new Intent(Head_Place.this, Edit_place.class);
-//                    in.putExtra("ItemId", ItemId + "");
-//                    in.putExtra("ItemName", ItemName + "");
-//                    in.putExtra("ItemDest", ItemDest + "");
-//                    in.putExtra("ItemFaci", ItemFaci + "");
-//                    in.putExtra("Rating", ItemRating + "");
-//                    in.putExtra("ItemUserId", ItemUserId + "");
-//                    in.putExtra("ItemPrice", ItemPrice + "");
-//                    in.putExtra("ItemPhone", ItemPhone + "");
-//                    in.putExtra("ItemSeat", ItemSeat + "");
-//                    in.putExtra("ItemDeposite", ItemDeposite + "");
-//                    in.putExtra("ItemDay", ItemDay + "");
-//                    in.putExtra("ItemStartTime", ItemStartTime + "");
-//                    in.putExtra("ItemEndTime", ItemEndTime + "");
-//                    in.putExtra("ItemUserEmail", email + "");
-//                    startActivity(in);
-//
-//                    Log.d("listclick", position + "  " + ItemId);
-                }
-            });
             return rowView;
         }
 
@@ -393,7 +377,11 @@ public class Head_Place extends AppCompatActivity {
                     if (wp.ItemName.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
-                    } else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
+                    }
+                    else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list.add(wp);
+                    }else if (wp.RatingString.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
                     }
@@ -410,20 +398,29 @@ public class Head_Place extends AppCompatActivity {
     ResponseStr responseStr = new ResponseStr();
     String uid, eid, nameE, monS, monE, email,wait;
     String[] some_array;
-    static Head_Place.ItemsListAdapter myItemsListAdapter;
+    Head_Place.ItemsListAdapter myItemsListAdapter;
     List<Head_Place.Item> items = new ArrayList<Head_Place.Item>();
     ListView placeList;
     SliderView sliderView;
+    ArrayAdapter<String> adpScore,adpFaci,adpPrice,adpPeople,adpTheme;
     ArrayList<String> placeSelect;
+    Spinner sp_score,sp_faci,sp_price,sp_people,sp_theme;
     private SliderAdapterExample adapter;
     final int[] count = {0};
     Button btn_con;
+    EditText searchText ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_head__place);
+        sp_faci = findViewById(R.id.spinner_facility);
+        sp_people = findViewById(R.id.spinner_seat);
+        sp_price = findViewById(R.id.spinner_price);
+        sp_score =findViewById(R.id.spinner_score);
+        sp_theme = findViewById(R.id.spinner_theme);
+        searchText = findViewById(R.id.searchTextPlace);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
@@ -440,9 +437,44 @@ public class Head_Place extends AppCompatActivity {
         progressDialog = new ProgressDialog(Head_Place.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
+        progressDialog.show();
+        adpFaci = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.spfacility));
+        adpFaci.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adpPeople = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.spnumberOfSeats));
+        adpPeople.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adpPrice = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sppriceRange));
+        adpPrice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adpScore = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.spscore));
+        adpScore.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adpTheme = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.sptheme));
+        adpTheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp_faci.setAdapter(adpFaci);
+        sp_faci.setSelection(0);
+        sp_score.setAdapter(adpScore);
+        sp_score.setSelection(0);
+        sp_price.setAdapter(adpPrice);
+        sp_price.setSelection(0);
+        sp_people.setAdapter(adpPeople);
+        sp_people.setSelection(0);
+        sp_theme.setAdapter(adpTheme);
+        sp_theme.setSelection(0);
+
+        sp_faci.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItemText = (String) parent.getItemAtPosition(position);
+               String typeChange = selectedItemText;
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 //        progressDialog.show();
         getplace();
         getEvent();
+        search();
         btn_con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -473,16 +505,16 @@ public class Head_Place extends AppCompatActivity {
     }
 
     public void backAppoint(View v) {
-//        Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
-//        intent.putExtra("id", uid+"");
-//        intent.putExtra("email", email+"");
-//        intent.putExtra("eid",eid+"");
-//        intent.putExtra("nameEvent",nameE+"");
-//        intent.putExtra("mStart",monS+"");
-//        intent.putExtra("mEnd",monE+"");
-//        intent.putExtra("tab",1+"");
-//        startActivity(intent);
-        finish();
+        Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
+        intent.putExtra("id", uid+"");
+        intent.putExtra("email", email+"");
+        intent.putExtra("eid",eid+"");
+        intent.putExtra("nameEvent",nameE+"");
+        intent.putExtra("mStart",monS+"");
+        intent.putExtra("mEnd",monE+"");
+        intent.putExtra("tab",1+"");
+        startActivity(intent);
+//        finish();
     }
 
     public String showFacility(String d) {
@@ -650,6 +682,7 @@ public class Head_Place extends AppCompatActivity {
     public void setItemsListView() {
         myItemsListAdapter = new Head_Place.ItemsListAdapter(this, items);
         placeList.setAdapter(myItemsListAdapter);
+        progressDialog.dismiss();
         Log.d("friend", "size" + myItemsListAdapter.getCount() + "");
     }
 
@@ -844,22 +877,29 @@ public class Head_Place extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-//    public void removeLastItem(View view) {
-//        if (adapter.getCount() - 1 >= 0)
-//            adapter.deleteItem(adapter.getCount() - 1);
-//    }
-//
-//    public void addNewItem(View view,ArrayList<HashMap<String, String>> image) {
-//        SliderItem sliderItem = new SliderItem();
-//        List<SliderItem> sliderItemList = new ArrayList<>();
-//        sliderItem.setDescription("Slider Item Added Manually");
-//        sliderItem.setImageUrl(image.get(0).get("photoplace_path"));
-//        sliderItem.setImageUrl(image.get(1).get("photoplace_path"));
-//        sliderItem.setImageUrl(image.get(2).get("photoplace_path"));
-//        sliderItem.setImageUrl(image.get(3).get("photoplace_path"));
-//        sliderItem.setImageUrl(image.get(4).get("photoplace_path"));
-//        sliderItemList.add(sliderItem);
-//        adapter.addItem(sliderItem);
-//    }
+    public void search() {
+        searchText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+                myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+    }
 
 }

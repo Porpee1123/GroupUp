@@ -185,4 +185,5 @@
     <string name="see_detail">ดูรายละเอียด</string>
     <string name="review">รีวิว</string>
     <string name="score_review">คะแนนรีวิว</string>
+    <string name="search_place">ค้นหา ชื่อ/สิ่งอำนวยความสะดวก/คะแนนรีวิว</string>
 </resources>

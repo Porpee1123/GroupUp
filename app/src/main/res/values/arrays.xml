@@ -74,4 +74,50 @@
         <item>20:00 - 23:59</item>
         <item>All Day</item>
     </string-array>
+    <string-array name="spscore">
+        <item>Score</item>
+        <item>1+</item>
+        <item>2+</item>
+        <item>3+</item>
+        <item>4+</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="sppriceRange">
+        <item>Price Range</item>
+        <item>Less than 100</item>
+        <item>101-250</item>
+        <item>251-500</item>
+        <item>501-1000</item>
+        <item>More than 1000</item>
+    </string-array>
+    <string-array name="spnumberOfSeats">
+    <item>Seat</item>
+    <item>Less than 10</item>
+    <item>11-40</item>
+    <item>41-80</item>
+    <item>81-150</item>
+    <item>More than 150</item>
+    </string-array>
+    <string-array name="sptheme">
+        <item>Theme</item>
+        <item>minimal</item>
+        <item>classic</item>
+        <item>Kids</item>
+        <item>Buffet</item>
+        <item>Riverside</item>
+        <item>Karaoke</item>
+        <item>Roof Top</item>
+    </string-array>
+    <string-array name="spfacility">
+        <item>Facility</item>
+        <item>Parking</item>
+        <item>Wi-Fi</item>
+        <item>Credit Card</item>
+        <item>Good for Kids</item>
+        <item>Air conditioning</item>
+        <item>Private Room</item>
+        <item>Near BTS</item>
+        <item>Near MRT</item>
+    </string-array>
+
 </resources>

@@ -74,4 +74,49 @@
         <item>20:00 - 23:59</item>
         <item>ทั้งวัน</item>
     </string-array>
+    <string-array name="spscore">
+        <item>คะแนน</item>
+        <item>1+</item>
+        <item>2+</item>
+        <item>3+</item>
+        <item>4+</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="sppriceRange">
+        <item>เรทราคา</item>
+        <item>ต่ำกว่า 100</item>
+        <item>101-250</item>
+        <item>251-500</item>
+        <item>501-1000</item>
+        <item>มากกว่า 1000</item>
+    </string-array>
+    <string-array name="spnumberOfSeats">
+        <item>จำนวนที่นั่ง</item>
+        <item>ต่ำกว่า 10</item>
+        <item>11-40</item>
+        <item>41-80</item>
+        <item>81-150</item>
+        <item>มากกว่า 150</item>
+    </string-array>
+    <string-array name="sptheme">
+        <item>บรรยากาศ</item>
+        <item>มินิมอล</item>
+        <item>คลาสสิค</item>
+        <item>สำหรับเด็ก</item>
+        <item>บุฟเฟ่ห์</item>
+        <item>ริมแม่น้ำ</item>
+        <item>คาราโอเกะ</item>
+        <item>บนชั้นดาดฟ้า</item>
+    </string-array>
+    <string-array name="spfacility">
+        <item>สิ่งอำนวยความสะดวก</item>
+        <item>ที่จอดรถ</item>
+        <item>Wi-Fi</item>
+        <item>รับบัตรเครดิต</item>
+        <item>มีของเล่นเด็ก</item>
+        <item>มีเครื่องปรับอากาศ</item>
+        <item>มีห้องส่วนตัว</item>
+        <item>ใกล้ BTS</item>
+        <item>ใกล้ MRT</item>
+    </string-array>
 </resources>
