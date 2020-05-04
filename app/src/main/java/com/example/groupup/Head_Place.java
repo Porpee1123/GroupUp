@@ -263,7 +263,7 @@ public class Head_Place extends AppCompatActivity {
             }
             new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
 
-            final int maxLimit = 3;
+            final int maxLimit = 4;
 
             final String ItemName = list.get(position).ItemName;
             final String ItemDest = list.get(position).ItemDest;
@@ -478,16 +478,16 @@ public class Head_Place extends AppCompatActivity {
         btn_con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (count[0]==3){
+                if (count[0]==4){
                     for (int i=0;i<placeSelect.size();i++){
                         saveToVotePlace(placeSelect.get(i));
                     }
-                    saveToVotePlaceRandom();
+//                    saveToVotePlaceRandom();
                     finish();
                 }else {
                     final AlertDialog viewDetail = new AlertDialog.Builder(Head_Place.this).create();
 
-                    viewDetail.setTitle("กรุณาเลือกให้ครบ 3 ตัวเลือก");
+                    viewDetail.setTitle("กรุณาเลือกให้ครบ 4 ตัวเลือก");
                     viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

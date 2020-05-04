@@ -1,17 +1,14 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +17,15 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -46,11 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -203,8 +196,8 @@ public class Vote_place extends AppCompatActivity {
         TextView description;
         TextView facility;
         RatingBar rating;
-        CheckBox checkbox;
         Button seedetail;
+        Button voteSelect;
     }
 
     public class ItemsListAdapter extends BaseAdapter {
@@ -243,14 +236,14 @@ public class Vote_place extends AppCompatActivity {
             Vote_place.ViewHolder viewHolder = new Vote_place.ViewHolder();
             if (rowView == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                rowView = inflater.inflate(R.layout.layout_head_selectplace, null);
-                viewHolder.icon = rowView.findViewById(R.id.rowImageViewHeadPlace);
-                viewHolder.text = rowView.findViewById(R.id.rowPlaceNameHeadPlace);
-                viewHolder.description = rowView.findViewById(R.id.rowDescriptionHeadPlace);
-                viewHolder.facility = rowView.findViewById(R.id.rowFacilityHeadPlace);
-                viewHolder.rating = rowView.findViewById(R.id.rowRatingHeadPlace);
-                viewHolder.checkbox = rowView.findViewById(R.id.rowCheckboxHeadPlace);
-                viewHolder.seedetail = rowView.findViewById(R.id.rowButtonSeeDetail);
+                rowView = inflater.inflate(R.layout.activity_place, null);
+                viewHolder.icon = rowView.findViewById(R.id.rowImageViewVotePlace);
+                viewHolder.text = rowView.findViewById(R.id.rowPlaceNameVotePlace);
+                viewHolder.description = rowView.findViewById(R.id.rowDescriptionVotePlace);
+                viewHolder.facility = rowView.findViewById(R.id.rowFacilityVotePlace);
+                viewHolder.rating = rowView.findViewById(R.id.rowRatingVotePlace);
+                viewHolder.seedetail = rowView.findViewById(R.id.rowButtonVoteSeeDetail);
+                viewHolder.voteSelect = rowView.findViewById(R.id.rowButtonVoteSelect);
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (Vote_place.ViewHolder) rowView.getTag();
@@ -276,6 +269,35 @@ public class Vote_place extends AppCompatActivity {
             viewHolder.rating.setRating(ItemRating);
             viewHolder.description.setText(ItemDest);
             viewHolder.facility.setText(showFacility(ItemFaci));
+            final ViewHolder finalViewHolder = viewHolder;
+            viewHolder.voteSelect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final AlertDialog viewDetail = new AlertDialog.Builder(Vote_place.this).create();
+                    viewDetail.setTitle("ยืนยันการเลือกสถานที่ : "+ finalViewHolder.text.getText());
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            VotePlace(ItemId);
+                            finish();
+                        }
+                    });
+                    viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            viewDetail.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                    Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    LinearLayout.LayoutParams layoutParams2 = (LinearLayout.LayoutParams) btnNegative.getLayoutParams();
+                    layoutParams.weight = 10;
+                    btnPositive.setLayoutParams(layoutParams);
+                    btnNegative.setLayoutParams(layoutParams);
+                }
+            });
             viewHolder.seedetail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -379,6 +401,7 @@ public class Vote_place extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         btn_con=findViewById(R.id.btn_VotePlace);
         placeList = findViewById(R.id.listView_vote_place);
+        some_array = getResources().getStringArray(R.array.facility);
         placeArray = new ArrayList<>();
         placeImage = new ArrayList<>();
         progressDialog = new ProgressDialog(Vote_place.this);
@@ -427,8 +450,8 @@ public class Vote_place extends AppCompatActivity {
         responseStr = new Vote_place.ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/getplaceforHeader.php";
-        url += "?eId=" + eid;//รอเอาIdจากfirebase
+        String url = "http://www.groupupdb.com/android/getvoteplace.php";
+        url += "?sId=" + eid;//รอเอาIdจากfirebase
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -563,6 +586,12 @@ public class Vote_place extends AppCompatActivity {
         placeList.setAdapter(myItemsListAdapter);
         progressDialog.dismiss();
         Log.d("friend", "size" + myItemsListAdapter.getCount() + "");
+        placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("listSelect","listSelect"+myItemsListAdapter.getItem(position).toString());
+            }
+        });
     }
 
     public void showAllCheckboxClick() {
@@ -646,5 +675,25 @@ public class Vote_place extends AppCompatActivity {
         }
         adapter.renewItems(sliderItemList);
     }
-
+    public void VotePlace(String pid){
+        Log.d("votedate",eid+" : "+pid);
+        String url = "http://www.groupupdb.com/android/addpointvoteplace.php";
+        url += "?pId=" + pid;
+        url += "&eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 }
