@@ -1,6 +1,7 @@
 package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -472,6 +473,16 @@ public class Head_Place extends AppCompatActivity {
             }
         });
 //        progressDialog.show();
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+//                startActivity(getIntent());
+                getplace();
+//                refreshData(); // your code
+                pullToRefresh.setRefreshing(false);
+            }
+        });
         getplace();
         getEvent();
         search();

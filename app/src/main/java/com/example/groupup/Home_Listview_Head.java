@@ -1,6 +1,7 @@
 package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -41,7 +42,15 @@ Extend_MyHelper.checkInternetLost(this);
         id = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         Log.d("listA","idA "+id);
-
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getEventHeader();
+//                refreshData(); // your code
+                pullToRefresh.setRefreshing(false);
+            }
+        });
         getEventHeader();
 
 
