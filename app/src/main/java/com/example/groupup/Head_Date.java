@@ -29,21 +29,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class Head_Date extends AppCompatActivity {
     Head_Date.ResponseStr responseStr = new Head_Date.ResponseStr();
-    String uid, eid, nameE, monS, monE, email;
-    CheckBox cb1, cb2, cb3, cb4, cb5,cb6;
+    String uid, eid, nameE, monS, monE, email,wait;
+    CheckBox cb1, cb2, cb3, cb4, cb6;
     CalendarView cv;
-    ArrayList<String> dataDB, dateSelect,timeDB , timeSelect;
-    Button conDateVote ;
+    ArrayList<String> dataDB, dateSelect, timeDB, timeSelect;
+    Button conDateVote;
     EditText edt_mshowCustomDate;
     Spinner spCusTime;
     int cb6Click;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +57,6 @@ public class Head_Date extends AppCompatActivity {
         cb2 = findViewById(R.id.checkBox2);
         cb3 = findViewById(R.id.checkBox3);
         cb4 = findViewById(R.id.checkBox4);
-        cb5 = findViewById(R.id.checkBox5);
         cb6 = findViewById(R.id.checkBox6);
         cv = findViewById(R.id.calendarView);
         edt_mshowCustomDate = findViewById(R.id.dateCustomShow);
@@ -65,15 +68,18 @@ public class Head_Date extends AppCompatActivity {
         dateSelect = new ArrayList<>();
         timeDB = new ArrayList<>();
         timeSelect = new ArrayList<>();
-        cb6Click =99;
+        cb6Click = 99;
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+        wait = getIntent().getStringExtra("wait");
         conDateVote.setVisibility(View.INVISIBLE);
+        getEvent();
         getDate();
+        Log.d("wait",wait+"");
         final int[] count = {0};
         final int maxLimit = 3;
         //set spinner time
@@ -83,14 +89,14 @@ public class Head_Date extends AppCompatActivity {
         spCusTime.setSelection(0);
         // Get Current Date
         final Calendar c = Calendar.getInstance();
-         final int mYear = c.get(Calendar.YEAR);
-         final int mMonth = c.get(Calendar.MONTH);
-         final int mDay = c.get(Calendar.DAY_OF_MONTH);
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         cb1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (count[0]==maxLimit-1){
+                if (count[0] == maxLimit - 1) {
                     conDateVote.setVisibility(View.VISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -106,7 +112,7 @@ public class Head_Date extends AppCompatActivity {
 //                        removeTime(timeDB.get(0));
                         count[0]--;
                     }
-                }else {
+                } else {
                     conDateVote.setVisibility(View.INVISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -128,7 +134,7 @@ public class Head_Date extends AppCompatActivity {
         cb2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (count[0]==maxLimit-1){
+                if (count[0] == maxLimit - 1) {
                     conDateVote.setVisibility(View.VISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -144,7 +150,7 @@ public class Head_Date extends AppCompatActivity {
 //                        removeTime(timeDB.get(1));
                         count[0]--;
                     }
-                }else {
+                } else {
                     conDateVote.setVisibility(View.INVISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -166,7 +172,7 @@ public class Head_Date extends AppCompatActivity {
         cb3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (count[0]==maxLimit-1){
+                if (count[0] == maxLimit - 1) {
                     conDateVote.setVisibility(View.VISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -182,7 +188,7 @@ public class Head_Date extends AppCompatActivity {
 //                        removeTime(timeDB.get(2));
                         count[0]--;
                     }
-                }else {
+                } else {
                     conDateVote.setVisibility(View.INVISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -204,7 +210,7 @@ public class Head_Date extends AppCompatActivity {
         cb4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (count[0]==maxLimit-1){
+                if (count[0] == maxLimit - 1) {
                     conDateVote.setVisibility(View.VISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -220,7 +226,7 @@ public class Head_Date extends AppCompatActivity {
 //                        removeTime(timeDB.get(3));
                         count[0]--;
                     }
-                }else {
+                } else {
                     conDateVote.setVisibility(View.INVISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -237,52 +243,13 @@ public class Head_Date extends AppCompatActivity {
                         count[0]--;
                     }
                 }
-            }
-        });
-        cb5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (count[0]==maxLimit-1){
-                    conDateVote.setVisibility(View.VISIBLE);
-                    if (count[0] == maxLimit && isChecked) {
-                        conDateVote.setVisibility(View.VISIBLE);
-                        buttonView.setChecked(false);
-                        Toast.makeText(getApplicationContext(),
-                                "สามารถเลือกได้สูงสุด 3 วัน", Toast.LENGTH_SHORT).show();
-                    } else if (isChecked) {
-                        count[0]++;
-                        dateSelect.add(dataDB.get(4));
-                        timeSelect.add(timeDB.get(4));
-                    } else if (!isChecked) {
-                        removeDate(dataDB.get(4));
-//                        removeTime(timeDB.get(4));
-                        count[0]--;
-                    }
-                }else {
-                    conDateVote.setVisibility(View.INVISIBLE);
-                    if (count[0] == maxLimit && isChecked) {
-                        conDateVote.setVisibility(View.VISIBLE);
-                        buttonView.setChecked(false);
-                        Toast.makeText(getApplicationContext(),
-                                "สามารถเลือกได้สูงสุด 3 วัน", Toast.LENGTH_SHORT).show();
-                    } else if (isChecked) {
-                        count[0]++;
-                        dateSelect.add(dataDB.get(4));
-                        timeSelect.add(timeDB.get(4));
-                    } else if (!isChecked) {
-                        removeDate(dataDB.get(4));
-//                        removeTime(timeDB.get(4));
-                        count[0]--;
-                    }
-                }
-
             }
         });
         final String[] datecus = {""};
         cb6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (count[0]==maxLimit-1){
+                if (count[0] == maxLimit - 1) {
 
                     conDateVote.setVisibility(View.VISIBLE);
                     if (count[0] == maxLimit && isChecked) {
@@ -298,15 +265,15 @@ public class Head_Date extends AppCompatActivity {
                                     @Override
                                     public void onDateSet(DatePicker view, int year,
                                                           int monthOfYear, int dayOfMonth) {
-                                        String date = checkCalendarDate(dayOfMonth+"");
-                                        String month = checkCalendar((monthOfYear)+"");
-                                        edt_mshowCustomDate.setText(date + "/" + month+ "/" + year);
+                                        String date = checkCalendarDate(dayOfMonth + "");
+                                        String month = checkCalendar((monthOfYear) + "");
+                                        edt_mshowCustomDate.setText(date + "/" + month + "/" + year);
 
-                                        datecus[0] = date + "/" + month+ "/" + year;
+                                        datecus[0] = date + "/" + month + "/" + year;
                                         dateSelect.add(datecus[0]);
                                         timeSelect.add(spCusTime.getSelectedItem().toString());
 //                                        timeSelect.add(timeDB.get(3));
-                                        cb6Click =dateSelect.size()-1;
+                                        cb6Click = dateSelect.size() - 1;
                                     }
                                 }, mYear, mMonth, mDay);
 
@@ -315,13 +282,16 @@ public class Head_Date extends AppCompatActivity {
 
                     } else if (!isChecked) {
                         spCusTime.setEnabled(false);
-                        cb6Click =99;
+                        cb6Click = 99;
+                        if (!edt_mshowCustomDate.getText().toString().equals("")) {
+                            removeDate(datecus[0]);
+                        }
                         edt_mshowCustomDate.setText("");
-                        removeDate(datecus[0]);
+
 //                        removeTime(timeDB.get(4));
                         count[0]--;
-                        }
-                }else {
+                    }
+                } else {
                     conDateVote.setVisibility(View.INVISIBLE);
                     if (count[0] == maxLimit && isChecked) {
                         conDateVote.setVisibility(View.VISIBLE);
@@ -336,13 +306,13 @@ public class Head_Date extends AppCompatActivity {
                                     @Override
                                     public void onDateSet(DatePicker view, int year,
                                                           int monthOfYear, int dayOfMonth) {
-                                        String date = checkCalendarDate(dayOfMonth+"");
-                                        String month = checkCalendar((monthOfYear)+"");
-                                        edt_mshowCustomDate.setText(date + "/" + month+ "/" + year);
-                                       datecus[0] = date + "/" + month+ "/" + year;
+                                        String date = checkCalendarDate(dayOfMonth + "");
+                                        String month = checkCalendar((monthOfYear) + "");
+                                        edt_mshowCustomDate.setText(date + "/" + month + "/" + year);
+                                        datecus[0] = date + "/" + month + "/" + year;
                                         dateSelect.add(datecus[0]);
                                         timeSelect.add(spCusTime.getSelectedItem().toString());
-                                        cb6Click =dateSelect.size()-1;
+                                        cb6Click = dateSelect.size() - 1;
                                     }
                                 }, mYear, mMonth, mDay);
                         datePickerDialog.show();
@@ -350,9 +320,11 @@ public class Head_Date extends AppCompatActivity {
                         count[0]++;
                     } else if (!isChecked) {
                         spCusTime.setEnabled(false);
-                        cb6Click =99;
+                        cb6Click = 99;
+                        if (!edt_mshowCustomDate.getText().toString().equals("")) {
+                            removeDate(datecus[0]);
+                        }
                         edt_mshowCustomDate.setText("");
-                        removeDate(datecus[0]);
                         count[0]--;
                     }
                 }
@@ -362,22 +334,26 @@ public class Head_Date extends AppCompatActivity {
         conDateVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("dateSelect",dateSelect.toString()+" "+timeSelect.toString());
-                if (cb6Click==99){
-                    Log.d("cb6Click",cb6Click+"");
-                    Log.d("cb6Click",dateSelect.toString());
-                    Log.d("cb6Click",timeSelect.toString());
-                    for (int i=0;i< dateSelect.size();i++){
-                        setVoteDateforUser(dateSelect.get(i),timeSelect.get(i));
+                Log.d("wait",wait+"");
+                Log.d("dateSelect", dateSelect.toString() + " " + timeSelect.toString());
+                if (cb6Click == 99) {
+                    Log.d("cb6Click", cb6Click + "");
+                    Log.d("cb6Click", dateSelect.toString());
+                    Log.d("cb6Click", timeSelect.toString());
+                    for (int i = 0; i < dateSelect.size(); i++) {
+                        setVoteDateforUser(dateSelect.get(i), timeSelect.get(i));
                     }
-                }else {
-                    timeSelect.set(cb6Click,spCusTime.getSelectedItem().toString());
-                    Log.d("cb6Click",spCusTime.getSelectedItem().toString());
-                    Log.d("cb6Click",dateSelect.toString());
-                    Log.d("cb6Click",timeSelect.toString());
-                    for (int i=0;i< dateSelect.size();i++){
-                        setVoteDateforUser(dateSelect.get(i),timeSelect.get(i));
+                    setVoteDateRandomforUser();
+                } else {
+
+                    Log.d("cb6Click", spCusTime.getSelectedItem().toString());
+                    Log.d("cb6Click", dateSelect.toString());
+                    timeSelect.set(cb6Click, spCusTime.getSelectedItem().toString());
+                    Log.d("cb6Click", timeSelect.toString());
+                    for (int i = 0; i < dateSelect.size(); i++) {
+                        setVoteDateforUser(dateSelect.get(i), timeSelect.get(i));
                     }
+                    setVoteDateRandomforUser();
                 }
 
                 backAppoint();
@@ -396,6 +372,7 @@ public class Head_Date extends AppCompatActivity {
         intent.putExtra("tab", 1 + "");
         startActivity(intent);
     }
+
     public void backAppoint() {
         Intent intent = new Intent(Head_Date.this, HomeHead_Appointment.class);
         intent.putExtra("id", uid + "");
@@ -411,28 +388,31 @@ public class Head_Date extends AppCompatActivity {
     public void getDate() {
         responseStr = new Head_Date.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/getdateforHeaderSelectVote.php";
-        url += "?eId=" + eid;
+        String url = "http://www.groupupdb.com/android/showtimeforvote.php";
+        url += "?eid=" + eid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        try {
+                        try {//0 = id,1 = max people,2 = date
                             HashMap<String, String> map;
                             JSONArray data = new JSONArray(response.toString());
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
-                                map.put("events_id", c.getString("events_id"));
-                                map.put("time", c.getString("time"));
-                                map.put("timerange", c.getString("timerange"));
+                                map.put("0", c.getString("0"));
+                                map.put("1", c.getString("1"));
+                                map.put("2", c.getString("2"));
                                 MyArrList.add(map);
                             }
                             for (int i = 0; i < MyArrList.size(); i++) {
-                                dataDB.add(MyArrList.get(i).get("time"));
-                                timeDB.add(MyArrList.get(i).get("timerange"));
+                                dataDB.add(MyArrList.get(i).get("2"));
                             }
+                            timeDB.add("11:00 - 13:59");
+                            timeDB.add("14:00 - 16:59");
+                            timeDB.add("17:00 - 19:59");
+                            timeDB.add("20:00 - 23:59");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -456,56 +436,45 @@ public class Head_Date extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                StringTokenizer st = new StringTokenizer(dataDB.get(0),"/");
-                StringTokenizer st1 = new StringTokenizer(dataDB.get(1),"/");
-                StringTokenizer st2 = new StringTokenizer(dataDB.get(2),"/");
-                StringTokenizer st3 = new StringTokenizer(dataDB.get(3),"/");
-                StringTokenizer st4 = new StringTokenizer(dataDB.get(4),"/");
-                while (st.hasMoreTokens()){
-                    String d,m,y,date;
+                StringTokenizer st = new StringTokenizer(dataDB.get(0), "/");
+                StringTokenizer st1 = new StringTokenizer(dataDB.get(1), "/");
+                StringTokenizer st2 = new StringTokenizer(dataDB.get(2), "/");
+                StringTokenizer st3 = new StringTokenizer(dataDB.get(3), "/");
+                while (st.hasMoreTokens()) {
+                    String d, m, y, date;
                     String[] some_array = getResources().getStringArray(R.array.month);
-                    d= st.nextToken();
-                    m= st.nextToken();
-                    y= st.nextToken();
-                    date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb1.setText(date+" ช่วงเวลา "+timeDB.get(0));
+                    d = st.nextToken();
+                    m = st.nextToken();
+                    y = st.nextToken();
+                    date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                    cb1.setText(date + " ช่วงเวลา " + timeDB.get(0));
                 }
-                while (st1.hasMoreTokens()){
-                    String d,m,y,date;
+                while (st1.hasMoreTokens()) {
+                    String d, m, y, date;
                     String[] some_array = getResources().getStringArray(R.array.month);
-                    d= st1.nextToken();
-                    m= st1.nextToken();
-                    y= st1.nextToken();
-                    date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb2.setText(date+" ช่วงเวลา "+timeDB.get(1));
+                    d = st1.nextToken();
+                    m = st1.nextToken();
+                    y = st1.nextToken();
+                    date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                    cb2.setText(date + " ช่วงเวลา " + timeDB.get(1));
                 }
-                while (st2.hasMoreTokens()){
-                    String d,m,y,date;
+                while (st2.hasMoreTokens()) {
+                    String d, m, y, date;
                     String[] some_array = getResources().getStringArray(R.array.month);
-                    d= st2.nextToken();
-                    m= st2.nextToken();
-                    y= st2.nextToken();
-                    date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb3.setText(date+" ช่วงเวลา "+timeDB.get(2));
+                    d = st2.nextToken();
+                    m = st2.nextToken();
+                    y = st2.nextToken();
+                    date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                    cb3.setText(date + " ช่วงเวลา " + timeDB.get(2));
                 }
-                while (st3.hasMoreTokens()){
-                    String d,m,y,date;
+                while (st3.hasMoreTokens()) {
+                    String d, m, y, date;
                     String[] some_array = getResources().getStringArray(R.array.month);
-                    d= st3.nextToken();
-                    m= st3.nextToken();
-                    y= st3.nextToken();
-                    date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb4.setText(date+" ช่วงเวลา "+timeDB.get(3));
-                }
-                while (st4.hasMoreTokens()){
-                    String d,m,y,date;
-                    String[] some_array = getResources().getStringArray(R.array.month);
-                    String[] array = getResources().getStringArray(R.array.allday);
-                    d= st4.nextToken();
-                    m= st4.nextToken();
-                    y= st4.nextToken();
-                    date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    cb5.setText(date+" ช่วงเวลา "+array[0]);
+                    d = st3.nextToken();
+                    m = st3.nextToken();
+                    y = st3.nextToken();
+                    date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                    cb4.setText(date + " ช่วงเวลา " + timeDB.get(3));
                 }
             }
         }.start();
@@ -522,16 +491,6 @@ public class Head_Date extends AppCompatActivity {
         timeSelect.remove(Integer.parseInt(number));
         Log.d("dateselect", dateSelect.toString());
     }
-//    public void removeTime(String id) {
-//        String number = "";
-//        for (int i = 0; i < timeSelect.size(); i++) {
-//            if (id.equals(timeSelect.get(i))) {
-//                number = i + "";
-//            }
-//        }
-//        timeSelect.remove(Integer.parseInt(number));
-//        Log.d("dateselect", timeSelect.toString());
-//    }
 
     public class ResponseStr {
         private String str;
@@ -542,7 +501,8 @@ public class Head_Date extends AppCompatActivity {
         }
 
     }
-    public void getHeadSelectCal(){
+
+    public void getHeadSelectCal() {
         //add date for Header select
         responseStr = new Head_Date.ResponseStr();
         String url = "http://www.groupupdb.com/android/getheaderselectcal.php";
@@ -552,7 +512,7 @@ public class Head_Date extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 //                        Log.d("deleteDateOldDay", response);
-                        Log.d("eventSelect","getHeadSelectCal "+response);
+                        Log.d("eventSelect", "getHeadSelectCal " + response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -565,11 +525,13 @@ public class Head_Date extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
-    public void setVoteDateforUser(String s,String time){
+
+    public void setVoteDateforUser(String s, String time) {
         String url = "http://www.groupupdb.com/android/addvotedateforuser.php";
-        url += "?vdid=" + s;
-        url += "&vtid=" + time;
+        url += "?vdid=" + s;//date
+        url += "&vtid=" + time;//time
         url += "&eId=" + eid;
+        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -586,8 +548,31 @@ public class Head_Date extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+    public void setVoteDateRandomforUser() {
+        String url = "http://www.groupupdb.com/android/addvotedateforuser.php";
+        url += "?vdid=" + "random";//date
+        url += "&vtid=" + "random";//time
+        url += "&eId=" + eid;
+        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
     public String checkCalendar(String monthNumber) {
-        Log.d("dateselect",monthNumber);
+        Log.d("dateselect", monthNumber);
         switch (monthNumber) {
             case "0":
                 return "01";
@@ -641,5 +626,62 @@ public class Head_Date extends AppCompatActivity {
             default:
                 return dateNumber;
         }
+    }
+    public String calwait(int wait){
+        Calendar cal = Calendar.getInstance();
+        Date today1 = cal.getTime();
+        cal.add(Calendar.DATE, wait); // to get previous year add -1
+        Date nextYear1 = cal.getTime();
+        DateFormat simpleNoHour = new SimpleDateFormat("yyyy-MM-dd");
+        simpleNoHour.format(nextYear1);
+        Log.d("wait",nextYear1+"");
+        return simpleNoHour.format(nextYear1)+"";
+    }
+    public void getEvent() {
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+//        Log.d("footer", "email " + email);
+        String url = "http://www.groupupdb.com/android/geteventHeader.php";
+        url += "?sId=" + uid;//ร  อเอาIdหรือ email จากfirebase
+        url += "&eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("trans_id", c.getString("trans_id"));
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("events_name", c.getString("events_name"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("states_name", c.getString("states_name"));
+                                map.put("events_month_start", c.getString("events_month_start"));
+                                map.put("events_month_end", c.getString("events_month_end"));
+                                map.put("events_detail", c.getString("events_detail"));
+                                map.put("events_note", c.getString("events_note"));
+                                map.put("events_wait", c.getString("events_wait"));
+
+                                MyArrList.add(map);
+                            }
+                            wait = MyArrList.get(0).get("events_wait");
+                            Log.d("tab","wait : "+ wait);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }

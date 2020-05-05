@@ -106,6 +106,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         intentdp.putExtra("mStart", monS + "");
         intentdp.putExtra("mEnd", monE + "");
         intentdp.putExtra("eid", eid + "");
+        intentdp.putExtra("wait", wait + "");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("กำหนดรายการ ")
                 .setContent(intentS);

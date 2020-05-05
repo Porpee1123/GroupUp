@@ -87,7 +87,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                 final AlertDialog viewDetail = new AlertDialog.Builder(Vote_date_and_time.this).create();
 
                 viewDetail.setTitle(R.string.con_vote);
-                viewDetail.setMessage(btn1.getText().toString());
+                viewDetail.setMessage(btn2.getText().toString());
                 viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -119,7 +119,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                 final AlertDialog viewDetail = new AlertDialog.Builder(Vote_date_and_time.this).create();
 
                 viewDetail.setTitle(R.string.con_vote);
-                viewDetail.setMessage(btn1.getText().toString());
+                viewDetail.setMessage(btn3.getText().toString());
                 viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -151,7 +151,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                 final AlertDialog viewDetail = new AlertDialog.Builder(Vote_date_and_time.this).create();
 
                 viewDetail.setTitle(R.string.con_vote);
-                viewDetail.setMessage(btn1.getText().toString());
+                viewDetail.setMessage(btn4.getText().toString());
                 viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -243,9 +243,22 @@ public class Vote_date_and_time extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                StringTokenizer st = new StringTokenizer(MyArrList.get(0).get("time"),"/");
-                StringTokenizer st1 = new StringTokenizer(MyArrList.get(1).get("time"),"/");
-                StringTokenizer st2 = new StringTokenizer(MyArrList.get(2).get("time"),"/");
+                ArrayList<String> day  =new ArrayList<>();
+                ArrayList<String> time  =new ArrayList<>();
+                for (int i=0;i<MyArrList.size();i++){
+                    if (!MyArrList.get(i).get("time").equalsIgnoreCase("random")){
+                        day.add(MyArrList.get(i).get("time"));
+                        time.add(MyArrList.get(i).get("timerange"));
+                    }
+                }
+                day.add("random");
+                time.add("random");
+                Log.d("getdateforvote",day.toString());
+                Log.d("getdateforvote",time.toString());
+
+                StringTokenizer st = new StringTokenizer(day.get(0),"/");
+                StringTokenizer st1 = new StringTokenizer(day.get(1),"/");
+                StringTokenizer st2 = new StringTokenizer(day.get(2),"/");
                 while (st.hasMoreTokens()){
                     String d,m,y,date;
                     String[] some_array = getResources().getStringArray(R.array.month);
@@ -253,7 +266,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                     m= st.nextToken();
                     y= st.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    btn1.setText(date+"\n ช่วงเวลา "+MyArrList.get(0).get("timerange"));
+                    btn1.setText(date+"\n ช่วงเวลา "+time.get(0));
                     btn1.setTextSize(18);
                 }
                 while (st1.hasMoreTokens()){
@@ -263,7 +276,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                     m= st1.nextToken();
                     y= st1.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    btn2.setText(date+"\n ช่วงเวลา "+MyArrList.get(1).get("timerange"));
+                    btn2.setText(date+"\n ช่วงเวลา "+time.get(1));
                     btn2.setTextSize(18);
 
                 }
@@ -274,20 +287,20 @@ public class Vote_date_and_time extends AppCompatActivity {
                     m= st2.nextToken();
                     y= st2.nextToken();
                     date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    btn3.setText(date+"\n ช่วงเวลา "+MyArrList.get(2).get("timerange"));
+                    btn3.setText(date+"\n ช่วงเวลา "+time.get(2));
                     btn3.setTextSize(18);
                 }
                 String[] array = getResources().getStringArray(R.array.random);
                 btn4.setText(array[0]);
                 btn4.setTextSize(24);
-                dateDB.add(MyArrList.get(0).get("time"));
-                dateDB.add(MyArrList.get(1).get("time"));
-                dateDB.add(MyArrList.get(2).get("time"));
-                dateDB.add(MyArrList.get(3).get("time"));
-                timeDB.add(MyArrList.get(0).get("timerange"));
-                timeDB.add(MyArrList.get(1).get("timerange"));
-                timeDB.add(MyArrList.get(2).get("timerange"));
-                timeDB.add(MyArrList.get(3).get("timerange"));
+                dateDB.add(day.get(0));
+                dateDB.add(day.get(1));
+                dateDB.add(day.get(2));
+                dateDB.add(day.get(3));
+                timeDB.add(time.get(0));
+                timeDB.add(time.get(1));
+                timeDB.add(time.get(2));
+                timeDB.add(time.get(3));
             }
         }.start();
     }

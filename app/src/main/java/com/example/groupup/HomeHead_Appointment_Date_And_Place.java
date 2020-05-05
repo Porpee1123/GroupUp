@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
-    String id,eid,nameE,monS,monE,email;
+    String id,eid,nameE,monS,monE,email,wait;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +19,7 @@ Extend_MyHelper.checkInternetLost(this);
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         email = getIntent().getStringExtra("email");
+        wait = getIntent().getStringExtra("wait");
 
 //        Log.d("appoint",email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
     }
@@ -31,6 +32,7 @@ Extend_MyHelper.checkInternetLost(this);
         intent.putExtra("mStart", monS+"");
         intent.putExtra("mEnd", monE+"");
         intent.putExtra("eid", eid+"");
+        intent.putExtra("wait", wait + "");
         startActivity(intent);
     }
 
@@ -42,6 +44,7 @@ Extend_MyHelper.checkInternetLost(this);
         intent.putExtra("mStart", monS+"");
         intent.putExtra("mEnd", monE+"");
         intent.putExtra("eid", eid+"");
+        intent.putExtra("wait", wait + "");
         startActivity(intent);
     }
 }
