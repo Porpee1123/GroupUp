@@ -15,9 +15,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -164,6 +171,7 @@ public class Home_CreateEvent extends AppCompatActivity {
         mStart = some_array[startId];
         mEnd = some_array[endId];
         Log.d("footer", url);
+        progressDialog = ProgressDialog.show(Home_CreateEvent.this, " กำลังสร้างกลุ่ม", "กรุณารอสักครู่", false, false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -195,7 +203,7 @@ public class Home_CreateEvent extends AppCompatActivity {
 
                                         super.onPreExecute();
 
-                                        progressDialog = ProgressDialog.show(Home_CreateEvent.this, " กำลังสร้างกลุ่ม", "กรุณารอสักครู่", false, false);
+
                                     }
 
                                     @Override
@@ -219,7 +227,7 @@ public class Home_CreateEvent extends AppCompatActivity {
                                 AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
                                 AsyncTaskUploadClassOBJ.execute();
 
-                                Log.d("rangemonth", "eid : " + eid.toString());
+                                Log.d("", "eid : " + eid.toString());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -330,5 +338,50 @@ public class Home_CreateEvent extends AppCompatActivity {
             requestQueue.add(s);
         }
     }
-
+    private void addDateevent(String eid) {
+        String url = "http://www.groupupdb.com/android/addDatetodateEvent.php";
+        url += "?eid=" + eid + "";
+        url += "&uid=" + id + "";
+        Log.d("testAPi", url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("testAPi", "addDaevent " + response);
+                        Toast.makeText(Home_CreateEvent.this, "addDaevent Finish", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//                            Toast.makeText(this,
+//                                    error.getString(R.string.error_network_timeout),
+//                                    Toast.LENGTH_LONG).show();
+                            Log.d("testAPi", "TimeoutError" + error.getMessage());
+//                            Log.d("testAPi",error.getMessage());
+                        } else if (error instanceof AuthFailureError) {
+                            //TODO
+                            Log.d("testAPi", "AuthFailureError" + error.getMessage());
+                        } else if (error instanceof ServerError) {
+                            Log.d("testAPi", "ServerError" + error.getMessage());
+                            //TODO
+                        } else if (error instanceof NetworkError) {
+                            Log.d("testAPi", "NetworkError" + error.getMessage());
+                            //TODO
+                        } else if (error instanceof ParseError) {
+                            //TODO
+                            Log.d("testAPi", "ParseError" + error.getMessage());
+                        } else {
+                            Log.d("testAPi", "else " + error.getMessage());
+                        }
+                    }
+                });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                6000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue queue = Volley.newRequestQueue(Home_CreateEvent.this);
+        queue.add(stringRequest);
+    }//add date user create to event
 }

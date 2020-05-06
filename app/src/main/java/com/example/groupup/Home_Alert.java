@@ -1,15 +1,10 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,15 +17,23 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -39,11 +42,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class Home_Alert extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
@@ -119,7 +120,6 @@ public class Home_Alert extends AppCompatActivity {
     }
 
 
-
     //***********************************************************************************************//
     String uid = "", email = "";
     ListView listViewInvite;
@@ -128,6 +128,7 @@ public class Home_Alert extends AppCompatActivity {
     List<Home_Alert.Item> items = new ArrayList<Home_Alert.Item>();
     String[] some_array;
     static Home_Alert.ItemsListAdapter myItemsListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -288,7 +289,7 @@ public class Home_Alert extends AppCompatActivity {
         manager.notify(0, builder.build());
     }
 
-    public void addEventFriend(String id, String eid,String eName) {
+    public void addEventFriend(String id, String eid, String eName) {
         String url = "http://www.groupupdb.com/android/adduserevent.php";
         url += "?sId=" + id;
         url += "&eId=" + eid;
@@ -337,10 +338,10 @@ public class Home_Alert extends AppCompatActivity {
                 title.setText(ename);
                 detail.setText(events_detail);
                 nameE.setText(event_creater);
-                startEnd.setText(some_array[Integer.parseInt(sSta)]+" ถึง "+some_array[Integer.parseInt(sEnd)]);
+                startEnd.setText(some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)]);
                 state.setText(priName);
-                Log.d("pathimage",alertArray.toString());
-                new Extend_MyHelper.SendHttpRequestTask(user_photo,imgF,250).execute();
+                Log.d("pathimage", alertArray.toString());
+                new Extend_MyHelper.SendHttpRequestTask(user_photo, imgF, 250).execute();
                 Button btn_join = mView.findViewById(R.id.btn_invite_join);
                 Button btn_notJoin = mView.findViewById(R.id.btn_invite_notjoin);
                 Button btn_later = mView.findViewById(R.id.btn_invite_later);
@@ -352,16 +353,16 @@ public class Home_Alert extends AppCompatActivity {
                             @Override
                             protected void onPreExecute() {
                                 super.onPreExecute();
-                                }
+                            }
 
                             @Override
                             protected void onPostExecute(String string1) {
                                 super.onPostExecute(string1);
                                 Intent intent = new Intent(Home_Alert.this, MainAttendent.class);
-                                intent.putExtra("id",id+"");
-                                intent.putExtra("eid",eid+"");
-                                intent.putExtra("nameEvent",ename+"");
-                                intent.putExtra("email",email);
+                                intent.putExtra("id", id + "");
+                                intent.putExtra("eid", eid + "");
+                                intent.putExtra("nameEvent", ename + "");
+                                intent.putExtra("email", email);
                                 intent.putExtra("tab", 0 + "");
                                 startActivity(intent);
                                 viewDetail.dismiss();
@@ -371,8 +372,9 @@ public class Home_Alert extends AppCompatActivity {
 
                             @Override
                             protected String doInBackground(Void... params) {
-                                addEventFriend(uid,eid,ename);
-                                Extend_MyHelper.UpdateStateToDb(tid, 3 + "",Home_Alert.this);
+                                addEventFriend(uid, eid, ename);
+                                addDateevent(eid);
+                                Extend_MyHelper.UpdateStateToDb(tid, 3 + "", Home_Alert.this);
                                 return "join successful!!!";
                             }
                         }
@@ -387,7 +389,7 @@ public class Home_Alert extends AppCompatActivity {
                             @Override
                             protected void onPreExecute() {
                                 super.onPreExecute();
-                                }
+                            }
 
                             @Override
                             protected void onPostExecute(String string1) {
@@ -426,7 +428,7 @@ public class Home_Alert extends AppCompatActivity {
 
     private void initItems() {
         items = new ArrayList<Home_Alert.Item>();
-        Log.d("pathimage","alertArray "+alertArray.toString());
+        Log.d("pathimage", "alertArray " + alertArray.toString());
         for (int i = 0; i < alertArray.size(); i++) {
 
             String tid = alertArray.get(i).get("trans_id").toString();
@@ -440,13 +442,14 @@ public class Home_Alert extends AppCompatActivity {
             String user_photo = alertArray.get(i).get("user_photo").toString();
             String events_detail = alertArray.get(i).get("events_detail").toString();
 //            String mystring = getResources().getString(R.string.mystring);
-            String s = event_creater +"ได้เชิญคุณเข้าร่วม "+ename+" เป็น "+priName+" โดยมีช่วงเวลาระหว่างเดือน "+some_array[Integer.parseInt(sSta)]+" ถึง "+some_array[Integer.parseInt(sEnd)];
+            String s = event_creater + "ได้เชิญคุณเข้าร่วม " + ename + " เป็น " + priName + " โดยมีช่วงเวลาระหว่างเดือน " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
 
             Home_Alert.Item item = new Home_Alert.Item(s, eid, user_photo);
             items.add(item);
         }
-        Log.d("pathimage",items.toString());
+        Log.d("pathimage", items.toString());
     }
+
     public void getEventInvitation() {
         responseStr = new Home_Alert.ResponseStr();
 
@@ -479,8 +482,8 @@ public class Home_Alert extends AppCompatActivity {
                                 alertArray.add(map);
 
                             }
-                            Log.d("pathimage","get alertArray "+alertArray.toString());
-                            Log.d("pathimage","get MyArrList "+MyArrList.toString());
+                            Log.d("pathimage", "get alertArray " + alertArray.toString());
+                            Log.d("pathimage", "get MyArrList " + MyArrList.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -509,10 +512,12 @@ public class Home_Alert extends AppCompatActivity {
 
 
     }
+
     public void showAllCheckboxClick() {
         initItems();
         setItemsListView();
     }
+
     public void deletetransID(String tid) {
         responseStr = new Home_Alert.ResponseStr();
         String url = "http://www.groupupdb.com/android/deletetransid.php";
@@ -531,6 +536,53 @@ public class Home_Alert extends AppCompatActivity {
                     }
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    private void addDateevent(String eid) {
+        String url = "http://www.groupupdb.com/android/addDatetodateEvent.php";
+        url += "?eid=" + eid + "";
+        url += "&uid=" + uid + "";
+        Log.d("testAPi", url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("testAPi", "addDaevent " + response);
+                        Toast.makeText(Home_Alert.this, "addDaevent Finish", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//                            Toast.makeText(this,
+//                                    error.getString(R.string.error_network_timeout),
+//                                    Toast.LENGTH_LONG).show();
+                            Log.d("testAPi", "TimeoutError" + error.getMessage());
+//                            Log.d("testAPi",error.getMessage());
+                        } else if (error instanceof AuthFailureError) {
+                            //TODO
+                            Log.d("testAPi", "AuthFailureError" + error.getMessage());
+                        } else if (error instanceof ServerError) {
+                            Log.d("testAPi", "ServerError" + error.getMessage());
+                            //TODO
+                        } else if (error instanceof NetworkError) {
+                            Log.d("testAPi", "NetworkError" + error.getMessage());
+                            //TODO
+                        } else if (error instanceof ParseError) {
+                            //TODO
+                            Log.d("testAPi", "ParseError" + error.getMessage());
+                        } else {
+                            Log.d("testAPi", "else " + error.getMessage());
+                        }
+                    }
+                });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                6000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue queue = Volley.newRequestQueue(Home_Alert.this);
         queue.add(stringRequest);
     }
 }

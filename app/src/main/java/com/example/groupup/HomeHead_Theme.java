@@ -150,7 +150,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                 for (int i = 0; i < themeSelect.size(); i++) {
                     sentInviteTheme(themeSelect.get(i).toString(), eid);
                 }
-                addDateevent();
+//                addDateevent();
                 Log.d("themeSelect", "Remove : " + themeSelect.toString());
                 backAppoint();
             }
@@ -922,7 +922,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                         for (int i = 0; i < idType.size(); i++) {
                             sentInviteTheme(idType.get(i), eid);
                         }
-                        addDateevent();
+//                        addDateevent();
                         backAppoint();
                     }
                 });
@@ -1149,52 +1149,52 @@ public class HomeHead_Theme extends AppCompatActivity {
         iceCream.setChecked(false);
         burger.setChecked(false);
     }
-    private void addDateevent(){
-        String url = "http://www.groupupdb.com/android/caldateforheader.php";
-        url += "?eid=" + eid+"";
-        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
-        Log.d("testAPi",url);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("testAPi","addDaevent "+response);
-                        Toast.makeText(HomeHead_Theme.this, "addDaevent Finish", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//                            Toast.makeText(this,
-//                                    error.getString(R.string.error_network_timeout),
-//                                    Toast.LENGTH_LONG).show();
-                            Log.d("testAPi","TimeoutError"+error.getMessage());
-//                            Log.d("testAPi",error.getMessage());
-                        } else if (error instanceof AuthFailureError) {
-                            //TODO
-                            Log.d("testAPi","AuthFailureError"+error.getMessage());
-                        } else if (error instanceof ServerError) {
-                            Log.d("testAPi","ServerError"+error.getMessage());
-                            //TODO
-                        } else if (error instanceof NetworkError) {
-                            Log.d("testAPi","NetworkError"+error.getMessage());
-                            //TODO
-                        } else if (error instanceof ParseError) {
-                            //TODO
-                            Log.d("testAPi","ParseError"+error.getMessage());
-                        } else{
-                            Log.d("testAPi","else "+error.getMessage());
-                        }
-                    }
-                });
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                6000000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        RequestQueue queue = Volley.newRequestQueue(HomeHead_Theme.this);
-        queue.add(stringRequest);
-    }
+//    private void addDateevent(){
+//        String url = "http://www.groupupdb.com/android/caldateforheader.php";
+//        url += "?eid=" + eid+"";
+//        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+//        Log.d("testAPi",url);
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("testAPi","addDaevent "+response);
+//                        Toast.makeText(HomeHead_Theme.this, "addDaevent Finish", Toast.LENGTH_SHORT).show();
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+////                            Toast.makeText(this,
+////                                    error.getString(R.string.error_network_timeout),
+////                                    Toast.LENGTH_LONG).show();
+//                            Log.d("testAPi","TimeoutError"+error.getMessage());
+////                            Log.d("testAPi",error.getMessage());
+//                        } else if (error instanceof AuthFailureError) {
+//                            //TODO
+//                            Log.d("testAPi","AuthFailureError"+error.getMessage());
+//                        } else if (error instanceof ServerError) {
+//                            Log.d("testAPi","ServerError"+error.getMessage());
+//                            //TODO
+//                        } else if (error instanceof NetworkError) {
+//                            Log.d("testAPi","NetworkError"+error.getMessage());
+//                            //TODO
+//                        } else if (error instanceof ParseError) {
+//                            //TODO
+//                            Log.d("testAPi","ParseError"+error.getMessage());
+//                        } else{
+//                            Log.d("testAPi","else "+error.getMessage());
+//                        }
+//                    }
+//                });
+//        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                6000000,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        RequestQueue queue = Volley.newRequestQueue(HomeHead_Theme.this);
+//        queue.add(stringRequest);
+//    }
 
     public String calwait(int wait){
         Calendar cal = Calendar.getInstance();
