@@ -119,4 +119,31 @@
         <item>ใกล้ BTS</item>
         <item>ใกล้ MRT</item>
     </string-array>
+    <string-array name="bank">
+        <item>กรุณาเลือก</item>
+        <item>ธ.ก.ส</item>
+        <item>กรุงศรี</item>
+        <item>กรุงเทพ</item>
+        <item>ซีไอเอ็มบี</item>
+        <item>ซิตี้แบงก์</item>
+        <item>ดอยซ์แบงก์</item>
+        <item>อาคารสงเคราะห์</item>
+        <item>ออมสิน</item>
+        <item>เอชเอสบีซี</item>
+        <item>ไอซีบีซี</item>
+        <item>ธนาคารอิสลาม</item>
+        <item>กสิกรไทย</item>
+        <item>เกียรตินาคิน</item>
+        <item>กรุงไทย</item>
+        <item>แลนด์ แอนด์ เฮ้าส์</item>
+        <item>มิซูโฮ</item>
+        <item>ไทยพาณิชย์</item>
+        <item>สแตนดาร์ดชาร์เตอร์ด</item>
+        <item>ซูมิโตโม</item>
+        <item>ธนชาต</item>
+        <item>ไทยเครดิต</item>
+        <item>ทหารไทย</item>
+        <item>ทิสโก้</item>
+        <item>ยูโอบี</item>
+    </string-array>
 </resources>

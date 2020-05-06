@@ -113,11 +113,38 @@
         <item>Parking</item>
         <item>Wi-Fi</item>
         <item>Credit Card</item>
-        <item>Good for Kids</item>
         <item>Air conditioning</item>
+        <item>Good for Kids</item>
         <item>Private Room</item>
         <item>Near BTS</item>
         <item>Near MRT</item>
+    </string-array>
+    <string-array name="bank">
+        <item>Please Select</item>
+        <item>BAAC</item>
+        <item>BAY</item>
+        <item>BBL</item>
+        <item>CIMB</item>
+        <item>CITI</item>
+        <item>DB</item>
+        <item>GHB</item>
+        <item>GSB</item>
+        <item>HSBC</item>
+        <item>ICBC</item>
+        <item>ISBT</item>
+        <item>KBANK</item>
+        <item>KK</item>
+        <item>KTB</item>
+        <item>LHBANK</item>
+        <item>MHCB</item>
+        <item>SCB</item>
+        <item>SCBT</item>
+        <item>SMBC</item>
+        <item>TBANK</item>
+        <item>TCRB</item>
+        <item>TMB</item>
+        <item>TSCO</item>
+        <item>UOB</item>
     </string-array>
 
 </resources>

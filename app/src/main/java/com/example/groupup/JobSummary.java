@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 public class JobSummary extends AppCompatActivity {
     String id="",eId="",eName="",email;
@@ -17,6 +18,7 @@ public class JobSummary extends AppCompatActivity {
     RadioButton payment,upSlip;
     RadioGroup rGroup;
     LinearLayout uploadSlip;
+    TextView showBank;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +36,11 @@ public class JobSummary extends AppCompatActivity {
         upSlip = findViewById(R.id.upSlip);
         uploadSlip = findViewById(R.id.upload);
         rGroup = findViewById(R.id.radioGroup);
+        showBank = findViewById(R.id.tv_showBank);
         payment.setVisibility(View.GONE);
         upSlip.setVisibility(View.GONE);
         uploadSlip.setVisibility(View.GONE);
+        showBank.setVisibility(View.GONE);
         btn.setVisibility(View.GONE);
         bJoin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +54,7 @@ public class JobSummary extends AppCompatActivity {
                 payment.setVisibility(View.GONE);
                 upSlip.setVisibility(View.GONE);
                 uploadSlip.setVisibility(View.GONE);
+                showBank.setVisibility(View.GONE);
                 btn.setVisibility(View.VISIBLE);
                 checkVisible = true;
             }
@@ -71,10 +76,12 @@ public class JobSummary extends AppCompatActivity {
             payment.setVisibility(View.VISIBLE);
             upSlip.setVisibility(View.VISIBLE);
             uploadSlip.setVisibility(View.GONE);
+            showBank.setVisibility(View.GONE);
             if (payment.isChecked()||upSlip.isChecked()){
                 btn.setVisibility(View.VISIBLE);
                 if(upSlip.isChecked()){
                     uploadSlip.setVisibility(View.VISIBLE);
+                    showBank.setVisibility(View.VISIBLE);
                 }            }else {
                 btn.setVisibility(View.GONE);
             }
@@ -86,8 +93,10 @@ public class JobSummary extends AppCompatActivity {
                    if(payment.isChecked()){
                        btn.setVisibility(View.VISIBLE);
                        uploadSlip.setVisibility(View.GONE);
+                       showBank.setVisibility(View.GONE);
                    }else {
                        uploadSlip.setVisibility(View.VISIBLE);
+                       showBank.setVisibility(View.VISIBLE);
                        btn.setVisibility(View.VISIBLE);
                    }
                 }

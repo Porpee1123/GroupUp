@@ -44,8 +44,9 @@ import java.util.List;
 public class Home_CreateEvent extends AppCompatActivity {
     String name = "", id = "", email = "";
     String nEvent, mStart, mEnd,eid;
+    EditText edt_bank;
     int startId, endId;
-    Spinner spms, spme;
+    Spinner spms, spme,spb;
     ArrayList<String> dateLange;
     ProgressDialog progressDialog ;
     private RequestQueue requestQueue;
@@ -58,11 +59,13 @@ public class Home_CreateEvent extends AppCompatActivity {
         dateLange = new ArrayList<>();
         //Spinner
         Spinner sp = findViewById(R.id.spin_wait);
+        edt_bank = findViewById(R.id.edt_bankAccount);
         ArrayAdapter<CharSequence> adp = ArrayAdapter.createFromResource(this, R.array.number, android.R.layout.simple_spinner_item);
         adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp.setAdapter(adp);
         sp.setSelection(1);
         //Spinner month start
+        spb = findViewById(R.id.spin_bank);
         spms = findViewById(R.id.spin_start);
         spme = findViewById(R.id.spin_end);
         Date date = new Date();
@@ -77,10 +80,14 @@ public class Home_CreateEvent extends AppCompatActivity {
         }
         ArrayAdapter<CharSequence> adm = ArrayAdapter.createFromResource(this, R.array.month, android.R.layout.simple_spinner_item);
         adm.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adb = ArrayAdapter.createFromResource(this, R.array.bank, android.R.layout.simple_spinner_item);
+        adb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spms.setAdapter(adm);
         spme.setAdapter(adm);
+        spb.setAdapter(adb);
         spms.setSelection(sdate);
         spme.setSelection(edate);
+        spb.setSelection(0);
         Button btn_create = findViewById(R.id.newGroup_confirm);
 
 
@@ -151,10 +158,22 @@ public class Home_CreateEvent extends AppCompatActivity {
             sped.requestFocus();
             return false;
         }
+        if (spb.getSelectedItemId() == 0) {
+            dialog.setMessage("กรุณาเลือกธนาคาร");
+            dialog.show();
+            sped.requestFocus();
+            return false;
+        }
         if (spst.getSelectedItemId() == sped.getSelectedItemId()) {
             dialog.setMessage("เดือนเริ่มต้นและสิ้นสุดไม่สามารถเป็นเดือนเดียวกันได้");
             dialog.show();
             sped.requestFocus();
+            return false;
+        }
+        if (edt_bank.getText().length() == 0) {
+            dialog.setMessage("กรุณากรอกหมายเลขบัญชีธนาคาร");
+            dialog.show();
+            txtName.requestFocus();
             return false;
         }
         String url = "http://www.groupupdb.com/android/creategroup.php";
@@ -162,6 +181,8 @@ public class Home_CreateEvent extends AppCompatActivity {
         url += "&sStart=" + spst.getSelectedItemPosition() + "";
         url += "&sEnd=" + sped.getSelectedItemPosition() + "";
         url += "&sWait=" + spwa.getSelectedItem().toString();
+        url += "&sBank=" + spb.getSelectedItemPosition()+"";
+        url += "&sBankNo=" + edt_bank.getText().toString();
         url += "&sProvi=" + name;
         url += "&sProid=" + id;
         String[] some_array = getResources().getStringArray(R.array.month);
@@ -241,6 +262,10 @@ public class Home_CreateEvent extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                240000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
 

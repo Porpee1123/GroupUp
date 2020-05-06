@@ -187,5 +187,7 @@
     <string name="review">Review</string>
     <string name="score_review">Score View</string>
     <string name="search_place">Search Name/Facility/Score Review</string>
+    <string name="bankAccountNo">Bank Account No.</string>
+    <string name="bankName">Bank Name</string>
 
 </resources>

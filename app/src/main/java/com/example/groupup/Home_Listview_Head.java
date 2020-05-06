@@ -146,59 +146,6 @@ Extend_MyHelper.checkInternetLost(this);
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
-        String url = "http://www.groupupdb.com/android/checkdatevoteplace.php";
-        url += "?eId=" + eid;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("dd", c.getString("dd"));
-                                map.put("datelastwait", c.getString("datelastwait"));
-                                MyArrList.add(map);
-                            }
-                            cVoteTime = Integer.parseInt(MyArrList.get(0).get("dd"));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-        new CountDownTimer(300, 300) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                Log.d("checkvote","cVoteTime "+cVoteTime);
-                if (cVoteTime>0){
-                    closeTime(eid);
-                }
-            }
-        }.start();
-    }
-    public void checkVotePlace(final String eid) {
-        responseStr = new Home_Listview_Head.ResponseStr();
-
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-
         String url = "http://www.groupupdb.com/android/checkdatevotetime.php";
         url += "?eId=" + eid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -216,8 +163,11 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("datelastwait", c.getString("datelastwait"));
                                 MyArrList.add(map);
                             }
-                               cVotePlace = Integer.parseInt(MyArrList.get(0).get("dd"));
-
+                            cVoteTime = Integer.parseInt(MyArrList.get(0).get("dd"));
+                            Log.d("checkvote","hbcVotePlace "+cVotePlace);
+                            if (cVoteTime>0){
+                                closeTime(eid);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -232,20 +182,48 @@ Extend_MyHelper.checkInternetLost(this);
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        new CountDownTimer(300, 300) {
-            @Override
-            public void onTick(long millisUntilFinished) {
+    }
+    public void checkVotePlace(final String eid) {
+        responseStr = new Home_Listview_Head.ResponseStr();
 
-            }
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
-            @Override
-            public void onFinish() {
-                Log.d("checkvote","cVotePlace "+cVotePlace);
-                if (cVotePlace>0){
-                    closePlace(eid);
-                }
-            }
-        }.start();
+        String url = "http://www.groupupdb.com/android/checkdatevoteplace.php";
+        url += "?eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("dd", c.getString("dd"));
+                                map.put("datelastwait", c.getString("datelastwait"));
+                                MyArrList.add(map);
+                            }
+                               cVotePlace = Integer.parseInt(MyArrList.get(0).get("dd"));
+                            Log.d("checkvote","hbcVotePlace "+cVotePlace);
+                            if (cVotePlace>0){
+                                closePlace(eid);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public void closePlace(String eid) {
