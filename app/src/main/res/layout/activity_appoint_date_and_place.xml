@@ -45,7 +45,7 @@
                     android:textColor="#FFFFFF" />
 
                 <ToggleButton
-                    android:id="@+id/toggleButton"
+                    android:id="@+id/btn_closeVoteTime"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ToggleButton"
@@ -83,7 +83,7 @@
                     android:textColor="#FFFFFF" />
 
                 <ToggleButton
-                    android:id="@+id/toggleButton2"
+                    android:id="@+id/btn_closeVotePlace"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ToggleButton"

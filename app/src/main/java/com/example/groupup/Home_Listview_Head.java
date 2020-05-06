@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 public class Home_Listview_Head extends AppCompatActivity {
     Home_Listview_Head.ResponseStr responseStr = new Home_Listview_Head.ResponseStr();
     String email = "", id = "";
+    int cVoteTime,cVotePlace;
     static ListView listViewHeader;
     static SimpleAdapter sAdapHead;
     @Override
@@ -119,6 +121,8 @@ Extend_MyHelper.checkInternetLost(this);
                         String eStatus= MyArrList.get(position).get("states_name");
                         String ewait= MyArrList.get(position).get("events_wait");
                         Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
+                        checkVotePlace(eId);
+                        checkVoteTime(eId);
 //                        checkCloseVote(eId);
                         Intent intent = new Intent(Home_Listview_Head.this, HomeHead_Appointment.class);
                         intent.putExtra("id",id+"");
@@ -137,23 +141,152 @@ Extend_MyHelper.checkInternetLost(this);
             }
         }.start();
     }
-//    public void checkCloseVote(String eid) {
-//        String url = "http://www.groupupdb.com/android/closevotetime.php";
-//        url += "?eId=" + eid;
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-////                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-//                    }
-//                });
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
-//    }
+    public void checkVoteTime(final String eid) {
+        responseStr = new Home_Listview_Head.ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+
+        String url = "http://www.groupupdb.com/android/checkdatevoteplace.php";
+        url += "?eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("dd", c.getString("dd"));
+                                map.put("datelastwait", c.getString("datelastwait"));
+                                MyArrList.add(map);
+                            }
+                            cVoteTime = Integer.parseInt(MyArrList.get(0).get("dd"));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(300, 300) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                Log.d("checkvote","cVoteTime "+cVoteTime);
+                if (cVoteTime>0){
+                    closeTime(eid);
+                }
+            }
+        }.start();
+    }
+    public void checkVotePlace(final String eid) {
+        responseStr = new Home_Listview_Head.ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+
+        String url = "http://www.groupupdb.com/android/checkdatevotetime.php";
+        url += "?eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("dd", c.getString("dd"));
+                                map.put("datelastwait", c.getString("datelastwait"));
+                                MyArrList.add(map);
+                            }
+                               cVotePlace = Integer.parseInt(MyArrList.get(0).get("dd"));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(300, 300) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                Log.d("checkvote","cVotePlace "+cVotePlace);
+                if (cVotePlace>0){
+                    closePlace(eid);
+                }
+            }
+        }.start();
+    }
+
+    public void closePlace(String eid) {
+        Log.d("votedate", eid);
+        String url = "http://www.groupupdb.com/android/closeVotePlace.php";
+        url += "?eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(Home_Listview_Head.this, "Close Place Vote Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    public void closeTime(String eid) {
+        Log.d("votedate", eid);
+        String url = "http://www.groupupdb.com/android/closevotetime.php";
+        url += "?eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(Home_Listview_Head.this, "Close Time Vote Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 }
