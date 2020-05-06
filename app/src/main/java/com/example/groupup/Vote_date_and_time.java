@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -30,7 +29,7 @@ import java.util.StringTokenizer;
 
 public class Vote_date_and_time extends AppCompatActivity {
     String id = "", eId = "", eName = "", email;
-    ArrayList<String> dateDB,timeDB ;
+    ArrayList<String> dateDB, timeDB;
     Button btn1, btn2, btn3, btn4;
 
     @Override
@@ -54,31 +53,31 @@ public class Vote_date_and_time extends AppCompatActivity {
             public void onClick(View v) {
                 final AlertDialog viewDetail = new AlertDialog.Builder(Vote_date_and_time.this).create();
 
-                        viewDetail.setTitle(R.string.con_vote);
-                        viewDetail.setMessage(btn1.getText().toString());
-                        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                viewDetail.setTitle(R.string.con_vote);
+                viewDetail.setMessage(btn1.getText().toString());
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
 
-                            }
-                        });
-                        viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                VoteDate(dateDB.get(0),timeDB.get(0));
-                                backVote();
+                    }
+                });
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        VoteDate(dateDB.get(0), timeDB.get(0));
+                        backVote();
 
-                            }
-                        });
-                        viewDetail.show();
-                        Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
-                        Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    }
+                });
+                viewDetail.show();
+                Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-                        layoutParams.weight = 10;
-                        btnPositive.setLayoutParams(layoutParams);
-                        btnNegative.setLayoutParams(layoutParams);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                layoutParams.weight = 10;
+                btnPositive.setLayoutParams(layoutParams);
+                btnNegative.setLayoutParams(layoutParams);
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +97,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        VoteDate(dateDB.get(1),timeDB.get(1));
+                        VoteDate(dateDB.get(1), timeDB.get(1));
                         backVote();
 
                     }
@@ -130,7 +129,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        VoteDate(dateDB.get(2),timeDB.get(2));
+                        VoteDate(dateDB.get(2), timeDB.get(2));
                         backVote();
 
                     }
@@ -162,7 +161,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        VoteDate(dateDB.get(3),timeDB.get(3));
+                        VoteDate(dateDB.get(3), timeDB.get(3));
                         backVote();
 
                     }
@@ -183,26 +182,28 @@ public class Vote_date_and_time extends AppCompatActivity {
         Intent intent = new Intent(Vote_date_and_time.this, MainAttendent.class);
         intent.putExtra("id", id + "");
         intent.putExtra("eid", eId + "");
-        intent.putExtra("email",email+"");
+        intent.putExtra("email", email + "");
         intent.putExtra("nameEvent", eName + "");
-        intent.putExtra("tab",0+"");
+        intent.putExtra("tab", 0 + "");
         startActivity(intent);
     }
+
     public void backVote(View v) {
         Intent intent = new Intent(Vote_date_and_time.this, MainAttendent.class);
         intent.putExtra("id", id + "");
         intent.putExtra("eid", eId + "");
-        intent.putExtra("email",email+"");
+        intent.putExtra("email", email + "");
         intent.putExtra("nameEvent", eName + "");
-        intent.putExtra("tab",0+"");
+        intent.putExtra("tab", 0 + "");
         startActivity(intent);
     }
+
     public void getDate() {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getdateforvote.php";
         url += "?eId=" + eId;
-        Log.d("getdateforvote",url);
+        Log.d("getdateforvote", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -243,69 +244,52 @@ public class Vote_date_and_time extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                ArrayList<String> day  =new ArrayList<>();
-                ArrayList<String> time  =new ArrayList<>();
-                for (int i=0;i<MyArrList.size();i++){
-                    if (!MyArrList.get(i).get("time").equalsIgnoreCase("random")){
+                ArrayList<String> day = new ArrayList<>();
+                ArrayList<String> time = new ArrayList<>();
+                for (int i = 0; i < MyArrList.size(); i++) {
+                    if (!MyArrList.get(i).get("time").equalsIgnoreCase("random")) {
                         day.add(MyArrList.get(i).get("time"));
                         time.add(MyArrList.get(i).get("timerange"));
                     }
                 }
                 day.add("random");
                 time.add("random");
-                Log.d("getdateforvote",day.toString());
-                Log.d("getdateforvote",time.toString());
+                Log.d("getdateforvote", day.toString());
+                Log.d("getdateforvote", time.toString());
+                for (int i = 0; i < day.size()-1; i++) {
+                    StringTokenizer st = new StringTokenizer(day.get(i), "/");
+                    while (st.hasMoreTokens()) {
+                        String d, m, y, date;
+                        String[] some_array = getResources().getStringArray(R.array.month);
+                        d = st.nextToken();
+                        m = st.nextToken();
+                        y = st.nextToken();
+                        date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                        dateDB.add(day.get(i));
+                        timeDB.add(time.get(i));
+                        if (i==0){
+                            btn1.setText(date + "\n ช่วงเวลา " + time.get(i));
+                            btn1.setTextSize(18);
+                        }else if (i==1){
+                            btn2.setText(date + "\n ช่วงเวลา " + time.get(i));
+                            btn2.setTextSize(18);
+                        }
+                        else if (i==2){
+                            btn3.setText(date + "\n ช่วงเวลา " + time.get(i));
+                            btn3.setTextSize(18);
+                        }
 
-                StringTokenizer st = new StringTokenizer(day.get(0),"/");
-                StringTokenizer st1 = new StringTokenizer(day.get(1),"/");
-                StringTokenizer st2 = new StringTokenizer(day.get(2),"/");
-                while (st.hasMoreTokens()){
-                    String d,m,y,date;
-                    String[] some_array = getResources().getStringArray(R.array.month);
-                    d= st.nextToken();
-                    m= st.nextToken();
-                    y= st.nextToken();
-                    date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    btn1.setText(date+"\n ช่วงเวลา "+time.get(0));
-                    btn1.setTextSize(18);
-                }
-                while (st1.hasMoreTokens()){
-                    String d,m,y,date;
-                    String[] some_array = getResources().getStringArray(R.array.month);
-                    d= st1.nextToken();
-                    m= st1.nextToken();
-                    y= st1.nextToken();
-                    date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    btn2.setText(date+"\n ช่วงเวลา "+time.get(1));
-                    btn2.setTextSize(18);
-
-                }
-                while (st2.hasMoreTokens()){
-                    String d,m,y,date;
-                    String[] some_array = getResources().getStringArray(R.array.month);
-                    d= st2.nextToken();
-                    m= st2.nextToken();
-                    y= st2.nextToken();
-                    date = "วันที่ "+d+" "+some_array[Integer.parseInt(m)]+" "+y;
-                    btn3.setText(date+"\n ช่วงเวลา "+time.get(2));
-                    btn3.setTextSize(18);
+                    }
                 }
                 String[] array = getResources().getStringArray(R.array.random);
                 btn4.setText(array[0]);
                 btn4.setTextSize(24);
-                dateDB.add(day.get(0));
-                dateDB.add(day.get(1));
-                dateDB.add(day.get(2));
-                dateDB.add(day.get(3));
-                timeDB.add(time.get(0));
-                timeDB.add(time.get(1));
-                timeDB.add(time.get(2));
-                timeDB.add(time.get(3));
             }
         }.start();
     }
-    public void VoteDate(String s,String time){
-        Log.d("votedate",s+" : "+time);
+
+    public void VoteDate(String s, String time) {
+        Log.d("votedate", s + " : " + time);
         String url = "http://www.groupupdb.com/android/addpointvotetime.php";
         url += "?vdid=" + s;
         url += "&vtid=" + time;

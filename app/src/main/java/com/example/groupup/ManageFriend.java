@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -284,6 +285,14 @@ public class ManageFriend extends AppCompatActivity {
         }.start();
         writeFile(uid, email);
         search();
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getFriend();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
     }
 
     public void AddTypeFriend(String name) {

@@ -416,7 +416,7 @@ public class Head_Date extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
+                        Log.d("dateselect", MyArrList.toString());
                     }
                 },
                 new Response.ErrorListener() {
@@ -427,6 +427,7 @@ public class Head_Date extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+
         new CountDownTimer(500, 500) {
 
             @Override
@@ -436,45 +437,26 @@ public class Head_Date extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                StringTokenizer st = new StringTokenizer(dataDB.get(0), "/");
-                StringTokenizer st1 = new StringTokenizer(dataDB.get(1), "/");
-                StringTokenizer st2 = new StringTokenizer(dataDB.get(2), "/");
-                StringTokenizer st3 = new StringTokenizer(dataDB.get(3), "/");
-                while (st.hasMoreTokens()) {
-                    String d, m, y, date;
-                    String[] some_array = getResources().getStringArray(R.array.month);
-                    d = st.nextToken();
-                    m = st.nextToken();
-                    y = st.nextToken();
-                    date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
-                    cb1.setText(date + " ช่วงเวลา " + timeDB.get(0));
-                }
-                while (st1.hasMoreTokens()) {
-                    String d, m, y, date;
-                    String[] some_array = getResources().getStringArray(R.array.month);
-                    d = st1.nextToken();
-                    m = st1.nextToken();
-                    y = st1.nextToken();
-                    date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
-                    cb2.setText(date + " ช่วงเวลา " + timeDB.get(1));
-                }
-                while (st2.hasMoreTokens()) {
-                    String d, m, y, date;
-                    String[] some_array = getResources().getStringArray(R.array.month);
-                    d = st2.nextToken();
-                    m = st2.nextToken();
-                    y = st2.nextToken();
-                    date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
-                    cb3.setText(date + " ช่วงเวลา " + timeDB.get(2));
-                }
-                while (st3.hasMoreTokens()) {
-                    String d, m, y, date;
-                    String[] some_array = getResources().getStringArray(R.array.month);
-                    d = st3.nextToken();
-                    m = st3.nextToken();
-                    y = st3.nextToken();
-                    date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
-                    cb4.setText(date + " ช่วงเวลา " + timeDB.get(3));
+                for (int i =0;i<dataDB.size();i++){
+                    StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
+                    while (st.hasMoreTokens()) {
+                        String d, m, y, date;
+                        String[] some_array = getResources().getStringArray(R.array.month);
+                        d = st.nextToken();
+                        m = st.nextToken();
+                        y = st.nextToken();
+                        date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                        if (i==0){
+                            cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                        }else if (i==1){
+                            cb2.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                        }else if (i==2){
+                            cb3.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                        }else if (i==3){
+                            cb4.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                        }
+
+                    }
                 }
             }
         }.start();

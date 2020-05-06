@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,7 +44,8 @@ public class InviteFriend_Head extends AppCompatActivity {
         boolean checked;
         String ItemDrawable;
         String ItemString;
-        String Id;;
+        String Id;
+        ;
 
         //        Item(ImageView drawable, String t, boolean b){
         Item(String t, boolean b, String i, String drawable) {
@@ -150,6 +152,7 @@ public class InviteFriend_Head extends AppCompatActivity {
 
             return rowView;
         }
+
         // Filter Class
         public void filter(String charText) {
             charText = charText.toLowerCase(Locale.getDefault());
@@ -186,7 +189,7 @@ public class InviteFriend_Head extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_invite_head);
         //LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear);
         //linearLayout.setBackgroundColor(Color.parseColor("#BCD0ED"));
@@ -202,11 +205,11 @@ Extend_MyHelper.checkInternetLost(this);
         listViewFriend = findViewById(R.id.listview_friend);
         btnConfirmHead = findViewById(R.id.slide);
         frientArray = new ArrayList<>();
-        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progressDialog = ProgressDialog.show(InviteFriend_Head.this,"Friend is Dowloading","Please Wait",false,false);
+                progressDialog = ProgressDialog.show(InviteFriend_Head.this, "Friend is Dowloading", "Please Wait", false, false);
             }
 
             @Override
@@ -247,6 +250,14 @@ Extend_MyHelper.checkInternetLost(this);
                 confirmFriend();
             }
         });
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showAllCheckboxClick();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
     }
 
     private void initItems() {
@@ -256,7 +267,7 @@ Extend_MyHelper.checkInternetLost(this);
             String id = frientArray.get(i).get("fid");
             String path = frientArray.get(i).get("user_photo");
             boolean b = checkFriendAlreadysent(id);
-            InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id,path);
+            InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id, path);
             items.add(item);
         }
     }
@@ -297,7 +308,8 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("fid", c.getString("fid"));
                                 MyArrList.add(map);
                                 frientArray.add(map);
-                            }for (int i =0;i<MyArrList.size();i++){
+                            }
+                            for (int i = 0; i < MyArrList.size(); i++) {
                                 InviteFriend.nameHead.add(MyArrList.get(i).get("events_name"));
                             }
                         } catch (JSONException e) {
@@ -497,7 +509,7 @@ Extend_MyHelper.checkInternetLost(this);
         String url = "http://www.groupupdb.com/android/getfriendIntype.php";
         url += "?sId=" + uid;
         url += "&tname=" + typeName;
-        Log.d("pathinvite",url);
+        Log.d("pathinvite", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -539,7 +551,7 @@ Extend_MyHelper.checkInternetLost(this);
 
         new CountDownTimer(300, 300) {
             public void onFinish() {
-                checkBoxClick(position, positionId,positionImage);
+                checkBoxClick(position, positionId, positionImage);
             }
 
             public void onTick(long millisUntilFinished) {
@@ -548,7 +560,7 @@ Extend_MyHelper.checkInternetLost(this);
         }.start();
     }
 
-    public void checkBoxClick(ArrayList position, ArrayList positionId,ArrayList positionImage) {
+    public void checkBoxClick(ArrayList position, ArrayList positionId, ArrayList positionImage) {
         Log.d("position", "position size: " + position.size() + "");
         items = new ArrayList<InviteFriend_Head.Item>();
         for (int i = 0; i < position.size(); i++) {
@@ -556,7 +568,7 @@ Extend_MyHelper.checkInternetLost(this);
             String id = positionId.get(i).toString();
             boolean b = true;
             String path = positionImage.get(i).toString();
-            InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id,path);
+            InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id, path);
             items.add(item);
         }
         myItemsListAdapter = new InviteFriend_Head.ItemsListAdapter(this, items);
@@ -636,7 +648,7 @@ Extend_MyHelper.checkInternetLost(this);
                                 map.put("pri_id", c.getString("pri_id"));
                                 MyArrList.add(map);
                             }
-                            for (int i=0;i<MyArrList.size();i++){
+                            for (int i = 0; i < MyArrList.size(); i++) {
                                 friendInDb.add(MyArrList.get(i).get("user_id"));
                             }
 
@@ -655,15 +667,16 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public boolean checkFriendAlreadysent(String id) {
         Log.d("friendselect", "id : " + id);
         Log.d("friendselect", "friendInDb : " + friendInDb.toString());
-            for (int j = 0; j < friendInDb.size(); j++) {
-               String fdb = friendInDb.get(j);
-                if (fdb.equals(id)) {
-                    return true;
-                }
+        for (int j = 0; j < friendInDb.size(); j++) {
+            String fdb = friendInDb.get(j);
+            if (fdb.equals(id)) {
+                return true;
             }
+        }
 
         return false;
     }
