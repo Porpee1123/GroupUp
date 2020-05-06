@@ -547,7 +547,7 @@ public class Head_Place extends AppCompatActivity {
 
     public void getplace() {
         responseStr = new Head_Place.ResponseStr();
-
+placeArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getplaceforHeader.php";
         url += "?eId=" + eid;//รอเอาIdจากfirebase

@@ -289,7 +289,7 @@ public class ManageFriend extends AppCompatActivity {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getFriend();
+                showAllCheckboxClick();
                 pullToRefresh.setRefreshing(false);
             }
         });

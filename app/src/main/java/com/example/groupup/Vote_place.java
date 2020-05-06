@@ -459,7 +459,7 @@ public class Vote_place extends AppCompatActivity {
 
     public void getplace() {
         responseStr = new Vote_place.ResponseStr();
-
+placeArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getvoteplace.php";
         url += "?sId=" + eid;//รอเอาIdจากfirebase
