@@ -189,5 +189,6 @@
     <string name="search_place">Search Name/Facility/Score Review</string>
     <string name="bankAccountNo">Bank Account No.</string>
     <string name="bankName">Bank Name</string>
+    <string name="accountName">Account Name</string>
 
 </resources>

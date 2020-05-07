@@ -136,6 +136,7 @@ public class Home_CreateEvent extends AppCompatActivity {
         final Spinner spst = findViewById(R.id.spin_start);
         final Spinner sped = findViewById(R.id.spin_end);
         final Spinner spwa = findViewById(R.id.spin_wait);
+        final EditText edt_nameAccount = findViewById(R.id.edt_accountName);
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.err_title);
         dialog.setIcon(android.R.drawable.btn_star_big_on);
@@ -161,7 +162,7 @@ public class Home_CreateEvent extends AppCompatActivity {
         if (spb.getSelectedItemId() == 0) {
             dialog.setMessage("กรุณาเลือกธนาคาร");
             dialog.show();
-            sped.requestFocus();
+            spb.requestFocus();
             return false;
         }
         if (spst.getSelectedItemId() == sped.getSelectedItemId()) {
@@ -173,7 +174,13 @@ public class Home_CreateEvent extends AppCompatActivity {
         if (edt_bank.getText().length() == 0) {
             dialog.setMessage("กรุณากรอกหมายเลขบัญชีธนาคาร");
             dialog.show();
-            txtName.requestFocus();
+            edt_bank.requestFocus();
+            return false;
+        }
+        if (edt_nameAccount.getText().length() == 0) {
+            dialog.setMessage("กรุณากรอกชื่อบัญชีธนาคาร");
+            dialog.show();
+            edt_nameAccount.requestFocus();
             return false;
         }
         String url = "http://www.groupupdb.com/android/creategroup.php";
@@ -183,6 +190,7 @@ public class Home_CreateEvent extends AppCompatActivity {
         url += "&sWait=" + spwa.getSelectedItem().toString();
         url += "&sBank=" + spb.getSelectedItemPosition()+"";
         url += "&sBankNo=" + edt_bank.getText().toString();
+        url += "&sBankAcc=" + edt_nameAccount.getText().toString();
         url += "&sProvi=" + name;
         url += "&sProid=" + id;
         String[] some_array = getResources().getStringArray(R.array.month);

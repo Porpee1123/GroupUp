@@ -74,7 +74,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/naneEvent"
+                    android:id="@+id/sumnaneEvent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -109,7 +109,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/dateApp"
+                        android:id="@+id/sumdateApp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -134,7 +134,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/timeApp"
+                        android:id="@+id/sumtimeApp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -159,7 +159,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/placeApp"
+                        android:id="@+id/sumplaceApp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -185,7 +185,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/numberEvent"
+                        android:id="@+id/sumpeople"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -281,14 +281,27 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_showBank"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="20dp"
-                    android:text="TextView"
-                    android:textSize="18sp" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/sumicon_bank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/ic_account_balance_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/tv_showBank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:text="TextView"
+                        android:textSize="18sp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/upload"

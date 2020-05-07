@@ -7,8 +7,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -197,5 +199,43 @@ public class Extend_MyHelper {
                 });
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
+    }
+    public static String checkStatusTrans(String eId , String stateId, Context context, final TextView edt){
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        final String[] state = {""};
+        String url = "http://www.groupupdb.com/android/checkpeopleinstate.php";
+        url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
+        url += "&stId=" + stateId;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("num", c.getString("num"));
+                                MyArrList.add(map);
+                            }
+                            state[0] = MyArrList.get(0).get("num");
+                            edt.setText(state[0]);
+                            Log.d("checkStatus",state[0]);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
+        return state[0];
     }
 }
