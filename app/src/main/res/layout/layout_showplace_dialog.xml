@@ -23,8 +23,9 @@
 
                 <ImageButton
                     android:id="@+id/showplace_btnClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/red"
                     app:srcCompat="@drawable/ic_close_black_24dp" />
             </LinearLayout>
             <androidx.cardview.widget.CardView
@@ -126,7 +127,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="@string/time" />
+                                    android:text="@string/time"
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
                             <TextView
@@ -162,7 +164,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="@string/phone" />
+                                    android:text="@string/phone"
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
                             <TextView
@@ -198,7 +201,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="@string/priceRange" />
+                                    android:text="@string/priceRange"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 
@@ -236,7 +240,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="@string/numberOfSeats" />
+                                    android:text="@string/maxPeople"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 
@@ -273,7 +278,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="@string/score_review" />
+                                    android:text="@string/score_review"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/showplace_PeopleVisit"
@@ -304,7 +310,8 @@
                             android:id="@+id/textView47"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/facility" />
+                            android:text="@string/facility"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/showplace_facility"

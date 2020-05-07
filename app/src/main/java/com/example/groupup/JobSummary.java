@@ -1,24 +1,31 @@
 package com.example.groupup;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +39,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
+import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,13 +62,114 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class JobSummary extends AppCompatActivity {
-    String id = "", eId = "", eName = "", email = "", transId = "";
-    Button bJoin, bNotJoin, btn,btn_uploadSlip;
+    //************************************** Slide View *********************************************//
+    public class SliderItem {
+
+        private String description;
+        private String imageUrl;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+    }
+
+    public class SliderAdapterExample extends
+            SliderViewAdapter<JobSummary.SliderAdapterExample.SliderAdapterVH> {
+
+        private Context context;
+        private List<JobSummary.SliderItem> mSliderItems = new ArrayList<>();
+
+        public SliderAdapterExample(Context context) {
+            this.context = context;
+        }
+
+        public void renewItems(List<JobSummary.SliderItem> sliderItems) {
+            this.mSliderItems = sliderItems;
+            notifyDataSetChanged();
+        }
+
+        public void deleteItem(int position) {
+            this.mSliderItems.remove(position);
+            notifyDataSetChanged();
+        }
+
+        public void addItem(JobSummary.SliderItem sliderItem) {
+            this.mSliderItems.add(sliderItem);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public JobSummary.SliderAdapterExample.SliderAdapterVH onCreateViewHolder(ViewGroup parent) {
+            View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slider_layout_item, null);
+            return new JobSummary.SliderAdapterExample.SliderAdapterVH(inflate);
+        }
+
+        @Override
+        public void onBindViewHolder(JobSummary.SliderAdapterExample.SliderAdapterVH viewHolder, final int position) {
+
+            JobSummary.SliderItem sliderItem = mSliderItems.get(position);
+
+            viewHolder.textViewDescription.setText(sliderItem.getDescription());
+            viewHolder.textViewDescription.setTextSize(16);
+            viewHolder.textViewDescription.setTextColor(Color.WHITE);
+            Glide.with(viewHolder.itemView)
+                    .load(sliderItem.getImageUrl())
+                    .fitCenter()
+                    .into(viewHolder.imageViewBackground);
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        public int getCount() {
+            //slider view count could be dynamic size
+            return mSliderItems.size();
+        }
+
+        class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
+
+            View itemView;
+            ImageView imageViewBackground;
+            ImageView imageGifContainer;
+            TextView textViewDescription;
+
+            public SliderAdapterVH(View itemView) {
+                super(itemView);
+                imageViewBackground = itemView.findViewById(R.id.iv_auto_image_slider);
+                imageGifContainer = itemView.findViewById(R.id.iv_gif_container);
+                textViewDescription = itemView.findViewById(R.id.tv_auto_image_slider);
+                this.itemView = itemView;
+            }
+        }
+
+    }
+    //************************************** Slide View *********************************************//
+    String id = "", eId = "", eName = "", email = "", transId = "",placeId="";
+    Button bJoin, bNotJoin, btn,btn_uploadSlip,btn_showPlace;
     boolean checkVisible, isChecked;
     RadioButton payment, upSlip;
     RadioGroup rGroup;
@@ -70,6 +183,10 @@ public class JobSummary extends AppCompatActivity {
     ImageView iconBank;
     TextView tvShowBank, tvNameE, tvDate, tvTime, tvPlace, tvPeople;
     int cAccept, cCancle, cCash, cTransfer;
+    ArrayList<HashMap<String, String>> placeArray, placeImage;
+    SliderView sliderView;
+    String[] some_array;
+    private JobSummary.SliderAdapterExample adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +203,9 @@ public class JobSummary extends AppCompatActivity {
         cCash = 0;
         cTransfer = 0;
         bJoin = findViewById(R.id.btn_join);
+        placeArray = new ArrayList<>();
+        placeImage = new ArrayList<>();
+        some_array = getResources().getStringArray(R.array.facility);
         SelectImageGallery = findViewById(R.id.img_slip);
         bNotJoin = findViewById(R.id.btn_notJoin);
         btn = findViewById(R.id.btn_confirm);
@@ -101,6 +221,7 @@ public class JobSummary extends AppCompatActivity {
         tvPlace = findViewById(R.id.sumplaceApp);
         tvPeople = findViewById(R.id.sumpeople);
         iconBank = findViewById(R.id.sumicon_bank);
+        btn_showPlace =findViewById(R.id.btn_showPlace);
         SelectImageGallery.setVisibility(View.GONE);
         iconBank.setVisibility(View.GONE);
         payment.setVisibility(View.GONE);
@@ -176,7 +297,59 @@ public class JobSummary extends AppCompatActivity {
                 }
             }
         });
-
+        btn_showPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog viewDetail = new AlertDialog.Builder(JobSummary.this).create();
+                View mView = getLayoutInflater().inflate(R.layout.layout_showplace_dialog, null);
+                final TextView title = mView.findViewById(R.id.showplace_Title);
+                final TextView detail = mView.findViewById(R.id.showplace_detail);
+                final TextView time = mView.findViewById(R.id.showplace_time);
+                final TextView tel = mView.findViewById(R.id.showplace_tel);
+                final TextView price = mView.findViewById(R.id.showplace_price);
+                final TextView people = mView.findViewById(R.id.showplace_people);
+                final TextView facility = mView.findViewById(R.id.showplace_facility);
+                final TextView visit = mView.findViewById(R.id.showplace_PeopleVisit);
+                placeImage.clear();
+                final ImageButton btn_close = mView.findViewById(R.id.showplace_btnClose);
+                final RatingBar rt = mView.findViewById(R.id.showplace_ratingBar);
+                String sId = placeArray.get(0).get("place_id").toString();
+                String sTitle = placeArray.get(0).get("place_name").toString();
+                String sDetail = placeArray.get(0).get("place_detail").toString();
+                String sTel = placeArray.get(0).get("place_phone").toString();
+                String sPrice = placeArray.get(0).get("place_price").toString();
+                String sPeople = placeArray.get(0).get("place_numofseat").toString();
+                String sFacility = placeArray.get(0).get("place_facility").toString();
+                String sImage = placeArray.get(0).get("place_photoShow").toString();
+                String sRating = placeArray.get(0).get("place_score").toString();
+                String sDay = placeArray.get(0).get("place_date").toString();
+                String sSTime = placeArray.get(0).get("place_stime").toString();
+                String sETime = placeArray.get(0).get("place_etime").toString();
+                String sVisit = placeArray.get(0).get("place_visit").toString();
+                sliderView = mView.findViewById(R.id.imageSlider);
+                String[] some_arrayPrice = getResources().getStringArray(R.array.sppriceRange);
+                String[] some_arrayPeople = getResources().getStringArray(R.array.spnumberOfSeats);
+                getPlacePhotoPid(sId);
+                title.setText(sTitle);
+                detail.setText(sDetail);
+                ArrayList<String> s = spiltGetDate(sDay);
+                time.setText(showStringDay(s) + " \n" + sSTime + " - " + sETime);
+                tel.setText(sTel);
+                price.setText(some_arrayPrice[Integer.parseInt(sPrice)]);
+                people.setText(some_arrayPeople[Integer.parseInt(sPeople)]);
+                facility.setText(showFacility(sFacility));
+                rt.setRating(Float.parseFloat(sRating));
+                visit.setText("( " + sVisit + " คน)");
+                viewDetail.setView(mView);
+                viewDetail.show();
+                btn_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewDetail.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     public void backSum(View v) {
@@ -281,9 +454,10 @@ public class JobSummary extends AppCompatActivity {
                             tvDate.setText(MyArrList.get(0).get("time"));
                             tvTime.setText(MyArrList.get(0).get("timerange"));
                             tvPlace.setText(MyArrList.get(0).get("place_name"));
+                            placeId= MyArrList.get(0).get("place_id");
                             String bankName = some_array[Integer.parseInt(MyArrList.get(0).get("events_bankname"))];
                             tvShowBank.setText(bankName + " : " + MyArrList.get(0).get("events_bankid") + "\nชื่อ : " + MyArrList.get(0).get("events_bankaccount"));
-
+                            getplace();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -581,7 +755,234 @@ public class JobSummary extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    public String showFacility(String d) {
+        StringTokenizer st = new StringTokenizer(d, ":");
+        String s = "";
+        ArrayList<Integer> array = new ArrayList<>();
+        while (st.hasMoreTokens()) {
+            array.add(Integer.parseInt(st.nextToken()) - 1);
+        }
+        for (int i = 0; i < array.size(); i++) {
+            if (i != array.size() - 1) {
+                s += "- " + some_array[array.get(i)] + "\n";
+            } else {
+                s += "- " + some_array[array.get(i)];
+            }
+        }
+        return s;
+    }
 
+    public void getplace() {
+        placeArray.clear();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getplacebyplaceid.php";
+        url += "?pId=" + placeId+"";
+        Log.d("placeHome", "stringRequest  " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("place_id", c.getString("place_id"));
+                                map.put("place_upid", c.getString("place_upid"));
+                                map.put("place_name", c.getString("place_name"));
+                                map.put("place_detail", c.getString("place_detail"));
+                                map.put("place_price", c.getString("place_price"));
+                                map.put("place_phone", c.getString("place_phone"));
+                                map.put("place_numofseat", c.getString("place_numofseat"));
+                                map.put("place_deposit", c.getString("place_deposit"));
+                                map.put("place_date", c.getString("place_date"));
+                                map.put("place_stime", c.getString("place_stime"));
+                                map.put("place_etime", c.getString("place_etime"));
+                                map.put("place_facility", c.getString("place_facility"));
+                                map.put("place_score", c.getString("place_score"));
+                                map.put("place_visit", c.getString("place_visit"));
+                                map.put("place_photoShow", c.getString("place_photoShow"));
+                                MyArrList.add(map);
+                                placeArray.add(map);
+
+                            }
+                            Log.d("placeHome", "get placeArray " + placeArray.toString());
+//                            Log.d("place", "get MyArrList " + MyArrList.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(300, 300) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+//                showAllCheckboxClick();
+            }
+        }.start();
+    }
+
+    public void getPlacePhotoPid(String pId) {
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getplacephotobypid.php";
+        url += "?sId=" + pId;
+        Log.d("position", "stringRequest  " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("photoplace_id", c.getString("photoplace_id"));
+                                map.put("place_id", c.getString("place_id"));
+                                map.put("photoplace_path", c.getString("photoplace_path"));
+                                map.put("place_upid", c.getString("place_upid"));
+                                MyArrList.add(map);
+                                placeImage.add(map);
+
+                            }
+                            Log.d("editplce", placeImage.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        new CountDownTimer(500, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                adapter = new JobSummary.SliderAdapterExample(JobSummary.this);
+                sliderView.setSliderAdapter(adapter);
+                renewItems(sliderView, placeImage);
+                sliderView.setIndicatorAnimation(IndicatorAnimations.THIN_WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
+                sliderView.setIndicatorSelectedColor(Color.WHITE);
+                sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                sliderView.setScrollTimeInSec(3);
+                sliderView.setAutoCycle(true);
+//                if (placeImage.size() == 0) {
+//
+//                } else {
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(0).get("photoplace_path"), img1, 450).execute();
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(1).get("photoplace_path"), img2, 450).execute();
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(2).get("photoplace_path"), img3, 450).execute();
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(3).get("photoplace_path"), img4, 450).execute();
+//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(4).get("photoplace_path"), img5, 450).execute();
+//                }
+            }
+        }.start();
+    }
+//    private void initItems() {
+//        items = new ArrayList<JobSummary.Item>();
+//        Log.d("pathimage", "placeArray " + placeArray.toString());
+//        for (int i = 0; i < placeArray.size(); i++) {
+//            String pid = placeArray.get(i).get("place_id").toString();
+//            String upid = placeArray.get(i).get("place_upid").toString();
+//            String pName = placeArray.get(i).get("place_name").toString();
+//            String pDetail = placeArray.get(i).get("place_detail").toString();
+//            String pPrice = placeArray.get(i).get("place_price").toString();
+//            String pPhone = placeArray.get(i).get("place_phone").toString();
+//            String pSeat = placeArray.get(i).get("place_numofseat").toString();
+//            String pDepo = placeArray.get(i).get("place_deposit").toString();
+//            String pDate = placeArray.get(i).get("place_date").toString();
+//            String pStartTime = placeArray.get(i).get("place_stime").toString();
+//            String pEndTime = placeArray.get(i).get("place_etime").toString();
+//            String pFacility = placeArray.get(i).get("place_facility").toString();
+//            String pScore = placeArray.get(i).get("place_score").toString();
+//            String pVisit = placeArray.get(i).get("place_visit").toString();
+//            String pImage = placeArray.get(i).get("place_photoShow").toString();
+//
+////            String mystring = getResources().getString(R.string.mystring);
+////            String s = event_creater + "ได้เชิญคุณเข้าร่วม " + ename + " เป็น " + priName + " โดยมีช่วงเวลาระหว่างเดือน " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
+//            Log.d("pathimage", "item Home : " + pName + " / " + pDetail + " / " + pFacility + " / " + pScore + " / " + pImage);
+//            JobSummary.Item item = new JobSummary.Item(pid, pName, pDetail, pFacility, Float.parseFloat(pScore), pImage, upid, pPrice, pPhone, pSeat, pDepo, pDate, pStartTime, pEndTime);
+//            items.add(item);
+//            Log.d("pathimage", "item : " + items.toString());
+//        }
+//
+//    }
+
+    public ArrayList spiltGetDate(String s) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(s, ":");
+        while (st.hasMoreTokens()) {
+            arrayList.add(st.nextToken());
+        }
+        return arrayList;
+    }
+
+    public String showStringDay(ArrayList<String> date) {
+        String day = "";
+        for (int i = 0; i < date.size(); i++) {
+            if (Integer.parseInt(date.get(i)) == 1) {
+                day += "จันทร์ ";
+
+            } else if (Integer.parseInt(date.get(i)) == 2) {
+                day += "อังคาร ";
+            } else if (Integer.parseInt(date.get(i)) == 3) {
+                day += "พุธ ";
+            } else if (Integer.parseInt(date.get(i)) == 4) {
+                day += "พฤหัสบดี ";
+            } else if (Integer.parseInt(date.get(i)) == 5) {
+                day += "ศุกร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 6) {
+                day += "เสาร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 7) {
+                day += "อาทิตย์ ";
+            } else if (Integer.parseInt(date.get(i)) == 8) {
+                day += "วันเสาร์อาทิตย์ ";
+            } else if (Integer.parseInt(date.get(i)) == 9) {
+                day += "จันทร์ - ศุกร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 10) {
+                day += "ทุกวัน ";
+            }
+        }
+        return day;
+    }
+
+    public void renewItems(View view, ArrayList<HashMap<String, String>> image) {
+        List<JobSummary.SliderItem> sliderItemList = new ArrayList<>();
+        for (int i = 0; i < image.size(); i++) {
+            JobSummary.SliderItem sliderItem = new JobSummary.SliderItem();
+            sliderItem.setImageUrl(image.get(i).get("photoplace_path"));
+            Log.d("photoplace_path", image.get(i).get("photoplace_path"));
+            sliderItem.setDescription("Slider Item " + i);
+            sliderItemList.add(sliderItem);
+        }
+        adapter.renewItems(sliderItemList);
+    }
 //    public void cancleEvent(String tid){
 //        Log.d("votedate", eid + " : " + pid);
 //        String url = "http://www.groupupdb.com/android/addpointvoteplace.php";

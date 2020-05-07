@@ -54,7 +54,7 @@
     <string name="bath">Bath</string>
     <string name="phone">Phone</string>
     <string name="select_theme">Select Theme</string>
-    <string name="numberOfSeats">Nuber of seats</string>
+    <string name="numberOfSeats">Number of seats</string>
     <string name="seats">seats</string>
     <string name="deposite">Deposite</string>
     <string name="myPlace">My Place</string>
@@ -190,5 +190,7 @@
     <string name="bankAccountNo">Bank Account No.</string>
     <string name="bankName">Bank Name</string>
     <string name="accountName">Account Name</string>
+    <string name="extra_detail">More Information</string>
+    <string name="maxPeople">Number of seats</string>
 
 </resources>

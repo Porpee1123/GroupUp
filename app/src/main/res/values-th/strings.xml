@@ -38,7 +38,7 @@
     <string name="bts">ใกล้ BTS</string>
     <string name="mrt">ใกล้ MRT</string>
     <string name="nameFriends">ชื่อเพื่อน</string>
-    <string name="newGroup">สร้างนัด</string>
+    <string name="newGroup">สร้างการนัดหมาย</string>
     <string name="title">ชื่อการนัดหมาย</string>
     <string name="titleEvent">ชื่อการนัดหมาย :</string>
     <string name="note">รายละเอียด</string>
@@ -189,4 +189,7 @@
     <string name="bankAccountNo">หมายเลขบัญชีธนาคาร</string>
     <string name="bankName">ธนาคาร</string>
     <string name="accountName">ชื่อบัญชี</string>
+    <string name="extra_detail">ข้อมูลเพิ่มเติม</string>
+    <string name="maxPeople">ลูกค้าที่รองรับได้</string>
+
 </resources>

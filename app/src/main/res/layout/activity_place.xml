@@ -119,16 +119,23 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/rowButtonVoteSelect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/select" />
-
-            <Button
                 android:id="@+id/rowButtonVoteSeeDetail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/see_detail" />
+                android:layout_height="30dp"
+                android:background="@drawable/button"
+                android:drawableLeft="@drawable/ic_info_outline_black_24dp"
+                android:text="@string/see_detail"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/rowButtonVoteSelect"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:alpha="0.8"
+                android:background="@drawable/green_button"
+                android:text="@string/select"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <View

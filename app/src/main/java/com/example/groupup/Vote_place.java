@@ -330,14 +330,16 @@ public class Vote_place extends AppCompatActivity {
                     String sETime = placeArray.get(position).get("place_etime").toString();
                     String sVisit = placeArray.get(position).get("place_visit").toString();
                     sliderView = mView.findViewById(R.id.imageSlider);
+                    String[] some_arrayPrice = getResources().getStringArray(R.array.sppriceRange);
+                    String[] some_arrayPeople = getResources().getStringArray(R.array.spnumberOfSeats);
                     getPlacePhotoPid(sId);
                     title.setText(sTitle);
                     detail.setText(sDetail);
                     ArrayList<String> s = spiltGetDate(sDay);
                     time.setText(showStringDay(s) + " \n" + sSTime + " - " + sETime);
                     tel.setText(sTel);
-                    price.setText(sPrice);
-                    people.setText(sPeople);
+                    price.setText(some_arrayPrice[Integer.parseInt(sPrice)]);
+                    people.setText(some_arrayPeople[Integer.parseInt(sPeople)]);
                     facility.setText(showFacility(sFacility));
                     rt.setRating(Float.parseFloat(sRating));
                     visit.setText("( " + sVisit + " คน)");

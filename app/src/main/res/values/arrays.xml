@@ -75,6 +75,7 @@
         <item>All Day</item>
     </string-array>
     <string-array name="spscore">
+        <item>Please Select</item>
         <item>Score</item>
         <item>1+</item>
         <item>2+</item>
@@ -83,6 +84,7 @@
         <item>5</item>
     </string-array>
     <string-array name="sppriceRange">
+
         <item>Price Range</item>
         <item>Less than 100</item>
         <item>101-250</item>
@@ -99,6 +101,7 @@
     <item>More than 150</item>
     </string-array>
     <string-array name="sptheme">
+        <item>Please Select</item>
         <item>Theme</item>
         <item>minimal</item>
         <item>classic</item>
@@ -109,6 +112,7 @@
         <item>Roof Top</item>
     </string-array>
     <string-array name="spfacility">
+        <item>Please Select</item>
         <item>Facility</item>
         <item>Parking</item>
         <item>Wi-Fi</item>

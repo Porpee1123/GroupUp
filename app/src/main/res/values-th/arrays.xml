@@ -75,6 +75,7 @@
         <item>ทั้งวัน</item>
     </string-array>
     <string-array name="spscore">
+        <item>กรุณาเลือก</item>
         <item>คะแนน</item>
         <item>1+</item>
         <item>2+</item>
@@ -99,6 +100,7 @@
         <item>มากกว่า 150</item>
     </string-array>
     <string-array name="sptheme">
+        <item>กรุณาเลือก</item>
         <item>บรรยากาศ</item>
         <item>มินิมอล</item>
         <item>คลาสสิค</item>
@@ -109,6 +111,7 @@
         <item>บนชั้นดาดฟ้า</item>
     </string-array>
     <string-array name="spfacility">
+        <item>กรุณาเลือก</item>
         <item>สิ่งอำนวยความสะดวก</item>
         <item>ที่จอดรถ</item>
         <item>Wi-Fi</item>
