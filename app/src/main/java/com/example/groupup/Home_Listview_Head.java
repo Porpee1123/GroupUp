@@ -93,6 +93,10 @@ Extend_MyHelper.checkInternetLost(this);
                             for (int i =0;i<MyArrList.size();i++){
                                 Home.nameHead.add(MyArrList.get(i).get("events_name"));
                             }
+                            listViewHeader.setVisibility(View.VISIBLE);//เปิด
+                            sAdapHead = new SimpleAdapter(Home_Listview_Head.this, MyArrList, R.layout.activity_header_home,
+                                    new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
+                            listViewHeader.setAdapter(sAdapHead);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -109,10 +113,10 @@ Extend_MyHelper.checkInternetLost(this);
         queue.add(stringRequest);
         new CountDownTimer(500, 500) {
             public void onFinish() {
-                listViewHeader.setVisibility(View.VISIBLE);//เปิด
-                sAdapHead = new SimpleAdapter(Home_Listview_Head.this, MyArrList, R.layout.activity_header_home,
-                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
-                listViewHeader.setAdapter(sAdapHead);
+//                listViewHeader.setVisibility(View.VISIBLE);//เปิด
+//                sAdapHead = new SimpleAdapter(Home_Listview_Head.this, MyArrList, R.layout.activity_header_home,
+//                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
+//                listViewHeader.setAdapter(sAdapHead);
                 listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                         // เข้าสู่ event

@@ -497,7 +497,7 @@ public class Vote_place extends AppCompatActivity {
                                 map.put("place_photoShow", c.getString("place_photoShow"));
                                 MyArrList.add(map);
                                 placeArray.add(map);
-
+                                showAllCheckboxClick();
                             }
                             Log.d("placeHome", "get placeArray " + placeArray.toString());
 //                            Log.d("place", "get MyArrList " + MyArrList.toString());
@@ -515,17 +515,6 @@ public class Vote_place extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        new CountDownTimer(300, 300) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                showAllCheckboxClick();
-            }
-        }.start();
     }
 
     public void getPlacePhotoPid(String pId) {
@@ -550,7 +539,16 @@ public class Vote_place extends AppCompatActivity {
                                 map.put("place_upid", c.getString("place_upid"));
                                 MyArrList.add(map);
                                 placeImage.add(map);
-
+                                adapter = new Vote_place.SliderAdapterExample(Vote_place.this);
+                                sliderView.setSliderAdapter(adapter);
+                                renewItems(sliderView, placeImage);
+                                sliderView.setIndicatorAnimation(IndicatorAnimations.THIN_WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                                sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                                sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
+                                sliderView.setIndicatorSelectedColor(Color.WHITE);
+                                sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                                sliderView.setScrollTimeInSec(3);
+                                sliderView.setAutoCycle(true);
                             }
                             Log.d("editplce", placeImage.toString());
                         } catch (JSONException e) {
@@ -566,36 +564,6 @@ public class Vote_place extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        new CountDownTimer(500, 500) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-
-                adapter = new Vote_place.SliderAdapterExample(Vote_place.this);
-                sliderView.setSliderAdapter(adapter);
-                renewItems(sliderView, placeImage);
-                sliderView.setIndicatorAnimation(IndicatorAnimations.THIN_WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-                sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-                sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
-                sliderView.setIndicatorSelectedColor(Color.WHITE);
-                sliderView.setIndicatorUnselectedColor(Color.GRAY);
-                sliderView.setScrollTimeInSec(3);
-                sliderView.setAutoCycle(true);
-//                if (placeImage.size() == 0) {
-//
-//                } else {
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(0).get("photoplace_path"), img1, 450).execute();
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(1).get("photoplace_path"), img2, 450).execute();
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(2).get("photoplace_path"), img3, 450).execute();
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(3).get("photoplace_path"), img4, 450).execute();
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(4).get("photoplace_path"), img5, 450).execute();
-//                }
-            }
-        }.start();
     }
 
     public void setItemsListView() {

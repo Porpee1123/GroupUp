@@ -191,5 +191,5 @@
     <string name="accountName">ชื่อบัญชี</string>
     <string name="extra_detail">ข้อมูลเพิ่มเติม</string>
     <string name="maxPeople">ลูกค้าที่รองรับได้</string>
-
+    <string name="listFriend">รายการเพื่อน</string>
 </resources>

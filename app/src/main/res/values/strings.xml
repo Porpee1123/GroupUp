@@ -192,5 +192,6 @@
     <string name="accountName">Account Name</string>
     <string name="extra_detail">More Information</string>
     <string name="maxPeople">Number of seats</string>
+    <string name="listFriend">Friend in event</string>
 
 </resources>

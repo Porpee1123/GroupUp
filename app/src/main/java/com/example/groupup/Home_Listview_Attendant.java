@@ -86,6 +86,10 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 Home.nameAttend.add(MyArrList.get(i).get("events_name"));
                             }
+                            listViewAttend.setVisibility(View.VISIBLE);
+                            sAdapAttend = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_attend_home,
+                                    new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
+                            listViewAttend.setAdapter(sAdapAttend);
                             Log.d("arry", "attend : " + Home.nameAttend.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -105,10 +109,10 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         new CountDownTimer(300, 300) {
             public void onFinish() {
                 // When timer is finished
-                listViewAttend.setVisibility(View.VISIBLE);
-                sAdapAttend = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_attend_home,
-                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
-                listViewAttend.setAdapter(sAdapAttend);
+//                listViewAttend.setVisibility(View.VISIBLE);
+//                sAdapAttend = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_attend_home,
+//                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
+//                listViewAttend.setAdapter(sAdapAttend);
                 Home.handlerHome.sendEmptyMessage(0);
                 listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {

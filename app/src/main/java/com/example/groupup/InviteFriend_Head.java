@@ -205,45 +205,46 @@ public class InviteFriend_Head extends AppCompatActivity {
         listViewFriend = findViewById(R.id.listview_friend);
         btnConfirmHead = findViewById(R.id.slide);
         frientArray = new ArrayList<>();
-        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog = ProgressDialog.show(InviteFriend_Head.this, "Friend is Dowloading", "Please Wait", false, false);
-            }
+        getType();
 
-            @Override
-            protected void onPostExecute(String string1) {
-
-                super.onPostExecute(string1);
-                // Dismiss the progress dialog after done uploading.
-                progressDialog.dismiss();
-                // Printing uploading success message coming from server on android app.
-//                Toast.makeText(InviteFriend_Head.this,string1,Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                getType();
-                getFriend();
-                getFriendIDByTrans(uid, eid, 2 + "");
-                return "Finish";
-            }
-        }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-        AsyncTaskUploadClassOBJ.execute();
-
-        new CountDownTimer(300, 300) {
-            public void onFinish() {
-                initItems();
-                setItemsListView();
-                shortCutAddFriend();
-            }
-
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
+//        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                progressDialog = ProgressDialog.show(InviteFriend_Head.this, "Friend is Dowloading", "Please Wait", false, false);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String string1) {
+//
+//                super.onPostExecute(string1);
+//                // Dismiss the progress dialog after done uploading.
+//                progressDialog.dismiss();
+//                // Printing uploading success message coming from server on android app.
+////                Toast.makeText(InviteFriend_Head.this,string1,Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            protected String doInBackground(Void... params) {
+//                getType();
+//                getFriend();
+//                getFriendIDByTrans(uid, eid, 2 + "");
+//                return "Finish";
+//            }
+//        }
+//        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+//        AsyncTaskUploadClassOBJ.execute();
+//        new CountDownTimer(300, 300) {
+//            public void onFinish() {
+//                initItems();
+//                setItemsListView();
+//                shortCutAddFriend();
+//            }
+//
+//            public void onTick(long millisUntilFinished) {
+//                // millisUntilFinished    The amount of time until finished.
+//            }
+//        }.start();
         btnConfirmHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -308,10 +309,13 @@ public class InviteFriend_Head extends AppCompatActivity {
                                 map.put("fid", c.getString("fid"));
                                 MyArrList.add(map);
                                 frientArray.add(map);
+                                initItems();
                             }
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 InviteFriend.nameHead.add(MyArrList.get(i).get("events_name"));
                             }
+                            initItems();
+                            setItemsListView();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -418,6 +422,9 @@ public class InviteFriend_Head extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 typefriend.add(MyArrList.get(i).get("type_name"));
                             }
+                            shortCutAddFriend();
+                            getFriend();
+                            getFriendIDByTrans(uid, eid, 2 + "");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

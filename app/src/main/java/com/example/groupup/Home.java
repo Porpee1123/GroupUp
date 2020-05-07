@@ -121,25 +121,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     }
                 });
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    getUser();
-                    deleteDateOldDay();
-                }
-            }).start();
-            new CountDownTimer(1000, 1000) {
-                public void onFinish() {
-    //                getUser();
-                    createTab();
-                    search();
-                }
-                public void onTick(long millisUntilFinished) {
-                    // millisUntilFinished    The amount of time until finished.
-                }
-            }.start();
-
+        deleteDateOldDay();
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+////                    getUser();
+//
+//                }
+//            }).start();
+//            new CountDownTimer(1000, 1000) {
+//                public void onFinish() {
+////                    createTab();
+//                    search();
+//                }
+//                public void onTick(long millisUntilFinished) {
+//                    // millisUntilFinished    The amount of time until finished.
+//                }
+//            }.start();
+        search();
             //firebase signin
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
@@ -225,13 +224,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         super.onResume();
         email = getIntent().getStringExtra("email");
         Log.d("footer", "resume: " + email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getUser();
-            }
-        }).start();
-//        getUser();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+////                getUser();
+//            }
+//        }).start();
+        getUser();
     }
 
     public void createGroup(View v) {
@@ -364,6 +363,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             hEmail.setText(MyArrList.get(0).get("user_email"));
                             Log.d("imageview",image);
                             new Extend_MyHelper.SendHttpRequestTask(image,img,250).execute();
+                            createTab();
+                            search();
+
 //                            writeFile(id,name,email);
                         } catch (JSONException e) {
                             e.printStackTrace();

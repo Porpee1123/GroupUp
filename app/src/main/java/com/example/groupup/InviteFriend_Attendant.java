@@ -193,58 +193,60 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         frientArray = new ArrayList<>();
-        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this, "Friend is Dowloading", "Please Wait", false, false);
-            }
+        getType();
 
-            @Override
-            protected void onPostExecute(String string1) {
-
-                super.onPostExecute(string1);
-                // Dismiss the progress dialog after done uploading.
-
+//        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this, "Friend is Dowloading", "Please Wait", false, false);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String string1) {
+//
+//                super.onPostExecute(string1);
+//                // Dismiss the progress dialog after done uploading.
+//
+////                shortCutAddFriend();
+////                setItemsListView();
+//                new CountDownTimer(300, 300) {
+//                    public void onFinish() {
+//                        initItems();
+//                        shortCutAddFriend();
+//                        setItemsListView();
+//                        progressDialog.dismiss();
+//                    }
+//
+//                    public void onTick(long millisUntilFinished) {
+//                    }
+//                }.start();
+//
+//                // Printing uploading success message coming from server on android app.
+////                Toast.makeText(InviteFriend_Attendant.this,string1,Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            protected String doInBackground(Void... params) {
+//                getType();
+//                getFriend();
+//                getFriendIDByTrans(uid, eid, 3 + "");
+////                initItems();
+//                return "Finish";
+//            }
+//        }
+//        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+//        AsyncTaskUploadClassOBJ.execute();
+//        new CountDownTimer(300, 300) {
+//            public void onFinish() {
+//                initItems();
 //                shortCutAddFriend();
 //                setItemsListView();
-                new CountDownTimer(300, 300) {
-                    public void onFinish() {
-                        initItems();
-                        shortCutAddFriend();
-                        setItemsListView();
-                        progressDialog.dismiss();
-                    }
-
-                    public void onTick(long millisUntilFinished) {
-                    }
-                }.start();
-
-                // Printing uploading success message coming from server on android app.
-//                Toast.makeText(InviteFriend_Attendant.this,string1,Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                getType();
-                getFriend();
-                getFriendIDByTrans(uid, eid, 3 + "");
-                initItems();
-                return "Finish";
-            }
-        }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-        AsyncTaskUploadClassOBJ.execute();
-        new CountDownTimer(300, 300) {
-            public void onFinish() {
-                initItems();
-                shortCutAddFriend();
-                setItemsListView();
-            }
-
-            public void onTick(long millisUntilFinished) {
-            }
-        }.start();
+//            }
+//
+//            public void onTick(long millisUntilFinished) {
+//            }
+//        }.start();
         btnConfirmAttendant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -312,6 +314,8 @@ public class InviteFriend_Attendant extends AppCompatActivity {
 
                                 MyArrList.add(map);
                                 frientArray.add(map);
+                                initItems();
+                                setItemsListView();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -406,6 +410,9 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                                 typefriend.add(MyArrList.get(i).get("type_name"));
                                 typefriendId.add(MyArrList.get(i).get("tfid"));
                             }
+                            shortCutAddFriend();
+                            getFriend();
+                            getFriendIDByTrans(uid, eid, 3 + "");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
