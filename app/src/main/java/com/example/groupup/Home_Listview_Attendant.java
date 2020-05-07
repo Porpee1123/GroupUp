@@ -1,18 +1,17 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,11 +29,12 @@ import java.util.HashMap;
 
 public class Home_Listview_Attendant extends AppCompatActivity {
     Home_Listview_Attendant.ResponseStr responseStr = new Home_Listview_Attendant.ResponseStr();
-    String name = "", id = "",email="";
-    static  ListView listViewAttend;
+    String name = "", id = "", email = "";
+    static ListView listViewAttend;
     static SimpleAdapter sAdapAttend;
-    int cVoteTime,cVotePlace;
-    ArrayList<HashMap<String, String>> place,time;
+    int cVoteTime, cVotePlace;
+    ArrayList<HashMap<String, String>> place, time;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +45,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         time = new ArrayList<HashMap<String, String>>();
         id = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
-        Log.d("footer","attend : id "+id );
+        Log.d("footer", "attend : id " + id);
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -59,6 +59,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         getEventAttend();
         getEventHeader();
     }
+
     public void getEventAttend() {
         responseStr = new Home_Listview_Attendant.ResponseStr();
 
@@ -66,7 +67,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
 
         String url = "http://www.groupupdb.com/android/gethomeattend.php";
         url += "?sId=" + id;//รอเอาIdจากfirebase
-        Log.d("footer","id : id "+id) ;
+        Log.d("footer", "id : id " + id);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -82,14 +83,14 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                                 map.put("states_name", c.getString("states_name"));
                                 MyArrList.add(map);
                             }
-                            for (int i =0;i<MyArrList.size();i++){
+                            for (int i = 0; i < MyArrList.size(); i++) {
                                 Home.nameAttend.add(MyArrList.get(i).get("events_name"));
                             }
-                            Log.d("arry","attend : "+Home.nameAttend.toString());
+                            Log.d("arry", "attend : " + Home.nameAttend.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("footer","arraylist : id "+MyArrList.toString()) ;
+                        Log.d("footer", "arraylist : id " + MyArrList.toString());
                     }
                 },
                 new Response.ErrorListener() {
@@ -111,18 +112,18 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 Home.handlerHome.sendEmptyMessage(0);
                 listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                        String eName= MyArrList.get(position).get("events_name");
-                        String eId= MyArrList.get(position).get("events_id");
-                        String eStatus= MyArrList.get(position).get("states_name");
+                        String eName = MyArrList.get(position).get("events_name");
+                        String eId = MyArrList.get(position).get("events_id");
+                        String eStatus = MyArrList.get(position).get("states_name");
                         checkVotePlace(eId);
                         checkVoteTime(eId);
-                        Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
+                        Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
                         Intent intent = new Intent(Home_Listview_Attendant.this, MainAttendent.class);
-                        intent.putExtra("id",id+"");
-                        intent.putExtra("eid",eId+"");
-                        intent.putExtra("nameEvent",eName+"");
-                        intent.putExtra("email",email);
-                        intent.putExtra("tab",0+"");
+                        intent.putExtra("id", id + "");
+                        intent.putExtra("eid", eId + "");
+                        intent.putExtra("nameEvent", eName + "");
+                        intent.putExtra("email", email);
+                        intent.putExtra("tab", 0 + "");
                         startActivity(intent);
                     }
                 });
@@ -134,6 +135,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
             }
         }.start();
     }
+
     public void getEventHeader() {
         responseStr = new Home_Listview_Attendant.ResponseStr();
 
@@ -157,7 +159,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                                 map.put("states_name", c.getString("states_name"));
                                 MyArrList.add(map);
                             }
-                            for (int i =0;i<MyArrList.size();i++){
+                            for (int i = 0; i < MyArrList.size(); i++) {
                                 Home.nameHead.add(MyArrList.get(i).get("events_name"));
                             }
                         } catch (JSONException e) {
@@ -187,6 +189,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
 
 
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -196,6 +199,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         }
 
     }
+
     public void checkVoteTime(final String eid) {
         responseStr = new Home_Listview_Attendant.ResponseStr();
 
@@ -216,14 +220,25 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                                 map = new HashMap<String, String>();
                                 map.put("dd", c.getString("dd"));
                                 map.put("datelastwait", c.getString("datelastwait"));
+                                map.put("used", c.getString("used"));
                                 MyArrList.add(map);
                                 time.add(map);
                             }
-                            cVoteTime = Integer.parseInt(time.get(0).get("dd"));
-                            Log.d("checkvote","abcVoteTime "+cVoteTime);
-                            if (cVoteTime>0){
-                                closeTime(eid);
+                            int check = 0;
+                            for (int i = 0; i < time.size(); i++) {
+                                int c = Integer.parseInt(time.get(i).get("used"));
+                                if (c == 1) {
+                                    check = c;
+                                }
                             }
+                            if (check != 1) {
+                                cVoteTime = Integer.parseInt(time.get(0).get("dd"));
+                                Log.d("checkvote", "abcVoteTime " + cVoteTime);
+                                if (cVoteTime > 0) {
+                                    closeTime(eid);
+                                }
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -239,6 +254,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void checkVotePlace(final String eid) {
         responseStr = new Home_Listview_Attendant.ResponseStr();
 
@@ -259,14 +275,25 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                                 map = new HashMap<String, String>();
                                 map.put("dd", c.getString("dd"));
                                 map.put("datelastwait", c.getString("datelastwait"));
+                                map.put("used", c.getString("used"));
                                 MyArrList.add(map);
                                 place.add(map);
                             }
-                            cVotePlace = Integer.parseInt(place.get(0).get("dd"));
-                            Log.d("checkvote","abcVotePlace "+cVotePlace);
-                            if (cVotePlace>0){
-                                closePlace(eid);
+                            int check = 0;
+                            for (int i = 0; i < place.size(); i++) {
+                                int c = Integer.parseInt(place.get(i).get("used"));
+                                if (c == 1) {
+                                    check = c;
+                                }
                             }
+                            if (check != 1) {
+                                cVotePlace = Integer.parseInt(place.get(0).get("dd"));
+                                Log.d("checkvote", "abcVotePlace " + cVotePlace);
+                                if (cVotePlace > 0) {
+                                    closePlace(eid);
+                                }
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -282,6 +309,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void closePlace(String eid) {
         Log.d("votedate", eid);
         String url = "http://www.groupupdb.com/android/closeVotePlace.php";

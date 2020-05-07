@@ -161,13 +161,24 @@ Extend_MyHelper.checkInternetLost(this);
                                 map = new HashMap<String, String>();
                                 map.put("dd", c.getString("dd"));
                                 map.put("datelastwait", c.getString("datelastwait"));
+                                map.put("used", c.getString("used"));
                                 MyArrList.add(map);
                             }
-                            cVoteTime = Integer.parseInt(MyArrList.get(0).get("dd"));
-                            Log.d("checkvote","hbcVotePlace "+cVotePlace);
-                            if (cVoteTime>0){
-                                closeTime(eid);
+                            int check = 0;
+                            for (int i = 0; i < MyArrList.size(); i++) {
+                                int c = Integer.parseInt(MyArrList.get(i).get("used"));
+                                if (c == 1) {
+                                    check = c;
+                                }
                             }
+                            if (check != 1) {
+                                cVoteTime = Integer.parseInt(MyArrList.get(0).get("dd"));
+                                Log.d("checkvote","hbcVoteTime "+cVotePlace);
+                                if (cVoteTime>0){
+                                    closeTime(eid);
+                                }
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -203,13 +214,25 @@ Extend_MyHelper.checkInternetLost(this);
                                 map = new HashMap<String, String>();
                                 map.put("dd", c.getString("dd"));
                                 map.put("datelastwait", c.getString("datelastwait"));
+                                map.put("used", c.getString("used"));
                                 MyArrList.add(map);
                             }
-                               cVotePlace = Integer.parseInt(MyArrList.get(0).get("dd"));
-                            Log.d("checkvote","hbcVotePlace "+cVotePlace);
-                            if (cVotePlace>0){
-                                closePlace(eid);
+                            int check = 0;
+                            for (int i = 0; i < MyArrList.size(); i++) {
+                                int c = Integer.parseInt(MyArrList.get(i).get("used"));
+                                if (c == 1) {
+                                    check = c;
+                                }
                             }
+//                            Log.d("checkvote","check "+check);
+                            if (check != 1) {
+                                cVotePlace = Integer.parseInt(MyArrList.get(0).get("dd"));
+                                Log.d("checkvote","hbcVotePlace "+cVotePlace);
+                                if (cVotePlace>0){
+                                    closePlace(eid);
+                                }
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
