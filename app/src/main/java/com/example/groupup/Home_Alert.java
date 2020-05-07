@@ -289,7 +289,7 @@ public class Home_Alert extends AppCompatActivity {
         manager.notify(0, builder.build());
     }
 
-    public void addEventFriend(String id, String eid, String eName) {
+    public void addEventFriend(String id, String eid) {
         String url = "http://www.groupupdb.com/android/adduserevent.php";
         url += "?sId=" + id;
         url += "&eId=" + eid;
@@ -372,7 +372,7 @@ public class Home_Alert extends AppCompatActivity {
 
                             @Override
                             protected String doInBackground(Void... params) {
-                                addEventFriend(uid, eid, ename);
+                                addEventFriend(uid, eid);
                                 addDateevent(eid);
                                 Extend_MyHelper.UpdateStateToDb(tid, 3 + "", Home_Alert.this);
                                 return "join successful!!!";

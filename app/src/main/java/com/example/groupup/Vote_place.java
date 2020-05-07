@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -73,6 +72,7 @@ public class Vote_place extends AppCompatActivity {
             this.imageUrl = imageUrl;
         }
     }
+
     public class SliderAdapterExample extends
             SliderViewAdapter<Vote_place.SliderAdapterExample.SliderAdapterVH> {
 
@@ -148,6 +148,7 @@ public class Vote_place extends AppCompatActivity {
         }
 
     }
+
     //*******************************TextView with checkbox******************************************//
     public class Item {
         String ItemId;
@@ -185,7 +186,7 @@ public class Vote_place extends AppCompatActivity {
             ItemStartTime = sTime;
             ItemEndTime = eTime;
             ItemFaciString = showFacility(ItemFaci);
-            RatingString = Rating+"";
+            RatingString = Rating + "";
 
         }
 
@@ -275,7 +276,7 @@ public class Vote_place extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     final AlertDialog viewDetail = new AlertDialog.Builder(Vote_place.this).create();
-                    viewDetail.setTitle("ยืนยันการเลือกสถานที่ : "+ finalViewHolder.text.getText());
+                    viewDetail.setTitle("ยืนยันการเลือกสถานที่ : " + finalViewHolder.text.getText());
                     viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -332,8 +333,8 @@ public class Vote_place extends AppCompatActivity {
                     getPlacePhotoPid(sId);
                     title.setText(sTitle);
                     detail.setText(sDetail);
-                    ArrayList<String> s =spiltGetDate(sDay);
-                    time.setText(showStringDay(s)+ " \n" + sSTime + " - " + sETime);
+                    ArrayList<String> s = spiltGetDate(sDay);
+                    time.setText(showStringDay(s) + " \n" + sSTime + " - " + sETime);
                     tel.setText(sTel);
                     price.setText(sPrice);
                     people.setText(sPeople);
@@ -364,11 +365,10 @@ public class Vote_place extends AppCompatActivity {
                     if (wp.ItemName.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
-                    }
-                    else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
+                    } else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
-                    }else if (wp.RatingString.toLowerCase(Locale.getDefault())
+                    } else if (wp.RatingString.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
                     }
@@ -380,7 +380,7 @@ public class Vote_place extends AppCompatActivity {
     }
 
     //***********************************************************************************************//
-    String id,eid,nameE,email;
+    String id, eid, nameE, email;
     Vote_place.ResponseStr responseStr = new Vote_place.ResponseStr();
     String[] some_array;
     ProgressDialog progressDialog;
@@ -391,6 +391,7 @@ public class Vote_place extends AppCompatActivity {
     SliderView sliderView;
     private Vote_place.SliderAdapterExample adapter;
     Button btn_con;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -400,7 +401,7 @@ public class Vote_place extends AppCompatActivity {
         eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         email = getIntent().getStringExtra("email");
-        btn_con=findViewById(R.id.btn_VotePlace);
+        btn_con = findViewById(R.id.btn_VotePlace);
         placeList = findViewById(R.id.listView_vote_place);
         some_array = getResources().getStringArray(R.array.facility);
         placeArray = new ArrayList<>();
@@ -421,6 +422,7 @@ public class Vote_place extends AppCompatActivity {
         });
         getplace();
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -430,16 +432,18 @@ public class Vote_place extends AppCompatActivity {
         }
 
     }
+
     public void backVote(View v) {
         Intent intent = new Intent(Vote_place.this, MainAttendent.class);
-        intent.putExtra("id",id+"");
-        intent.putExtra("eid",eid+"");
-        intent.putExtra("nameEvent",nameE+"");
-        intent.putExtra("email", email+"");
-        intent.putExtra("tab",0+"");
+        intent.putExtra("id", id + "");
+        intent.putExtra("eid", eid + "");
+        intent.putExtra("nameEvent", nameE + "");
+        intent.putExtra("email", email + "");
+        intent.putExtra("tab", 0 + "");
 
         startActivity(intent);
     }
+
     public String showFacility(String d) {
         StringTokenizer st = new StringTokenizer(d, ":");
         String s = "";
@@ -459,7 +463,7 @@ public class Vote_place extends AppCompatActivity {
 
     public void getplace() {
         responseStr = new Vote_place.ResponseStr();
-placeArray.clear();
+        placeArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getvoteplace.php";
         url += "?sId=" + eid;//รอเอาIdจากfirebase
@@ -571,7 +575,7 @@ placeArray.clear();
 
                 adapter = new Vote_place.SliderAdapterExample(Vote_place.this);
                 sliderView.setSliderAdapter(adapter);
-                renewItems(sliderView,placeImage);
+                renewItems(sliderView, placeImage);
                 sliderView.setIndicatorAnimation(IndicatorAnimations.THIN_WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                 sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
                 sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
@@ -591,7 +595,7 @@ placeArray.clear();
             }
         }.start();
     }
-    
+
     public void setItemsListView() {
         myItemsListAdapter = new Vote_place.ItemsListAdapter(this, items);
         placeList.setAdapter(myItemsListAdapter);
@@ -600,7 +604,7 @@ placeArray.clear();
         placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("listSelect","listSelect"+myItemsListAdapter.getItem(position).toString());
+                Log.d("listSelect", "listSelect" + myItemsListAdapter.getItem(position).toString());
             }
         });
     }
@@ -639,14 +643,16 @@ placeArray.clear();
         }
 
     }
-    public ArrayList spiltGetDate(String s){
+
+    public ArrayList spiltGetDate(String s) {
         ArrayList<String> arrayList = new ArrayList<>();
-        StringTokenizer st = new StringTokenizer(s,":");
-        while (st.hasMoreTokens()){
+        StringTokenizer st = new StringTokenizer(s, ":");
+        while (st.hasMoreTokens()) {
             arrayList.add(st.nextToken());
         }
         return arrayList;
     }
+
     public String showStringDay(ArrayList<String> date) {
         String day = "";
         for (int i = 0; i < date.size(); i++) {
@@ -675,19 +681,21 @@ placeArray.clear();
         }
         return day;
     }
-    public void renewItems(View view,ArrayList<HashMap<String, String>> image) {
+
+    public void renewItems(View view, ArrayList<HashMap<String, String>> image) {
         List<Vote_place.SliderItem> sliderItemList = new ArrayList<>();
-        for (int i =0;i<image.size();i++){
+        for (int i = 0; i < image.size(); i++) {
             Vote_place.SliderItem sliderItem = new Vote_place.SliderItem();
             sliderItem.setImageUrl(image.get(i).get("photoplace_path"));
-            Log.d("photoplace_path",image.get(i).get("photoplace_path"));
+            Log.d("photoplace_path", image.get(i).get("photoplace_path"));
             sliderItem.setDescription("Slider Item " + i);
             sliderItemList.add(sliderItem);
         }
         adapter.renewItems(sliderItemList);
     }
-    public void VotePlace(String pid){
-        Log.d("votedate",eid+" : "+pid);
+
+    public void VotePlace(String pid) {
+        Log.d("votedate", eid + " : " + pid);
         String url = "http://www.groupupdb.com/android/addpointvoteplace.php";
         url += "?pId=" + pid;
         url += "&eId=" + eid;
