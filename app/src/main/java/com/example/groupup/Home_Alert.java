@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -62,9 +63,31 @@ public class Home_Alert extends AppCompatActivity {
 
     }
 
+    public class Item2 {
+        String ItemDrawable;
+        String ItemString;
+        String Id;
+        String ItemStatus;
+
+        //        Item(ImageView drawable, String t, boolean b){
+        Item2(String t, String i, String drawable, String Status) {
+            ItemDrawable = drawable;
+            ItemString = t;
+            Id = i;
+            ItemStatus = Status;
+        }
+
+    }
+
     static class ViewHolder {
         ImageView icon;
         TextView text;
+    }
+
+    static class ViewHolder2 {
+        ImageView icon;
+        TextView text;
+        ImageView Status;
     }
 
     public class ItemsListAdapter extends BaseAdapter {
@@ -119,15 +142,73 @@ public class Home_Alert extends AppCompatActivity {
         }
     }
 
+    public class ItemsListAdapter2 extends BaseAdapter {
+        private ArrayList<Home_Alert.Item2> arraylist2;
+        private Context context;
+        private List<Home_Alert.Item2> list2;
+
+        ItemsListAdapter2(Context c, List<Home_Alert.Item2> l) {
+            context = c;
+            list2 = l;
+            arraylist2 = new ArrayList<Home_Alert.Item2>();
+            arraylist2.addAll(l);
+        }
+
+        @Override
+        public int getCount() {
+            return list2.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list2.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View rowView = convertView;
+
+            // reuse views
+            Home_Alert.ViewHolder2 viewHolder2 = new Home_Alert.ViewHolder2();
+            if (rowView == null) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                rowView = inflater.inflate(R.layout.layout_member, null);
+                viewHolder2.icon = rowView.findViewById(R.id.rowImageView);
+                viewHolder2.text = rowView.findViewById(R.id.rowTextViewName);
+                viewHolder2.Status = rowView.findViewById(R.id.rowimageStatus);
+
+                rowView.setTag(viewHolder2);
+            } else {
+                viewHolder2 = (Home_Alert.ViewHolder2) rowView.getTag();
+            }
+            new Extend_MyHelper.SendHttpRequestTask(list2.get(position).ItemDrawable, viewHolder2.icon, 250).execute();
+            final String itemStr = list2.get(position).ItemString;
+            viewHolder2.text.setText(itemStr);
+            int state = Integer.parseInt(list2.get(position).ItemStatus);
+            if (state != 2){
+                viewHolder2.Status.setImageResource(R.drawable.ic_tick);
+            }
+            return rowView;
+        }
+    }
+
 
     //***********************************************************************************************//
     String uid = "", email = "";
     ListView listViewInvite;
-    ArrayList<HashMap<String, String>> alertArray;
+    ArrayList<HashMap<String, String>> alertArray, memberArray;
     Home_Alert.ResponseStr responseStr = new Home_Alert.ResponseStr();
     List<Home_Alert.Item> items = new ArrayList<Home_Alert.Item>();
+    List<Home_Alert.Item2> items2 = new ArrayList<Home_Alert.Item2>();
     String[] some_array;
+
     static Home_Alert.ItemsListAdapter myItemsListAdapter;
+    static Home_Alert.ItemsListAdapter2 myItemsListAdapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +219,7 @@ public class Home_Alert extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         listViewInvite = findViewById(R.id.listView_slipCheck);
         alertArray = new ArrayList<>();
+        memberArray = new ArrayList<>();
         some_array = getResources().getStringArray(R.array.month);
         getEventInvitation();
     }
@@ -325,6 +407,7 @@ public class Home_Alert extends AppCompatActivity {
                 final TextView nameE = mView.findViewById(R.id.alt_name_invite);
                 final TextView startEnd = mView.findViewById(R.id.alt_start_end);
                 final TextView state = mView.findViewById(R.id.alt_state_invite);
+                final Button btn_seeMember = mView.findViewById(R.id.btn_seeMember);
                 final String tid = alertArray.get(position).get("trans_id").toString();
                 final String eid = alertArray.get(position).get("events_id").toString();
                 final String ename = alertArray.get(position).get("events_name").toString();
@@ -345,7 +428,24 @@ public class Home_Alert extends AppCompatActivity {
                 Button btn_join = mView.findViewById(R.id.btn_invite_join);
                 Button btn_notJoin = mView.findViewById(R.id.btn_invite_notjoin);
                 Button btn_later = mView.findViewById(R.id.btn_invite_later);
-
+                btn_seeMember.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final AlertDialog viewDetail = new AlertDialog.Builder(Home_Alert.this).create();
+                        View mView = getLayoutInflater().inflate(R.layout.layout_showmember, null);
+                        ListView list = mView.findViewById(R.id.list_ShowMember);
+                        ImageButton btnClose = mView.findViewById(R.id.showbutton_btnClose);
+                        getMemberShow(list,eid);
+                        btnClose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                viewDetail.dismiss();
+                            }
+                        });
+                        viewDetail.setView(mView);
+                        viewDetail.show();
+                    }
+                });
                 btn_join.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -442,7 +542,7 @@ public class Home_Alert extends AppCompatActivity {
             String user_photo = alertArray.get(i).get("user_photo").toString();
             String events_detail = alertArray.get(i).get("events_detail").toString();
 //            String mystring = getResources().getString(R.string.mystring);
-            String s = event_creater + "ได้เชิญคุณเข้าร่วม " + ename + " เป็น " + priName + " โดยมีช่วงเวลาระหว่างเดือน " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
+            String s ="คุณ "+ event_creater + "\nได้เชิญคุณเข้าร่วม : " + ename + "\nสถานะ : " + priName + " \nช่วงเวลา : " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
 
             Home_Alert.Item item = new Home_Alert.Item(s, eid, user_photo);
             items.add(item);
@@ -584,5 +684,72 @@ public class Home_Alert extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue queue = Volley.newRequestQueue(Home_Alert.this);
         queue.add(stringRequest);
+    }
+
+    public void getMemberShow(final ListView list,String eid) {
+        responseStr = new Home_Alert.ResponseStr();
+        memberArray.clear();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getmemberforalert.php";
+        url += "?eId=" + eid;//รอเอาIdจากfirebase
+        Log.d("position", "stringRequest  " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_photo", c.getString("user_photo"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("user_email", c.getString("user_email"));
+                                MyArrList.add(map);
+                                memberArray.add(map);
+
+                            }
+                            showAllCheckboxClick2(list);
+                            Log.d("pathimage", "get alertArray " + alertArray.toString());
+                            Log.d("pathimage", "get MyArrList " + MyArrList.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    public void showAllCheckboxClick2(ListView listView) {
+        initItems2(listView);
+    }
+
+    private void initItems2(ListView list) {
+        items2 = new ArrayList<Home_Alert.Item2>();
+        Log.d("pathimage", "memberArray " + memberArray.toString());
+        for (int i = 0; i < memberArray.size(); i++) {
+
+            String uid = memberArray.get(i).get("user_id").toString();
+            String uName = memberArray.get(i).get("user_names").toString();
+            String uEmail = memberArray.get(i).get("user_email").toString();
+            String uPhoto = memberArray.get(i).get("user_photo").toString();
+            String sId = memberArray.get(i).get("states_id").toString();
+            Home_Alert.Item2 item2 = new Home_Alert.Item2(uName,uid,uPhoto,sId);
+            items2.add(item2);
+            myItemsListAdapter2 = new Home_Alert.ItemsListAdapter2(this, items2);
+            list.setAdapter(myItemsListAdapter2);
+        }
+        Log.d("pathimage", items2.toString());
     }
 }

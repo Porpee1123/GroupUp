@@ -193,5 +193,7 @@
     <string name="extra_detail">More Information</string>
     <string name="maxPeople">Number of seats</string>
     <string name="listFriend">Friend in event</string>
+    <string name="friendEvent">member in event</string>
+    <string name="see_friendEvent">see member</string>
 
 </resources>
