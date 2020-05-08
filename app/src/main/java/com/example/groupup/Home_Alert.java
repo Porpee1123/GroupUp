@@ -711,9 +711,8 @@ public class Home_Alert extends AppCompatActivity {
                                 map.put("user_email", c.getString("user_email"));
                                 MyArrList.add(map);
                                 memberArray.add(map);
-
                             }
-                            showAllCheckboxClick2(list);
+                            initItems2(list);
                             tv.setText("จำนวนสมาชิกปัจจุบัน "+memberArray.size()+" คน");
                             Log.d("pathimage", "get alertArray " + alertArray.toString());
                             Log.d("pathimage", "get MyArrList " + MyArrList.toString());
@@ -733,15 +732,10 @@ public class Home_Alert extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void showAllCheckboxClick2(ListView listView) {
-        initItems2(listView);
-    }
-
     private void initItems2(ListView list) {
         items2 = new ArrayList<Home_Alert.Item2>();
         Log.d("pathimage", "memberArray " + memberArray.toString());
         for (int i = 0; i < memberArray.size(); i++) {
-
             String uid = memberArray.get(i).get("user_id").toString();
             String uName = memberArray.get(i).get("user_names").toString();
             String uEmail = memberArray.get(i).get("user_email").toString();
@@ -749,9 +743,9 @@ public class Home_Alert extends AppCompatActivity {
             String sId = memberArray.get(i).get("states_id").toString();
             Home_Alert.Item2 item2 = new Home_Alert.Item2(uName,uid,uPhoto,sId);
             items2.add(item2);
-            myItemsListAdapter2 = new Home_Alert.ItemsListAdapter2(this, items2);
-            list.setAdapter(myItemsListAdapter2);
         }
+        myItemsListAdapter2 = new Home_Alert.ItemsListAdapter2(this, items2);
+        list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
 }
