@@ -173,38 +173,39 @@ public class ManageFriend extends AppCompatActivity {
         typefriendId = new ArrayList<>();
         addTypeFriend = findViewById(R.id.btn_addTypeFriend);
         Log.d("listA", "idA " + uid);
-        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog = ProgressDialog.show(ManageFriend.this, "Friend is Dowloading", "Please Wait", false, false);
-            }
-
-            @Override
-            protected void onPostExecute(String string1) {
-
-                super.onPostExecute(string1);
-                new CountDownTimer(300, 300) {
-                    public void onFinish() {
-                        initItems();
-                        progressDialog.dismiss();
-                    }
-
-                    public void onTick(long millisUntilFinished) {
-                    }
-                }.start();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                getType();
-                getFriend();
-
-                return "Finish";
-            }
-        }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-        AsyncTaskUploadClassOBJ.execute();
+//        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                progressDialog = ProgressDialog.show(ManageFriend.this, "Friend is Dowloading", "Please Wait", false, false);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String string1) {
+//
+//                super.onPostExecute(string1);
+//                new CountDownTimer(300, 300) {
+//                    public void onFinish() {
+//                        initItems();
+//                        progressDialog.dismiss();
+//                    }
+//
+//                    public void onTick(long millisUntilFinished) {
+//                    }
+//                }.start();
+//            }
+//
+//            @Override
+//            protected String doInBackground(Void... params) {
+//
+//                getFriend();
+//
+//                return "Finish";
+//            }
+//        }
+//        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+//        AsyncTaskUploadClassOBJ.execute();
+        getType();
         addTypeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -366,6 +367,7 @@ public class ManageFriend extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 typefriend.add(MyArrList.get(i).get("type_name"));
                             }
+                            getFriend();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -740,6 +742,7 @@ public class ManageFriend extends AppCompatActivity {
 
                                 MyArrList.add(map);
                                 frientArray.add(map);
+                                initItems();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

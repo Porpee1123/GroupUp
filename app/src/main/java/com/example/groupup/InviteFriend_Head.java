@@ -267,7 +267,8 @@ public class InviteFriend_Head extends AppCompatActivity {
             String s = frientArray.get(i).get("friend_name");
             String id = frientArray.get(i).get("fid");
             String path = frientArray.get(i).get("user_photo");
-            boolean b = checkFriendAlreadysent(id);
+            boolean b = false;
+//            boolean b = checkFriendAlreadysent(id);
             InviteFriend_Head.Item item = new InviteFriend_Head.Item(s, b, id, path);
             items.add(item);
         }
@@ -675,18 +676,18 @@ public class InviteFriend_Head extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public boolean checkFriendAlreadysent(String id) {
-        Log.d("friendselect", "id : " + id);
-        Log.d("friendselect", "friendInDb : " + friendInDb.toString());
-        for (int j = 0; j < friendInDb.size(); j++) {
-            String fdb = friendInDb.get(j);
-            if (fdb.equals(id)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    public boolean checkFriendAlreadysent(String id) {
+//        Log.d("friendselect", "id : " + id);
+//        Log.d("friendselect", "friendInDb : " + friendInDb.toString());
+//        for (int j = 0; j < friendInDb.size(); j++) {
+//            String fdb = friendInDb.get(j);
+//            if (fdb.equals(id)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
 //    public void checkBoxClick(ArrayList position){
 //        Log.d("position","position size: "+position.size()+"");

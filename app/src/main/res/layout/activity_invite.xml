@@ -47,13 +47,6 @@
                     android:text="@string/inviteFriends" />
 
 
-                <ImageButton
-                    android:id="@+id/btn_InviteInType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@color/classicBlue"
-                    app:srcCompat="@drawable/ic_add_black_24dp" />
-
                 <View
                     android:id="@+id/view3"
                     android:layout_width="20dp"

@@ -62,7 +62,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private GoogleSignInClient mGoogleSignInClient;
     ResponseStr responseStr = new ResponseStr();
     TextView hName;
-    TextView hEmail;
+    TextView hEmail,numNoti;
     ImageView img ;
     EditText searchText;
     static ArrayList<String> nameHead =new ArrayList<>();
@@ -87,6 +87,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         searchText = findViewById(R.id.searchText);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
+        numNoti =findViewById(R.id.badge_notification_2);
         navigationView.setNavigationItemSelectedListener(Home.this);
         navigationView.bringToFront();
         View v = navigationView.getHeaderView(0);
@@ -101,7 +102,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
         progressDialog.show();
-
+        numNoti.setVisibility(View.INVISIBLE);
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -365,7 +366,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             new Extend_MyHelper.SendHttpRequestTask(image,img,250).execute();
                             createTab();
                             search();
-
+                            getnumNotification();
 //                            writeFile(id,name,email);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -457,6 +458,50 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+    public void getnumNotification() {
+        responseStr = new ResponseStr();
 
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        Log.d("footer", "id getnumNotification" + id);
+        String url = "http://www.groupupdb.com/android/getnumnotification.php";
+        url += "?uId=" + id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("num", c.getString("num"));
+                               MyArrList.add(map);
+                            }
+                            //set Header menu name email
+                            Log.d("footer", MyArrList.get(0).get("num"));
+                            String numSn =MyArrList.get(0).get("num");
+                            int numIn = Integer.parseInt(numSn);
+                            if (numIn>0){
+                                numNoti.setVisibility(View.VISIBLE);
+                                numNoti.setText(numSn);
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 
 }
