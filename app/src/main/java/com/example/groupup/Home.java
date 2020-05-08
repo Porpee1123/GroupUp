@@ -123,6 +123,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 });
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         deleteDateOldDay();
+        getUser();
 //            new Thread(new Runnable() {
 //                @Override
 //                public void run() {
@@ -225,13 +226,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         super.onResume();
         email = getIntent().getStringExtra("email");
         Log.d("footer", "resume: " + email);
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-////                getUser();
-//            }
-//        }).start();
-        getUser();
     }
 
     public void createGroup(View v) {
