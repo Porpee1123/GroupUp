@@ -434,8 +434,9 @@ public class Home_Alert extends AppCompatActivity {
                         final AlertDialog viewDetail = new AlertDialog.Builder(Home_Alert.this).create();
                         View mView = getLayoutInflater().inflate(R.layout.layout_showmember, null);
                         ListView list = mView.findViewById(R.id.list_ShowMember);
+                        TextView numPeople = mView.findViewById(R.id.shownum_people);
                         ImageButton btnClose = mView.findViewById(R.id.showbutton_btnClose);
-                        getMemberShow(list,eid);
+                        getMemberShow(list,eid,numPeople);
                         btnClose.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -686,7 +687,7 @@ public class Home_Alert extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void getMemberShow(final ListView list,String eid) {
+    public void getMemberShow(final ListView list, String eid, final TextView tv) {
         responseStr = new Home_Alert.ResponseStr();
         memberArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -713,6 +714,7 @@ public class Home_Alert extends AppCompatActivity {
 
                             }
                             showAllCheckboxClick2(list);
+                            tv.setText("จำนวนสมาชิกปัจจุบัน "+memberArray.size()+" คน");
                             Log.d("pathimage", "get alertArray " + alertArray.toString());
                             Log.d("pathimage", "get MyArrList " + MyArrList.toString());
                         } catch (JSONException e) {

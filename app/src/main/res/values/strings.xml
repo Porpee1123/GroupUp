@@ -195,5 +195,6 @@
     <string name="listFriend">Friend in event</string>
     <string name="friendEvent">member in event</string>
     <string name="see_friendEvent">see member</string>
+    <string name="see_review">see review</string>
 
 </resources>
