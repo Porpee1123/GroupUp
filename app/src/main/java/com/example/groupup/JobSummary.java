@@ -1079,7 +1079,8 @@ public class JobSummary extends AppCompatActivity {
             JobSummary.SliderItem sliderItem = new JobSummary.SliderItem();
             sliderItem.setImageUrl(image.get(i).get("photoplace_path"));
             Log.d("photoplace_path", image.get(i).get("photoplace_path"));
-            sliderItem.setDescription("Slider Item " + i);
+            int count = i+1;
+            sliderItem.setDescription(count+"");
             sliderItemList.add(sliderItem);
         }
         adapter.renewItems(sliderItemList);
