@@ -296,10 +296,11 @@ public class Head_Place extends AppCompatActivity {
                     final TextView people = mView.findViewById(R.id.showplace_people);
                     final TextView facility = mView.findViewById(R.id.showplace_facility);
                     final TextView visit = mView.findViewById(R.id.showplace_PeopleVisit);
+                    final Button btn_review = mView.findViewById(R.id.btn_seeReview);
                     placeImage.clear();
                     final ImageButton btn_close = mView.findViewById(R.id.showplace_btnClose);
                     final RatingBar rt = mView.findViewById(R.id.showplace_ratingBar);
-                    String sId = placeArray.get(position).get("place_id").toString();
+                    final String sId = placeArray.get(position).get("place_id").toString();
                     String sTitle = placeArray.get(position).get("place_name").toString();
                     String sDetail = placeArray.get(position).get("place_detail").toString();
                     String sTel = placeArray.get(position).get("place_phone").toString();
@@ -332,6 +333,24 @@ public class Head_Place extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             viewDetail.dismiss();
+                        }
+                    });
+                    btn_review.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final AlertDialog viewDetail = new AlertDialog.Builder(Head_Place.this).create();
+                            View mView = getLayoutInflater().inflate(R.layout.layout_showreview_dialog, null);
+                            ImageButton btn_close = mView.findViewById(R.id.showbutton_btnClose);
+                            ListView list = mView.findViewById(R.id.list_ShowReview);
+                            getReview(sId,list);
+                            btn_close.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    viewDetail.dismiss();
+                                }
+                            });
+                            viewDetail.setView(mView);
+                            viewDetail.show();
                         }
                     });
                 }
@@ -394,6 +413,81 @@ public class Head_Place extends AppCompatActivity {
             notifyDataSetChanged();
         }
     }
+    public class Item2 {
+        //        String ItemDrawable;
+        String ItemName;
+        String ItemReview;
+        String ItemScore;
+
+        //        Item(ImageView drawable, String t, boolean b){
+        Item2(String name, String review, String score) {
+//            ItemDrawable = drawable;
+            ItemName = name;
+            ItemReview = review;
+            ItemScore = score;
+        }
+
+    }
+    static class ViewHolder2 {
+        //        ImageView icon;
+        TextView tName;
+        TextView tReview;
+        RatingBar rtScore;
+    }
+    public class ItemsListAdapter2 extends BaseAdapter {
+        private ArrayList<Head_Place.Item2> arraylist2;
+        private Context context;
+        private List<Head_Place.Item2> list2;
+
+        ItemsListAdapter2(Context c, List<Head_Place.Item2> l) {
+            context = c;
+            list2 = l;
+            arraylist2 = new ArrayList<Head_Place.Item2>();
+            arraylist2.addAll(l);
+        }
+
+        @Override
+        public int getCount() {
+            return list2.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list2.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View rowView = convertView;
+
+            // reuse views
+
+            Head_Place.ViewHolder2 viewHolder2 = new Head_Place.ViewHolder2();
+            if (rowView == null) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                rowView = inflater.inflate(R.layout.layout_review, null);
+                viewHolder2.tName = rowView.findViewById(R.id.rowNameReview);
+                viewHolder2.tReview = rowView.findViewById(R.id.rowRatingDetail);
+                viewHolder2.rtScore = rowView.findViewById(R.id.rowRatingReview);
+                rowView.setTag(viewHolder2);
+            } else {
+                viewHolder2 = (Head_Place.ViewHolder2) rowView.getTag();
+            }
+//            new Extend_MyHelper.SendHttpRequestTask(list2.get(position).ItemDrawable, viewHolder2.icon, 250).execute();
+            final String itemStr = list2.get(position).ItemName;
+            final String itemRev = list2.get(position).ItemReview;
+            float score = Float.parseFloat(list2.get(position).ItemScore);
+            viewHolder2.tName.setText(itemStr);
+            viewHolder2.tReview.setText(itemRev);
+            viewHolder2.rtScore.setRating(score);
+            return rowView;
+        }
+    }
 
     //***********************************************************************************************//
     ArrayList<HashMap<String, String>> placeArray, placeImage;
@@ -405,6 +499,9 @@ public class Head_Place extends AppCompatActivity {
     List<Head_Place.Item> items = new ArrayList<Head_Place.Item>();
     ListView placeList;
     SliderView sliderView;
+    List<Head_Place.Item2> items2 = new ArrayList<Head_Place.Item2>();
+    ArrayList<HashMap<String, String>> placeReview;
+    Head_Place.ItemsListAdapter2 myItemsListAdapter2;
     ArrayAdapter<String> adpScore,adpFaci,adpPrice,adpPeople,adpTheme;
     ArrayList<String> placeSelect;
     Spinner sp_score,sp_faci,sp_price,sp_people,sp_theme;
@@ -436,6 +533,7 @@ public class Head_Place extends AppCompatActivity {
         placeArray = new ArrayList<>();
         placeImage = new ArrayList<>();
         placeSelect = new ArrayList<>();
+        placeReview = new ArrayList<>();
         some_array = getResources().getStringArray(R.array.facility);
         progressDialog = new ProgressDialog(Head_Place.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
@@ -881,6 +979,66 @@ placeArray.clear();
             }
         });
 
+    }
+    public void getReview(String pid, final ListView listView) {
+        placeReview.clear();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getreviewdetail.php";
+        url += "?pId=" + pid;//รอเอาIdจากfirebase
+        Log.d("position", "stringRequest  " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("place_id", c.getString("place_id"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("review_detail", c.getString("review_detail"));
+                                map.put("review_score", c.getString("review_score"));
+                                MyArrList.add(map);
+                                placeReview.add(map);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        initItems2(listView);
+                        Log.d("pathimage", "get alertArray " + placeReview.toString());
+                        Log.d("pathimage", "get MyArrList " + MyArrList.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    private void initItems2(ListView list) {
+        items2 = new ArrayList<Head_Place.Item2>();
+        Log.d("pathimage", "memberArray " + placeReview.toString());
+        for (int i = 0; i < placeReview.size(); i++) {
+            String uid = placeReview.get(i).get("user_id").toString();
+            String name = placeReview.get(i).get("user_names").toString();
+            String detail = placeReview.get(i).get("review_detail").toString();
+            String score = placeReview.get(i).get("review_score").toString();
+            String pId = placeReview.get(i).get("place_id").toString();
+            Head_Place.Item2 item2 = new Head_Place.Item2(name,detail,score);
+            items2.add(item2);
+        }
+        myItemsListAdapter2 = new Head_Place.ItemsListAdapter2(this, items2);
+        list.setAdapter(myItemsListAdapter2);
+        Log.d("pathimage", items2.toString());
     }
 
 }
