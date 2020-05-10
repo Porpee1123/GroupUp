@@ -64,7 +64,7 @@ Extend_MyHelper.checkInternetLost(this);
         intentV.putExtra("email", email+"");
         intentV.putExtra("nameEvent", nEvent+"");
         intentV.putExtra("eid", eid+"");
-        Intent intentS = new Intent(this,MainAttendent_Summary.class);
+        Intent intentS = new Intent(this,JobSummary.class);
         intentS.putExtra("id", id+"");
         intentS.putExtra("email", email+"");
         intentS.putExtra("nameEvent", nEvent+"");
@@ -85,7 +85,6 @@ Extend_MyHelper.checkInternetLost(this);
         TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3")
                 .setIndicator("รีวิว")
                 .setContent(intentR);
-
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
         tabHost.addTab(tabSpec3);

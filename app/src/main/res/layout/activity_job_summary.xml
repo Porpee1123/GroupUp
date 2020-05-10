@@ -20,7 +20,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/classicBlue"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <View
                     android:id="@+id/view"
