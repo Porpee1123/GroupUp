@@ -13,6 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -20,7 +21,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/namePlace" />
+                android:text="@string/namePlace"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rowPlaceNameVotePlace"
@@ -41,6 +43,8 @@
                 android:id="@+id/rowImageViewVotePlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_photo_size_select_actual_black_24dp" />
 
@@ -58,7 +62,8 @@
                         android:id="@+id/textView24"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/descriptionPlace" />
+                        android:text="@string/descriptionPlace"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/rowDescriptionVotePlace"
@@ -70,13 +75,14 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView26"
                         android:layout_width="wrap_content"
-                        android:layout_height="29dp"
-                        android:text="@string/facility" />
+                        android:layout_height="wrap_content"
+                        android:text="@string/facility"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/rowFacilityVotePlace"
@@ -96,7 +102,8 @@
                         android:id="@+id/textView28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/rating" />
+                        android:text="@string/rating"
+                        android:textStyle="bold" />
 
                     <RatingBar
                         android:id="@+id/rowRatingVotePlace"
@@ -122,6 +129,7 @@
                 android:id="@+id/rowButtonVoteSeeDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/button"
                 android:drawableLeft="@drawable/ic_info_outline_black_24dp"
                 android:text="@string/see_detail"
@@ -132,6 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:alpha="0.8"
                 android:background="@drawable/green_button"
                 android:text="@string/select"
@@ -142,6 +151,7 @@
             android:id="@+id/view24"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="10dp"
             android:background="#CCCCCC" />
 
     </LinearLayout>

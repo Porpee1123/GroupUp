@@ -88,6 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -300,15 +301,16 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="20dp"
+                                    android:layout_weight="1"
                                     android:numStars="5"
-                                    android:rating="5"
                                     android:progressTint="#FFEB3B"
-                                    android:layout_weight="1" />
+                                    android:rating="5" />
 
                                 <Button
                                     android:id="@+id/btn_seeReview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="30dp"
+                                    android:layout_marginLeft="10dp"
                                     android:layout_weight="10"
                                     android:background="@drawable/button"
                                     android:text="@string/see_review"
