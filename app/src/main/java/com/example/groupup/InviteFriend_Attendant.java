@@ -292,7 +292,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/getFriend.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + uid;
         Log.d("pathinvite",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

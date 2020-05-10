@@ -46,12 +46,11 @@
                 android:layout_marginRight="10dp"
                 android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/rowimageButton6"
-                    app:srcCompat="@drawable/ic_application"
+                <ImageView
+                    android:id="@+id/imageView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/transparent" />
+                    app:srcCompat="@drawable/ic_application" />
 
                 <TextView
                     android:id="@+id/textView18"

@@ -134,7 +134,7 @@ public class show_invitation_head extends AppCompatActivity {
         memberArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getmemberinvite.php";
-        url += "?eId=" + eid;//รอเอาIdจากfirebase
+        url += "?eId=" + eid;
         url += "&prId=" + "2";
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

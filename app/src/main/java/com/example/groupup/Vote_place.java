@@ -566,7 +566,7 @@ public class Vote_place extends AppCompatActivity {
         placeArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getvoteplace.php";
-        url += "?sId=" + eid;//รอเอาIdจากfirebase
+        url += "?sId=" + eid;
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -788,7 +788,7 @@ public class Vote_place extends AppCompatActivity {
         placeReview.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getreviewdetail.php";
-        url += "?pId=" + pid;//รอเอาIdจากfirebase
+        url += "?pId=" + pid;
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class HomeHead_SlipCheck extends AppCompatActivity {
     String id,eid,nameE,monS,monE,email;
@@ -49,6 +50,7 @@ Extend_MyHelper.checkInternetLost(this);
         searchText = findViewById(R.id.searchText);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
+        searchWait();
 //        Intent intentWU = new Intent(this,SlipCheck_waitUpload.class);
 //        intentWU.putExtra("id", id+"");
 //        intentWU.putExtra("email", email+"");
@@ -91,12 +93,12 @@ Extend_MyHelper.checkInternetLost(this);
 
             @Override
             public void onTabChanged(String tabId) {
-                updateTabs();
+                updateTabs();searchFinish();
             }
         });
-        search();
     }
     protected void updateTabs() {
+        searchText.setText("");
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
 
             if (tabHost.getTabWidget().getChildAt(i).isSelected()) {
@@ -118,25 +120,6 @@ Extend_MyHelper.checkInternetLost(this);
         }
 
     }
-    public void search() {
-//        Log.d("arry",nameAttend.toString());
-
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                Log.d("arry",nameAttend.toString());
-                Log.d("arry","s "+s);
-//                SlipCheck_waitUpload.sAdap.getFilter().filter(s);
-                SlipCheck_waitCheck.sAdap.getFilter().filter(s);
-                SlipCheck_finish.sAdap.getFilter().filter(s);
-            }
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-
-    }
 
     public void backAppoint(View v) {
         Intent intent = new Intent(HomeHead_SlipCheck.this, HomeHead_Appointment.class);
@@ -148,6 +131,56 @@ Extend_MyHelper.checkInternetLost(this);
         intent.putExtra("eid", eid+"");
         intent.putExtra("tab",0+"");
         startActivity(intent);
+    }
+    public void searchWait() {
+        searchText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+//                InviteFriend_Head.myItemsListAdapter.filter(text);
+                SlipCheck_waitCheck.myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+    }
+    public void searchFinish() {
+        searchText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+                SlipCheck_finish.myItemsListAdapter.filter(text);
+//                InviteFriend_Attendant.myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+        });
+
     }
 
 }

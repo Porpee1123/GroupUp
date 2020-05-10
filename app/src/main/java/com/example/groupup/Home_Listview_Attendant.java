@@ -66,7 +66,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/gethomeattend.php";
-        url += "?sId=" + id;//รอเอาIdจากfirebase
+        url += "?sId=" + id;
         Log.d("footer", "id : id " + id);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -146,7 +146,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/gethomehead.php";
-        url += "?sId=" + id;//รอเอาIdจากfirebase
+        url += "?sId=" + id;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

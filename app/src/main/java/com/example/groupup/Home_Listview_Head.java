@@ -72,7 +72,7 @@ Extend_MyHelper.checkInternetLost(this);
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/gethomehead.php";
-        url += "?sId=" + id;//รอเอาIdจากfirebase
+        url += "?sId=" + id;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

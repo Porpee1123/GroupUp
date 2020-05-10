@@ -720,7 +720,7 @@ public class ManageFriend extends AppCompatActivity {
         final ArrayList<String> positionId = new ArrayList<>();
         final ArrayList<String> positionImage = new ArrayList<>();
         String url = "http://www.groupupdb.com/android/getFriend.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + uid;
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

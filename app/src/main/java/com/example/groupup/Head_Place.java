@@ -650,7 +650,7 @@ public class Head_Place extends AppCompatActivity {
 placeArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getplaceforHeader.php";
-        url += "?eId=" + eid;//รอเอาIdจากfirebase
+        url += "?eId=" + eid;
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -985,7 +985,7 @@ placeArray.clear();
         placeReview.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getreviewdetail.php";
-        url += "?pId=" + pid;//รอเอาIdจากfirebase
+        url += "?pId=" + pid;
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

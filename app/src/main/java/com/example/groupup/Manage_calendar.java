@@ -1104,7 +1104,7 @@ public class Manage_calendar extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/getcalendar.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + uid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -1191,7 +1191,7 @@ public class Manage_calendar extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/getdate.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + uid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -1274,7 +1274,7 @@ public class Manage_calendar extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/getdatediff.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + uid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

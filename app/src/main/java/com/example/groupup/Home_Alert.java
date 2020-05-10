@@ -248,7 +248,7 @@ public class Home_Alert extends AppCompatActivity {
 //        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 //        Log.d("footer", "id" + id);
 //        String url = "http://www.groupupdb.com/android/gethomeinvite.php";
-//        url += "?sId=" + id;//รอเอาIdจากfirebase
+//        url += "?sId=" + id;
 //        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
 //                new Response.Listener<String>() {
 //                    @Override
@@ -556,7 +556,7 @@ public class Home_Alert extends AppCompatActivity {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/gethomeinvite.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + uid;
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -692,7 +692,7 @@ public class Home_Alert extends AppCompatActivity {
         memberArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getmemberforalert.php";
-        url += "?eId=" + eid;//รอเอาIdจากfirebase
+        url += "?eId=" + eid;
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
