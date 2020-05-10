@@ -41,6 +41,14 @@
                     android:text="@string/select_friend"
                     android:textColor="#FFFFFF" />
 
+                <Button
+                    android:id="@+id/show_inviteFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/green_button"
+                    android:text="@string/see_friendEvent"
+                    android:textColor="#FFFFFF" />
+
             </TableRow>
 
             <TableRow

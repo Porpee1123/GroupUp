@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 
 
 public class HomeHead_Appointment_SetItem extends AppCompatActivity {
-    Button inviteFriend , selectTheme;
+    Button inviteFriend , selectTheme,seeInviteFriend;
     String id,eid,nameE,monS,monE,email,wait;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +25,7 @@ Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_appoint_set_item);
         inviteFriend = findViewById(R.id.select_friend);
         selectTheme = findViewById(R.id.selectTheme);
+        seeInviteFriend = findViewById(R.id.show_inviteFriend);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
         eid =getIntent().getStringExtra("eid");
@@ -33,6 +34,19 @@ Extend_MyHelper.checkInternetLost(this);
         monE = getIntent().getStringExtra("mEnd");
         wait = getIntent().getStringExtra("wait");
 //        Log.d("appoint","home appoint "+email+"/"+id+"/"+eid+"/"+nameE+"/"+monS+"/"+monE);
+        seeInviteFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeHead_Appointment_SetItem.this, show_invitation.class);
+                intent.putExtra("email",email+"");
+                intent.putExtra("id",id+"");
+                intent.putExtra("eid",eid+"");
+                intent.putExtra("nameEvent",nameE+"");
+                intent.putExtra("mStart",monS+"");
+                intent.putExtra("mEnd",monE+"");
+                startActivity(intent);
+            }
+        });
     }
 
     public void selectFriend(View v) {

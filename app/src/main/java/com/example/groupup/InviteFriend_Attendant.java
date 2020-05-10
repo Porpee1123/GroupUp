@@ -356,7 +356,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
 
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
-
+                finish();
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(InviteFriend_Attendant.this, string1, Toast.LENGTH_LONG).show();
 

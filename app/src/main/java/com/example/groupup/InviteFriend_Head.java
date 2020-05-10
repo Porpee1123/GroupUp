@@ -356,7 +356,7 @@ public class InviteFriend_Head extends AppCompatActivity {
 
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
-
+                finish();
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(InviteFriend_Head.this, string1, Toast.LENGTH_LONG).show();
 
@@ -371,7 +371,6 @@ public class InviteFriend_Head extends AppCompatActivity {
                         String fid = items.get(i).Id;
                         str += i + " " + items.get(i).ItemString + "-" + fid + "\n";
                         Log.d("friend", "item : " + items.get(i).ItemString + "");
-
                         sentInviteToFriend(fid, eid);
                     }
                 }
