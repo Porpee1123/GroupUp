@@ -2,6 +2,7 @@ package com.example.groupup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -242,135 +244,6 @@ public class Home_Alert extends AppCompatActivity {
 
     }
 
-//    public void getEventInvitation() {
-//        responseStr = new Home_Alert.ResponseStr();
-//
-//        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-//        Log.d("footer", "id" + id);
-//        String url = "http://www.groupupdb.com/android/gethomeinvite.php";
-//        url += "?sId=" + id;
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        //textView.setText("Response is: "+ response.toString());
-//
-//                        try {
-//                            HashMap<String, String> map;
-//                            JSONArray data = new JSONArray(response.toString());
-//                            for (int i = 0; i < data.length(); i++) {
-//                                JSONObject c = data.getJSONObject(i);
-//                                map = new HashMap<String, String>();
-//                                map.put("trans_id", c.getString("trans_id"));
-//                                map.put("events_id", c.getString("events_id"));
-//                                map.put("events_name", c.getString("events_name"));
-//                                map.put("events_month_start", c.getString("events_month_start"));
-//                                map.put("events_month_end", c.getString("events_month_end"));
-//                                map.put("pri_id", c.getString("pri_id"));
-//                                map.put("pri_name", c.getString("pri_name"));
-//                                map.put("event_creater", c.getString("event_creater"));
-//                                map.put("user_photo", c.getString("user_photo"));
-//                                map.put("events_detail", c.getString("events_detail"));
-//
-//                                //map.put("events_wait", c.getString("events_wait"));
-//                                MyArrList.add(map);
-//                            }
-//                            Log.d("query", MyArrList.size() + "");
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-//                    }
-//                });
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
-//        new CountDownTimer(500, 500) {
-//            public void onFinish() {
-//                // When timer is finished
-//                // Execute your code here
-//                listViewInvite.setVisibility(View.VISIBLE);
-//                SimpleAdapter sAdap;
-//                sAdap = new SimpleAdapter(Home_Alert.this, MyArrList, R.layout.activity_invitation_home,
-//                        new String[]{"event_creater", "events_name", "events_month_start", "events_month_end", "pri_name"}, new int[]{R.id.col_head, R.id.col_name_header, R.id.col_time, R.id.col_time_end, R.id.col_pri});
-//                listViewInvite.setAdapter(sAdap);
-//                final AlertDialog viewDetail = new AlertDialog.Builder(Home_Alert.this).create();
-//
-//                listViewInvite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-//                        String sCreater = MyArrList.get(position).get("event_creater").toString();
-//                        final String sName = MyArrList.get(position).get("events_name").toString();
-//                        final String eid = MyArrList.get(position).get("events_id").toString();
-//                        String sSta = MyArrList.get(position).get("events_month_start").toString();
-//                        String sEnd = MyArrList.get(position).get("events_month_end").toString();
-//                        String sPri = MyArrList.get(position).get("pri_name").toString();
-//                        String sTim = sSta + " - " + sEnd;
-//                        final String tranId = MyArrList.get(position).get("trans_id").toString();
-//                        viewDetail.setIcon(android.R.drawable.btn_star_big_on);
-//                        viewDetail.setTitle("รายละเอียด" + tranId);
-//                        viewDetail.setMessage("ผู้เชิญ : " + sCreater + "\n"
-//                                + "ชื่อการนัดหมาย : " + sName + "\n" + "ช่วงเวลา : " + sTim + "\n"
-//                                + "สถานะ : " + sPri + "\n");
-//
-//
-//                        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เอาไว้ก่อน", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//
-//                            }
-//                        });
-//                        viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "เข้าร่วม", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Extend_MyHelper.UpdateStateToDb(tranId, 3 + "",Home_Alert.this);
-//
-//                                addEventFriend(id,eid,sName);
-//
-//                            }
-//                        });
-//                        viewDetail.show();
-//                        Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
-//                        Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
-//
-//                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-//                        layoutParams.weight = 10;
-//                        btnPositive.setLayoutParams(layoutParams);
-//                        btnNegative.setLayoutParams(layoutParams);
-//                    }
-//                });
-//
-//            }
-//
-//            public void onTick(long millisUntilFinished) {
-//                // millisUntilFinished    The amount of time until finished.
-//            }
-//        }.start();
-//
-//    }
-
-    private void addNotification() {
-        // Builds your notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_account_box_black_24dp)
-                .setContentTitle("การเชิญเพื่อน")
-                .setContentText("คุณนิวได้เชิญคุณเข้าร่วมนัดหมาย");
-
-        // Creates the intent needed to show the notification
-        Intent notificationIntent = new Intent(this, Home_Alert.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-
-        // Add as notification
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
-    }
-
     public void addEventFriend(String id, String eid) {
         String url = "http://www.groupupdb.com/android/adduserevent.php";
         url += "?sId=" + id;
@@ -401,6 +274,8 @@ public class Home_Alert extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
                 final AlertDialog viewDetail = new AlertDialog.Builder(Home_Alert.this).create();
                 View mView = getLayoutInflater().inflate(R.layout.layout_showalert_dialog, null);
+                final TextView headTitle = mView.findViewById(R.id.head_eve);
+                final ImageButton backAlert = mView.findViewById(R.id.back_home);
                 final TextView title = mView.findViewById(R.id.alt_title_Invite);
                 final TextView detail = mView.findViewById(R.id.alt_detail_Invite);
                 final ImageView imgF = mView.findViewById(R.id.alt_image_invite);
@@ -418,6 +293,7 @@ public class Home_Alert extends AppCompatActivity {
                 String event_creater = alertArray.get(position).get("event_creater").toString();
                 String user_photo = alertArray.get(position).get("user_photo").toString();
                 String events_detail = alertArray.get(position).get("events_detail").toString();
+                headTitle.setText(ename);
                 title.setText(ename);
                 detail.setText(events_detail);
                 nameE.setText(event_creater);
@@ -428,6 +304,12 @@ public class Home_Alert extends AppCompatActivity {
                 Button btn_join = mView.findViewById(R.id.btn_invite_join);
                 Button btn_notJoin = mView.findViewById(R.id.btn_invite_notjoin);
                 Button btn_later = mView.findViewById(R.id.btn_invite_later);
+                backAlert.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewDetail.dismiss();
+                    }
+                });
                 btn_seeMember.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -518,9 +400,9 @@ public class Home_Alert extends AppCompatActivity {
                         viewDetail.dismiss();
                     }
                 });
-
                 viewDetail.setView(mView);
                 viewDetail.show();
+
             }
         });
 
@@ -748,4 +630,5 @@ public class Home_Alert extends AppCompatActivity {
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
+
 }
