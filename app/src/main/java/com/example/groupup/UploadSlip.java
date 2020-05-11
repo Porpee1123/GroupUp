@@ -1,9 +1,5 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -23,6 +19,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,7 +49,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -64,8 +63,9 @@ public class UploadSlip extends AppCompatActivity {
     ImageButton SelectImageGallery;
     String ServerUploadPath = "http://www.groupupdb.com/android/addBillEventTransfer.php";
     Bitmap bitmap;
-    TextView tvName,tvPrice,tvBank;
+    TextView tvName, tvPrice, tvBank;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +74,9 @@ public class UploadSlip extends AppCompatActivity {
         payment = findViewById(R.id.payment);
         upSlip = findViewById(R.id.upSlip);
         rGroup = findViewById(R.id.radioGroup);
-        tvName =findViewById(R.id.payName);
-        tvBank =findViewById(R.id.payBank);
-        tvPrice =findViewById(R.id.payPrice);
+        tvName = findViewById(R.id.payName);
+        tvBank = findViewById(R.id.payBank);
+        tvPrice = findViewById(R.id.payPrice);
         SelectImageGallery = findViewById(R.id.img_slip);
         id = getIntent().getStringExtra("id");
         eId = getIntent().getStringExtra("eid");
@@ -84,6 +84,8 @@ public class UploadSlip extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         cCash = 0;
         cTransfer = 0;
+        btn.setEnabled(false);
+        btn.setAlpha((float) 0.5);
         getTransIDByTrans(id, eId, "2");
         SelectImageGallery.setVisibility(View.GONE);
         visibleLinear();
@@ -107,6 +109,8 @@ public class UploadSlip extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SelectImageGallery.setVisibility(View.VISIBLE);
+                btn.setEnabled(true);
+                btn.setAlpha(1);
                 if (ContextCompat.checkSelfPermission(UploadSlip.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(UploadSlip.this, "You have already permission access gallery", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
@@ -120,47 +124,55 @@ public class UploadSlip extends AppCompatActivity {
             }
         });
     }
+
     public void addBill(String uid, String eid, String sbid) {
         Log.d("checktrans", "id : " + uid + " eid : " + eid + " sbid : " + sbid);
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/addSliptobill.php";
-        url += "?uId=" + uid;
-        url += "&eId=" + eid;
-        url += "&sbId=" + sbid;
+        url += "?uId=" + uid+"";
+        url += "&eId=" + eid+"";
+        url += "&sbId=" + sbid+"";
+        Log.d("checktrans", "url "+url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("Log", "response " + response);
+                        Log.d("checktrans", "response " + response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                        Log.e("checktrans", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void visibleLinear() {
-            rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    if (payment.isChecked()) {
-                        SelectImageGallery.setVisibility(View.GONE);
-                        cCash = 1;
-                        cTransfer = 0;
-                        Log.d("checkCon", "Cash1");
-                    } else {
-                        SelectImageGallery.setVisibility(View.VISIBLE);
-                        cCash = 0;
-                        cTransfer = 1;
-                        Log.d("checkCon", "Transfer1");
-                    }
+        rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (payment.isChecked()) {
+                    SelectImageGallery.setVisibility(View.GONE);
+                    btn.setAlpha(1);
+                    btn.setEnabled(true);
+                    cCash = 1;
+                    cTransfer = 0;
+                    Log.d("checkCon", "Cash1");
+                } else {
+                    btn.setEnabled(false);
+                    btn.setAlpha((float) 0.5);
+                    SelectImageGallery.setVisibility(View.VISIBLE);
+                    cCash = 0;
+                    cTransfer = 1;
+                    Log.d("checkCon", "Transfer1");
                 }
-            });
+            }
+        });
     }
+
     @Override
     protected void onActivityResult(int RC, int RQC, Intent I) {
 
@@ -233,6 +245,7 @@ public class UploadSlip extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_PERMISSION_CODE);
         }
     }
+
     public void ImageUploadToServerFunction() {
 
         ByteArrayOutputStream byteArrayOutputStreamObject;
@@ -375,6 +388,7 @@ public class UploadSlip extends AppCompatActivity {
         }
 
     }
+
     public void getJob() {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         final String[] state = {""};
@@ -402,8 +416,8 @@ public class UploadSlip extends AppCompatActivity {
                                 MyArrList.add(map);
                             }
                             String[] some_array = getResources().getStringArray(R.array.bank);
-                            String bankName =  some_array[Integer.parseInt(MyArrList.get(0).get("events_bankname"))];
-                            tvBank.setText(bankName+" : "+MyArrList.get(0).get("events_bankid")+"\nชื่อ : "+MyArrList.get(0).get("events_bankaccount"));
+                            String bankName = some_array[Integer.parseInt(MyArrList.get(0).get("events_bankname"))];
+                            tvBank.setText(bankName + " : " + MyArrList.get(0).get("events_bankid") + "\nชื่อ : " + MyArrList.get(0).get("events_bankaccount"));
                             tvName.setText(MyArrList.get(0).get("events_name"));
                             tvPrice.setText(MyArrList.get(0).get("events_price"));
 //
@@ -422,9 +436,11 @@ public class UploadSlip extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void backSum(View v) {
         finish();
     }
+
     public void getTransIDByTrans(String uid, String eid, String pid) {
         Log.d("checktrans", "id : " + uid + " eid : " + eid + " pid : " + pid);
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();

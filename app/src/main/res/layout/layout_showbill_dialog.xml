@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/red"
-                android:text="@string/notJoin"
+                android:text="@string/unapprove"
                 android:textColor="#FFFFFF" />
 
             <Button
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/green"
-                android:text="@string/join"
+                android:text="@string/approve"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>

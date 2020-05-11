@@ -1,47 +1,32 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class HomeHead_SlipCheck extends AppCompatActivity {
-    String id,eid,nameE,monS,monE,email;
+    String id, eid, nameE, monS, monE, email;
     TabHost tabHost;
     LocalActivityManager mLocalActivityManager;
     EditText searchText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_appoint_slip_check);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
-        eid =getIntent().getStringExtra("eid");
+        eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
@@ -58,20 +43,20 @@ Extend_MyHelper.checkInternetLost(this);
 //        intentWU.putExtra("mStart", monS+"");
 //        intentWU.putExtra("mEnd", monE+"");
 //        intentWU.putExtra("eid", eid+"");
-        Intent intentWC = new Intent(this,SlipCheck_waitCheck.class);
-        intentWC.putExtra("id", id+"");
-        intentWC.putExtra("email", email+"");
-        intentWC.putExtra("nEvent", nameE+"");
-        intentWC.putExtra("mStart", monS+"");
-        intentWC.putExtra("mEnd", monE+"");
-        intentWC.putExtra("eid", eid+"");
-        Intent intentFi  = new Intent(this, SlipCheck_finish.class);
-        intentFi.putExtra("id", id+"");
-        intentFi.putExtra("email", email+"");
-        intentFi.putExtra("nEvent", nameE+"");
-        intentFi.putExtra("mStart", monS+"");
-        intentFi.putExtra("mEnd", monE+"");
-        intentFi.putExtra("eid", eid+"");
+        Intent intentWC = new Intent(this, SlipCheck_waitCheck.class);
+        intentWC.putExtra("id", id + "");
+        intentWC.putExtra("email", email + "");
+        intentWC.putExtra("nEvent", nameE + "");
+        intentWC.putExtra("mStart", monS + "");
+        intentWC.putExtra("mEnd", monE + "");
+        intentWC.putExtra("eid", eid + "");
+        Intent intentFi = new Intent(this, SlipCheck_finish.class);
+        intentFi.putExtra("id", id + "");
+        intentFi.putExtra("email", email + "");
+        intentFi.putExtra("nEvent", nameE + "");
+        intentFi.putExtra("mStart", monS + "");
+        intentFi.putExtra("mEnd", monE + "");
+        intentFi.putExtra("eid", eid + "");
 //        TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
 //                .setIndicator("รอดำเนินการ\nอัปโหลด")
 //                .setContent(intentWU);
@@ -93,12 +78,13 @@ Extend_MyHelper.checkInternetLost(this);
 
             @Override
             public void onTabChanged(String tabId) {
-                updateTabs();searchFinish();
+                updateTabs();
+//                searchFinish();
             }
         });
     }
+
     protected void updateTabs() {
-        searchText.setText("");
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
 
             if (tabHost.getTabWidget().getChildAt(i).isSelected()) {
@@ -106,15 +92,14 @@ Extend_MyHelper.checkInternetLost(this);
                         .getChildAt(i)
                         .setBackgroundResource(
                                 R.drawable.shape_tab);
-                searchText.setText("");
-            }
-            else {
+//                searchText.setText("");
+            } else {
 
                 tabHost.getTabWidget()
                         .getChildAt(i)
                         .setBackgroundResource(
                                 R.drawable.visible);
-                searchText.setText("");
+//                searchText.setText("");
 
             }
         }
@@ -123,15 +108,16 @@ Extend_MyHelper.checkInternetLost(this);
 
     public void backAppoint(View v) {
         Intent intent = new Intent(HomeHead_SlipCheck.this, HomeHead_Appointment.class);
-        intent.putExtra("id", id+"");
-        intent.putExtra("email", email+"");
-        intent.putExtra("nEvent", nameE+"");
-        intent.putExtra("mStart", monS+"");
-        intent.putExtra("mEnd", monE+"");
-        intent.putExtra("eid", eid+"");
-        intent.putExtra("tab",0+"");
+        intent.putExtra("id", id + "");
+        intent.putExtra("email", email + "");
+        intent.putExtra("nEvent", nameE + "");
+        intent.putExtra("mStart", monS + "");
+        intent.putExtra("mEnd", monE + "");
+        intent.putExtra("eid", eid + "");
+        intent.putExtra("tab", 0 + "");
         startActivity(intent);
     }
+
     public void searchWait() {
         searchText.addTextChangedListener(new TextWatcher() {
 
@@ -157,6 +143,7 @@ Extend_MyHelper.checkInternetLost(this);
         });
 
     }
+
     public void searchFinish() {
         searchText.addTextChangedListener(new TextWatcher() {
 

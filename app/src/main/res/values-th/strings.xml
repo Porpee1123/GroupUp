@@ -198,4 +198,8 @@
     <string name="optionPayment">การชำระเงิน</string>
     <string name="moneyPay">จำนวนเงินที่ต้องชำระ: </string>
     <string name="optionPay">วิธีการชำระเงิน :</string>
+    <string name="approve">ถูกต้อง</string>
+    <string name="unapprove">ผิดพลาด</string>
+
+
 </resources>

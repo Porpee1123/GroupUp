@@ -155,22 +155,21 @@ Extend_MyHelper.checkInternetLost(this);
         slipFinish = findViewById(R.id.listView_slipFinish);
         memberArray = new ArrayList<>();
 //        getSlipFinish();
-        getMemberShow();
+        getSlipFinish();
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getMemberShow();
+                getSlipFinish();
                 pullToRefresh.setRefreshing(false);
             }
         });
     }
-    public void getMemberShow() {
+    public void getSlipFinish() {
         memberArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/getbillcheck.php";
+        String url = "http://www.groupupdb.com/android/getbillfinish.php";
         url += "?eId=" + eid;
-        url += "&stId=" + "3";
         Log.d("position", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -210,6 +209,7 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
 
     private void initItems2() {
         items2 = new ArrayList<SlipCheck_finish.Item2>();

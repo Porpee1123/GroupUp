@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -224,6 +225,14 @@ public class Home_Alert extends AppCompatActivity {
         memberArray = new ArrayList<>();
         some_array = getResources().getStringArray(R.array.month);
         getEventInvitation();
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getEventInvitation();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
     }
 
     public void backHome(View v) {
@@ -435,7 +444,7 @@ public class Home_Alert extends AppCompatActivity {
 
     public void getEventInvitation() {
         responseStr = new Home_Alert.ResponseStr();
-
+        alertArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/gethomeinvite.php";
         url += "?sId=" + uid;

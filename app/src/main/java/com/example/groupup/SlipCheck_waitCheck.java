@@ -1,14 +1,9 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +13,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,7 +44,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
         String ItemTag;
 
         //        Item(ImageView drawable, String t, boolean b){
-        Item2(String t, String i, String drawable, String Status,String tag) {
+        Item2(String t, String i, String drawable, String Status, String tag) {
             ItemDrawable = drawable;
             ItemString = t;
             Id = i;
@@ -57,12 +54,14 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
         }
 
     }
+
     static class ViewHolder2 {
         ImageView icon;
         TextView text;
         TextView tag;
         ImageView Status;
     }
+
     public class ItemsListAdapter2 extends BaseAdapter {
         private ArrayList<SlipCheck_waitCheck.Item2> arraylist2;
         private Context context;
@@ -115,6 +114,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
             viewHolder2.tag.setText(itemtag);
             return rowView;
         }
+
         // Filter Class
         public void filter(String charText) {
             charText = charText.toLowerCase(Locale.getDefault());
@@ -132,38 +132,39 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
             notifyDataSetChanged();
         }
     }
+
     //*******************************TextView with checkbox******************************************//
-    String id,eid,nameE,monS,monE,email,transId="";
-    ListView slipCheck ;
-    static  SlipCheck_waitCheck.ItemsListAdapter2 myItemsListAdapter;
+    String id, eid, nameE, monS, monE, email, transId = "";
+    ListView slipCheck;
+    static SlipCheck_waitCheck.ItemsListAdapter2 myItemsListAdapter;
     List<SlipCheck_waitCheck.Item2> items2 = new ArrayList<SlipCheck_waitCheck.Item2>();
-    ArrayList<HashMap<String, String>>  memberArray;
+    ArrayList<HashMap<String, String>> memberArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_slip_check_wait_check);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
-        eid =getIntent().getStringExtra("eid");
+        eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         slipCheck = findViewById(R.id.listView_slipCheck);
         memberArray = new ArrayList<>();
-        getMemberShow();
+        getbillcheck();
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getMemberShow();
+                getbillcheck();
                 pullToRefresh.setRefreshing(false);
             }
         });
     }
 
-    public void getMemberShow() {
+    public void getbillcheck() {
         memberArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getbillcheck.php";
@@ -221,15 +222,15 @@ Extend_MyHelper.checkInternetLost(this);
             String sbId = memberArray.get(i).get("statusbill_id").toString();
             String bImage = memberArray.get(i).get("bill_image").toString();
             String sbName = memberArray.get(i).get("statusname").toString();
-            SlipCheck_waitCheck.Item2 item2 = new SlipCheck_waitCheck.Item2(uName,uid,uPhoto,sbId,sbName);
+            SlipCheck_waitCheck.Item2 item2 = new SlipCheck_waitCheck.Item2(uName, uid, uPhoto, sbId, sbName);
             items2.add(item2);
         }
         myItemsListAdapter = new SlipCheck_waitCheck.ItemsListAdapter2(this, items2);
         slipCheck.setAdapter(myItemsListAdapter);
-        Log.d("pathimage", items2.size()+"");
+        Log.d("pathimage", items2.size() + "");
         slipCheck.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
                 final AlertDialog viewDetail = new AlertDialog.Builder(SlipCheck_waitCheck.this).create();
                 View mView = getLayoutInflater().inflate(R.layout.layout_showbill_dialog, null);
                 final TextView headTheme = mView.findViewById(R.id.userhead);
@@ -238,11 +239,11 @@ Extend_MyHelper.checkInternetLost(this);
                 final Button btn_later = mView.findViewById(R.id.btn_later);
                 final Button btn_confirm = mView.findViewById(R.id.btn_cofirm);
                 headTheme.setText(memberArray.get(position).get("user_names").toString());
-                Log.d("getTransIDByTrans","uid "+memberArray.get(position).get("user_id"));
-                Log.d("getTransIDByTrans","eid "+eid);
-
-                new Extend_MyHelper.SendHttpRequestTask(memberArray.get(position).get("bill_image").toString(),imgTheme,350).execute();
-                getTransIDByTrans(memberArray.get(position).get("user_id"),eid,"2");
+                Log.d("getTransIDByTrans", "uid " + memberArray.get(position).get("user_id"));
+                Log.d("getTransIDByTrans", "eid " + eid);
+                final String userId = memberArray.get(position).get("user_id");
+                new Extend_MyHelper.SendHttpRequestTask(memberArray.get(position).get("bill_image").toString(), imgTheme, 350).execute();
+                getTransIDByTrans(memberArray.get(position).get("user_id"), eid, "2");
                 btn_later.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -252,8 +253,19 @@ Extend_MyHelper.checkInternetLost(this);
                 btn_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("getTransIDByTrans",transId);
-//                        Extend_MyHelper.UpdateStateToDb(transId,"13",SlipCheck_waitCheck.this);
+                        Log.d("getTransIDByTrans", transId);
+                        updatestatusbill(userId, eid, "2");
+                        viewDetail.dismiss();
+
+                    }
+                });
+                btn_cancle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Extend_MyHelper.UpdateStateToDb(transId, "11", SlipCheck_waitCheck.this);
+                        getbillcheck();
+                        viewDetail.dismiss();
+                        //แจ้งเตือนให้ผู้ใช้
                     }
                 });
                 viewDetail.setView(mView);
@@ -261,6 +273,7 @@ Extend_MyHelper.checkInternetLost(this);
             }
         });
     }
+
     public void getTransIDByTrans(String uid, String eid, String pid) {
         Log.d("themeSelect", "id : " + uid + " eid : " + eid + " pid : " + pid);
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -301,5 +314,29 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    
+
+    public void updatestatusbill(String uid, String eid, String stid) {
+        String url = "http://www.groupupdb.com/android/updatestatusbill.php";
+        url += "?uId=" + uid;
+        url += "&eId=" + eid;
+        url += "&stId=" + stid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                        getbillcheck();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
+    }
 }
