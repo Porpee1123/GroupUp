@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class show_invitation_head extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
@@ -108,11 +109,27 @@ public class show_invitation_head extends AppCompatActivity {
             }
             return rowView;
         }
+        // Filter Class
+        public void filter(String charText) {
+            charText = charText.toLowerCase(Locale.getDefault());
+            list2.clear();
+            if (charText.length() == 0) {
+                list2.addAll(arraylist2);
+            } else {
+                for (show_invitation_head.Item2 wp : arraylist2) {
+                    if (wp.ItemString.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list2.add(wp);
+                    }
+                }
+            }
+            notifyDataSetChanged();
+        }
     }
     //*******************************TextView with checkbox******************************************//
     String uid, eid, nameE, monS, monE, email;
     ListView list_Attend;
-    show_invitation_head.ItemsListAdapter2 myItemsListAdapterHead;
+    static show_invitation_head.ItemsListAdapter2 myItemsListAdapterHead;
     List<show_invitation_head.Item2> items2 = new ArrayList<show_invitation_head.Item2>();
     ArrayList<HashMap<String, String>>  memberArray;
 

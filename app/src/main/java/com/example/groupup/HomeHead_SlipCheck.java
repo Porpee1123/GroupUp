@@ -79,7 +79,7 @@ public class HomeHead_SlipCheck extends AppCompatActivity {
             @Override
             public void onTabChanged(String tabId) {
                 updateTabs();
-//                searchFinish();
+                searchFinish();
             }
         });
     }
@@ -125,7 +125,6 @@ public class HomeHead_SlipCheck extends AppCompatActivity {
             public void afterTextChanged(Editable arg0) {
                 // TODO Auto-generated method stub
                 String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
-//                InviteFriend_Head.myItemsListAdapter.filter(text);
                 SlipCheck_waitCheck.myItemsListAdapter.filter(text);
             }
 
@@ -152,7 +151,6 @@ public class HomeHead_SlipCheck extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
                 SlipCheck_finish.myItemsListAdapter.filter(text);
-//                InviteFriend_Attendant.myItemsListAdapter.filter(text);
             }
 
             @Override

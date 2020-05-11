@@ -142,8 +142,7 @@ Extend_MyHelper.checkInternetLost(this);
             public void afterTextChanged(Editable arg0) {
                 // TODO Auto-generated method stub
                 String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
-//                InviteFriend_Head.myItemsListAdapter.filter(text);
-                InviteFriend_Attendant.myItemsListAdapter.filter(text);
+                show_invitation_attendant.myItemsListAdapterAttend.filter(text);
             }
 
             @Override
@@ -167,8 +166,7 @@ Extend_MyHelper.checkInternetLost(this);
             public void afterTextChanged(Editable arg0) {
                 // TODO Auto-generated method stub
                 String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
-                InviteFriend_Head.myItemsListAdapter.filter(text);
-//                InviteFriend_Attendant.myItemsListAdapter.filter(text);
+                show_invitation_head.myItemsListAdapterHead.filter(text);
             }
 
             @Override
