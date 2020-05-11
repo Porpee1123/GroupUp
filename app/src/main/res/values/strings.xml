@@ -196,5 +196,6 @@
     <string name="friendEvent">member in event</string>
     <string name="see_friendEvent">see member</string>
     <string name="see_review">see review</string>
+    <string name="uploadslip">upload slip</string>
 
 </resources>

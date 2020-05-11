@@ -195,4 +195,5 @@
     <string name="friendEvent">สมาชิกในกลุ่ม :</string>
     <string name="see_friendEvent">ดูสมาชิก</string>
     <string name="see_review">รีวิว</string>
+    <string name="uploadslip">อัปโหลดสลิป</string>
 </resources>
