@@ -170,6 +170,7 @@ public class JobSummary extends AppCompatActivity {
         }
 
     }
+
     public class Item2 {
         //        String ItemDrawable;
         String ItemName;
@@ -185,12 +186,14 @@ public class JobSummary extends AppCompatActivity {
         }
 
     }
+
     static class ViewHolder2 {
         //        ImageView icon;
         TextView tName;
         TextView tReview;
         RatingBar rtScore;
     }
+
     public class ItemsListAdapter2 extends BaseAdapter {
         private ArrayList<JobSummary.Item2> arraylist2;
         private Context context;
@@ -245,9 +248,10 @@ public class JobSummary extends AppCompatActivity {
             return rowView;
         }
     }
+
     //************************************** Slide View *********************************************//
-    String id = "", eId = "", eName = "", email = "", transId = "",placeId="";
-    Button bJoin, bNotJoin, btn,btn_uploadSlip,btn_showPlace;
+    String id = "", eId = "", eName = "", email = "", transId = "", placeId = "";
+    Button bJoin, bNotJoin, btn, btn_uploadSlip, btn_showPlace;
     boolean checkVisible, isChecked;
     RadioButton payment, upSlip;
     RadioGroup rGroup;
@@ -303,7 +307,7 @@ public class JobSummary extends AppCompatActivity {
         tvPlace = findViewById(R.id.sumplaceApp);
         tvPeople = findViewById(R.id.sumpeople);
         iconBank = findViewById(R.id.sumicon_bank);
-        btn_showPlace =findViewById(R.id.btn_showPlace);
+        btn_showPlace = findViewById(R.id.btn_showPlace);
         SelectImageGallery.setVisibility(View.GONE);
         iconBank.setVisibility(View.GONE);
         payment.setVisibility(View.GONE);
@@ -319,7 +323,8 @@ public class JobSummary extends AppCompatActivity {
         bJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rGroup.clearCheck();visibleLinear();
+                rGroup.clearCheck();
+                visibleLinear();
             }
         });
         bNotJoin.setOnClickListener(new View.OnClickListener() {
@@ -344,18 +349,18 @@ public class JobSummary extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cCancle==1){
+                if (cCancle == 1) {
                     Log.d("checkCon", "cancle");
-                    Extend_MyHelper.UpdateStateToDb(transId, 15 + "",JobSummary.this);
+                    Extend_MyHelper.UpdateStateToDb(transId, 15 + "", JobSummary.this);
                     finish();
-                }else if (cAccept==1&&cCash==1){
-                    Log.d("checkCon","Cash");
-                    Extend_MyHelper.UpdateStateToDb(transId, 13 + "",JobSummary.this);
-                    addBill(id,eId,"3");
+                } else if (cAccept == 1 && cCash == 1) {
+                    Log.d("checkCon", "Cash");
+                    Extend_MyHelper.UpdateStateToDb(transId, 13 + "", JobSummary.this);
+                    addBill(id, eId, "3");
                     finish();
-                }else if (cAccept==1&&cTransfer==1){
-                    Log.d("checkCon","Transfer");
-                    Extend_MyHelper.UpdateStateToDb(transId, 12 + "",JobSummary.this);
+                } else if (cAccept == 1 && cTransfer == 1) {
+                    Log.d("checkCon", "Transfer");
+                    Extend_MyHelper.UpdateStateToDb(transId, 12 + "", JobSummary.this);
                     ImageUploadToServerFunction();
 
                 }
@@ -438,7 +443,7 @@ public class JobSummary extends AppCompatActivity {
                         View mView = getLayoutInflater().inflate(R.layout.layout_showreview_dialog, null);
                         ImageButton btn_close = mView.findViewById(R.id.showbutton_btnClose);
                         ListView list = mView.findViewById(R.id.list_ShowReview);
-                        getReview(sId,list);
+                        getReview(sId, list);
                         btn_close.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -551,11 +556,26 @@ public class JobSummary extends AppCompatActivity {
                                 MyArrList.add(map);
                             }
                             String[] some_array = getResources().getStringArray(R.array.bank);
+
+
+                            String date = MyArrList.get(0).get("time");
+                            String dayString = Extend_MyHelper.getDayFromDateString(date, "dd/MM/yyyy");
                             tvNameE.setText(MyArrList.get(0).get("events_name"));
-                            tvDate.setText(MyArrList.get(0).get("time"));
+//                            tvDate.setText(MyArrList.get(0).get("time"));
                             tvTime.setText(MyArrList.get(0).get("timerange"));
                             tvPlace.setText(MyArrList.get(0).get("place_name"));
-                            placeId= MyArrList.get(0).get("place_id");
+                            placeId = MyArrList.get(0).get("place_id");
+                            String fullDate="";
+                            String d = "", m="", y="";
+                            String[] some_arraymonth = getResources().getStringArray(R.array.month);
+                            StringTokenizer st = new StringTokenizer(MyArrList.get(0).get("time"), "/");
+                            while (st.hasMoreTokens()) {
+                                d = st.nextToken();
+                                m = st.nextToken();
+                                y = st.nextToken();
+                            }
+                            fullDate = "วัน" + dayString + "ที่ " + d + " " + some_arraymonth[Integer.parseInt(m)] + " " + y;
+                            tvDate.setText(fullDate);
                             String bankName = some_array[Integer.parseInt(MyArrList.get(0).get("events_bankname"))];
                             tvShowBank.setText(bankName + " : " + MyArrList.get(0).get("events_bankid") + "\nชื่อ : " + MyArrList.get(0).get("events_bankaccount"));
                             getplace();
@@ -616,6 +636,7 @@ public class JobSummary extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     @Override
     protected void onActivityResult(int RC, int RQC, Intent I) {
 
@@ -694,49 +715,49 @@ public class JobSummary extends AppCompatActivity {
         ByteArrayOutputStream byteArrayOutputStreamObject;
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
-            byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
-            final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
-            class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+        byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
+        final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
-                @Override
-                protected void onPreExecute() {
+            @Override
+            protected void onPreExecute() {
 
-                    super.onPreExecute();
-                    progressDialog = ProgressDialog.show(JobSummary.this, "Image is Uploading", "Please Wait", false, false);
-                }
-
-                @Override
-                protected void onPostExecute(String string1) {
-
-                    super.onPostExecute(string1);
-                    finish();
-                    // Dismiss the progress dialog after done uploading.
-                    progressDialog.dismiss();
-
-                    // Printing uploading success message coming from server on android app.
-                    Toast.makeText(JobSummary.this, string1, Toast.LENGTH_LONG).show();
-
-                    // Setting image as transparent after done uploading.
-                    SelectImageGallery.setImageResource(android.R.color.transparent);
-
-                }
-
-                @Override
-                protected String doInBackground(Void... params) {
-
-                    JobSummary.ImageProcessClass imageProcessClass = new JobSummary.ImageProcessClass();
-                    HashMap<String, String> HashMapParams = new HashMap<String, String>();
-                    HashMapParams.put("uId", id);
-                    HashMapParams.put("eId", eId);
-                    HashMapParams.put("photo", ConvertImage);
-                    Log.d("hashmap", HashMapParams.toString());
-                    String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
-                    return FinalData;
-                }
+                super.onPreExecute();
+                progressDialog = ProgressDialog.show(JobSummary.this, "Image is Uploading", "Please Wait", false, false);
             }
-            AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-            AsyncTaskUploadClassOBJ.execute();
+
+            @Override
+            protected void onPostExecute(String string1) {
+
+                super.onPostExecute(string1);
+                finish();
+                // Dismiss the progress dialog after done uploading.
+                progressDialog.dismiss();
+
+                // Printing uploading success message coming from server on android app.
+                Toast.makeText(JobSummary.this, string1, Toast.LENGTH_LONG).show();
+
+                // Setting image as transparent after done uploading.
+                SelectImageGallery.setImageResource(android.R.color.transparent);
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+
+                JobSummary.ImageProcessClass imageProcessClass = new JobSummary.ImageProcessClass();
+                HashMap<String, String> HashMapParams = new HashMap<String, String>();
+                HashMapParams.put("uId", id);
+                HashMapParams.put("eId", eId);
+                HashMapParams.put("photo", ConvertImage);
+                Log.d("hashmap", HashMapParams.toString());
+                String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+                return FinalData;
+            }
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
 
 
     }
@@ -877,7 +898,7 @@ public class JobSummary extends AppCompatActivity {
         placeArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getplacebyplaceid.php";
-        url += "?pId=" + placeId+"";
+        url += "?pId=" + placeId + "";
         Log.d("placeHome", "stringRequest  " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -1079,12 +1100,13 @@ public class JobSummary extends AppCompatActivity {
             JobSummary.SliderItem sliderItem = new JobSummary.SliderItem();
             sliderItem.setImageUrl(image.get(i).get("photoplace_path"));
             Log.d("photoplace_path", image.get(i).get("photoplace_path"));
-            int count = i+1;
-            sliderItem.setDescription(count+"");
+            int count = i + 1;
+            sliderItem.setDescription(count + "");
             sliderItemList.add(sliderItem);
         }
         adapter.renewItems(sliderItemList);
     }
+
     public void getReview(String pid, final ListView listView) {
         placeReview.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -1138,7 +1160,7 @@ public class JobSummary extends AppCompatActivity {
             String detail = placeReview.get(i).get("review_detail").toString();
             String score = placeReview.get(i).get("review_score").toString();
             String pId = placeReview.get(i).get("place_id").toString();
-            JobSummary.Item2 item2 = new JobSummary.Item2(name,detail,score);
+            JobSummary.Item2 item2 = new JobSummary.Item2(name, detail, score);
             items2.add(item2);
         }
         myItemsListAdapter2 = new JobSummary.ItemsListAdapter2(this, items2);

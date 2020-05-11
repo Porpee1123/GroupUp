@@ -21,7 +21,7 @@
                 android:background="@color/classicBlue"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <View
                     android:id="@+id/view"

@@ -42,13 +42,19 @@ public class MainAttendent_Summary extends AppCompatActivity {
         btn_qrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog viewDetail = new AlertDialog.Builder(MainAttendent_Summary.this).create();
-                View mView = getLayoutInflater().inflate(R.layout.layout_showqrcode_dialog,null);
-                ImageView img_qr = mView.findViewById(R.id.qr_goEvent);
-                String dataQuery = id+":"+eId;
-                qrcodeReader(dataQuery,img_qr);
-                viewDetail.setView(mView);
-                viewDetail.show();
+                Intent intent = new Intent(MainAttendent_Summary.this, MainAttendent_Reviews.class);
+                intent.putExtra("id",id+"");
+                intent.putExtra("eid",eId+"");
+                intent.putExtra("nameEvent",eName+"");
+                intent.putExtra("email", email+"");
+                startActivity(intent);
+//                final AlertDialog viewDetail = new AlertDialog.Builder(MainAttendent_Summary.this).create();
+//                View mView = getLayoutInflater().inflate(R.layout.layout_showqrcode_dialog,null);
+//                ImageView img_qr = mView.findViewById(R.id.qr_goEvent);
+//                String dataQuery = id+":"+eId;
+//                qrcodeReader(dataQuery,img_qr);
+//                viewDetail.setView(mView);
+//                viewDetail.show();
             }
         });
     }
@@ -58,6 +64,7 @@ public class MainAttendent_Summary extends AppCompatActivity {
         intent.putExtra("id",id+"");
         intent.putExtra("eid",eId+"");
         intent.putExtra("nameEvent",eName+"");
+        intent.putExtra("email", email+"");
         startActivity(intent);
     }
 

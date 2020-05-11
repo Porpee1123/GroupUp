@@ -3,6 +3,7 @@ package com.example.groupup;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -23,8 +25,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Vote_date_and_time extends AppCompatActivity {
@@ -55,7 +63,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
                 viewDetail.setTitle(R.string.con_vote);
                 viewDetail.setMessage(btn1.getText().toString());
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -87,7 +95,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
                 viewDetail.setTitle(R.string.con_vote);
                 viewDetail.setMessage(btn2.getText().toString());
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -119,7 +127,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
                 viewDetail.setTitle(R.string.con_vote);
                 viewDetail.setMessage(btn3.getText().toString());
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -151,7 +159,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
                 viewDetail.setTitle(R.string.con_vote);
                 viewDetail.setMessage(btn4.getText().toString());
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เลือกอันอื่น", new DialogInterface.OnClickListener() {
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -256,33 +264,38 @@ public class Vote_date_and_time extends AppCompatActivity {
                 time.add("random");
                 Log.d("getdateforvote", day.toString());
                 Log.d("getdateforvote", time.toString());
+
+                Log.d("getdateforvote",day.get(0)+"----"+Extend_MyHelper.getDayFromDateString(day.get(0),"dd/MM/yyyy")+"");
+                Log.d("getdateforvote",day.get(1)+"----"+Extend_MyHelper.getDayFromDateString(day.get(1),"dd/MM/yyyy")+"");
+                Log.d("getdateforvote",day.get(2)+"----"+Extend_MyHelper.getDayFromDateString(day.get(2),"dd/MM/yyyy")+"");
                 for (int i = 0; i < day.size()-1; i++) {
                     StringTokenizer st = new StringTokenizer(day.get(i), "/");
+                    String dayString = Extend_MyHelper.getDayFromDateString(day.get(i),"dd/MM/yyyy");
                     while (st.hasMoreTokens()) {
                         String d, m, y, date;
                         String[] some_array = getResources().getStringArray(R.array.month);
                         d = st.nextToken();
                         m = st.nextToken();
                         y = st.nextToken();
-                        date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                        date = "วัน"+dayString+"\n " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
                         dateDB.add(day.get(i));
                         timeDB.add(time.get(i));
                         if (i==0){
-                            btn1.setText(date + "\n ช่วงเวลา " + time.get(i));
+                            btn1.setText(date + "\n เวลา " + time.get(i));
                             btn1.setTextSize(18);
                         }else if (i==1){
-                            btn2.setText(date + "\n ช่วงเวลา " + time.get(i));
+                            btn2.setText(date + "\n เวลา " + time.get(i));
                             btn2.setTextSize(18);
                         }
                         else if (i==2){
-                            btn3.setText(date + "\n ช่วงเวลา " + time.get(i));
+                            btn3.setText(date + "\n เวลา " + time.get(i));
                             btn3.setTextSize(18);
                         }
 
                     }
                 }
-                String[] array = getResources().getStringArray(R.array.random);
-                btn4.setText(array[0]);
+
+                btn4.setText("วันใดก็ได้");
                 btn4.setTextSize(24);
             }
         }.start();
@@ -310,5 +323,6 @@ public class Vote_date_and_time extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
 
 }

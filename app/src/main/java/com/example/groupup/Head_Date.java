@@ -439,13 +439,14 @@ public class Head_Date extends AppCompatActivity {
             public void onFinish() {
                 for (int i =0;i<dataDB.size();i++){
                     StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
+                    String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i),"dd/MM/yyyy");
                     while (st.hasMoreTokens()) {
                         String d, m, y, date;
                         String[] some_array = getResources().getStringArray(R.array.month);
                         d = st.nextToken();
                         m = st.nextToken();
                         y = st.nextToken();
-                        date = "วันที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                        date = "วัน"+dayString+"ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
                         if (i==0){
                             cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
                         }else if (i==1){

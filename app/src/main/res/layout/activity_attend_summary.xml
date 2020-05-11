@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/qrCode_attend_the_event"
+                android:text="@string/review"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 

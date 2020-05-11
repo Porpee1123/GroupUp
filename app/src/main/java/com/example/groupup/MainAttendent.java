@@ -64,7 +64,7 @@ Extend_MyHelper.checkInternetLost(this);
         intentV.putExtra("email", email+"");
         intentV.putExtra("nameEvent", nEvent+"");
         intentV.putExtra("eid", eid+"");
-        Intent intentS = new Intent(this,JobSummary.class);
+        Intent intentS = new Intent(this,MainAttendent_Summary.class);
         intentS.putExtra("id", id+"");
         intentS.putExtra("email", email+"");
         intentS.putExtra("nameEvent", nEvent+"");
@@ -87,7 +87,7 @@ Extend_MyHelper.checkInternetLost(this);
                 .setContent(intentR);
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
-        tabHost.addTab(tabSpec3);
+//        tabHost.addTab(tabSpec3);
         tabHost.getTabWidget()
                 .getChildAt(0)
                 .setBackgroundResource(

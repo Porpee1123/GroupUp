@@ -38,7 +38,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.xml.parsers.SAXParser;
@@ -237,5 +240,29 @@ public class Extend_MyHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
         return state[0];
+    }
+    public static String getDayFromDateString(String stringDate,String dateTimeFormat)
+    {
+        String[] daysArray = new String[] {"อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"};
+        String day = "";
+
+        int dayOfWeek =0;
+        //dateTimeFormat = yyyy-MM-dd HH:mm:ss
+        SimpleDateFormat formatter = new SimpleDateFormat(dateTimeFormat);
+        Date date;
+        try {
+            date = formatter.parse(stringDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-1;
+            if (dayOfWeek < 0) {
+                dayOfWeek += 7;
+            }
+            day = daysArray[dayOfWeek];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return day;
     }
 }
