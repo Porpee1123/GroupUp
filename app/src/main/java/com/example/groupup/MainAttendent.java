@@ -69,11 +69,11 @@ Extend_MyHelper.checkInternetLost(this);
         intentS.putExtra("email", email+"");
         intentS.putExtra("nameEvent", nEvent+"");
         intentS.putExtra("eid", eid+"");
-        Intent intentR = new Intent(this,MainAttendent_Reviews.class);
-        intentR.putExtra("id", id+"");
-        intentR.putExtra("email", email+"");
-        intentR.putExtra("nameEvent", nEvent+"");
-        intentR.putExtra("eid", eid+"");
+//        Intent intentR = new Intent(this,MainAttendent_Reviews.class);
+//        intentR.putExtra("id", id+"");
+//        intentR.putExtra("email", email+"");
+//        intentR.putExtra("nameEvent", nEvent+"");
+//        intentR.putExtra("eid", eid+"");
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
                 .setIndicator("การโหวต")
@@ -82,9 +82,9 @@ Extend_MyHelper.checkInternetLost(this);
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
                 .setIndicator("สรุปงาน")
                 .setContent(intentS);
-        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3")
-                .setIndicator("รีวิว")
-                .setContent(intentR);
+//        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3")
+//                .setIndicator("รีวิว")
+//                .setContent(intentR);
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
 //        tabHost.addTab(tabSpec3);

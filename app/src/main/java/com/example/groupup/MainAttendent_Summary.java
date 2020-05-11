@@ -2,7 +2,6 @@ package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -19,27 +17,39 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public class MainAttendent_Summary extends AppCompatActivity {
     String id="",eId="",eName="",email;
-    Button btn_qrcode, btn_summary;
+    Button btn_review, btn_summary,btn_upslip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_attend_summary);
-        btn_qrcode =findViewById(R.id.btn_qrcode);
+        btn_review =findViewById(R.id.btn_review);
         btn_summary = findViewById(R.id.btn_summary);
+        btn_upslip= findViewById(R.id.btn_upSlip);
         id = getIntent().getStringExtra("id");
         eName = getIntent().getStringExtra("nameEvent");
         eId = getIntent().getStringExtra("eid");
         email = getIntent().getStringExtra("email");
 
+        btn_upslip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainAttendent_Summary.this, UploadSlip.class);
+                intent.putExtra("id",id+"");
+                intent.putExtra("eid",eId+"");
+                intent.putExtra("nameEvent",eName+"");
+                intent.putExtra("email", email+"");
+                startActivity(intent);
+            }
+        });
         btn_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sumJob();
             }
         });
-        btn_qrcode.setOnClickListener(new View.OnClickListener() {
+        btn_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainAttendent_Summary.this, MainAttendent_Reviews.class);
