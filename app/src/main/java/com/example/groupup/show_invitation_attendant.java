@@ -1,6 +1,7 @@
 package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
 import android.content.Context;
@@ -128,6 +129,15 @@ public class show_invitation_attendant extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         getMemberShow();
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMemberShow();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
     }
     public void getMemberShow() {
         memberArray.clear();

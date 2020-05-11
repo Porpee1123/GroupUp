@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -155,6 +156,14 @@ Extend_MyHelper.checkInternetLost(this);
         memberArray = new ArrayList<>();
 //        getSlipFinish();
         getMemberShow();
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMemberShow();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
     }
     public void getMemberShow() {
         memberArray.clear();

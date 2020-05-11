@@ -1,6 +1,7 @@
 package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -152,6 +153,14 @@ Extend_MyHelper.checkInternetLost(this);
         slipCheck = findViewById(R.id.listView_slipCheck);
         memberArray = new ArrayList<>();
         getMemberShow();
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMemberShow();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
     }
 
     public void getMemberShow() {
