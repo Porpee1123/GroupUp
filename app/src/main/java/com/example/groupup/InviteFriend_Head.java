@@ -178,6 +178,7 @@ public class InviteFriend_Head extends AppCompatActivity {
     static ListView listViewFriend;
     List<InviteFriend_Head.Item> items;
     ArrayList<String> typefriend;
+    ArrayList<String> typefriendId;
     ArrayList<String> friendInDb;
     ArrayList<HashMap<String, String>> frientArray;
     InviteFriend_Head.ResponseStr responseStr = new InviteFriend_Head.ResponseStr();
@@ -196,6 +197,7 @@ public class InviteFriend_Head extends AppCompatActivity {
         lShortcut = findViewById(R.id.layout_shortcut_head);
         typefriend = new ArrayList<>();
         friendInDb = new ArrayList<>();
+        typefriendId = new ArrayList<>();
         uid = getIntent().getStringExtra("id");
         eid = getIntent().getStringExtra("eid");
         email = getIntent().getStringExtra("email");
@@ -419,9 +421,11 @@ public class InviteFriend_Head extends AppCompatActivity {
                             }
                             //set Header menu name email;
                             typefriend.add("ทั้งหมด");
+                            typefriendId.add("0");
                             countType = MyArrList.size();
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 typefriend.add(MyArrList.get(i).get("type_name"));
+                                typefriendId.add(MyArrList.get(i).get("tfid"));
                             }
                             shortCutAddFriend();
                             getFriend();
@@ -445,21 +449,21 @@ public class InviteFriend_Head extends AppCompatActivity {
     public void shortCutAddFriend() {
         Log.d("friend", "typefriend : " + typefriend + "");
         Log.d("friend", "countType : " + countType + "");
-        for (int i = 0; i < typefriend.size(); i++) {
+        for (int i = 0; i < typefriendId.size(); i++) {
             Log.d("friend", "i : " + i + "");
             final Button b = new Button(this);
             ImageView v = new ImageView(this);
-            if (typefriend.get(i).equals("ทั้งหมด")) {
+            if (typefriendId.get(i).equals("0")) {
                 b.setBackgroundResource(R.drawable.all_button);
-            } else if (typefriend.get(i).equals("เพื่อนอนุบาล")) {
+            } else if (typefriendId.get(i).equals("1")) {
                 b.setBackgroundResource(R.drawable.red_button);
-            } else if (typefriend.get(i).equals("เพื่อนประถม")) {
+            } else if (typefriendId.get(i).equals("2")) {
                 b.setBackgroundResource(R.drawable.green_button);
-            } else if (typefriend.get(i).equals("เพื่อนมัธยมต้น")) {
+            } else if (typefriendId.get(i).equals("3")) {
                 b.setBackgroundResource(R.drawable.blue_button);
-            } else if (typefriend.get(i).equals("เพื่อนมัธยมปลาย")) {
+            } else if (typefriendId.get(i).equals("4")) {
                 b.setBackgroundResource(R.drawable.yellow_button);
-            } else if (typefriend.get(i).equals("เพื่อนมหาลัย")) {
+            } else if (typefriendId.get(i).equals("5")) {
                 b.setBackgroundResource(R.drawable.gray_button);
             } else {
                 b.setBackgroundResource(R.drawable.custom_button);

@@ -176,9 +176,6 @@ Extend_MyHelper.checkInternetLost(this);
                             name = user.getDisplayName();
                             email = user.getEmail();
                             saveData();
-                            Intent intent = new Intent(Login.this, Home.class);
-                            intent.putExtra("email",email);
-                            startActivity(intent);
 //                            customer = user.getDisplayName()+"/"+user.getEmail()+"/"+user.getPhoneNumber()+"/"+user.getUid();
 //                            txt.setText(customer);
 //                            updateUI(customer);
@@ -213,7 +210,7 @@ Extend_MyHelper.checkInternetLost(this);
     }
     public void skipCustomer(){
         Intent in = new Intent(this, Home.class);
-        in.putExtra("email","thanapat1234@gmail.com");
+        in.putExtra("email","newlittlegirllovely@gmail.com");
         startActivity(in);
     }
     public boolean saveData() {
@@ -225,6 +222,9 @@ Extend_MyHelper.checkInternetLost(this);
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Intent intent = new Intent(Login.this, Home.class);
+                        intent.putExtra("email",email);
+                        startActivity(intent);
                         Log.e("Log", "Volley::onResponse():" + response);
                     }
                 },

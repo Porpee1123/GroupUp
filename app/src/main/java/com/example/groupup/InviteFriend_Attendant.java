@@ -3,6 +3,7 @@ package com.example.groupup;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -357,7 +358,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
 
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
-                finish();
+                InviteFriend.tabHost.setCurrentTab(1);
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(InviteFriend_Attendant.this, string1, Toast.LENGTH_LONG).show();
 
@@ -406,6 +407,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                             }
                             //set Header menu name email;
                             typefriend.add("ทั้งหมด");
+                            typefriendId.add("0");
                             countType = MyArrList.size();
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 typefriend.add(MyArrList.get(i).get("type_name"));
@@ -432,21 +434,21 @@ public class InviteFriend_Attendant extends AppCompatActivity {
 
     public void shortCutAddFriend() {
         Log.d("friend", "countType : " + countType + "");
-        for (int i = 0; i < typefriend.size(); i++) {
+        for (int i = 0; i < typefriendId.size(); i++) {
             Log.d("friend", "i : " + i + "");
             final Button b = new Button(this);
             ImageView v = new ImageView(this);
-            if (typefriend.get(i).equals("ทั้งหมด")) {
+            if (typefriendId.get(i).equals("0")) {
                 b.setBackgroundResource(R.drawable.all_button);
-            } else if (typefriend.get(i).equals("เพื่อนอนุบาล")) {
+            } else if (typefriendId.get(i).equals("1")) {
                 b.setBackgroundResource(R.drawable.red_button);
-            } else if (typefriend.get(i).equals("เพื่อนประถม")) {
+            } else if (typefriendId.get(i).equals("2")) {
                 b.setBackgroundResource(R.drawable.green_button);
-            } else if (typefriend.get(i).equals("เพื่อนมัธยมต้น")) {
+            } else if (typefriendId.get(i).equals("3")) {
                 b.setBackgroundResource(R.drawable.blue_button);
-            } else if (typefriend.get(i).equals("เพื่อนมัธยมปลาย")) {
+            } else if (typefriendId.get(i).equals("4")) {
                 b.setBackgroundResource(R.drawable.yellow_button);
-            } else if (typefriend.get(i).equals("เพื่อนมหาลัย")) {
+            } else if (typefriendId.get(i).equals("5")) {
                 b.setBackgroundResource(R.drawable.gray_button);
             } else {
                 b.setBackgroundResource(R.drawable.custom_button);

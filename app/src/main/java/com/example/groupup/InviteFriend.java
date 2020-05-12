@@ -19,7 +19,7 @@ import java.util.Locale;
 public class InviteFriend extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
-    TabHost tabHost;
+    static  TabHost tabHost;
     String uid,eid,nameE,monS,monE,email;
     static ArrayList<String> nameHead =new ArrayList<>();
     static ArrayList<String> nameAttend =new ArrayList<>();

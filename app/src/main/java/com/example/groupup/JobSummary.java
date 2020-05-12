@@ -290,6 +290,7 @@ public class JobSummary extends AppCompatActivity {
         tvPeople = findViewById(R.id.sumpeople);
         btn_showPlace = findViewById(R.id.btn_showPlace);
         getTransIDByTrans(id, eId, "2");
+        Extend_MyHelper.checkPeopleConfirmEvent(eId,this,tvPeople);
         Extend_MyHelper.checkStatusTrans(eId, "10", JobSummary.this, tvPeople);
         getJob();
         Log.d("checktrans", "tran " + transId);
@@ -353,26 +354,6 @@ public class JobSummary extends AppCompatActivity {
 
             }
         });
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (cCancle == 1) {
-//                    Log.d("checkCon", "cancle");
-//                    Extend_MyHelper.UpdateStateToDb(transId, 15 + "", JobSummary.this);
-//                    finish();
-//                } else if (cAccept == 1 && cCash == 1) {
-//                    Log.d("checkCon", "Cash");
-//                    Extend_MyHelper.UpdateStateToDb(transId, 13 + "", JobSummary.this);
-//                    addBill(id, eId, "3");
-//                    finish();
-//                } else if (cAccept == 1 && cTransfer == 1) {
-//                    Log.d("checkCon", "Transfer");
-//                    Extend_MyHelper.UpdateStateToDb(transId, 12 + "", JobSummary.this);
-//                    ImageUploadToServerFunction();
-//
-//                }
-//            }
-//        });
         btn_showPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
