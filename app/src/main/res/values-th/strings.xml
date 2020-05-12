@@ -200,6 +200,6 @@
     <string name="optionPay">วิธีการชำระเงิน :</string>
     <string name="approve">ถูกต้อง</string>
     <string name="unapprove">ผิดพลาด</string>
-
+    <string name="priceperpeople">ค่าใช้จ่ายต่อคน :</string>
 
 </resources>

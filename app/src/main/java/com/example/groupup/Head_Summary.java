@@ -1,7 +1,9 @@
 package com.example.groupup;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,7 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -220,16 +225,15 @@ public class Head_Summary extends AppCompatActivity {
 
     //************************************** Slide View *********************************************//
     String id, eId, nameE, monS, monE, email, transId = "", placeId = "";
-    Button bJoin, bNotJoin,  btn_showPlace;
-    boolean checkVisible;
     TextView tvNameE, tvDate, tvTime, tvPlace, tvPeople;
-    int cAccept, cCancle, cCash, cTransfer;
     ArrayList<HashMap<String, String>> placeArray, placeImage;
     List<Head_Summary.Item2> items2 = new ArrayList<Head_Summary.Item2>();
     ArrayList<HashMap<String, String>> placeReview;
     Head_Summary.ItemsListAdapter2 myItemsListAdapter2;
     SliderView sliderView;
     String[] some_array;
+    EditText edt_price ;
+    Button btn_con,btn_showPlace;
     private Head_Summary.SliderAdapterExample adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,7 +245,114 @@ public class Head_Summary extends AppCompatActivity {
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+        placeArray = new ArrayList<>();
+        placeImage = new ArrayList<>();
+        placeReview = new ArrayList<>();
+        tvNameE = findViewById(R.id.sumnaneEvent);
+        tvDate = findViewById(R.id.sumdateApp);
+        tvTime = findViewById(R.id.sumtimeApp);
+        tvPlace = findViewById(R.id.sumplaceApp);
+        tvPeople = findViewById(R.id.sumpeople);
+        edt_price =findViewById(R.id.edt_price);
+        btn_con = findViewById(R.id.btn_confirm_headsum);
+        btn_showPlace = findViewById(R.id.btn_showPlace);
+        getJob();
+        btn_showPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog viewDetail = new AlertDialog.Builder(Head_Summary.this).create();
+                View mView = getLayoutInflater().inflate(R.layout.layout_showplace_dialog, null);
+                final TextView title = mView.findViewById(R.id.showplace_Title);
+                final TextView detail = mView.findViewById(R.id.showplace_detail);
+                final TextView time = mView.findViewById(R.id.showplace_time);
+                final TextView tel = mView.findViewById(R.id.showplace_tel);
+                final TextView price = mView.findViewById(R.id.showplace_price);
+                final TextView people = mView.findViewById(R.id.showplace_people);
+                final TextView facility = mView.findViewById(R.id.showplace_facility);
+                final TextView visit = mView.findViewById(R.id.showplace_PeopleVisit);
+                placeImage.clear();
+                final ImageButton btn_close = mView.findViewById(R.id.showplace_btnClose);
+                final Button btn_review = mView.findViewById(R.id.btn_seeReview);
+                final RatingBar rt = mView.findViewById(R.id.showplace_ratingBar);
+                final String sId = placeArray.get(0).get("place_id").toString();
+                String sTitle = placeArray.get(0).get("place_name").toString();
+                String sDetail = placeArray.get(0).get("place_detail").toString();
+                String sTel = placeArray.get(0).get("place_phone").toString();
+                String sPrice = placeArray.get(0).get("place_price").toString();
+                String sPeople = placeArray.get(0).get("place_numofseat").toString();
+                String sFacility = placeArray.get(0).get("place_facility").toString();
+                String sImage = placeArray.get(0).get("place_photoShow").toString();
+                String sRating = placeArray.get(0).get("place_score").toString();
+                String sDay = placeArray.get(0).get("place_date").toString();
+                String sSTime = placeArray.get(0).get("place_stime").toString();
+                String sETime = placeArray.get(0).get("place_etime").toString();
+                String sVisit = placeArray.get(0).get("place_visit").toString();
+                sliderView = mView.findViewById(R.id.imageSlider);
+                String[] some_arrayPrice = getResources().getStringArray(R.array.sppriceRange);
+                String[] some_arrayPeople = getResources().getStringArray(R.array.spnumberOfSeats);
+                getPlacePhotoPid(sId);
+                title.setText(sTitle);
+                detail.setText(sDetail);
+                ArrayList<String> s = spiltGetDate(sDay);
+                time.setText(showStringDay(s) + " \n" + sSTime + " - " + sETime);
+                tel.setText(sTel);
+                price.setText(some_arrayPrice[Integer.parseInt(sPrice)]);
+                people.setText(some_arrayPeople[Integer.parseInt(sPeople)]);
+                facility.setText(showFacility(sFacility));
+                rt.setRating(Float.parseFloat(sRating));
+                visit.setText("( " + sVisit + " คน)");
+                viewDetail.setView(mView);
+                viewDetail.show();
+                btn_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewDetail.dismiss();
+                    }
+                });
+                btn_review.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final AlertDialog viewDetail = new AlertDialog.Builder(Head_Summary.this).create();
+                        View mView = getLayoutInflater().inflate(R.layout.layout_showreview_dialog, null);
+                        ImageButton btn_close = mView.findViewById(R.id.showbutton_btnClose);
+                        ListView list = mView.findViewById(R.id.list_ShowReview);
+                        getReview(sId, list);
+                        btn_close.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                viewDetail.dismiss();
+                            }
+                        });
+                        viewDetail.setView(mView);
+                        viewDetail.show();
+                    }
+                });
+            }
+        });
+        btn_con.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String price = edt_price.getText().toString();
+                if (price.length()==0){
+                    final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Head_Summary.this).create();
+                    viewDetail.setTitle("กรุณาระบุราคาต่อบุคคล");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "รับทราบ", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    layoutParams.weight = 15;
+                    btnPositive.setLayoutParams(layoutParams);
+                }else{
+                    addPriceEvent(price);
+                }
 
+            }
+        });
     }
 
     public void backSum(View v) {
@@ -300,48 +411,6 @@ public class Head_Summary extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
-    public void getTransIDByTrans(String uid, String eid, String pid) {
-        Log.d("checktrans", "id : " + uid + " eid : " + eid + " pid : " + pid);
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/gettransid.php";
-        url += "?uId=" + uid;
-        url += "&eId=" + eid;
-        url += "&pId=" + pid;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("trans_id", c.getString("trans_id"));
-                                map.put("user_id", c.getString("user_id"));
-                                map.put("events_id", c.getString("events_id"));
-                                map.put("states_id", c.getString("states_id"));
-                                map.put("pri_id", c.getString("pri_id"));
-                                MyArrList.add(map);
-                            }
-                            transId = MyArrList.get(0).get("trans_id");
-//                            Log.d("themeSelect","myarr : "+MyArrList.toString());
-                            Log.d("checktrans", "tran " + transId);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -491,15 +560,6 @@ public class Head_Summary extends AppCompatActivity {
                 sliderView.setIndicatorUnselectedColor(Color.GRAY);
                 sliderView.setScrollTimeInSec(3);
                 sliderView.setAutoCycle(true);
-//                if (placeImage.size() == 0) {
-//
-//                } else {
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(0).get("photoplace_path"), img1, 450).execute();
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(1).get("photoplace_path"), img2, 450).execute();
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(2).get("photoplace_path"), img3, 450).execute();
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(3).get("photoplace_path"), img4, 450).execute();
-//                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(4).get("photoplace_path"), img5, 450).execute();
-//                }
             }
         }.start();
     }
@@ -613,5 +673,25 @@ public class Head_Summary extends AppCompatActivity {
         myItemsListAdapter2 = new Head_Summary.ItemsListAdapter2(this, items2);
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
+    }
+    public  void  addPriceEvent(String price){
+        String url = "http://www.groupupdb.com/android/updatepriceevent.php";
+        url += "?eId=" + eId;
+        url += "&price=" + price;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
