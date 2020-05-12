@@ -17,7 +17,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UploadSlip"></activity>
+        <activity android:name=".Head_Summary"></activity>
+        <activity android:name=".UploadSlip" />
         <activity android:name=".JobSummary" />
         <activity android:name=".show_invitation_head" />
         <activity android:name=".show_invitation_attendant" />

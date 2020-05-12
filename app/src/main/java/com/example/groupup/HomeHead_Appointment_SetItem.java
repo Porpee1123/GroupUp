@@ -82,5 +82,15 @@ Extend_MyHelper.checkInternetLost(this);
         intent.putExtra("eid", eid+"");
         startActivity(intent);
     }
+    public void selectSummary(View v) {
+        Intent intent = new Intent(HomeHead_Appointment_SetItem.this, Head_Summary.class);
+        intent.putExtra("id", id+"");
+        intent.putExtra("email", email+"");
+        intent.putExtra("nEvent", nameE+"");
+        intent.putExtra("mStart", monS+"");
+        intent.putExtra("mEnd", monE+"");
+        intent.putExtra("eid", eid+"");
+        startActivity(intent);
+    }
 
 }
