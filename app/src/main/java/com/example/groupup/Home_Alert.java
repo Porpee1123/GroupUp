@@ -2,19 +2,14 @@ package com.example.groupup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -25,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
@@ -54,13 +48,21 @@ public class Home_Alert extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
     public class Item {
         String ItemDrawable;
-        String ItemString;
+        String ItemName;
+        String ItemEventName;
+        String ItemStatus;
+        String ItemEStart;
+        String ItemEEnd;
         String Id;
 
         //        Item(ImageView drawable, String t, boolean b){
-        Item(String t, String i, String drawable) {
+        Item(String name, String eventname, String status, String start, String end, String i, String drawable) {
             ItemDrawable = drawable;
-            ItemString = t;
+            ItemName = name;
+            ItemEventName = eventname;
+            ItemStatus = status;
+            ItemEStart = start;
+            ItemEEnd = end;
             Id = i;
         }
 
@@ -84,7 +86,11 @@ public class Home_Alert extends AppCompatActivity {
 
     static class ViewHolder {
         ImageView icon;
-        TextView text;
+        TextView name;
+        TextView nEvent;
+        TextView status;
+        TextView start;
+        TextView end;
     }
 
     static class ViewHolder2 {
@@ -129,21 +135,34 @@ public class Home_Alert extends AppCompatActivity {
             if (rowView == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 rowView = inflater.inflate(R.layout.activity_invitation_home, null);
-                viewHolder.icon = rowView.findViewById(R.id.row_img_Invite);
-                viewHolder.text = rowView.findViewById(R.id.row_name_Invite);
+                viewHolder.icon = rowView.findViewById(R.id.rowImageUser);
+                viewHolder.name = rowView.findViewById(R.id.rowName);
+                viewHolder.status = rowView.findViewById(R.id.rowNameStatus);
+                viewHolder.nEvent = rowView.findViewById(R.id.rowNameEvent);
+                viewHolder.start = rowView.findViewById(R.id.rowStartDate);
+                viewHolder.end = rowView.findViewById(R.id.rowEndDate);
 
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (Home_Alert.ViewHolder) rowView.getTag();
             }
-            if (list.get(position).ItemDrawable.equalsIgnoreCase("null")||list.get(position).ItemDrawable == null){
+            if (list.get(position).ItemDrawable.equalsIgnoreCase("null") || list.get(position).ItemDrawable == null) {
 
-            }else {
+            } else {
                 new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
             }
 
-            final String itemStr = list.get(position).ItemString;
-            viewHolder.text.setText(itemStr);
+            final String itemName = list.get(position).ItemName;
+            final String itemEvent = list.get(position).ItemEventName;
+            final String itemStatus = list.get(position).ItemStatus;
+            final String itemStart = list.get(position).ItemEStart;
+            final String itemEnd = list.get(position).ItemEEnd;
+            viewHolder.name.setText(itemName);
+            viewHolder.nEvent.setText(itemEvent);
+            viewHolder.status.setText(itemStatus);
+            viewHolder.start.setText(itemStart);
+            viewHolder.end.setText(itemEnd);
+
 
             return rowView;
         }
@@ -197,7 +216,7 @@ public class Home_Alert extends AppCompatActivity {
             final String itemStr = list2.get(position).ItemString;
             viewHolder2.text.setText(itemStr);
             int state = Integer.parseInt(list2.get(position).ItemStatus);
-            if (state != 2){
+            if (state != 2) {
                 viewHolder2.Status.setImageResource(R.drawable.ic_tick);
             }
             return rowView;
@@ -293,7 +312,8 @@ public class Home_Alert extends AppCompatActivity {
                 final TextView detail = mView.findViewById(R.id.alt_detail_Invite);
                 final ImageView imgF = mView.findViewById(R.id.alt_image_invite);
                 final TextView nameE = mView.findViewById(R.id.alt_name_invite);
-                final TextView startEnd = mView.findViewById(R.id.alt_start_end);
+                final TextView startdate = mView.findViewById(R.id.rowStartDate);
+                final TextView enddate = mView.findViewById(R.id.rowEndDate);
                 final TextView state = mView.findViewById(R.id.alt_state_invite);
                 final Button btn_seeMember = mView.findViewById(R.id.btn_seeMember);
                 final String tid = alertArray.get(position).get("trans_id").toString();
@@ -308,9 +328,14 @@ public class Home_Alert extends AppCompatActivity {
                 String events_detail = alertArray.get(position).get("events_detail").toString();
                 headTitle.setText(ename);
                 title.setText(ename);
-                detail.setText(events_detail);
+                if (events_detail==null||events_detail.equalsIgnoreCase("null")){
+                    detail.setText("-");
+                }else{
+                    detail.setText(events_detail);
+                }
                 nameE.setText(event_creater);
-                startEnd.setText(some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)]);
+                startdate.setText(some_array[Integer.parseInt(sSta)]);
+                enddate.setText(some_array[Integer.parseInt(sEnd)]);
                 state.setText(priName);
                 Log.d("pathimage", alertArray.toString());
                 new Extend_MyHelper.SendHttpRequestTask(user_photo, imgF, 250).execute();
@@ -331,7 +356,7 @@ public class Home_Alert extends AppCompatActivity {
                         ListView list = mView.findViewById(R.id.list_ShowMember);
                         TextView numPeople = mView.findViewById(R.id.shownum_people);
                         ImageButton btnClose = mView.findViewById(R.id.showbutton_btnClose);
-                        getMemberShow(list,eid,numPeople);
+                        getMemberShow(list, eid, numPeople);
                         btnClose.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -440,9 +465,9 @@ public class Home_Alert extends AppCompatActivity {
             String events_image = alertArray.get(i).get("events_image").toString();
 
 //            String mystring = getResources().getString(R.string.mystring);
-            String s ="คุณ "+ event_creater + "\nได้เชิญคุณเข้าร่วม : " + ename + "\nสถานะ : " + priName + " \nช่วงเวลา : " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
+//            String s ="คุณ "+ event_creater + "\nได้เชิญคุณเข้าร่วม : " + ename + "\nสถานะ : " + priName + " \nช่วงเวลา : " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
 
-            Home_Alert.Item item = new Home_Alert.Item(s, eid,events_image);
+            Home_Alert.Item item = new Home_Alert.Item(event_creater, ename, priName, some_array[Integer.parseInt(sSta)], some_array[Integer.parseInt(sEnd)], eid, events_image);
             items.add(item);
         }
         Log.d("pathimage", items.toString());
@@ -600,7 +625,7 @@ public class Home_Alert extends AppCompatActivity {
                                 memberArray.add(map);
                             }
                             initItems2(list);
-                            tv.setText("จำนวนสมาชิกปัจจุบัน "+memberArray.size()+" คน");
+                            tv.setText("จำนวนสมาชิกปัจจุบัน " + memberArray.size() + " คน");
                             Log.d("pathimage", "get alertArray " + alertArray.toString());
                             Log.d("pathimage", "get MyArrList " + MyArrList.toString());
                         } catch (JSONException e) {
@@ -628,7 +653,7 @@ public class Home_Alert extends AppCompatActivity {
             String uEmail = memberArray.get(i).get("user_email").toString();
             String uPhoto = memberArray.get(i).get("user_photo").toString();
             String sId = memberArray.get(i).get("states_id").toString();
-            Home_Alert.Item2 item2 = new Home_Alert.Item2(uName,uid,uPhoto,sId);
+            Home_Alert.Item2 item2 = new Home_Alert.Item2(uName, uid, uPhoto, sId);
             items2.add(item2);
         }
         myItemsListAdapter2 = new Home_Alert.ItemsListAdapter2(this, items2);

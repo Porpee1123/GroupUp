@@ -171,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:gravity="center" />
+                    android:textAlignment="center" />
 
             </LinearLayout>
 
@@ -210,7 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:gravity="center" />
+                    android:textAlignment="center" />
 
             </LinearLayout>
 
@@ -248,7 +248,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:gravity="center" />
+                    android:textAlignment="center" />
 
                 <TextView
                     android:id="@+id/day"
@@ -262,20 +262,21 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_marginTop="20dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="clip_horizontal|center"
                         android:layout_weight="1"
@@ -283,26 +284,41 @@
 
                     <TextView
                         android:id="@+id/textView28"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/bankName" />
                 </LinearLayout>
 
-                <Spinner
-                    android:id="@+id/spin_bank"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edt_accountName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#FFFFFF"
-                    android:ems="7"
-                    android:hint="@string/accountName"
-                    android:inputType="textPersonName" />
+                    <Spinner
+                        android:id="@+id/spin_bank"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:textAlignment="center" />
+
+                    <View
+                        android:id="@+id/view6"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:background="#CCCCCC" />
+
+                    <EditText
+                        android:id="@+id/edt_accountName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#FFFFFF"
+                        android:ems="15"
+                        android:gravity="bottom|center"
+                        android:hint="@string/accountName"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -345,6 +361,7 @@
                     android:gravity="start|top"
                     android:hint="@string/bankAccountNo"
                     android:inputType="number|text|phone"
+                    android:maxLength="10"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -354,7 +371,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/button"
                 android:text="@string/next"
                 android:textColor="@color/white" />

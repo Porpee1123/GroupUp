@@ -498,7 +498,7 @@ public class Home_CreateEvent extends AppCompatActivity {
                             bitmap.getWidth()
                     );
                 }
-                Bitmap lbp = scaleDown(dstBmp, 375, false);
+                Bitmap lbp = scaleDown(dstBmp, 250, false);
 
                 SelectImageGallery.setImageBitmap(lbp);
 

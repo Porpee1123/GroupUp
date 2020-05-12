@@ -80,7 +80,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="TextView"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -101,7 +102,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -154,7 +156,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -171,11 +174,28 @@
                     android:text="@string/timeColon" />
 
                 <TextView
-                    android:id="@+id/alt_start_end"
+                    android:id="@+id/rowStartDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" ถึง" />
+
+                <TextView
+                    android:id="@+id/rowEndDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -188,7 +208,6 @@
                     android:id="@+id/textView44"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.28"
                     android:text="@string/statusInvite" />
 
                 <TextView
@@ -196,7 +215,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -211,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/classicBlue"
+                    android:background="@drawable/button"
                     android:text="@string/later"
                     android:textColor="#FFFFFF" />
 
@@ -220,7 +241,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/red"
+                    android:background="@drawable/button"
+                    android:backgroundTint="@color/red"
                     android:text="@string/notJoin"
                     android:textColor="#FFFFFF" />
 
@@ -229,7 +251,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/green"
+                    android:background="@drawable/button"
+                    android:backgroundTint="@color/green"
                     android:text="@string/join"
                     android:textColor="#FFFFFF" />
             </LinearLayout>

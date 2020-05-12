@@ -123,7 +123,7 @@
         <item>ใกล้ MRT</item>
     </string-array>
     <string-array name="bank">
-        <item>กรุณาเลือก</item>
+        <item>กรุณาเลือกธนาคาร</item>
         <item>ธ.ก.ส</item>
         <item>กรุงศรี</item>
         <item>กรุงเทพ</item>
