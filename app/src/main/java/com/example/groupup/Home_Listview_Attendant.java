@@ -216,6 +216,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
+        Home.progressDialog.dismiss();
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
@@ -394,7 +395,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
             Home_Listview_Attendant.Item2 item2 = new Home_Listview_Attendant.Item2(eName,eid,eImage,sName);
             items2.add(item2);
         }
-        Home.handlerHome.sendEmptyMessage(0);
+
         myItemsListAdapter = new Home_Listview_Attendant.ItemsListAdapter2(this, items2);
         listViewAttend.setAdapter(myItemsListAdapter);
         Log.d("pathimage", items2.size() + "");

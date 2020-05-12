@@ -160,12 +160,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    static Handler handlerHome = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            progressDialog.dismiss();
-        }
-    };
 
     public void createTab() {
         searchAttend();
