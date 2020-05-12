@@ -107,15 +107,16 @@ public class HomeHead_SlipCheck extends AppCompatActivity {
     }
 
     public void backAppoint(View v) {
-        Intent intent = new Intent(HomeHead_SlipCheck.this, HomeHead_Appointment.class);
-        intent.putExtra("id", id + "");
-        intent.putExtra("email", email + "");
-        intent.putExtra("nEvent", nameE + "");
-        intent.putExtra("mStart", monS + "");
-        intent.putExtra("mEnd", monE + "");
-        intent.putExtra("eid", eid + "");
-        intent.putExtra("tab", 0 + "");
-        startActivity(intent);
+//        Intent intent = new Intent(HomeHead_SlipCheck.this, HomeHead_Appointment.class);
+//        intent.putExtra("id", id + "");
+//        intent.putExtra("email", email + "");
+//        intent.putExtra("nEvent", nameE + "");
+//        intent.putExtra("mStart", monS + "");
+//        intent.putExtra("mEnd", monE + "");
+//        intent.putExtra("eid", eid + "");
+//        intent.putExtra("tab", 0 + "");
+//        startActivity(intent);
+        finish();
     }
 
     public void searchWait() {

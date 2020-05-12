@@ -217,39 +217,6 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-
-        new CountDownTimer(300, 300) {
-            public void onFinish() {
-                // When timer is finished
-//                listViewAttend.setVisibility(View.VISIBLE);
-//                sAdapAttend = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_attend_home,
-//                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
-//                listViewAttend.setAdapter(sAdapAttend);
-                Home.handlerHome.sendEmptyMessage(0);
-                listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-                        String eName = MyArrList.get(position).get("events_name");
-                        String eId = MyArrList.get(position).get("events_id");
-                        String eStatus = MyArrList.get(position).get("states_name");
-                        checkVotePlace(eId);
-                        checkVoteTime(eId);
-                        Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
-                        Intent intent = new Intent(Home_Listview_Attendant.this, MainAttendent.class);
-                        intent.putExtra("id", id + "");
-                        intent.putExtra("eid", eId + "");
-                        intent.putExtra("nameEvent", eName + "");
-                        intent.putExtra("email", email);
-                        intent.putExtra("tab", 0 + "");
-                        startActivity(intent);
-                    }
-                });
-
-            }
-
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
     }
 
     public class ResponseStr {
@@ -426,13 +393,26 @@ public class Home_Listview_Attendant extends AppCompatActivity {
             Home_Listview_Attendant.Item2 item2 = new Home_Listview_Attendant.Item2(eName,eid,eImage,sName);
             items2.add(item2);
         }
+        Home.handlerHome.sendEmptyMessage(0);
         myItemsListAdapter = new Home_Listview_Attendant.ItemsListAdapter2(this, items2);
         listViewAttend.setAdapter(myItemsListAdapter);
         Log.d("pathimage", items2.size() + "");
         listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
-
+                String eName = memberArray.get(position).get("events_name");
+                String eId = memberArray.get(position).get("events_id");
+                String eStatus = memberArray.get(position).get("states_name");
+                checkVotePlace(eId);
+                checkVoteTime(eId);
+                Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
+                Intent intent = new Intent(Home_Listview_Attendant.this, MainAttendent.class);
+                intent.putExtra("id", id + "");
+                intent.putExtra("eid", eId + "");
+                intent.putExtra("nameEvent", eName + "");
+                intent.putExtra("email", email);
+                intent.putExtra("tab", 0 + "");
+                startActivity(intent);
             }
         });
     }

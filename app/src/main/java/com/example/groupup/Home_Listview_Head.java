@@ -1,26 +1,22 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -107,9 +103,9 @@ public class Home_Listview_Head extends AppCompatActivity {
             } else {
                 viewHolder2 = (Home_Listview_Head.ViewHolder2) rowView.getTag();
             }
-            if (list2.get(position).ItemDrawable.equalsIgnoreCase("null")||list2.get(position).ItemDrawable == null){
+            if (list2.get(position).ItemDrawable.equalsIgnoreCase("null") || list2.get(position).ItemDrawable == null) {
 
-            }else {
+            } else {
                 new Extend_MyHelper.SendHttpRequestTask(list2.get(position).ItemDrawable, viewHolder2.icon, 250).execute();
             }
 
@@ -145,7 +141,7 @@ public class Home_Listview_Head extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
     Home_Listview_Head.ResponseStr responseStr = new Home_Listview_Head.ResponseStr();
     String email = "", id = "";
-    int cVoteTime,cVotePlace;
+    int cVoteTime, cVotePlace;
     static ListView listViewHeader;
     static Home_Listview_Head.ItemsListAdapter2 myItemsListAdapter;
     List<Home_Listview_Head.Item2> items2 = new ArrayList<Home_Listview_Head.Item2>();
@@ -154,19 +150,18 @@ public class Home_Listview_Head extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_header);
         listViewHeader = findViewById(R.id.listView_Header);
         id = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         memberArray = new ArrayList<>();
-        Log.d("listA","idA "+id);
+        Log.d("listA", "idA " + id);
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getEventHeader();
-//                refreshData(); // your code
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -174,6 +169,7 @@ Extend_MyHelper.checkInternetLost(this);
 
 
     }
+
     public class ResponseStr {
         private String str;
         JSONArray jsonArray;
@@ -183,6 +179,7 @@ Extend_MyHelper.checkInternetLost(this);
         }
 
     }
+
     public void getEventHeader() {
         responseStr = new Home_Listview_Head.ResponseStr();
         memberArray.clear();
@@ -224,40 +221,8 @@ Extend_MyHelper.checkInternetLost(this);
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-//        new CountDownTimer(500, 500) {
-//            public void onFinish() {
-////                listViewHeader.setVisibility(View.VISIBLE);//เปิด
-////                sAdapHead = new SimpleAdapter(Home_Listview_Head.this, MyArrList, R.layout.activity_header_home,
-////                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
-////                listViewHeader.setAdapter(sAdapHead);
-//                listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
-//                        // เข้าสู่ event
-//                        String eName= MyArrList.get(position).get("events_name");
-//                        String eId= MyArrList.get(position).get("events_id");
-//                        String eStatus= MyArrList.get(position).get("states_name");
-//                        String ewait= MyArrList.get(position).get("events_wait");
-//                        Log.d("footer","id "+eId +"/ name "+eName+"/ status "+ eStatus);
-//                        checkVotePlace(eId);
-//                        checkVoteTime(eId);
-////                        checkCloseVote(eId);
-//                        Intent intent = new Intent(Home_Listview_Head.this, HomeHead_Appointment.class);
-//                        intent.putExtra("id",id+"");
-//                        intent.putExtra("eid",eId+"");
-//                        intent.putExtra("nameEvent",eName+"");
-//                        intent.putExtra("email",email+"");
-//                        intent.putExtra("tab",0+"");
-//                        intent.putExtra("wait", ewait + "");
-//                        startActivity(intent);
-//                    }
-//                });
-//            }
-//
-//            public void onTick(long millisUntilFinished) {
-//                // millisUntilFinished    The amount of time until finished.
-//            }
-//        }.start();
     }
+
     public void checkVoteTime(final String eid) {
         responseStr = new Home_Listview_Head.ResponseStr();
 
@@ -290,8 +255,8 @@ Extend_MyHelper.checkInternetLost(this);
                             }
                             if (check != 1) {
                                 cVoteTime = Integer.parseInt(MyArrList.get(0).get("dd"));
-                                Log.d("checkvote","hbcVoteTime "+cVotePlace);
-                                if (cVoteTime>0){
+                                Log.d("checkvote", "hbcVoteTime " + cVotePlace);
+                                if (cVoteTime > 0) {
                                     closeTime(eid);
                                 }
                             }
@@ -311,6 +276,7 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void checkVotePlace(final String eid) {
         responseStr = new Home_Listview_Head.ResponseStr();
 
@@ -344,8 +310,8 @@ Extend_MyHelper.checkInternetLost(this);
 //                            Log.d("checkvote","check "+check);
                             if (check != 1) {
                                 cVotePlace = Integer.parseInt(MyArrList.get(0).get("dd"));
-                                Log.d("checkvote","hbcVotePlace "+cVotePlace);
-                                if (cVotePlace>0){
+                                Log.d("checkvote", "hbcVotePlace " + cVotePlace);
+                                if (cVotePlace > 0) {
                                     closePlace(eid);
                                 }
                             }
@@ -407,6 +373,7 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     private void initItems2() {
         items2 = new ArrayList<Home_Listview_Head.Item2>();
         Log.d("pathimage", "memberArray " + memberArray.toString());
@@ -415,7 +382,7 @@ Extend_MyHelper.checkInternetLost(this);
             String eName = memberArray.get(i).get("events_name").toString();
             String sName = memberArray.get(i).get("states_name").toString();
             String eImage = memberArray.get(i).get("events_image").toString();
-            Home_Listview_Head.Item2 item2 = new Home_Listview_Head.Item2(eName,eid,eImage,sName);
+            Home_Listview_Head.Item2 item2 = new Home_Listview_Head.Item2(eName, eid, eImage, sName);
             items2.add(item2);
         }
         myItemsListAdapter = new Home_Listview_Head.ItemsListAdapter2(this, items2);
@@ -424,7 +391,22 @@ Extend_MyHelper.checkInternetLost(this);
         listViewHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
-
+                String eName = memberArray.get(position).get("events_name");
+                String eId = memberArray.get(position).get("events_id");
+                String eStatus = memberArray.get(position).get("states_name");
+                String ewait = memberArray.get(position).get("events_wait");
+                Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
+                checkVotePlace(eId);
+                checkVoteTime(eId);
+//                        checkCloseVote(eId);
+                Intent intent = new Intent(Home_Listview_Head.this, HomeHead_Appointment.class);
+                intent.putExtra("id", id + "");
+                intent.putExtra("eid", eId + "");
+                intent.putExtra("nameEvent", eName + "");
+                intent.putExtra("email", email + "");
+                intent.putExtra("tab", 0 + "");
+                intent.putExtra("wait", ewait + "");
+                startActivity(intent);
             }
         });
     }

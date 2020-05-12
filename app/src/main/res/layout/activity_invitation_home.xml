@@ -16,7 +16,7 @@
             android:id="@+id/row_img_Invite"
             android:layout_width="54dp"
             android:layout_height="58dp"
-            app:srcCompat="@drawable/ic_account_box_black_24dp" />
+            app:srcCompat="@drawable/ic_photo_size_select_actual_black_24dp" />
 
         <View
             android:id="@+id/view21"

@@ -362,15 +362,16 @@ public class Head_Date extends AppCompatActivity {
     }
 
     public void backAppoint(View v) {
-        Intent intent = new Intent(Head_Date.this, HomeHead_Appointment.class);
-        intent.putExtra("id", uid + "");
-        intent.putExtra("email", email + "");
-        intent.putExtra("eid", eid + "");
-        intent.putExtra("nameEvent", nameE + "");
-        intent.putExtra("mStart", monS + "");
-        intent.putExtra("mEnd", monE + "");
-        intent.putExtra("tab", 1 + "");
-        startActivity(intent);
+//        Intent intent = new Intent(Head_Date.this, HomeHead_Appointment.class);
+//        intent.putExtra("id", uid + "");
+//        intent.putExtra("email", email + "");
+//        intent.putExtra("eid", eid + "");
+//        intent.putExtra("nameEvent", nameE + "");
+//        intent.putExtra("mStart", monS + "");
+//        intent.putExtra("mEnd", monE + "");
+//        intent.putExtra("tab", 1 + "");
+//        startActivity(intent);
+        finish();
     }
 
     public void backAppoint() {

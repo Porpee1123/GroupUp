@@ -136,7 +136,11 @@ public class Home_Alert extends AppCompatActivity {
             } else {
                 viewHolder = (Home_Alert.ViewHolder) rowView.getTag();
             }
-            new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
+            if (list.get(position).ItemDrawable.equalsIgnoreCase("null")||list.get(position).ItemDrawable == null){
+
+            }else {
+                new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
+            }
 
             final String itemStr = list.get(position).ItemString;
             viewHolder.text.setText(itemStr);
@@ -433,10 +437,12 @@ public class Home_Alert extends AppCompatActivity {
             String event_creater = alertArray.get(i).get("event_creater").toString();
             String user_photo = alertArray.get(i).get("user_photo").toString();
             String events_detail = alertArray.get(i).get("events_detail").toString();
+            String events_image = alertArray.get(i).get("events_image").toString();
+
 //            String mystring = getResources().getString(R.string.mystring);
             String s ="คุณ "+ event_creater + "\nได้เชิญคุณเข้าร่วม : " + ename + "\nสถานะ : " + priName + " \nช่วงเวลา : " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
 
-            Home_Alert.Item item = new Home_Alert.Item(s, eid, user_photo);
+            Home_Alert.Item item = new Home_Alert.Item(s, eid,events_image);
             items.add(item);
         }
         Log.d("pathimage", items.toString());
@@ -469,6 +475,7 @@ public class Home_Alert extends AppCompatActivity {
                                 map.put("event_creater", c.getString("event_creater"));
                                 map.put("user_photo", c.getString("user_photo"));
                                 map.put("events_detail", c.getString("events_detail"));
+                                map.put("events_image", c.getString("events_image"));
 
                                 MyArrList.add(map);
                                 alertArray.add(map);
@@ -476,6 +483,7 @@ public class Home_Alert extends AppCompatActivity {
                             }
                             Log.d("pathimage", "get alertArray " + alertArray.toString());
                             Log.d("pathimage", "get MyArrList " + MyArrList.toString());
+                            showAllCheckboxClick();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -490,18 +498,6 @@ public class Home_Alert extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        new CountDownTimer(500, 500) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                showAllCheckboxClick();
-            }
-        }.start();
-
 
     }
 
