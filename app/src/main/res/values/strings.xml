@@ -201,6 +201,5 @@
     <string name="optionPay">OptionPay :</string>
     <string name="approve">accept</string>
     <string name="unapprove">eject</string>
-
-
+    <string name="priceperpeople">price per people :</string>
 </resources>

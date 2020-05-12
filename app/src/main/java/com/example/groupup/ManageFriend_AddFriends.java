@@ -1,9 +1,11 @@
 package com.example.groupup;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -55,7 +57,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
     SparseArray<String> type = new SparseArray<>();
     ArrayList<String> arSt;
     String fileEmail, fileId;
-    ImageView img ;
+    ImageView img;
 
 
     int MY_PERMISSIONS_REQUEST_CAMERA = 0;
@@ -161,8 +163,8 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             fid = MyArrList.get(0).get("user_id");
                             fname = MyArrList.get(0).get("user_names");
                             fimage = MyArrList.get(0).get("user_photo");
-                            new Extend_MyHelper.SendHttpRequestTask(fimage,img,350 ).execute();
-                                    Log.d("getuser", "id: " + fid + " name : " + fname + " image: " + fimage);
+                            new Extend_MyHelper.SendHttpRequestTask(fimage, img, 350).execute();
+                            Log.d("getuser", "id: " + fid + " name : " + fname + " image: " + fimage);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -219,7 +221,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             fid = MyArrList.get(0).get("user_id");
                             fname = MyArrList.get(0).get("user_names");
                             fimage = MyArrList.get(0).get("user_photo");
-                            new Extend_MyHelper.SendHttpRequestTask(fimage,img,350 ).execute();
+                            new Extend_MyHelper.SendHttpRequestTask(fimage, img, 350).execute();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -274,23 +276,48 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             }
                             final Extend_SpinnerAdapter exSpin = new Extend_SpinnerAdapter(ManageFriend_AddFriends.this, type, "Plese select");
                             spTypeFriend.setAdapter(exSpin);
+                            spTypeFriend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                @Override
+                                public void onFocusChange(View v, boolean hasFocus) {
+                                    spTypeFriend.setPrompt(exSpin.getCheckedValues());
+                                    Log.d("checkfocus", "checkfocus " + exSpin.getCheckedValues());
+                                }
+                            });
                             btnAddFriend.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Log.d(TAG, "checkbox " + exSpin.getCheckedValues());
                                     arSt = cutString(exSpin.getCheckedValues());
-                                    Log.d(TAG, arSt.toString());
-                                    if (addFriendToDb()) {
-                                        exSpin.getCheckedValues();
-                                        arSt = cutString(exSpin.getCheckedValues());
-                                        for (int i = 0; i < arSt.size(); i++) {
-                                            addAllFriendToDb(arSt.get(i));
+                                    if (arSt.size() == 0) {
+                                        Log.d("checkfocus", "size " + arSt.size());
+                                        final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(ManageFriend_AddFriends.this).create();
+                                        viewDetail.setTitle("กรุณาเลือกประเภทเพื่อน");
+                                        viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "เสร็จสิ้น", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        viewDetail.show();
+                                        Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                                        layoutParams.weight = 15;
+                                        btnPositive.setLayoutParams(layoutParams);
+                                    } else {
+                                        Log.d("checkfocus", "size " + arSt.size());
+                                        if (addFriendToDb()) {
+                                            exSpin.getCheckedValues();
+                                            arSt = cutString(exSpin.getCheckedValues());
+                                            for (int i = 0; i < arSt.size(); i++) {
+                                                addAllFriendToDb(arSt.get(i));
+                                            }
+                                            Intent in = new Intent(ManageFriend_AddFriends.this, Home.class);
+                                            in.putExtra("id", uid + "");
+                                            in.putExtra("email", email + "");
+                                            startActivity(in);
                                         }
-                                        Intent in = new Intent(ManageFriend_AddFriends.this, Home.class);
-                                        in.putExtra("id", uid + "");
-                                        in.putExtra("email", email + "");
-                                        startActivity(in);
                                     }
+                                    Log.d(TAG, arSt.toString());
                                 }
                             });
 
