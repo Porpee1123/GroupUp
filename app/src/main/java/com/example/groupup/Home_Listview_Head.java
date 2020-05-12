@@ -140,7 +140,7 @@ public class Home_Listview_Head extends AppCompatActivity {
 
     //*******************************TextView with checkbox******************************************//
     Home_Listview_Head.ResponseStr responseStr = new Home_Listview_Head.ResponseStr();
-    String email = "", id = "";
+    String email = "", id = "",uid = "";
     int cVoteTime, cVotePlace;
     static ListView listViewHeader;
     static Home_Listview_Head.ItemsListAdapter2 myItemsListAdapter;
@@ -154,6 +154,7 @@ public class Home_Listview_Head extends AppCompatActivity {
         setContentView(R.layout.activity_header);
         listViewHeader = findViewById(R.id.listView_Header);
         id = getIntent().getStringExtra("id");
+        uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         memberArray = new ArrayList<>();
         Log.d("listA", "idA " + id);
@@ -398,14 +399,16 @@ public class Home_Listview_Head extends AppCompatActivity {
                 Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
                 checkVotePlace(eId);
                 checkVoteTime(eId);
+
 //                        checkCloseVote(eId);
                 Intent intent = new Intent(Home_Listview_Head.this, HomeHead_Appointment.class);
-                intent.putExtra("id", id + "");
+                intent.putExtra("id", uid + "");
                 intent.putExtra("eid", eId + "");
                 intent.putExtra("nameEvent", eName + "");
                 intent.putExtra("email", email + "");
                 intent.putExtra("tab", 0 + "");
                 intent.putExtra("wait", ewait + "");
+                Log.d("checkIntent",uid+" "+email+" "+eId+" ");
                 startActivity(intent);
             }
         });

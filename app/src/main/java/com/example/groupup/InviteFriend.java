@@ -39,6 +39,7 @@ Extend_MyHelper.checkInternetLost(this);
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+        Log.d("checkIntent","invite "+uid+" "+email+" "+eid+" ");
         createTab();
         search();
 

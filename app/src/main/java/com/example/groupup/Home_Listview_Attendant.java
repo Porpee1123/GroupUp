@@ -144,7 +144,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
 
     //*******************************TextView with checkbox******************************************//
     Home_Listview_Attendant.ResponseStr responseStr = new Home_Listview_Attendant.ResponseStr();
-    String name = "", id = "", email = "";
+    String name = "", id = "", email = "",uid="";
     static ListView listViewAttend;
     int cVoteTime, cVotePlace;
     ArrayList<HashMap<String, String>> place, time;
@@ -161,6 +161,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         place = new ArrayList<HashMap<String, String>>();
         time = new ArrayList<HashMap<String, String>>();
         id = getIntent().getStringExtra("id");
+        uid  = getIntent().getStringExtra("id");
         memberArray = new ArrayList<>();
         email = getIntent().getStringExtra("email");
         Log.d("footer", "attend : id " + id);
@@ -407,7 +408,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 checkVoteTime(eId);
                 Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
                 Intent intent = new Intent(Home_Listview_Attendant.this, MainAttendent.class);
-                intent.putExtra("id", id + "");
+                intent.putExtra("id", uid + "");
                 intent.putExtra("eid", eId + "");
                 intent.putExtra("nameEvent", eName + "");
                 intent.putExtra("email", email);

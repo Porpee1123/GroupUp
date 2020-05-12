@@ -193,6 +193,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
         frientArray = new ArrayList<>();
+        Log.d("checkIntent",uid+" "+email+" "+eid+" ");
         getType();
 
 //        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {

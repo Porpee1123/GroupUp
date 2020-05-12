@@ -206,6 +206,7 @@ public class InviteFriend_Head extends AppCompatActivity {
         btnConfirmHead = findViewById(R.id.slide);
         frientArray = new ArrayList<>();
         getType();
+        Log.d("checkIntent",uid+" "+email+" "+eid+" ");
 
 //        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 //            @Override

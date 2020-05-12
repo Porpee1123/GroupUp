@@ -70,6 +70,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         wait = getIntent().getStringExtra("wait");
          String create = getIntent().getStringExtra("create");
+        Log.d("checkIntent","appoint "+id+" "+email+" "+eid+" ");
         getEvent();
         tab = Integer.parseInt(getIntent().getStringExtra("tab") + "");
         Log.d("inten12",nameE+":"+monS+":"+monE+":"+email+":"+id+":"+eid+":"+create+":"+wait);
