@@ -53,6 +53,7 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -140,7 +141,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //                    // millisUntilFinished    The amount of time until finished.
 //                }
 //            }.start();
-        search();
             //firebase signin
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
@@ -168,7 +168,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     };
 
     public void createTab() {
-
+        searchAttend();
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup(mLocalActivityManager);
         Intent inA = new Intent(this, Home_Listview_Attendant.class);
@@ -195,6 +195,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onTabChanged(String tabId) {
                 updateTabs();
+                searchHead();
             }
         });
 
@@ -235,27 +236,52 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         intent.putExtra("email", email + "");
         startActivity(intent);
     }
-
-    public void search() {
-        Log.d("arry",nameAttend.toString());
-
+    public void searchAttend() {
         searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                Log.d("arry",nameAttend.toString());
-//                Log.d("arry","s "+s);
-//                textHighlighter = new TextHighlighter();
-                Home_Listview_Attendant.sAdapAttend.getFilter().filter(s);
-                Home_Listview_Head.sAdapHead.getFilter().filter(s);
 
-//                textHighlighter.setBackgroundColor(Color.parseColor("#FFED54"))
-//                        .setForegroundColor(Color.RED)
-//                        .addTarget(cafe).highlight(searchText.getText().toString(), TextHighlighter.BASE_MATCHER);
-            }
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+                Home_Listview_Attendant.myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+    }
+
+    public void searchHead() {
+        searchText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
+                Home_Listview_Head.myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
         });
 
     }
@@ -359,7 +385,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             Log.d("imageview",image);
                             new Extend_MyHelper.SendHttpRequestTask(image,img,250).execute();
                             createTab();
-                            search();
                             getnumNotification();
 //                            writeFile(id,name,email);
                         } catch (JSONException e) {

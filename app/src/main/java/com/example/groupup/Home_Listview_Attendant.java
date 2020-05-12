@@ -1,13 +1,22 @@
 package com.example.groupup;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,14 +35,122 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class Home_Listview_Attendant extends AppCompatActivity {
+    //*******************************TextView with checkbox******************************************//
+    public class Item2 {
+        String ItemDrawable;
+        String ItemString;
+        String Id;
+        String ItemStatus;
+
+        //        Item(ImageView drawable, String t, boolean b){
+        Item2(String name, String id, String drawable, String Status) {
+            ItemDrawable = drawable;
+            ItemString = name;
+            Id = id;
+            ItemStatus = Status;
+            Log.d("dataShow", "ItemDrawable " + ItemDrawable.toString());
+        }
+
+    }
+
+    static class ViewHolder2 {
+        ImageView icon;
+        TextView text;
+        TextView Status;
+    }
+
+    public class ItemsListAdapter2 extends BaseAdapter {
+        private ArrayList<Home_Listview_Attendant.Item2> arraylist2;
+        private Context context;
+        private List<Home_Listview_Attendant.Item2> list2;
+
+        ItemsListAdapter2(Context c, List<Home_Listview_Attendant.Item2> l) {
+            context = c;
+            list2 = l;
+            arraylist2 = new ArrayList<Home_Listview_Attendant.Item2>();
+            arraylist2.addAll(l);
+        }
+
+        @Override
+        public int getCount() {
+            return list2.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list2.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View rowView = convertView;
+
+            // reuse views
+            Home_Listview_Attendant.ViewHolder2 viewHolder2 = new Home_Listview_Attendant.ViewHolder2();
+            if (rowView == null) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                rowView = inflater.inflate(R.layout.activity_header_home, null);
+                viewHolder2.icon = rowView.findViewById(R.id.col_img_event);
+                viewHolder2.text = rowView.findViewById(R.id.col_name_header);
+                viewHolder2.Status = rowView.findViewById(R.id.col_status_header);
+
+                rowView.setTag(viewHolder2);
+            } else {
+                viewHolder2 = (Home_Listview_Attendant.ViewHolder2) rowView.getTag();
+            }
+            if (list2.get(position).ItemDrawable.equalsIgnoreCase("null")||list2.get(position).ItemDrawable == null){
+
+            }else {
+                new Extend_MyHelper.SendHttpRequestTask(list2.get(position).ItemDrawable, viewHolder2.icon, 250).execute();
+            }
+
+            final String itemStr = list2.get(position).ItemString;
+            final String itemtag = list2.get(position).ItemStatus;
+            viewHolder2.text.setText(itemStr);
+            viewHolder2.Status.setText(itemtag);
+            return rowView;
+        }
+
+        // Filter Class
+        public void filter(String charText) {
+            charText = charText.toLowerCase(Locale.getDefault());
+            list2.clear();
+            if (charText.length() == 0) {
+                list2.addAll(arraylist2);
+            } else {
+                for (Home_Listview_Attendant.Item2 wp : arraylist2) {
+                    if (wp.ItemString.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list2.add(wp);
+                    }
+                    if (wp.ItemStatus.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list2.add(wp);
+                    }
+                }
+            }
+            notifyDataSetChanged();
+        }
+    }
+
+    //*******************************TextView with checkbox******************************************//
     Home_Listview_Attendant.ResponseStr responseStr = new Home_Listview_Attendant.ResponseStr();
     String name = "", id = "", email = "";
     static ListView listViewAttend;
-    static SimpleAdapter sAdapAttend;
     int cVoteTime, cVotePlace;
     ArrayList<HashMap<String, String>> place, time;
+    static Home_Listview_Attendant.ItemsListAdapter2 myItemsListAdapter;
+    List<Home_Listview_Attendant.Item2> items2 = new ArrayList<Home_Listview_Attendant.Item2>();
+    ArrayList<HashMap<String, String>> memberArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +161,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         place = new ArrayList<HashMap<String, String>>();
         time = new ArrayList<HashMap<String, String>>();
         id = getIntent().getStringExtra("id");
+        memberArray = new ArrayList<>();
         email = getIntent().getStringExtra("email");
         Log.d("footer", "attend : id " + id);
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
@@ -57,14 +175,12 @@ public class Home_Listview_Attendant extends AppCompatActivity {
             }
         });
         getEventAttend();
-        getEventHeader();
     }
 
     public void getEventAttend() {
         responseStr = new Home_Listview_Attendant.ResponseStr();
-
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-
+        memberArray.clear();
         String url = "http://www.groupupdb.com/android/gethomeattend.php";
         url += "?sId=" + id;
         Log.d("footer", "id : id " + id);
@@ -81,15 +197,11 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                                 map.put("events_id", c.getString("events_id"));
                                 map.put("events_name", c.getString("events_name"));
                                 map.put("states_name", c.getString("states_name"));
+                                map.put("events_image", c.getString("events_image"));
                                 MyArrList.add(map);
+                                memberArray.add(map);
                             }
-                            for (int i = 0; i < MyArrList.size(); i++) {
-                                Home.nameAttend.add(MyArrList.get(i).get("events_name"));
-                            }
-                            listViewAttend.setVisibility(View.VISIBLE);
-                            sAdapAttend = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_attend_home,
-                                    new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_attend, R.id.col_status_attend});
-                            listViewAttend.setAdapter(sAdapAttend);
+                            initItems2();
                             Log.d("arry", "attend : " + Home.nameAttend.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -138,60 +250,6 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
-    }
-
-    public void getEventHeader() {
-        responseStr = new Home_Listview_Attendant.ResponseStr();
-
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-
-        String url = "http://www.groupupdb.com/android/gethomehead.php";
-        url += "?sId=" + id;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("events_id", c.getString("events_id"));
-                                map.put("events_name", c.getString("events_name"));
-                                map.put("states_name", c.getString("states_name"));
-                                MyArrList.add(map);
-                            }
-                            for (int i = 0; i < MyArrList.size(); i++) {
-                                Home.nameHead.add(MyArrList.get(i).get("events_name"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-        new CountDownTimer(500, 500) {
-            public void onFinish() {
-                Home_Listview_Head.sAdapHead = new SimpleAdapter(Home_Listview_Attendant.this, MyArrList, R.layout.activity_header_home,
-                        new String[]{"events_name", "states_name"}, new int[]{R.id.col_name_header, R.id.col_status_header});
-            }
-
-            public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-            }
-        }.start();
-
-
     }
 
     public class ResponseStr {
@@ -354,5 +412,28 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+
+
+    private void initItems2() {
+        items2 = new ArrayList<Home_Listview_Attendant.Item2>();
+        Log.d("pathimage", "memberArray " + memberArray.toString());
+        for (int i = 0; i < memberArray.size(); i++) {
+            String eid = memberArray.get(i).get("events_id").toString();
+            String eName = memberArray.get(i).get("events_name").toString();
+            String sName = memberArray.get(i).get("states_name").toString();
+            String eImage = memberArray.get(i).get("events_image").toString();
+            Home_Listview_Attendant.Item2 item2 = new Home_Listview_Attendant.Item2(eName,eid,eImage,sName);
+            items2.add(item2);
+        }
+        myItemsListAdapter = new Home_Listview_Attendant.ItemsListAdapter2(this, items2);
+        listViewAttend.setAdapter(myItemsListAdapter);
+        Log.d("pathimage", items2.size() + "");
+        listViewAttend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
+
+            }
+        });
     }
 }
