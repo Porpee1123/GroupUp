@@ -28,16 +28,17 @@
                     android:background="@color/red"
                     app:srcCompat="@drawable/ic_close_black_24dp" />
             </LinearLayout>
+
             <androidx.cardview.widget.CardView
-                app:cardCornerRadius="6dp"
-                android:layout_margin="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                app:cardCornerRadius="10dp">
 
                 <com.smarteist.autoimageslider.SliderView
                     android:id="@+id/imageSlider"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="250dp"
                     app:sliderAnimationDuration="600"
                     app:sliderAutoCycleDirection="back_and_forth"
                     app:sliderAutoCycleEnabled="true"
@@ -72,7 +73,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:text="@string/detailColon" />
 
             <View
@@ -94,7 +95,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp">
 
@@ -128,8 +128,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="@string/time"
-                                    android:textStyle="bold" />
+                                    android:text="@string/time" />
                             </LinearLayout>
 
                             <TextView
@@ -138,13 +137,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_weight="1"
-                                android:text="TextView" />
+                                android:text="TextView"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:orientation="vertical">
 
                             <LinearLayout
@@ -165,8 +165,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="@string/phone"
-                                    android:textStyle="bold" />
+                                    android:text="@string/phone" />
                             </LinearLayout>
 
                             <TextView
@@ -175,13 +174,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_weight="1"
-                                android:text="TextView" />
+                                android:text="TextView"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:orientation="vertical">
 
                             <LinearLayout
@@ -202,8 +202,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="@string/priceRange"
-                                    android:textStyle="bold" />
+                                    android:text="@string/priceRange" />
 
                             </LinearLayout>
 
@@ -213,13 +212,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_weight="1"
-                                android:text="TextView" />
+                                android:text="TextView"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -241,8 +241,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
-                                    android:text="@string/maxPeople"
-                                    android:textStyle="bold" />
+                                    android:text="@string/maxPeople" />
 
                             </LinearLayout>
 
@@ -252,13 +251,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_weight="1"
-                                android:text="TextView" />
+                                android:text="TextView"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -279,8 +279,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="@string/score_review"
-                                    android:textStyle="bold" />
+                                    android:text="@string/score_review" />
 
                                 <TextView
                                     android:id="@+id/showplace_PeopleVisit"
@@ -300,7 +299,6 @@
                                     style="@android:style/Widget.Holo.Light.RatingBar.Small"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
                                     android:layout_weight="1"
                                     android:numStars="5"
                                     android:progressTint="#FFEB3B"
@@ -308,7 +306,7 @@
 
                                 <Button
                                     android:id="@+id/btn_seeReview"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="70dp"
                                     android:layout_height="30dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_weight="10"
@@ -324,22 +322,23 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/textView47"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/facility"
-                            android:textStyle="bold" />
+                            android:text="@string/facility" />
 
                         <TextView
                             android:id="@+id/showplace_facility"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="5dp"
-                            android:text="TextView" />
+                            android:text="TextView"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
                 </LinearLayout>

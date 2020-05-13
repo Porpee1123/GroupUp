@@ -13,24 +13,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/namePlace"
-                android:textStyle="bold" />
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/rowPlaceNameVotePlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"
-                android:text="TextView"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/namePlace" />
+
+                <TextView
+                    android:id="@+id/rowPlaceNameVotePlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -41,35 +50,38 @@
 
             <ImageView
                 android:id="@+id/rowImageViewVotePlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_photo_size_select_actual_black_24dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView24"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/descriptionPlace"
-                        android:textStyle="bold" />
+                        android:text="@string/descriptionPlace" />
 
                     <TextView
                         android:id="@+id/rowDescriptionVotePlace"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="TextView" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="TextView"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -81,14 +93,17 @@
                         android:id="@+id/textView26"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/facility"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:text="@string/facility" />
 
                     <TextView
                         android:id="@+id/rowFacilityVotePlace"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="10"
+                        android:text="TextView"
+                        android:textStyle="bold" />
 
 
                 </LinearLayout>
@@ -102,8 +117,7 @@
                         android:id="@+id/textView28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/rating"
-                        android:textStyle="bold" />
+                        android:text="@string/rating" />
 
                     <RatingBar
                         android:id="@+id/rowRatingVotePlace"
@@ -119,10 +133,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="right"
             android:layout_marginEnd="10dp"
-            android:gravity="right"
             android:orientation="horizontal">
 
             <Button
