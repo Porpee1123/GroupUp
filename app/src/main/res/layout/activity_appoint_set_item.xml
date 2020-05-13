@@ -37,16 +37,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
-                    android:onClick="selectFriend"
                     android:text="@string/select_friend"
-                    android:textColor="#FFFFFF" />
-
-                <Button
-                    android:id="@+id/show_inviteFriend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/green_button"
-                    android:text="@string/see_friendEvent"
                     android:textColor="#FFFFFF" />
 
             </TableRow>
@@ -74,7 +65,6 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
-                    android:onClick="selectTheme"
                     android:text="@string/select_theme"
                     android:textColor="#FFFFFF" />
 
@@ -96,13 +86,12 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/button_summaryHead"
+                    android:id="@+id/summaryHead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
-                    android:onClick="selectSummary"
                     android:text="@string/select"
                     android:textColor="#FFFFFF" />
             </TableRow>
@@ -123,13 +112,12 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/button9"
+                    android:id="@+id/checkslipHead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
-                    android:onClick="selectSlip"
                     android:text="@string/select"
                     android:textColor="#FFFFFF" />
             </TableRow>
