@@ -289,9 +289,9 @@ public class JobSummary extends AppCompatActivity {
         tvPlace = findViewById(R.id.sumplaceApp);
         tvPeople = findViewById(R.id.sumpeople);
         btn_showPlace = findViewById(R.id.btn_showPlace);
-        getTransIDByTrans(id, eId, "2");
-        Extend_MyHelper.checkPeopleConfirmEvent(eId,this,tvPeople);
-        Extend_MyHelper.checkStatusTrans(eId, "10", JobSummary.this, tvPeople);
+//        getTransIDByTrans(id, eId, "2");
+
+        Extend_MyHelper.checkStatusTrans(eId, "11", JobSummary.this, tvPeople);
         getJob();
         Log.d("checktrans", "tran " + transId);
         bJoin.setOnClickListener(new View.OnClickListener() {
@@ -468,7 +468,6 @@ public class JobSummary extends AppCompatActivity {
                                 MyArrList.add(map);
                             }
                             String[] some_array = getResources().getStringArray(R.array.bank);
-
 
                             String date = MyArrList.get(0).get("time");
                             String dayString = Extend_MyHelper.getDayFromDateString(date, "dd/MM/yyyy");
