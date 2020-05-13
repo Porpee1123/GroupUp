@@ -216,9 +216,19 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        Home.progressDialog.dismiss();
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+        new CountDownTimer(2000, 2000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                Home.progressDialog.dismiss();
+            }
+        }.start();
     }
 
     public class ResponseStr {
