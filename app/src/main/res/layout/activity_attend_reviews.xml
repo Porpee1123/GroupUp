@@ -72,7 +72,7 @@
                     android:text="@string/namePlace" />
 
                 <TextView
-                    android:id="@+id/textView14"
+                    android:id="@+id/review_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
@@ -96,7 +96,7 @@
                     android:text="@string/rating" />
 
                 <RatingBar
-                    android:id="@+id/ratingBar"
+                    android:id="@+id/review_ratingBar"
                     style="@android:style/Widget.Holo.Light.RatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                     android:orientation="vertical">
 
                     <EditText
-                        android:id="@+id/editText3"
+                        android:id="@+id/review_edtdetail"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_weight="1"
@@ -144,7 +144,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/review_btnConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
