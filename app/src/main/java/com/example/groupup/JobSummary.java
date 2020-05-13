@@ -289,8 +289,7 @@ public class JobSummary extends AppCompatActivity {
         tvPlace = findViewById(R.id.sumplaceApp);
         tvPeople = findViewById(R.id.sumpeople);
         btn_showPlace = findViewById(R.id.btn_showPlace);
-//        getTransIDByTrans(id, eId, "2");
-
+        getTransIDByTrans(id, eId, "3");//ผู้เข้าร่วมงาน
         Extend_MyHelper.checkStatusTrans(eId, "11", JobSummary.this, tvPeople);
         getJob();
         Log.d("checktrans", "tran " + transId);
