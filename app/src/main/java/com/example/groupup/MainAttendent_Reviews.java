@@ -129,8 +129,18 @@ public class MainAttendent_Reviews extends AppCompatActivity {
                                 map.put("peopleReview", c.getString("peopleReview"));
                                 MyArrList.add(map);
                             }
-                            sumpeople = Integer.parseInt(MyArrList.get(0).get("peopleReview"));
-                            scorePeople = Float.parseFloat(MyArrList.get(0).get("sumReview"));
+                            String pReview =MyArrList.get(0).get("peopleReview");
+                            String sReview =MyArrList.get(0).get("sumReview");
+                            if (pReview.equalsIgnoreCase("null")||pReview==null){
+                                sumpeople = 0;
+                            }else{
+                                sumpeople = Integer.parseInt(MyArrList.get(0).get("peopleReview"));
+                            }
+                            if (sReview.equalsIgnoreCase("null")||sReview==null){
+                                scorePeople = 0;
+                            }else {
+                                scorePeople = Float.parseFloat(MyArrList.get(0).get("sumReview"));
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -152,29 +162,33 @@ public class MainAttendent_Reviews extends AppCompatActivity {
         textReview = edt_datail.getText().toString();
         scoreEDb = scorePeople + scoreReview;
         peopleEDb = sumpeople + 1;
+        float scorevisitplace= scoreEDb / peopleEDb;
         Log.d("checkscoreReview", "EDB score " + scoreEDb + " people " + peopleEDb);
-        Log.d("checkscoreReview", "score " + scorePeople + " people " + sumpeople + " rtScore " + scoreReview);
+        Log.d("checkscoreReview", "score " + scorePeople + " people " + sumpeople + " rtScore " + scoreReview+" scVisit "+scorevisitplace);
 
-//        String url = "http://www.groupupdb.com/android/addreviewtodb.php";
-//        url += "?pid=" + placeId + "";
-//        url += "&uid=" + uid + "";
-//        url += "&rts=" + scoreReview + "";
-//        url += "&rvt=" + textReview;
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Toast.makeText(MainAttendent_Reviews.this, "Add Review Complete", Toast.LENGTH_SHORT).show();
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-//                    }
-//                });
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+        String url = "http://www.groupupdb.com/android/addreviewtodb.php";
+        url += "?pid=" + placeId + "";
+        url += "&uid=" + uid + "";
+        url += "&rts=" + scoreReview + "";
+        url += "&rvt=" + textReview+"";
+        url += "&pvp=" + peopleEDb+"";
+        url += "&svp=" + scorevisitplace+"";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainAttendent_Reviews.this, "Add Review Complete", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
 
     }
 
