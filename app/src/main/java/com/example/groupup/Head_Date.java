@@ -78,8 +78,9 @@ public class Head_Date extends AppCompatActivity {
         wait = getIntent().getStringExtra("wait");
         conDateVote.setVisibility(View.INVISIBLE);
         getEvent();
-        getDate();
-        Log.d("wait",wait+"");
+//        getDate();
+        getnumcal();
+        Log.d("dateselect",uid+" "+email+" "+eid+" "+wait+" "+monS+" "+monE);
         final int[] count = {0};
         final int maxLimit = 3;
         //set spinner time
@@ -362,16 +363,16 @@ public class Head_Date extends AppCompatActivity {
     }
 
     public void backAppoint(View v) {
-//        Intent intent = new Intent(Head_Date.this, HomeHead_Appointment.class);
-//        intent.putExtra("id", uid + "");
-//        intent.putExtra("email", email + "");
-//        intent.putExtra("eid", eid + "");
-//        intent.putExtra("nameEvent", nameE + "");
-//        intent.putExtra("mStart", monS + "");
-//        intent.putExtra("mEnd", monE + "");
-//        intent.putExtra("tab", 1 + "");
-//        startActivity(intent);
-        finish();
+        Intent intent = new Intent(Head_Date.this, HomeHead_Appointment.class);
+        intent.putExtra("id", uid + "");
+        intent.putExtra("email", email + "");
+        intent.putExtra("eid", eid + "");
+        intent.putExtra("nameEvent", nameE + "");
+        intent.putExtra("mStart", monS + "");
+        intent.putExtra("mEnd", monE + "");
+        intent.putExtra("tab", 1 + "");
+        startActivity(intent);
+//        finish();
     }
 
     public void backAppoint() {
@@ -388,11 +389,13 @@ public class Head_Date extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void getDate() {
+    public void getDate(String numWait,String max) {
         responseStr = new Head_Date.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/showtimeforvote.php";
         url += "?eid=" + eid;
+        url += "&wait=" + numWait+"";
+        url += "&max=" + max+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -622,6 +625,48 @@ public class Head_Date extends AppCompatActivity {
         simpleNoHour.format(nextYear1);
         Log.d("wait",nextYear1+"");
         return simpleNoHour.format(nextYear1)+"";
+    }
+
+    public void getnumcal() {
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+//        Log.d("footer", "email " + email);
+        String url = "http://www.groupupdb.com/android/getNumdateeventcal.php";
+        url += "?eId=" + eid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("numdate", c.getString("numdate"));
+                                map.put("numdatemax", c.getString("numdatemax"));
+                                MyArrList.add(map);
+                            }
+                            String numcal = MyArrList.get(0).get("numdate");
+                            String numcalmax = MyArrList.get(0).get("numdatemax");
+                            Log.d("tab","numcalb : "+ numcal);
+                            int waitTime = (Integer.parseInt(numcal)*4)+4;
+                            Log.d("tab","numcal : "+ waitTime + " "+ numcalmax);
+                            getDate(waitTime+"",numcalmax);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
     public void getEvent() {
 

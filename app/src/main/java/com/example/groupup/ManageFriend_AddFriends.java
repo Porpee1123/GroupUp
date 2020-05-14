@@ -276,13 +276,7 @@ public class ManageFriend_AddFriends extends AppCompatActivity {
                             }
                             final Extend_SpinnerAdapter exSpin = new Extend_SpinnerAdapter(ManageFriend_AddFriends.this, type, "Plese select");
                             spTypeFriend.setAdapter(exSpin);
-                            spTypeFriend.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                                @Override
-                                public void onFocusChange(View v, boolean hasFocus) {
-                                    spTypeFriend.setPrompt(exSpin.getCheckedValues());
-                                    Log.d("checkfocus", "checkfocus " + exSpin.getCheckedValues());
-                                }
-                            });
+                            spTypeFriend.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                             btnAddFriend.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

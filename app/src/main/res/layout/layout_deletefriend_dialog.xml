@@ -53,13 +53,13 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_cancleDel"
+                android:id="@+id/btn_delAllFriend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:background="@color/red"
-                android:text="@string/btn_cancle"
+                android:background="@drawable/button"
+                android:text="@string/delAll"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
 
@@ -69,19 +69,21 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:background="@color/green"
+                android:background="@drawable/button"
+                android:backgroundTint="@color/green"
                 android:text="@string/del"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
 
             <Button
-                android:id="@+id/btn_delAllFriend"
+                android:id="@+id/btn_cancleDel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:background="@color/classicBlue"
-                android:text="@string/delAll"
+                android:background="@drawable/button"
+                android:backgroundTint="@color/red"
+                android:text="@string/btn_cancle"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
 

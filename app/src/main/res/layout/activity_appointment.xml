@@ -70,8 +70,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginTop="20dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/status"
+            android:layout_marginRight="10dp"
+
+            android:text="สถานะ: "
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -109,7 +110,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:gravity="clip_horizontal|center"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -159,7 +161,8 @@
                         android:hint="-"
                         android:inputType="textMultiLine"
                         android:singleLine="false"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </ScrollView>
 
@@ -207,7 +210,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/start" />
+                android:text="@string/start"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView21"
@@ -223,7 +227,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/end" />
+                android:text="@string/end"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout

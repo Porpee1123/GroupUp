@@ -3,6 +3,7 @@ package com.example.groupup;
 import android.app.AlertDialog;
 import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,9 +40,9 @@ public class HomeHead_Appointment extends AppCompatActivity {
 
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
-    String id, eid, nameE, monS, monE, email, note, detail,wait;
+    String id, eid, nameE, monS, monE, email, note, detail,wait,state;
     int tab = 0;
-    TextView tName, mStart, mEnd, headAppoint;
+    TextView tName, mStart, mEnd, headAppoint,eStatus;
     EditText editText;
     ImageButton sentDetail,btn_note;
     ProgressDialog progressDialog;
@@ -60,6 +61,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
         editText = findViewById(R.id.edt_eventDetail);
         sentDetail = findViewById(R.id.btn_sentDetail);
         btn_note = findViewById(R.id.btn_note);
+        eStatus =findViewById(R.id.status2);
 
         some_array = getResources().getStringArray(R.array.month);
         id = getIntent().getStringExtra("id");
@@ -77,6 +79,8 @@ public class HomeHead_Appointment extends AppCompatActivity {
         Log.d("tab", "tab " + tab);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         tName.setText(nameE);
+        Extend_MyHelper.checkStatususer(eid,id,"2",this,eStatus);
+        checkStatususer(eid,id,"2");
         if (create != null && create.equalsIgnoreCase("create")){
             mStart.setText(some_array[Integer.parseInt(monS)]);
             mEnd.setText(some_array[Integer.parseInt(monE)]);
@@ -88,8 +92,6 @@ public class HomeHead_Appointment extends AppCompatActivity {
 //        mStart.setText(monS);
 //        mEnd.setText(monE);
         headAppoint.setText(nameE);
-
-
         tabHost.setup(mLocalActivityManager);
         Intent intentS = new Intent(this, HomeHead_Appointment_SetItem.class);
         intentS.putExtra("id", id + "");
@@ -272,6 +274,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
                             note = MyArrList.get(0).get("events_note");
                             detail = MyArrList.get(0).get("events_detail");
                             wait = MyArrList.get(0).get("events_wait");
+                          String status = MyArrList.get(0).get("states_name");
                             Log.d("tab", "get mons " + monS+"mone "+monE);
                             tName.setText(nameE);
 //                            mStart.setText(monS);
@@ -427,7 +430,47 @@ public class HomeHead_Appointment extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    public void checkStatususer(String eId , String uid, String pri){
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getStatusAppoint.php";
+        url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
+        url += "&uId=" + uid;
+        url += "&prId=" + pri;
+        Log.d("checkStatus","url "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("states_name", c.getString("states_name"));
+                                MyArrList.add(map);
+                            }
+                            state = MyArrList.get(0).get("states_name");
+                            if (state.equalsIgnoreCase("เลือกวันที่")||state.equalsIgnoreCase("เลือกสถานที่")){
+                                tabHost.setCurrentTab(1);
+                            }else {
+                                tabHost.setCurrentTab(0);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 }
 
 

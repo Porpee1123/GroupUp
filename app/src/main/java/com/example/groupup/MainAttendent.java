@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainAttendent extends AppCompatActivity {
-    String nEvent="",id="",eid="",email="";
+    String nEvent="",id="",eid="",email="",state="";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     TextView nHead;
@@ -240,6 +240,47 @@ Extend_MyHelper.checkInternetLost(this);
                                 MyArrList.add(map);
                             }
                             note = MyArrList.get(0).get("events_note");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void checkStatususer(String eId , String uid, String pri){
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getStatusAppoint.php";
+        url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
+        url += "&uId=" + uid;
+        url += "&prId=" + pri;
+        Log.d("checkStatus","url "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("states_name", c.getString("states_name"));
+                                MyArrList.add(map);
+                            }
+                            state = MyArrList.get(0).get("states_name");
+                            if (state.equalsIgnoreCase("เลือกวันที่")||state.equalsIgnoreCase("เลือกสถานที่")){
+                                tabHost.setCurrentTab(1);
+                            }else {
+                                tabHost.setCurrentTab(0);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -48,8 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:text="พีอย่าลืมเซ็ต" />
+                    android:gravity="center_horizontal|center_vertical" />
 
 
                 <View
@@ -84,11 +83,37 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_communications" />
+
+                    <TextView
+                        android:id="@+id/textView53"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="กรุณารอแม่งานจัดการข้อมูลการนัดหมาย"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
                 <TabWidget
                     android:id="@android:id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white" />
+                    android:background="@color/white" >
+
+                </TabWidget>
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"

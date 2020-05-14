@@ -23,6 +23,7 @@ public class Extend_SpinnerAdapter extends ArrayAdapter {
         titleView = new TextView(context);
         titleView.setText(title);
         titleView.setPadding(10, 3, 10, 3);
+        titleView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
     }
 
     void setCheckedArray(SparseBooleanArray checked){
@@ -69,6 +70,7 @@ public class Extend_SpinnerAdapter extends ArrayAdapter {
             @Override
             public void onClick(View checkBox) {
                 setChecked(checkBox, position);
+                getCheckedValues();
             }
         });
     }

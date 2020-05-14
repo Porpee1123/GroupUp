@@ -3,6 +3,7 @@ package com.example.groupup;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -359,7 +360,15 @@ public class InviteFriend_Head extends AppCompatActivity {
                 Extend_MyHelper.UpdateAllState(eid,"4","2",InviteFriend_Head.this);
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
-                finish();
+                Intent intent = new Intent(InviteFriend_Head.this, show_invitation.class);
+                intent.putExtra("email", email + "");
+                intent.putExtra("id", uid + "");
+                intent.putExtra("eid", eid + "");
+                intent.putExtra("nameEvent", nameE + "");
+                intent.putExtra("mStart", monS + "");
+                intent.putExtra("mEnd", monE + "");
+                startActivity(intent);
+//                finish();
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(InviteFriend_Head.this, string1, Toast.LENGTH_LONG).show();
 

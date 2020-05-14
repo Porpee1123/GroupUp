@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="3"
-                android:fontFamily="sans-serif"
+
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/select_place" />
 
@@ -83,7 +83,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#FFFFFF"
                 android:ems="10"
-                android:fontFamily="sans-serif"
+
                 android:hint="@string/search_place"
                 android:inputType="textPersonName" />
 

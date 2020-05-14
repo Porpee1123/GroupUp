@@ -203,28 +203,7 @@ public class Extend_MyHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
     }
-    public  static void UpdateStateToDbforAttend(String transId, String statusId,Context context) {
-        String url = "http://www.groupupdb.com/android/updateStatebytranforattend.php";
-        url += "?tId=" + transId;
-        url += "&stId=" + statusId;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("updatedb", response);
-//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(stringRequest);
-    }
-    public  static void checkPeopleConfirmEvent(String eId, Context context, final TextView edt) {
+   public  static void checkPeopleConfirmEvent(String eId, Context context, final TextView edt) {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         final String[] state = {""};
         String url = "http://www.groupupdb.com/android/checkpeopleacceptevent.php";
@@ -343,4 +322,45 @@ public class Extend_MyHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
     }
+    public static String checkStatususer(String eId , String uid,String pri, Context context, final TextView edt){
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        final String[] state = {""};
+        String url = "http://www.groupupdb.com/android/getStatusAppoint.php";
+        url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
+        url += "&uId=" + uid;
+        url += "&prId=" + pri;
+        Log.d("checkStatus","url "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("states_name", c.getString("states_name"));
+                                MyArrList.add(map);
+                            }
+                            state[0] = MyArrList.get(0).get("states_name");
+                            edt.setText("สถานะ: "+state[0]);
+                            Log.d("checkStatus","status appoint "+state[0]);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
+        return state[0];
+    }
+
 }

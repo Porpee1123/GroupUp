@@ -145,7 +145,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-medium"
+
                         android:gravity="center|left"
                         android:text="@string/restaurant_type"
                         android:textSize="18sp"
@@ -311,7 +311,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="20dp"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-medium"
+
                         android:gravity="center|left"
                         android:text="@string/food_type"
                         android:textSize="18sp"
@@ -531,7 +531,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-medium"
+
                         android:gravity="left"
                         android:text="@string/atmosphere_type"
                         android:textSize="18sp"
