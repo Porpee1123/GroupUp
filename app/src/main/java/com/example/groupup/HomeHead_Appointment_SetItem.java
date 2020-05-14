@@ -131,9 +131,8 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
 
     public void checkPeopleEvent(String eId) {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        final String[] state = {""};
         String url = "http://www.groupupdb.com/android/checkpeopleinevent.php";
-        url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
+        url += "?eId=" + eId;//attend only
         Log.d("MyHelper", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -151,7 +150,7 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
                             peopleInEvent = MyArrList.get(0).get("sumtran");
                             Log.d("MyHelper", "peopleInEvent " + peopleInEvent);
                             final int people = Integer.parseInt(peopleInEvent);
-                            if (people > 2) {
+                            if (people > 1) {
                                 btn_inviteFriend.setText("ดูรายการเพื่อน");
                                 btn_inviteFriend.setOnClickListener(new View.OnClickListener() {
                                     @Override

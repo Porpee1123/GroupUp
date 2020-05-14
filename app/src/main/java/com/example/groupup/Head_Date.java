@@ -79,7 +79,8 @@ public class Head_Date extends AppCompatActivity {
         conDateVote.setVisibility(View.INVISIBLE);
         getEvent();
 //        getDate();
-        getnumcal();
+        checkPeopleEvent(eid);
+
         Log.d("dateselect",uid+" "+email+" "+eid+" "+wait+" "+monS+" "+monE);
         final int[] count = {0};
         final int maxLimit = 3;
@@ -389,13 +390,11 @@ public class Head_Date extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void getDate(String numWait,String max) {
+    public void getDate() {
         responseStr = new Head_Date.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/showtimeforvote.php";
         url += "?eid=" + eid;
-        url += "&wait=" + numWait+"";
-        url += "&max=" + max+"";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -627,7 +626,7 @@ public class Head_Date extends AppCompatActivity {
         return simpleNoHour.format(nextYear1)+"";
     }
 
-    public void getnumcal() {
+    public void getnumcal(final int people) {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 //        Log.d("footer", "email " + email);
@@ -652,7 +651,15 @@ public class Head_Date extends AppCompatActivity {
                             Log.d("tab","numcalb : "+ numcal);
                             int waitTime = (Integer.parseInt(numcal)*4)+4;
                             Log.d("tab","numcal : "+ waitTime + " "+ numcalmax);
-                            getDate(waitTime+"",numcalmax);
+                            if (people > 2) {
+                                Log.d("MyHelper","people > 5");
+                                getDate();
+                            } else {
+                                Log.d("MyHelper","people < 5");
+                                getDateless5(waitTime+"",numcalmax);
+                            }
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -667,6 +674,83 @@ public class Head_Date extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+    public void getDateless5(String numWait,String max) {
+        responseStr = new Head_Date.ResponseStr();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/showtimeforvotelessfive.php";
+        url += "?eid=" + eid;
+        url += "&wait=" + numWait+"";
+        url += "&max=" + max+"";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {//0 = id,1 = max people,2 = date
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("daforcheck", c.getString("daforcheck"));
+                                MyArrList.add(map);
+                            }
+                            for (int i = 0; i < MyArrList.size(); i++) {
+                                dataDB.add(MyArrList.get(i).get("daforcheck"));
+                            }
+                            timeDB.add("11:00 - 13:59");
+                            timeDB.add("14:00 - 16:59");
+                            timeDB.add("17:00 - 19:59");
+                            timeDB.add("20:00 - 23:59");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("dateselect", "lessfive "+MyArrList.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
+        new CountDownTimer(500, 500) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                for (int i =0;i<dataDB.size();i++){
+                    StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
+                    String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i),"dd/MM/yyyy");
+                    while (st.hasMoreTokens()) {
+                        String d, m, y, date;
+                        String[] some_array = getResources().getStringArray(R.array.month);
+                        d = st.nextToken();
+                        m = st.nextToken();
+                        y = st.nextToken();
+                        date = "วัน"+dayString+"ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                        if (i==0){
+                            cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                        }else if (i==1){
+                            cb2.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                        }else if (i==2){
+                            cb3.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                        }else if (i==3){
+                            cb4.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                        }
+
+                    }
+                }
+            }
+        }.start();
     }
     public void getEvent() {
 
@@ -700,6 +784,43 @@ public class Head_Date extends AppCompatActivity {
                             }
                             wait = MyArrList.get(0).get("events_wait");
                             Log.d("tab","wait : "+ wait);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void checkPeopleEvent(String eId) {
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/checkpeopleinevent.php";
+        url += "?eId=" + eId;//attend only
+        Log.d("MyHelper", "url " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("sumtran", c.getString("sumtran"));
+                                MyArrList.add(map);
+                            }
+                           String peopleInEvent = MyArrList.get(0).get("sumtran");
+                            Log.d("MyHelper", "peopleInEvent " + peopleInEvent);
+                            final int people = Integer.parseInt(peopleInEvent);
+                            getnumcal(people);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
