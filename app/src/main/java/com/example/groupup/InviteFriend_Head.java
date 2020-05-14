@@ -356,7 +356,7 @@ public class InviteFriend_Head extends AppCompatActivity {
             protected void onPostExecute(String string1) {
 
                 super.onPostExecute(string1);
-
+                Extend_MyHelper.UpdateAllState(eid,"4","2",InviteFriend_Head.this);
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
                 finish();

@@ -333,7 +333,7 @@ public class Home_Listview_Head extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void closePlace(String eid) {
+    public void closePlace(final String eid) {
         Log.d("votedate", eid);
         String url = "http://www.groupupdb.com/android/closeVotePlace.php";
         url += "?eId=" + eid;
@@ -341,6 +341,8 @@ public class Home_Listview_Head extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Extend_MyHelper.UpdateAllState(eid,"11","3",Home_Listview_Head.this);
+                        Extend_MyHelper.UpdateAllState(eid,"10","2",Home_Listview_Head.this);
                         Toast.makeText(Home_Listview_Head.this, "Close Place Vote Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -354,7 +356,7 @@ public class Home_Listview_Head extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void closeTime(String eid) {
+    public void closeTime(final String eid) {
         Log.d("votedate", eid);
         String url = "http://www.groupupdb.com/android/closevotetime.php";
         url += "?eId=" + eid;
@@ -362,6 +364,7 @@ public class Home_Listview_Head extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Extend_MyHelper.UpdateAllState(eid,"8","2",Home_Listview_Head.this);
                         Toast.makeText(Home_Listview_Head.this, "Close Time Vote Complete", Toast.LENGTH_SHORT).show();
                     }
                 },

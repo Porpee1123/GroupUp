@@ -203,6 +203,27 @@ public class Extend_MyHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
     }
+    public  static void UpdateStateToDbforAttend(String transId, String statusId,Context context) {
+        String url = "http://www.groupupdb.com/android/updateStatebytranforattend.php";
+        url += "?tId=" + transId;
+        url += "&stId=" + statusId;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
+    }
     public  static void checkPeopleConfirmEvent(String eId, Context context, final TextView edt) {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         final String[] state = {""};
@@ -277,8 +298,7 @@ public class Extend_MyHelper {
         queue.add(stringRequest);
         return state[0];
     }
-    public static String getDayFromDateString(String stringDate,String dateTimeFormat)
-    {
+    public static String getDayFromDateString(String stringDate,String dateTimeFormat) {
         String[] daysArray = new String[] {"อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"};
         String day = "";
 
@@ -300,5 +320,27 @@ public class Extend_MyHelper {
         }
 
         return day;
+    }
+    public  static void UpdateAllState(String eId, String statusId,String priId,Context context) {
+        String url = "http://www.groupupdb.com/android/updateallstatusinevent.php";
+        url += "?eid=" + eId;
+        url += "&pri=" + priId;
+        url += "&stId=" + statusId;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
     }
 }

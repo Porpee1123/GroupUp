@@ -375,6 +375,8 @@ public class Head_Date extends AppCompatActivity {
     }
 
     public void backAppoint() {
+        Extend_MyHelper.UpdateAllState(eid,"6","3",this);
+        Extend_MyHelper.UpdateAllState(eid,"6","2",this);
         Intent intent = new Intent(Head_Date.this, HomeHead_Appointment.class);
         intent.putExtra("id", uid + "");
         intent.putExtra("email", email + "");

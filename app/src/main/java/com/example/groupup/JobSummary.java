@@ -290,7 +290,7 @@ public class JobSummary extends AppCompatActivity {
         tvPeople = findViewById(R.id.sumpeople);
         btn_showPlace = findViewById(R.id.btn_showPlace);
         getTransIDByTrans(id, eId, "3");//ผู้เข้าร่วมงาน
-        Extend_MyHelper.checkStatusTrans(eId, "11", JobSummary.this, tvPeople);
+        Extend_MyHelper.checkStatusTrans(eId, "12", JobSummary.this, tvPeople);
         getJob();
         Log.d("checktrans", "tran " + transId);
         bJoin.setOnClickListener(new View.OnClickListener() {
@@ -308,7 +308,8 @@ public class JobSummary extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Extend_MyHelper.UpdateStateToDb(transId, 11 + "", JobSummary.this);
+                        Extend_MyHelper.UpdateStateToDb(transId, 12 + "", JobSummary.this);
+                        Extend_MyHelper.UpdateAllState(eId,"13","2",JobSummary.this);//ถ้ามีเช็คคนครบค่อยมาเปลี่ยนเอาอันนี้ออก
                         finish();
 
                     }
@@ -338,7 +339,7 @@ public class JobSummary extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Extend_MyHelper.UpdateStateToDb(transId, 15 + "", JobSummary.this);
+                        Extend_MyHelper.UpdateStateToDb(transId, 18 + "", JobSummary.this);
                         finish();
                     }
                 });

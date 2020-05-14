@@ -95,12 +95,12 @@ public class UploadSlip extends AppCompatActivity {
             public void onClick(View v) {
                 if (cCash == 1) {
                     Log.d("checkCon", "Cash");
-                    Extend_MyHelper.UpdateStateToDb(transId, 13 + "", UploadSlip.this);
+                    Extend_MyHelper.UpdateStateToDb(transId, 16 + "", UploadSlip.this);
                     addBill(id, eId, "3");
                     finish();
                 } else if (cTransfer == 1) {
                     Log.d("checkCon", "Transfer");
-                    Extend_MyHelper.UpdateStateToDb(transId, 12 + "", UploadSlip.this);
+                    Extend_MyHelper.UpdateStateToDb(transId, 15 + "", UploadSlip.this);
                     ImageUploadToServerFunction();
                 }
             }

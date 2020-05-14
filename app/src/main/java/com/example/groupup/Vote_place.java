@@ -280,6 +280,7 @@ public class Vote_place extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             VotePlace(ItemId);
+                            Extend_MyHelper.UpdateStateToDb(transId, "10", Vote_place.this);
                             finish();
                         }
                     });
@@ -475,7 +476,7 @@ public class Vote_place extends AppCompatActivity {
     }
 
     //***********************************************************************************************//
-    String id, eid, nameE, email;
+    String id, eid, nameE, email,transId;
     Vote_place.ResponseStr responseStr = new Vote_place.ResponseStr();
     String[] some_array;
     ProgressDialog progressDialog;
@@ -521,6 +522,7 @@ public class Vote_place extends AppCompatActivity {
             }
         });
         getplace();
+        getTransIDByTrans(id,eid,"3");
     }
 
     public class ResponseStr {
@@ -595,8 +597,9 @@ public class Vote_place extends AppCompatActivity {
                                 map.put("place_photoShow", c.getString("place_photoShow"));
                                 MyArrList.add(map);
                                 placeArray.add(map);
-                                showAllCheckboxClick();
+
                             }
+                            showAllCheckboxClick();
                             Log.d("placeHome", "get placeArray " + placeArray.toString());
 //                            Log.d("place", "get MyArrList " + MyArrList.toString());
                         } catch (JSONException e) {
@@ -843,5 +846,45 @@ public class Vote_place extends AppCompatActivity {
         myItemsListAdapter2 = new Vote_place.ItemsListAdapter2(this, items2);
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
+    }
+    public void getTransIDByTrans(String uid, String eid, String pid) {
+        Log.d("themeSelect", "id : " + uid + " eid : " + eid + " pid : " + pid);
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/gettransid.php";
+        url += "?uId=" + uid;
+        url += "&eId=" + eid;
+        url += "&pId=" + pid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("trans_id", c.getString("trans_id"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("pri_id", c.getString("pri_id"));
+                                MyArrList.add(map);
+                            }
+                            transId = MyArrList.get(0).get("trans_id");
+//                            Log.d("themeSelect","myarr : "+MyArrList.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }

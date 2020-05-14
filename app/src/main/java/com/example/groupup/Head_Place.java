@@ -594,6 +594,8 @@ public class Head_Place extends AppCompatActivity {
                     for (int i=0;i<placeSelect.size();i++){
                         saveToVotePlace(placeSelect.get(i));
                     }
+                    Extend_MyHelper.UpdateAllState(eid,"9","3",Head_Place.this);
+                    Extend_MyHelper.UpdateAllState(eid,"9","2",Head_Place.this);
 //                    saveToVotePlaceRandom();
                     finish();
                 }else {

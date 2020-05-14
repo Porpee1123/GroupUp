@@ -256,7 +256,7 @@ public class Head_Summary extends AppCompatActivity {
         edt_price =findViewById(R.id.edt_price);
         btn_con = findViewById(R.id.btn_confirm_headsum);
         btn_showPlace = findViewById(R.id.btn_showPlace);
-        Extend_MyHelper.checkStatusTrans(eId, "11", Head_Summary.this, tvPeople);
+        Extend_MyHelper.checkStatusTrans(eId, "12", Head_Summary.this, tvPeople);
         some_array = getResources().getStringArray(R.array.facility);
         getJob();
         btn_showPlace.setOnClickListener(new View.OnClickListener() {
@@ -684,6 +684,9 @@ public class Head_Summary extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Extend_MyHelper.UpdateAllState(eId,"14","3",Head_Summary.this);
+                        Extend_MyHelper.UpdateAllState(eId,"15","2",Head_Summary.this);
+
 //                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
                         finish();
                     }

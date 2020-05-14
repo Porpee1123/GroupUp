@@ -254,6 +254,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Log.d("getTransIDByTrans", transId);
+                        Extend_MyHelper.UpdateStateToDb(transId, "16", SlipCheck_waitCheck.this);
                         updatestatusbill(userId, eid, "2");
                         viewDetail.dismiss();
 
@@ -262,7 +263,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
                 btn_cancle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Extend_MyHelper.UpdateStateToDb(transId, "11", SlipCheck_waitCheck.this);
+                        Extend_MyHelper.UpdateStateToDb(transId, "14", SlipCheck_waitCheck.this);
                         getbillcheck();
                         viewDetail.dismiss();
                         //แจ้งเตือนให้ผู้ใช้

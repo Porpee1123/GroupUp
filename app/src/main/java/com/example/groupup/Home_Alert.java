@@ -321,7 +321,7 @@ public class Home_Alert extends AppCompatActivity {
                 final String ename = alertArray.get(position).get("events_name").toString();
                 String sSta = alertArray.get(position).get("events_month_start").toString();
                 String sEnd = alertArray.get(position).get("events_month_end").toString();
-                String sPrId = alertArray.get(position).get("pri_id").toString();
+                final String sPrId = alertArray.get(position).get("pri_id").toString();
                 String priName = alertArray.get(position).get("pri_name").toString();
                 String event_creater = alertArray.get(position).get("event_creater").toString();
                 String user_photo = alertArray.get(position).get("user_photo").toString();
@@ -379,12 +379,9 @@ public class Home_Alert extends AppCompatActivity {
                             @Override
                             protected void onPostExecute(String string1) {
                                 super.onPostExecute(string1);
-                                Intent intent = new Intent(Home_Alert.this, MainAttendent.class);
+                                Intent intent = new Intent(Home_Alert.this, Home.class);
                                 intent.putExtra("id", id + "");
-                                intent.putExtra("eid", eid + "");
-                                intent.putExtra("nameEvent", ename + "");
                                 intent.putExtra("email", email);
-                                intent.putExtra("tab", 0 + "");
                                 startActivity(intent);
                                 viewDetail.dismiss();
                                 Toast.makeText(Home_Alert.this, string1, Toast.LENGTH_SHORT).show();
@@ -393,9 +390,14 @@ public class Home_Alert extends AppCompatActivity {
 
                             @Override
                             protected String doInBackground(Void... params) {
-                                addEventFriend(uid, eid);
-                                addDateevent(eid);
-                                Extend_MyHelper.UpdateStateToDb(tid, 3 + "", Home_Alert.this);
+                                if (Integer.parseInt(sPrId) == 2){
+                                    Extend_MyHelper.UpdateStateToDb(tid, 4 + "", Home_Alert.this);
+                                }else{
+                                    addEventFriend(uid, eid);
+                                    addDateevent(eid);
+                                    Extend_MyHelper.UpdateStateToDb(tid, 3 + "", Home_Alert.this);
+                                }
+
                                 return "join successful!!!";
                             }
                         }

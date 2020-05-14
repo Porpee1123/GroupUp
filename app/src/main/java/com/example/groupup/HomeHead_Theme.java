@@ -801,6 +801,7 @@ public class HomeHead_Theme extends AppCompatActivity {
         finish();
     }
     public void backAppoint() {
+        Extend_MyHelper.UpdateAllState(eid,"5","2",this);
         Intent intent = new Intent(HomeHead_Theme.this, HomeHead_Appointment.class);
         intent.putExtra("id", id + "");
         intent.putExtra("email", email + "");

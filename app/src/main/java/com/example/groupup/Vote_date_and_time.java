@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Vote_date_and_time extends AppCompatActivity {
-    String id = "", eId = "", eName = "", email;
+    String id = "", eId = "", eName = "", email,transId="";
     ArrayList<String> dateDB, timeDB;
     Button btn1, btn2, btn3, btn4;
 
@@ -55,7 +55,9 @@ public class Vote_date_and_time extends AppCompatActivity {
         btn4 = findViewById(R.id.vote4);
         dateDB = new ArrayList<>();
         timeDB = new ArrayList<>();
+
         getDate();
+        getTransIDByTrans(id,eId,"3");
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +189,7 @@ public class Vote_date_and_time extends AppCompatActivity {
     }
 
     public void backVote() {
+        Extend_MyHelper.UpdateStateToDb(transId, "7", Vote_date_and_time.this);
         Intent intent = new Intent(Vote_date_and_time.this, MainAttendent.class);
         intent.putExtra("id", id + "");
         intent.putExtra("eid", eId + "");
@@ -323,6 +326,45 @@ public class Vote_date_and_time extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-
+    public void getTransIDByTrans(String uid, String eid, String pid) {
+        Log.d("themeSelect", "id : " + uid + " eid : " + eid + " pid : " + pid);
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/gettransid.php";
+        url += "?uId=" + uid;
+        url += "&eId=" + eid;
+        url += "&pId=" + pid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("trans_id", c.getString("trans_id"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("pri_id", c.getString("pri_id"));
+                                MyArrList.add(map);
+                            }
+                            transId = MyArrList.get(0).get("trans_id");
+//                            Log.d("themeSelect","myarr : "+MyArrList.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 
 }
