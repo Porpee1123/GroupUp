@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class show_invitation_head extends AppCompatActivity {
+public class Show_invitation_head extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
     public class Item2 {
         String ItemDrawable;
@@ -55,14 +55,14 @@ public class show_invitation_head extends AppCompatActivity {
         ImageView Status;
     }
     public class ItemsListAdapter2 extends BaseAdapter {
-        private ArrayList<show_invitation_head.Item2> arraylist2;
+        private ArrayList<Show_invitation_head.Item2> arraylist2;
         private Context context;
-        private List<show_invitation_head.Item2> list2;
+        private List<Show_invitation_head.Item2> list2;
 
-        ItemsListAdapter2(Context c, List<show_invitation_head.Item2> l) {
+        ItemsListAdapter2(Context c, List<Show_invitation_head.Item2> l) {
             context = c;
             list2 = l;
-            arraylist2 = new ArrayList<show_invitation_head.Item2>();
+            arraylist2 = new ArrayList<Show_invitation_head.Item2>();
             arraylist2.addAll(l);
         }
 
@@ -86,7 +86,7 @@ public class show_invitation_head extends AppCompatActivity {
             View rowView = convertView;
 
             // reuse views
-            show_invitation_head.ViewHolder2 viewHolder2 = new show_invitation_head.ViewHolder2();
+            Show_invitation_head.ViewHolder2 viewHolder2 = new Show_invitation_head.ViewHolder2();
             if (rowView == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 rowView = inflater.inflate(R.layout.layout_member, null);
@@ -96,7 +96,7 @@ public class show_invitation_head extends AppCompatActivity {
 
                 rowView.setTag(viewHolder2);
             } else {
-                viewHolder2 = (show_invitation_head.ViewHolder2) rowView.getTag();
+                viewHolder2 = (Show_invitation_head.ViewHolder2) rowView.getTag();
             }
             new Extend_MyHelper.SendHttpRequestTask(list2.get(position).ItemDrawable, viewHolder2.icon, 250).execute();
 
@@ -116,7 +116,7 @@ public class show_invitation_head extends AppCompatActivity {
             if (charText.length() == 0) {
                 list2.addAll(arraylist2);
             } else {
-                for (show_invitation_head.Item2 wp : arraylist2) {
+                for (Show_invitation_head.Item2 wp : arraylist2) {
                     if (wp.ItemString.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list2.add(wp);
@@ -129,8 +129,8 @@ public class show_invitation_head extends AppCompatActivity {
     //*******************************TextView with checkbox******************************************//
     String uid, eid, nameE, monS, monE, email;
     ListView list_Attend;
-    static show_invitation_head.ItemsListAdapter2 myItemsListAdapterHead;
-    List<show_invitation_head.Item2> items2 = new ArrayList<show_invitation_head.Item2>();
+    static Show_invitation_head.ItemsListAdapter2 myItemsListAdapterHead;
+    List<Show_invitation_head.Item2> items2 = new ArrayList<Show_invitation_head.Item2>();
     ArrayList<HashMap<String, String>>  memberArray;
 
     @Override
@@ -201,7 +201,7 @@ public class show_invitation_head extends AppCompatActivity {
     }
 
     private void initItems2() {
-        items2 = new ArrayList<show_invitation_head.Item2>();
+        items2 = new ArrayList<Show_invitation_head.Item2>();
         Log.d("pathimage", "memberArray " + memberArray.toString());
         for (int i = 0; i < memberArray.size(); i++) {
             String uid = memberArray.get(i).get("user_id").toString();
@@ -209,10 +209,10 @@ public class show_invitation_head extends AppCompatActivity {
             String uEmail = memberArray.get(i).get("user_email").toString();
             String uPhoto = memberArray.get(i).get("user_photo").toString();
             String sId = memberArray.get(i).get("states_id").toString();
-            show_invitation_head.Item2 item2 = new show_invitation_head.Item2(uName,uid,uPhoto,sId);
+            Show_invitation_head.Item2 item2 = new Show_invitation_head.Item2(uName,uid,uPhoto,sId);
             items2.add(item2);
         }
-        myItemsListAdapterHead = new show_invitation_head.ItemsListAdapter2(this, items2);
+        myItemsListAdapterHead = new Show_invitation_head.ItemsListAdapter2(this, items2);
         list_Attend.setAdapter(myItemsListAdapterHead);
         Log.d("pathimage", items2.size()+"");
     }

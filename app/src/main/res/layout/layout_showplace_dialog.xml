@@ -299,7 +299,6 @@
                                     style="@android:style/Widget.Holo.Light.RatingBar.Small"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:numStars="5"
                                     android:progressTint="#FFEB3B"
                                     android:rating="5" />

@@ -2,13 +2,11 @@ package com.example.groupup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,12 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
 
 public class HomeHead_Appointment_SetItem extends AppCompatActivity {
@@ -118,7 +112,7 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
     }
 
     public void showFriend() {
-        Intent intent = new Intent(HomeHead_Appointment_SetItem.this, show_invitation.class);
+        Intent intent = new Intent(HomeHead_Appointment_SetItem.this, Show_invitation.class);
         intent.putExtra("email", email + "");
         intent.putExtra("id", id + "");
         intent.putExtra("eid", eid + "");
@@ -210,34 +204,49 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
                             int stateId = Integer.parseInt(state);
                             Log.d("checktrans", "state " + state);
                             if (stateId == 3 ){
-                                btn_inviteFriend.setEnabled(true);
                                 btn_selectTheme.setEnabled(false);
                                 btn_summary.setEnabled(false);
                                 btn_checkSlip.setEnabled(false);
-                                btn_inviteFriend.setAlpha(1);
                                 btn_selectTheme.setAlpha((float) 0.5);
                                 btn_summary.setAlpha((float) 0.5);
                                 btn_checkSlip.setAlpha((float) 0.5);
                             }else if (stateId == 4 ){
-                                btn_inviteFriend.setEnabled(true);
                                 btn_selectTheme.setEnabled(true);
                                 btn_summary.setEnabled(false);
                                 btn_checkSlip.setEnabled(false);
-                                btn_inviteFriend.setAlpha(1);
                                 btn_selectTheme.setAlpha(1);
                                 btn_summary.setAlpha((float) 0.5);
                                 btn_checkSlip.setAlpha((float) 0.5);
-                            }
-                            else if (stateId == 5 ){
-                                btn_inviteFriend.setEnabled(false);
+                            }else if (stateId == 13 ){
+                                btn_selectTheme.setEnabled(false);
+                                btn_summary.setEnabled(true);
+                                btn_checkSlip.setEnabled(false);
+                                btn_summary.setAlpha(1);
+                                btn_selectTheme.setAlpha((float) 0.5);
+                                btn_checkSlip.setAlpha((float) 0.5);
+                            }else if (stateId == 15 ){
+                                btn_selectTheme.setEnabled(false);
+                                btn_checkSlip.setEnabled(true);
+                                btn_summary.setEnabled(false);
+                                btn_checkSlip.setAlpha(1);
+                                btn_selectTheme.setAlpha((float) 0.5);
+                                btn_summary.setAlpha((float) 0.5);
+                            }else{
                                 btn_selectTheme.setEnabled(false);
                                 btn_summary.setEnabled(false);
                                 btn_checkSlip.setEnabled(false);
-                                btn_inviteFriend.setAlpha((float) 0.5);
                                 btn_selectTheme.setAlpha((float) 0.5);
                                 btn_summary.setAlpha((float) 0.5);
                                 btn_checkSlip.setAlpha((float) 0.5);
                             }
+
+//                                btn_selectTheme.setEnabled(false);
+//                                btn_summary.setEnabled(false);
+//                                btn_checkSlip.setEnabled(false);
+//                                btn_selectTheme.setAlpha((float) 0.5);
+//                                btn_summary.setAlpha((float) 0.5);
+//                                btn_checkSlip.setAlpha((float) 0.5);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

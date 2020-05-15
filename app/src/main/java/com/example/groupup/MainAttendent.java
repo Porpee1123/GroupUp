@@ -1,7 +1,5 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
@@ -13,9 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,18 +33,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainAttendent extends AppCompatActivity {
-    String nEvent="",id="",eid="",email="",state="";
+    String nEvent = "", id = "", eid = "", email = "", state = "";
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     TextView nHead;
     ImageButton btn_note;
-    String note ;
+    String note;
     int tab = 0;
+    TextView tv_maga;
+    ImageView img_mega;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.checkInternetLost(this);
         setContentView(R.layout.activity_attend);
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
@@ -53,22 +57,25 @@ Extend_MyHelper.checkInternetLost(this);
         nEvent = getIntent().getStringExtra("nameEvent");
         eid = getIntent().getStringExtra("eid");
         email = getIntent().getStringExtra("email");
-        tab = Integer.parseInt( getIntent().getStringExtra("tab"));
+        tab = Integer.parseInt(getIntent().getStringExtra("tab"));
         nHead.setText(nEvent);
         tabHost = (TabHost) findViewById(R.id.tabhost);
         btn_note = findViewById(R.id.btn_noteAttend);
+        tv_maga = findViewById(R.id.tv_Megaphone);
+        img_mega = findViewById(R.id.img_Megaphone);
         tabHost.setup(mLocalActivityManager);
+        checkvisibleButton(id, eid, "3");
         getEvent();
-        Intent intentV = new Intent(this,MainAttendent_Vote.class);
-        intentV.putExtra("id", id+"");
-        intentV.putExtra("email", email+"");
-        intentV.putExtra("nameEvent", nEvent+"");
-        intentV.putExtra("eid", eid+"");
-        Intent intentS = new Intent(this,MainAttendent_Summary.class);
-        intentS.putExtra("id", id+"");
-        intentS.putExtra("email", email+"");
-        intentS.putExtra("nameEvent", nEvent+"");
-        intentS.putExtra("eid", eid+"");
+        Intent intentV = new Intent(this, MainAttendent_Vote.class);
+        intentV.putExtra("id", id + "");
+        intentV.putExtra("email", email + "");
+        intentV.putExtra("nameEvent", nEvent + "");
+        intentV.putExtra("eid", eid + "");
+        Intent intentS = new Intent(this, MainAttendent_Summary.class);
+        intentS.putExtra("id", id + "");
+        intentS.putExtra("email", email + "");
+        intentS.putExtra("nameEvent", nEvent + "");
+        intentS.putExtra("eid", eid + "");
 //        Intent intentR = new Intent(this,MainAttendent_Reviews.class);
 //        intentR.putExtra("id", id+"");
 //        intentR.putExtra("email", email+"");
@@ -103,7 +110,7 @@ Extend_MyHelper.checkInternetLost(this);
             @Override
             public void onClick(View v) {
                 AlertDialog viewNote = new AlertDialog.Builder(MainAttendent.this).create();
-                View mViewnote = getLayoutInflater().inflate(R.layout.layout_addnote_dialog,null);
+                View mViewnote = getLayoutInflater().inflate(R.layout.layout_addnote_dialog, null);
                 final EditText mNameType = mViewnote.findViewById(R.id.note_edit);
 
                 if (note.equals("") || note.equals("null")) {
@@ -117,7 +124,7 @@ Extend_MyHelper.checkInternetLost(this);
                     public void onClick(View v) {
                         final String noteText = mNameType.getText().toString();
                         Toast.makeText(MainAttendent.this, noteText, Toast.LENGTH_SHORT).show();
-                        if (!noteText.isEmpty()){
+                        if (!noteText.isEmpty()) {
                             class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
                                 @Override
                                 protected void onPreExecute() {
@@ -143,8 +150,8 @@ Extend_MyHelper.checkInternetLost(this);
                             }
                             AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
                             AsyncTaskUploadClassOBJ.execute();
-                        }else {
-                            Toast.makeText(MainAttendent.this,"Note is empty",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainAttendent.this, "Note is empty", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -167,9 +174,10 @@ Extend_MyHelper.checkInternetLost(this);
 
     public void backHome(View v) {
         Intent intent = new Intent(MainAttendent.this, Home.class);
-        intent.putExtra("email", email+"");
+        intent.putExtra("email", email + "");
         startActivity(intent);
     }
+
     protected void updateTabs() {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
 
@@ -178,8 +186,7 @@ Extend_MyHelper.checkInternetLost(this);
                         .getChildAt(i)
                         .setBackgroundResource(
                                 R.drawable.shape_tab);
-            }
-            else {
+            } else {
 
                 tabHost.getTabWidget()
                         .getChildAt(i)
@@ -190,6 +197,7 @@ Extend_MyHelper.checkInternetLost(this);
         }
 
     }
+
     public void addNoteToDB(String note) {
         Log.d("detail", note);
         String url = "http://www.groupupdb.com/android/addNoteEvent.php";
@@ -211,6 +219,7 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void getEvent() {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -255,13 +264,14 @@ Extend_MyHelper.checkInternetLost(this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void checkStatususer(String eId , String uid, String pri){
+
+    public void checkStatususer(String eId, String uid, String pri) {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getStatusAppoint.php";
         url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
         url += "&uId=" + uid;
         url += "&prId=" + pri;
-        Log.d("checkStatus","url "+url);
+        Log.d("checkStatus", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -276,15 +286,64 @@ Extend_MyHelper.checkInternetLost(this);
                                 MyArrList.add(map);
                             }
                             state = MyArrList.get(0).get("states_name");
-                            if (state.equalsIgnoreCase("เลือกวันที่")||state.equalsIgnoreCase("เลือกสถานที่")){
+                            if (state.equalsIgnoreCase("เลือกวันที่") || state.equalsIgnoreCase("เลือกสถานที่")) {
                                 tabHost.setCurrentTab(1);
-                            }else {
+                            } else {
                                 tabHost.setCurrentTab(0);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    public void checkvisibleButton(String uid, String eid, String pid) {
+        Log.d("checktrans", "id : " + uid + " eid : " + eid + " pid : " + pid);
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/gettransid.php";
+        url += "?uId=" + uid;
+        url += "&eId=" + eid;
+        url += "&pId=" + pid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("trans_id", c.getString("trans_id"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("pri_id", c.getString("pri_id"));
+                                MyArrList.add(map);
+                            }
+                            String state = MyArrList.get(0).get("states_id");
+                            int stateId = Integer.parseInt(state);
+                            Log.d("checktrans", "state  Mega " + state);
+                            if (stateId == 6 || stateId == 9 || stateId == 11 || stateId == 14 || stateId == 17) {
+                                tv_maga.setVisibility(View.GONE);
+                                img_mega.setVisibility(View.GONE);
+                            } else {
+                                tv_maga.setVisibility(View.VISIBLE);
+                                img_mega.setVisibility(View.VISIBLE);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {

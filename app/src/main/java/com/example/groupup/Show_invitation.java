@@ -7,20 +7,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TabHost;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
-public class show_invitation extends AppCompatActivity {
+public class Show_invitation extends AppCompatActivity {
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     String uid,eid,nameE,monS,monE,email;
     static ArrayList<String> nameHead =new ArrayList<>();
     static ArrayList<String> nameAttend =new ArrayList<>();
     EditText searchText;
+    String numAtt="",numHead="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +49,14 @@ Extend_MyHelper.checkInternetLost(this);
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
-        createTab();
+        getMemberAttend();
         search();
     }
     public void createTab(){
 
         tabHost = (TabHost) findViewById(R.id.tabhostInvite);
         tabHost.setup(mLocalActivityManager);
-        Intent intentA = new Intent(this,show_invitation_attendant.class);
+        Intent intentA = new Intent(this, Show_invitation_attendant.class);
         intentA.putExtra("id", uid+"");
         intentA.putExtra("email", email+"");
         intentA.putExtra("eid", eid+"");
@@ -50,7 +64,7 @@ Extend_MyHelper.checkInternetLost(this);
         intentA.putExtra("mStart",monS+"");
         intentA.putExtra("mEnd",monE+"");
 
-        Intent intentH = new Intent(this,show_invitation_head.class);
+        Intent intentH = new Intent(this, Show_invitation_head.class);
         intentH.putExtra("id", uid+"");
         intentH.putExtra("email", email+"");
         intentH.putExtra("eid", eid+"");
@@ -58,11 +72,11 @@ Extend_MyHelper.checkInternetLost(this);
         intentH.putExtra("mStart",monS+"");
         intentH.putExtra("mEnd",monE+"");
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tab1")
-                .setIndicator("ผู้เข้าร่วมงาน")
+                .setIndicator("ผู้เข้าร่วมงาน"+"( "+numAtt+" )")
                 .setContent(intentA);
 
         TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
-                .setIndicator("แม่งาน")
+                .setIndicator("แม่งาน"+"( "+numHead+" )")
                 .setContent(intentH);
         tabHost.addTab(tabSpec);
         tabHost.addTab(tabSpec2);
@@ -113,7 +127,7 @@ Extend_MyHelper.checkInternetLost(this);
         mLocalActivityManager.dispatchResume();
     }
     public void backAppoint(View v) {
-        Intent intent = new Intent(show_invitation.this, HomeHead_Appointment.class);
+        Intent intent = new Intent(Show_invitation.this, HomeHead_Appointment.class);
         intent.putExtra("id", uid+"");
         intent.putExtra("email", email+"");
         intent.putExtra("eid",eid+"");
@@ -126,7 +140,7 @@ Extend_MyHelper.checkInternetLost(this);
         finish();
     }
     public void editFriend(View v) {
-        Intent intent = new Intent(show_invitation.this, InviteFriend.class);
+        Intent intent = new Intent(Show_invitation.this, InviteFriend.class);
         intent.putExtra("email",email+"");
         intent.putExtra("id",uid+"");
         intent.putExtra("eid",eid+"");
@@ -143,7 +157,7 @@ Extend_MyHelper.checkInternetLost(this);
             public void afterTextChanged(Editable arg0) {
                 // TODO Auto-generated method stub
                 String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
-                show_invitation_attendant.myItemsListAdapterAttend.filter(text);
+                Show_invitation_attendant.myItemsListAdapterAttend.filter(text);
             }
 
             @Override
@@ -167,7 +181,7 @@ Extend_MyHelper.checkInternetLost(this);
             public void afterTextChanged(Editable arg0) {
                 // TODO Auto-generated method stub
                 String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
-                show_invitation_head.myItemsListAdapterHead.filter(text);
+                Show_invitation_head.myItemsListAdapterHead.filter(text);
             }
 
             @Override
@@ -183,5 +197,87 @@ Extend_MyHelper.checkInternetLost(this);
             }
         });
 
+    }
+    public void getMemberAttend() {
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getmemberinvite.php";
+        url += "?eId=" + eid;
+        url += "&prId=" + "3";
+        Log.d("position", "stringRequest  " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_photo", c.getString("user_photo"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("user_email", c.getString("user_email"));
+                                MyArrList.add(map);
+                            }
+                            numAtt = MyArrList.size()+"";
+                            getMemberHead();
+                            Log.d("pathimage", "get MyArrList " + MyArrList.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void getMemberHead() {
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getmemberinvite.php";
+        url += "?eId=" + eid;
+        url += "&prId=" + "2";
+        Log.d("position", "stringRequest  " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_photo", c.getString("user_photo"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("user_email", c.getString("user_email"));
+                                MyArrList.add(map);
+                            }
+                            numHead = MyArrList.size()+"";
+                            createTab();
+                            Log.d("pathimage", "get MyArrList " + MyArrList.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }

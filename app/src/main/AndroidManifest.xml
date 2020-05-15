@@ -20,9 +20,9 @@
         <activity android:name=".Head_Summary"></activity>
         <activity android:name=".UploadSlip" />
         <activity android:name=".JobSummary" />
-        <activity android:name=".show_invitation_head" />
-        <activity android:name=".show_invitation_attendant" />
-        <activity android:name=".show_invitation" />
+        <activity android:name=".Show_invitation_head" />
+        <activity android:name=".Show_invitation_attendant" />
+        <activity android:name=".Show_invitation" />
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
@@ -49,7 +49,7 @@
         <activity android:name=".ManageFriend" />
         <activity android:name=".Home_Alert" />
         <activity
-            android:name=".MainAttendent_Reviews"
+            android:name=".Reviews"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity

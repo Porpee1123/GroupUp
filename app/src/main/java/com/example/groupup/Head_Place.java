@@ -317,6 +317,7 @@ public class Head_Place extends AppCompatActivity {
                     String[] some_arrayPrice = getResources().getStringArray(R.array.sppriceRange);
                     String[] some_arrayPeople = getResources().getStringArray(R.array.spnumberOfSeats);
                     getPlacePhotoPid(sId);
+                    rt.setNumStars (5);
                     title.setText(sTitle);
                     detail.setText(sDetail);
                     ArrayList<String> s =spiltGetDate(sDay);

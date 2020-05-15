@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,7 +26,8 @@ import java.util.HashMap;
 
 public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
     String id, eid, nameE, monS, monE, email, wait;
-    Button btn_closeTime, btn_closePlace,btn_select_dateTime,btn_select_place;
+    ToggleButton btn_closeTime, btn_closePlace;
+    Button btn_select_dateTime, btn_select_place;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,10 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
             public void onClick(View v) {
                 closeTime();
                 btn_closeTime.setEnabled(false);
+                Intent in = new Intent(HomeHead_Appointment_Date_And_Place.this, Home.class);
+                in.putExtra("email", email + "");
+                in.putExtra("id", id + "");
+                startActivity(in);
             }
         });
         btn_closePlace.setOnClickListener(new View.OnClickListener() {
@@ -55,10 +61,14 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
             public void onClick(View v) {
                 closePlace();
                 btn_closePlace.setEnabled(false);
+                Intent in = new Intent(HomeHead_Appointment_Date_And_Place.this, Home.class);
+                in.putExtra("email", email + "");
+                in.putExtra("id", id + "");
+                startActivity(in);
             }
         });
         Log.d("appoint", email + "/" + id + "/" + eid + "/" + nameE + "/" + monS + "/" + monE);
-        checkvisibleButton(id,eid,"2");
+        checkvisibleButton(id, eid, "2");
     }
 
     public void selectDateTime(View v) {
@@ -93,8 +103,8 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Extend_MyHelper.UpdateAllState(eid,"11","3",HomeHead_Appointment_Date_And_Place.this);
-                        Extend_MyHelper.UpdateAllState(eid,"10","2",HomeHead_Appointment_Date_And_Place.this);
+                        Extend_MyHelper.UpdateAllState(eid, "11", "3", HomeHead_Appointment_Date_And_Place.this);
+                        Extend_MyHelper.UpdateAllState(eid, "10", "2", HomeHead_Appointment_Date_And_Place.this);
                         Toast.makeText(HomeHead_Appointment_Date_And_Place.this, "Close Place Vote Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -116,7 +126,7 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Extend_MyHelper.UpdateAllState(eid,"8","2",HomeHead_Appointment_Date_And_Place.this);
+                        Extend_MyHelper.UpdateAllState(eid, "8", "2", HomeHead_Appointment_Date_And_Place.this);
                         Toast.makeText(HomeHead_Appointment_Date_And_Place.this, "Close Time Vote Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -129,6 +139,7 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void checkvisibleButton(String uid, String eid, String pid) {
         Log.d("checktrans", "id : " + uid + " eid : " + eid + " pid : " + pid);
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -156,24 +167,52 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
                             String state = MyArrList.get(0).get("states_id");
                             int stateId = Integer.parseInt(state);
                             Log.d("checktrans", "state " + state);
-                            if (stateId == 3 ){
-//                                btn_inviteFriend.setEnabled(true);
-//                                btn_selectTheme.setEnabled(false);
-//                                btn_summary.setEnabled(false);
-//                                btn_checkSlip.setEnabled(false);
-//                                btn_inviteFriend.setAlpha(1);
-//                                btn_selectTheme.setAlpha((float) 0.5);
-//                                btn_summary.setAlpha((float) 0.5);
-//                                btn_checkSlip.setAlpha((float) 0.5);
-                            }else if (stateId == 4 ){
-//                                btn_inviteFriend.setEnabled(true);
-//                                btn_selectTheme.setEnabled(true);
-//                                btn_summary.setEnabled(false);
-//                                btn_checkSlip.setEnabled(false);
-//                                btn_inviteFriend.setAlpha(1);
-//                                btn_selectTheme.setAlpha(1);
-//                                btn_summary.setAlpha((float) 0.5);
-//                                btn_checkSlip.setAlpha((float) 0.5);
+                            if (stateId == 5) {
+                                btn_select_dateTime.setEnabled(true);
+                                btn_select_place.setEnabled(false);
+                                btn_select_dateTime.setAlpha(1);
+                                btn_select_place.setAlpha((float) 0.5);
+                                btn_closeTime.setVisibility(View.GONE);
+                                btn_closePlace.setVisibility(View.GONE);
+                                btn_select_dateTime.setVisibility(View.VISIBLE);
+                                btn_select_place.setVisibility(View.VISIBLE);
+
+                            } else if (stateId == 6) {
+                                btn_select_dateTime.setEnabled(true);
+                                btn_select_dateTime.setAlpha(1);
+                                btn_select_dateTime.setVisibility(View.GONE);
+                                btn_select_place.setEnabled(false);
+                                btn_select_place.setAlpha((float) 0.5);
+                                btn_closeTime.setVisibility(View.VISIBLE);
+                                btn_closePlace.setVisibility(View.GONE);
+                                btn_select_place.setVisibility(View.VISIBLE);
+                            } else if (stateId == 8) {
+                                btn_select_place.setEnabled(true);
+                                btn_select_place.setAlpha(1);
+                                btn_select_place.setVisibility(View.VISIBLE);
+                                btn_select_dateTime.setVisibility(View.VISIBLE);
+                                btn_select_dateTime.setEnabled(false);
+                                btn_select_dateTime.setAlpha((float) 0.5);
+                                btn_closeTime.setVisibility(View.GONE);
+                                btn_closePlace.setVisibility(View.GONE);
+                            } else if (stateId == 9) {
+                                btn_closePlace.setEnabled(true);
+                                btn_closePlace.setAlpha(1);
+                                btn_closePlace.setVisibility(View.VISIBLE);
+                                btn_select_dateTime.setVisibility(View.VISIBLE);
+                                btn_select_dateTime.setEnabled(false);
+                                btn_select_dateTime.setAlpha((float) 0.5);
+                                btn_closeTime.setVisibility(View.GONE);
+                                btn_select_place.setVisibility(View.GONE);
+                            } else {
+                                btn_select_place.setEnabled(true);
+                                btn_select_place.setAlpha((float) 0.5);
+                                btn_select_place.setVisibility(View.VISIBLE);
+                                btn_select_dateTime.setVisibility(View.VISIBLE);
+                                btn_select_dateTime.setEnabled(false);
+                                btn_select_dateTime.setAlpha((float) 0.5);
+                                btn_closeTime.setVisibility(View.GONE);
+                                btn_closePlace.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -189,4 +228,5 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
 }

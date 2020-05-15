@@ -394,6 +394,7 @@ public class JobSummary extends AppCompatActivity {
                 String[] some_arrayPeople = getResources().getStringArray(R.array.spnumberOfSeats);
                 getPlacePhotoPid(sId);
                 title.setText(sTitle);
+                rt.setNumStars (5);
                 detail.setText(sDetail);
                 ArrayList<String> s = spiltGetDate(sDay);
                 time.setText(showStringDay(s) + " \n" + sSTime + " - " + sETime);

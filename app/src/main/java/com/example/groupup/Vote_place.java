@@ -335,6 +335,7 @@ public class Vote_place extends AppCompatActivity {
                     String sSTime = placeArray.get(position).get("place_stime").toString();
                     String sETime = placeArray.get(position).get("place_etime").toString();
                     String sVisit = placeArray.get(position).get("place_visit").toString();
+                    rt.setNumStars (5);
                     sliderView = mView.findViewById(R.id.imageSlider);
                     String[] some_arrayPrice = getResources().getStringArray(R.array.sppriceRange);
                     String[] some_arrayPeople = getResources().getStringArray(R.array.spnumberOfSeats);

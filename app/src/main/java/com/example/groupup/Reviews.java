@@ -3,7 +3,6 @@ package com.example.groupup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,9 +24,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
-public class MainAttendent_Reviews extends AppCompatActivity {
+public class Reviews extends AppCompatActivity {
     String uid = "", eId = "", eName = "", email = "", placeId = "", placeName = "",transId="";
     TextView tvName;
     RatingBar rtBar;
@@ -178,8 +176,8 @@ public class MainAttendent_Reviews extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Extend_MyHelper.UpdateStateToDb(transId, 18 + "", MainAttendent_Reviews.this);
-                        Toast.makeText(MainAttendent_Reviews.this, "Add Review Complete", Toast.LENGTH_SHORT).show();
+                        Extend_MyHelper.UpdateStateToDb(transId, 18 + "", Reviews.this);
+                        Toast.makeText(Reviews.this, "Add Review Complete", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 },

@@ -360,7 +360,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                 Extend_MyHelper.UpdateAllState(eid,"4","2",InviteFriend_Head.this);
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
-                Intent intent = new Intent(InviteFriend_Head.this, show_invitation.class);
+                Intent intent = new Intent(InviteFriend_Head.this, Show_invitation.class);
                 intent.putExtra("email", email + "");
                 intent.putExtra("id", uid + "");
                 intent.putExtra("eid", eid + "");
