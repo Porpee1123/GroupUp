@@ -2,6 +2,7 @@ package com.example.groupup;
 
 import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,6 +128,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         deleteDateOldDay();
         getUser();
+
 //            new Thread(new Runnable() {
 //                @Override
 //                public void run() {
@@ -378,6 +382,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             hEmail.setText(MyArrList.get(0).get("user_email"));
                             Log.d("imageview",image);
                             new Extend_MyHelper.SendHttpRequestTask(image,img,250).execute();
+                            getSizeDateCal();
                             createTab();
                             getnumNotification();
 //                            writeFile(id,name,email);
@@ -460,6 +465,73 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     @Override
                     public void onResponse(String response) {
 //                        Log.d("deleteDateOldDay", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void getSizeDateCal() {
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        Log.d("footer", "id getSizeDateCal" + id);
+        String url = "http://www.groupupdb.com/android/getsizedatecal.php";
+        url += "?uId=" + id;
+        Log.d("footer", "URL getSizeDateCal : "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("num", c.getString("num"));
+                                MyArrList.add(map);
+                            }
+                            //set Header menu name email
+                            Log.d("footer", "getSizeDateCal : "+MyArrList.get(0).get("num"));
+                            String numSn =MyArrList.get(0).get("num");
+                            int numSize = Integer.parseInt(numSn);
+                            if (numSize==0){
+                                final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Home.this).create();
+                                viewDetail.setTitle("แจ้งเตือนการจัดการปฏิทิน");
+                                viewDetail.setMessage("คุณยังไม่มีการกำหนดจัดการวันที่ในปฏิทินคุณต้องการจัดการปฏิทินเลยหรือไม่");
+                                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "เอาไว้ก่อน", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "จัดการเดี๋ยวนี้", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        goToCalendar();
+                                    }
+                                });
+                                viewDetail.show();
+                                Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                                Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                                layoutParams.weight = 10;
+                                btnPositive.setLayoutParams(layoutParams);
+                                btnNegative.setLayoutParams(layoutParams);
+
+                            }
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {

@@ -418,6 +418,28 @@ public class Head_Date extends AppCompatActivity {
                             timeDB.add("14:00 - 16:59");
                             timeDB.add("17:00 - 19:59");
                             timeDB.add("20:00 - 23:59");
+                            for (int i =0;i<dataDB.size();i++){
+                                StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
+                                String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i),"dd/MM/yyyy");
+                                while (st.hasMoreTokens()) {
+                                    String d, m, y, date;
+                                    String[] some_array = getResources().getStringArray(R.array.month);
+                                    d = st.nextToken();
+                                    m = st.nextToken();
+                                    y = st.nextToken();
+                                    date = "วัน"+dayString+"ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                                    if (i==0){
+                                        cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                                    }else if (i==1){
+                                        cb2.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                                    }else if (i==2){
+                                        cb3.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                                    }else if (i==3){
+                                        cb4.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                                    }
+
+                                }
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -432,40 +454,6 @@ public class Head_Date extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-
-        new CountDownTimer(500, 500) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                for (int i =0;i<dataDB.size();i++){
-                    StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
-                    String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i),"dd/MM/yyyy");
-                    while (st.hasMoreTokens()) {
-                        String d, m, y, date;
-                        String[] some_array = getResources().getStringArray(R.array.month);
-                        d = st.nextToken();
-                        m = st.nextToken();
-                        y = st.nextToken();
-                        date = "วัน"+dayString+"ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
-                        if (i==0){
-                            cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                        }else if (i==1){
-                            cb2.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                        }else if (i==2){
-                            cb3.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                        }else if (i==3){
-                            cb4.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                        }
-
-                    }
-                }
-            }
-        }.start();
     }
 
     public void removeDate(String id) {
@@ -651,7 +639,7 @@ public class Head_Date extends AppCompatActivity {
                             Log.d("tab","numcalb : "+ numcal);
                             int waitTime = (Integer.parseInt(numcal)*4)+4;
                             Log.d("tab","numcal : "+ waitTime + " "+ numcalmax);
-                            if (people > 2) {
+                            if (people > 5) {
                                 Log.d("MyHelper","people > 5");
                                 getDate();
                             } else {
@@ -703,6 +691,28 @@ public class Head_Date extends AppCompatActivity {
                             timeDB.add("14:00 - 16:59");
                             timeDB.add("17:00 - 19:59");
                             timeDB.add("20:00 - 23:59");
+                            for (int i =0;i<dataDB.size();i++){
+                                StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
+                                String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i),"dd/MM/yyyy");
+                                while (st.hasMoreTokens()) {
+                                    String d, m, y, date;
+                                    String[] some_array = getResources().getStringArray(R.array.month);
+                                    d = st.nextToken();
+                                    m = st.nextToken();
+                                    y = st.nextToken();
+                                    date = "วัน"+dayString+"ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                                    if (i==0){
+                                        cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                                    }else if (i==1){
+                                        cb2.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                                    }else if (i==2){
+                                        cb3.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                                    }else if (i==3){
+                                        cb4.setText(date + " ช่วงเวลา " + timeDB.get(i));
+                                    }
+
+                                }
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -718,39 +728,6 @@ public class Head_Date extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
 
-        new CountDownTimer(500, 500) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                for (int i =0;i<dataDB.size();i++){
-                    StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
-                    String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i),"dd/MM/yyyy");
-                    while (st.hasMoreTokens()) {
-                        String d, m, y, date;
-                        String[] some_array = getResources().getStringArray(R.array.month);
-                        d = st.nextToken();
-                        m = st.nextToken();
-                        y = st.nextToken();
-                        date = "วัน"+dayString+"ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
-                        if (i==0){
-                            cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                        }else if (i==1){
-                            cb2.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                        }else if (i==2){
-                            cb3.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                        }else if (i==3){
-                            cb4.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                        }
-
-                    }
-                }
-            }
-        }.start();
     }
     public void getEvent() {
 

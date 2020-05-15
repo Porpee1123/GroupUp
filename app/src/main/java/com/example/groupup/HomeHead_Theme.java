@@ -147,12 +147,35 @@ public class HomeHead_Theme extends AppCompatActivity {
         btn_con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i < themeSelect.size(); i++) {
-                    sentInviteTheme(themeSelect.get(i).toString(), eid);
-                }
-//                addDateevent();
-                Log.d("themeSelect", "Remove : " + themeSelect.toString());
-                backAppoint();
+                final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(HomeHead_Theme.this).create();
+                viewDetail.setTitle("ยืนยันการเลือกธีม");
+                viewDetail.setMessage("หากคุณยืนยันแล้วคุณจะไม่สามารถกลับมาแก้ไขได้อีก");
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < themeSelect.size(); i++) {
+                            sentInviteTheme(themeSelect.get(i).toString(), eid);
+                        }
+                        Log.d("themeSelect", "Remove : " + themeSelect.toString());
+                        backAppoint();
+
+                    }
+                });
+                viewDetail.show();
+                Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                layoutParams.weight = 10;
+                btnPositive.setLayoutParams(layoutParams);
+                btnNegative.setLayoutParams(layoutParams);
+
             }
         });
 
@@ -921,11 +944,33 @@ public class HomeHead_Theme extends AppCompatActivity {
                 btn_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        for (int i = 0; i < idType.size(); i++) {
-                            sentInviteTheme(idType.get(i), eid);
-                        }
-//                        addDateevent();
-                        backAppoint();
+                        final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(HomeHead_Theme.this).create();
+                        viewDetail.setTitle("ยืนยันการเลือกธีม");
+                        viewDetail.setMessage("หากคุณยืนยันแล้วคุณจะไม่สามารถกลับมาแก้ไขได้อีก");
+                        viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                for (int i = 0; i < idType.size(); i++) {
+                                    sentInviteTheme(idType.get(i), eid);
+                                }
+                                backAppoint();
+                            }
+                        });
+                        viewDetail.show();
+                        Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                        Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                        layoutParams.weight = 10;
+                        btnPositive.setLayoutParams(layoutParams);
+                        btnNegative.setLayoutParams(layoutParams);
+
                     }
                 });
                 viewDetail.setView(mView);
