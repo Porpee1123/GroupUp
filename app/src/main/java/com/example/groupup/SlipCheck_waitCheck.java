@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -139,6 +141,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
     static SlipCheck_waitCheck.ItemsListAdapter2 myItemsListAdapter;
     List<SlipCheck_waitCheck.Item2> items2 = new ArrayList<SlipCheck_waitCheck.Item2>();
     ArrayList<HashMap<String, String>> memberArray;
+    public static float screen_width = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +156,9 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
         monE = getIntent().getStringExtra("mEnd");
         slipCheck = findViewById(R.id.listView_slipCheck);
         memberArray = new ArrayList<>();
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        screen_width = metrics.widthPixels;
         getbillcheck();
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -242,7 +248,29 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
                 Log.d("getTransIDByTrans", "uid " + memberArray.get(position).get("user_id"));
                 Log.d("getTransIDByTrans", "eid " + eid);
                 final String userId = memberArray.get(position).get("user_id");
+                imgTheme.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final AlertDialog viewDetail2 = new AlertDialog.Builder(SlipCheck_waitCheck.this).create();
+                        View mView2 = getLayoutInflater().inflate(R.layout.layout_image_dialog, null);
+                        final ImageButton img_close = mView2.findViewById(R.id.showbutton_btnClose);
+                        final ImageView img = mView2.findViewById(R.id.img_big);
+                        img_close.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                viewDetail2.dismiss();
+                            }
+                        });
+                        img.setImageDrawable(imgTheme.getDrawable());
+                        viewDetail2.setView(mView2);
+                        viewDetail2.show();
+
+                    }
+
+
+                });
                 new Extend_MyHelper.SendHttpRequestTask(memberArray.get(position).get("bill_image").toString(), imgTheme, 350).execute();
+                
                 getTransIDByTrans(memberArray.get(position).get("user_id"), eid, "3");
                 btn_later.setOnClickListener(new View.OnClickListener() {
                     @Override

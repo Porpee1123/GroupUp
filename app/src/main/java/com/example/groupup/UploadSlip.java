@@ -177,49 +177,13 @@ public class UploadSlip extends AppCompatActivity {
             try {
 
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-
-                Bitmap dstBmp;
-                if (bitmap.getWidth() >= bitmap.getHeight()) {
-
-                    dstBmp = Bitmap.createBitmap(
-                            bitmap,
-                            bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
-                            0,
-                            bitmap.getHeight(),
-                            bitmap.getHeight()
-                    );
-
-                } else {
-
-                    dstBmp = Bitmap.createBitmap(
-                            bitmap,
-                            0,
-                            bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
-                            bitmap.getWidth(),
-                            bitmap.getWidth()
-                    );
-                }
-                Bitmap lbp = scaleDown(dstBmp, 375, false);
-
-                SelectImageGallery.setImageBitmap(lbp);
+                SelectImageGallery.setImageBitmap(bitmap);
 
             } catch (IOException e) {
 
                 e.printStackTrace();
             }
         }
-    }
-
-    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
-        float ratio = Math.min(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
-
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
-                height, filter);
-        return newBitmap;
     }
 
     public void requestImagePermission() {
