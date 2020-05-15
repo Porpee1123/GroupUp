@@ -150,12 +150,6 @@ public class HomeHead_Theme extends AppCompatActivity {
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(HomeHead_Theme.this).create();
                 viewDetail.setTitle("ยืนยันการเลือกธีม");
                 viewDetail.setMessage("หากคุณยืนยันแล้วคุณจะไม่สามารถกลับมาแก้ไขได้อีก");
-                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -167,12 +161,21 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                     }
                 });
+                viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
                 viewDetail.show();
+
                 Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
                 Button btnNegative = viewDetail.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
+                btnNegative.setTextColor(getResources().getColor(R.color.red));
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
 
@@ -968,6 +971,7 @@ public class HomeHead_Theme extends AppCompatActivity {
 
                         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                         layoutParams.weight = 10;
+                        btnNegative.setTextColor(getResources().getColor(R.color.red));
                         btnPositive.setLayoutParams(layoutParams);
                         btnNegative.setLayoutParams(layoutParams);
 

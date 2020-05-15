@@ -3,7 +3,6 @@ package com.example.groupup;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -441,17 +440,17 @@ public class InviteFriend_Attendant extends AppCompatActivity {
             if (typefriendId.get(i).equals("0")) {
                 b.setBackgroundResource(R.drawable.all_button);
             } else if (typefriendId.get(i).equals("1")) {
-                b.setBackgroundResource(R.drawable.red_button);
+                b.setBackgroundResource(R.drawable.b1_button);
             } else if (typefriendId.get(i).equals("2")) {
-                b.setBackgroundResource(R.drawable.green_button);
+                b.setBackgroundResource(R.drawable.b2_button);
             } else if (typefriendId.get(i).equals("3")) {
-                b.setBackgroundResource(R.drawable.blue_button);
+                b.setBackgroundResource(R.drawable.b3_button);
             } else if (typefriendId.get(i).equals("4")) {
-                b.setBackgroundResource(R.drawable.yellow_button);
+                b.setBackgroundResource(R.drawable.b4_button);
             } else if (typefriendId.get(i).equals("5")) {
-                b.setBackgroundResource(R.drawable.gray_button);
+                b.setBackgroundResource(R.drawable.b5_button);
             } else {
-                b.setBackgroundResource(R.drawable.custom_button);
+                b.setBackgroundResource(R.drawable.b6_button);
             }
             b.setText(typefriend.get(i));
             b.setHeight(lShortcut.getHeight());

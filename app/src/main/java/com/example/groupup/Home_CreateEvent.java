@@ -285,11 +285,12 @@ public class Home_CreateEvent extends AppCompatActivity {
                                     protected void onPostExecute(String string1) {
 
                                         super.onPostExecute(string1);
+                                        nextNewGroup();
                                         txtName.setText("");
                                         spst.setSelection(0);
                                         sped.setSelection(0);
                                         spwa.setSelection(0);
-                                        nextNewGroup();
+
 //                                        progressDialog.dismiss();
                                     }
 
@@ -336,20 +337,24 @@ public class Home_CreateEvent extends AppCompatActivity {
     }
 
     public void nextNewGroup() {
-        Intent intent = new Intent(Home_CreateEvent.this, HomeHead_Appointment.class);
-        final Spinner spst = findViewById(R.id.spin_start);
-        final Spinner sped = findViewById(R.id.spin_end);
-        startId = spst.getSelectedItemPosition();
-        endId = sped.getSelectedItemPosition();
-        intent.putExtra("nameEvent", nEvent + "");
-        intent.putExtra("mStart", startId + "");
-        intent.putExtra("mEnd", endId + "");
-        intent.putExtra("id", id + "");
+        Intent intent = new Intent(Home_CreateEvent.this, Home.class);
         intent.putExtra("email", email + "");
-        intent.putExtra("tab", 0 + "");
-        intent.putExtra("create", "create");
-        Log.d("inten12", nEvent + ":" + startId + ":" + endId + ":" + id + ":" + email);
+        intent.putExtra("id", id + "");
         startActivity(intent);
+//        Intent intent = new Intent(Home_CreateEvent.this, HomeHead_Appointment.class);
+//        final Spinner spst = findViewById(R.id.spin_start);
+//        final Spinner sped = findViewById(R.id.spin_end);
+//        startId = spst.getSelectedItemPosition();
+//        endId = sped.getSelectedItemPosition();
+//        intent.putExtra("nameEvent", nEvent + "");
+//        intent.putExtra("mStart", startId + "");
+//        intent.putExtra("mEnd", endId + "");
+//        intent.putExtra("id", id + "");
+//        intent.putExtra("email", email + "");
+//        intent.putExtra("tab", 0 + "");
+//        intent.putExtra("create", "create");
+//        Log.d("inten12", nEvent + ":" + startId + ":" + endId + ":" + id + ":" + email);
+//        startActivity(intent);
     }
 
     public void addDateAvaliableTodb() {

@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/relative_layout1"
 
-                    android:background="@drawable/red_button"
+                    android:background="@drawable/b1_button"
                     android:gravity="center"
                     android:text="21"
                     android:textColor="@color/white"

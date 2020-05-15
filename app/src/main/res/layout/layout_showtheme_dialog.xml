@@ -80,18 +80,6 @@
                 android:textSize="12sp" />
 
             <Button
-                android:id="@+id/btn_confirmTheme"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/button"
-                android:backgroundTint="@color/green"
-                android:text="@string/btn"
-                android:textColor="@android:color/white"
-                android:textSize="12sp" />
-
-            <Button
                 android:id="@+id/btn_cancleTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -100,6 +88,18 @@
                 android:background="@drawable/button"
                 android:backgroundTint="@color/red"
                 android:text="@string/btn_cancle"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_confirmTheme"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button"
+                android:backgroundTint="@color/green"
+                android:text="@string/btn"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
 

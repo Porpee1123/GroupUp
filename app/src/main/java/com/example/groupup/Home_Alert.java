@@ -390,14 +390,7 @@ public class Home_Alert extends AppCompatActivity {
 
                             @Override
                             protected String doInBackground(Void... params) {
-                                if (Integer.parseInt(sPrId) == 2){
-                                    Extend_MyHelper.UpdateStateToDb(tid, 4 + "", Home_Alert.this);
-                                }else{
-                                    addEventFriend(uid, eid);
-                                    addDateevent(eid);
-                                    Extend_MyHelper.UpdateStateToDb(tid, 3 + "", Home_Alert.this);
-                                }
-
+                                checkStateEvent(eid,uid,tid,Integer.parseInt(sPrId));
                                 return "join successful!!!";
                             }
                         }
@@ -662,5 +655,47 @@ public class Home_Alert extends AppCompatActivity {
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
+    public void checkStateEvent(final String eId , String pri, final String  tid,final int sPrId ){
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/checkStateEvent.php";
+        url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
+        url += "&pri=" + pri;
+        Log.d("checkStatus","url "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("states_id", c.getString("states_id"));
+                                MyArrList.add(map);
+                            }
+                          String  state = MyArrList.get(0).get("states_id");
+                            if (sPrId == 2){
+                                Extend_MyHelper.UpdateStateToDb(tid, state + "", Home_Alert.this);
+                            }else{
+                                addEventFriend(uid, eId);
+                                addDateevent(eId);
+                                Extend_MyHelper.UpdateStateToDb(tid, state + "", Home_Alert.this);
+                            }
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 }

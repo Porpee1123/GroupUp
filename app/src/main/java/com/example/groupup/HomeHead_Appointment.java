@@ -283,7 +283,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
                             mEnd.setText(some_array[Integer.parseInt(monE)]);
                             Log.d("tab", "get mons " + mStart.getText()+"mone "+mEnd.getText());
                             if (detail.equals("") || detail.equals("null")) {
-                                editText.setText("-");
+                                editText.setText("");
                             } else {
                                 editText.setText(detail);
                             }

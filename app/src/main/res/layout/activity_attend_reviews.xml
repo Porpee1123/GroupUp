@@ -150,7 +150,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/button"
-                android:text="Button"
+                android:text="@string/btn"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>

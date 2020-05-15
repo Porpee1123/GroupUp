@@ -68,7 +68,7 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
                 selectSlip();
             }
         });
-
+        checkvisibleButton(id,eid,"2");
     }
 
     public void selectFriend() {
@@ -128,7 +128,6 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void checkPeopleEvent(String eId) {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/checkpeopleinevent.php";
@@ -172,6 +171,76 @@ public class HomeHead_Appointment_SetItem extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    public void checkvisibleButton(String uid, String eid, String pid) {
+        Log.d("checktrans", "id : " + uid + " eid : " + eid + " pid : " + pid);
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/gettransid.php";
+        url += "?uId=" + uid;
+        url += "&eId=" + eid;
+        url += "&pId=" + pid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("trans_id", c.getString("trans_id"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("events_id", c.getString("events_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("pri_id", c.getString("pri_id"));
+                                MyArrList.add(map);
+                            }
+                            state = MyArrList.get(0).get("states_id");
+                            int stateId = Integer.parseInt(state);
+                            Log.d("checktrans", "state " + state);
+                            if (stateId == 3 ){
+                                btn_inviteFriend.setEnabled(true);
+                                btn_selectTheme.setEnabled(false);
+                                btn_summary.setEnabled(false);
+                                btn_checkSlip.setEnabled(false);
+                                btn_inviteFriend.setAlpha(1);
+                                btn_selectTheme.setAlpha((float) 0.5);
+                                btn_summary.setAlpha((float) 0.5);
+                                btn_checkSlip.setAlpha((float) 0.5);
+                            }else if (stateId == 4 ){
+                                btn_inviteFriend.setEnabled(true);
+                                btn_selectTheme.setEnabled(true);
+                                btn_summary.setEnabled(false);
+                                btn_checkSlip.setEnabled(false);
+                                btn_inviteFriend.setAlpha(1);
+                                btn_selectTheme.setAlpha(1);
+                                btn_summary.setAlpha((float) 0.5);
+                                btn_checkSlip.setAlpha((float) 0.5);
+                            }
+                            else if (stateId == 5 ){
+                                btn_inviteFriend.setEnabled(false);
+                                btn_selectTheme.setEnabled(false);
+                                btn_summary.setEnabled(false);
+                                btn_checkSlip.setEnabled(false);
+                                btn_inviteFriend.setAlpha((float) 0.5);
+                                btn_selectTheme.setAlpha((float) 0.5);
+                                btn_summary.setAlpha((float) 0.5);
+                                btn_checkSlip.setAlpha((float) 0.5);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
