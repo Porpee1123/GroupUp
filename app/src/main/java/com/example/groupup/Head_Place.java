@@ -596,8 +596,12 @@ public class Head_Place extends AppCompatActivity {
                     }
                     Extend_MyHelper.UpdateAllState(eid,"9","3",Head_Place.this);
                     Extend_MyHelper.UpdateAllState(eid,"9","2",Head_Place.this);
+                    Intent in = new Intent(Head_Place.this, Home.class);
+                    in.putExtra("email", email + "");
+                    in.putExtra("id", uid + "");
+                    startActivity(in);
 //                    saveToVotePlaceRandom();
-                    finish();
+//                    finish();
                 }else {
                     final AlertDialog viewDetail = new AlertDialog.Builder(Head_Place.this).create();
 

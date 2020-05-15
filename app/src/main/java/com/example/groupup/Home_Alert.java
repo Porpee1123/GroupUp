@@ -390,7 +390,7 @@ public class Home_Alert extends AppCompatActivity {
 
                             @Override
                             protected String doInBackground(Void... params) {
-                                checkStateEvent(eid,uid,tid,Integer.parseInt(sPrId));
+                                checkStateEvent(eid,tid,Integer.parseInt(sPrId));
                                 return "join successful!!!";
                             }
                         }
@@ -655,12 +655,12 @@ public class Home_Alert extends AppCompatActivity {
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
-    public void checkStateEvent(final String eId , String pri, final String  tid,final int sPrId ){
+    public void checkStateEvent(final String eId , final String  tid,final int sPrId ){
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/checkStateEvent.php";
         url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
-        url += "&pri=" + pri;
-        Log.d("checkStatus","url "+url);
+        url += "&pri=" + sPrId;
+        Log.d("checkStatus","checkStatus url "+url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -677,7 +677,9 @@ public class Home_Alert extends AppCompatActivity {
                           String  state = MyArrList.get(0).get("states_id");
                             if (sPrId == 2){
                                 Extend_MyHelper.UpdateStateToDb(tid, state + "", Home_Alert.this);
+                                Log.d("checkStatus","sPrId "+sPrId);
                             }else{
+                                Log.d("checkStatus","sPrId else "+sPrId);
                                 addEventFriend(uid, eId);
                                 addDateevent(eId);
                                 Extend_MyHelper.UpdateStateToDb(tid, state + "", Home_Alert.this);

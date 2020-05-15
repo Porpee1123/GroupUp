@@ -148,7 +148,7 @@ public class HomeHead_Theme extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(HomeHead_Theme.this).create();
-                viewDetail.setTitle("ยืนยันการเลือกธีม");
+                viewDetail.setTitle("ยืนยันการเลือก");
                 viewDetail.setMessage("หากคุณยืนยันแล้วคุณจะไม่สามารถกลับมาแก้ไขได้อีก");
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
@@ -948,7 +948,7 @@ public class HomeHead_Theme extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(HomeHead_Theme.this).create();
-                        viewDetail.setTitle("ยืนยันการเลือกธีม");
+                        viewDetail.setTitle("ยืนยันการเลือก");
                         viewDetail.setMessage("หากคุณยืนยันแล้วคุณจะไม่สามารถกลับมาแก้ไขได้อีก");
                         viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                             @Override

@@ -98,6 +98,7 @@
                     android:layout_alignRight="@id/relative_layout1"
 
                     android:background="@drawable/b1_button"
+                    android:backgroundTint="@color/red"
                     android:gravity="center"
                     android:text="21"
                     android:textColor="@color/white"

@@ -379,16 +379,19 @@ public class Head_Date extends AppCompatActivity {
     public void backAppoint() {
         Extend_MyHelper.UpdateAllState(eid,"6","3",this);
         Extend_MyHelper.UpdateAllState(eid,"6","2",this);
-        Intent intent = new Intent(Head_Date.this, HomeHead_Appointment.class);
-        intent.putExtra("id", uid + "");
-        intent.putExtra("email", email + "");
-        intent.putExtra("eid", eid + "");
-        intent.putExtra("nameEvent", nameE + "");
-        intent.putExtra("mStart", monS + "");
-        intent.putExtra("mEnd", monE + "");
-        intent.putExtra("tab", 1 + "");
-
-        startActivity(intent);
+        Intent in = new Intent(Head_Date.this, Home.class);
+        in.putExtra("email", email + "");
+        in.putExtra("id", uid + "");
+        startActivity(in);
+//        Intent intent = new Intent(Head_Date.this, HomeHead_Appointment.class);
+//        intent.putExtra("id", uid + "");
+//        intent.putExtra("email", email + "");
+//        intent.putExtra("eid", eid + "");
+//        intent.putExtra("nameEvent", nameE + "");
+//        intent.putExtra("mStart", monS + "");
+//        intent.putExtra("mEnd", monE + "");
+//        intent.putExtra("tab", 1 + "");
+//        startActivity(intent);
     }
 
     public void getDate() {

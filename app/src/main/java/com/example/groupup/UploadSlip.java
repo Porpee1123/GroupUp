@@ -86,23 +86,15 @@ public class UploadSlip extends AppCompatActivity {
         cTransfer = 0;
         btn.setEnabled(false);
         btn.setAlpha((float) 0.5);
-        getTransIDByTrans(id, eId, "2");
+
         SelectImageGallery.setVisibility(View.GONE);
         visibleLinear();
         getJob();
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cCash == 1) {
-                    Log.d("checkCon", "Cash");
-                    Extend_MyHelper.UpdateStateToDb(transId, 16 + "", UploadSlip.this);
-                    addBill(id, eId, "3");
-                    finish();
-                } else if (cTransfer == 1) {
-                    Log.d("checkCon", "Transfer");
-                    Extend_MyHelper.UpdateStateToDb(transId, 15 + "", UploadSlip.this);
-                    ImageUploadToServerFunction();
-                }
+                getTransIDByTrans(id, eId, "3");
+
             }
         });
         SelectImageGallery.setOnClickListener(new View.OnClickListener() {
@@ -267,7 +259,11 @@ public class UploadSlip extends AppCompatActivity {
             protected void onPostExecute(String string1) {
 
                 super.onPostExecute(string1);
-                finish();
+
+                Intent in = new Intent(UploadSlip.this, Home.class);
+                in.putExtra("email", email + "");
+                in.putExtra("id", id + "");
+                startActivity(in);
                 // Dismiss the progress dialog after done uploading.
                 progressDialog.dismiss();
 
@@ -468,6 +464,19 @@ public class UploadSlip extends AppCompatActivity {
                             transId = MyArrList.get(0).get("trans_id");
 //                            Log.d("themeSelect","myarr : "+MyArrList.toString());
                             Log.d("checktrans", "tran " + transId);
+                            if (cCash == 1) {
+                                Log.d("checkCon", "Cash");
+                                Extend_MyHelper.UpdateStateToDb(transId, 16 + "", UploadSlip.this);
+                                addBill(id, eId, "3");
+                                Intent in = new Intent(UploadSlip.this, Home.class);
+                                in.putExtra("email", email + "");
+                                in.putExtra("id", id + "");
+                                startActivity(in);
+                            } else if (cTransfer == 1) {
+                                Log.d("checkCon", "Transfer");
+                                Extend_MyHelper.UpdateStateToDb(transId, 15 + "", UploadSlip.this);
+                                ImageUploadToServerFunction();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

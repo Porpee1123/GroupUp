@@ -86,6 +86,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
+                btnNegative.setTextColor(getResources().getColor(R.color.red));
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
             }
@@ -118,6 +119,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
+                btnNegative.setTextColor(getResources().getColor(R.color.red));
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
             }
@@ -150,6 +152,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
+                btnNegative.setTextColor(getResources().getColor(R.color.red));
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
             }
@@ -182,6 +185,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
+                btnNegative.setTextColor(getResources().getColor(R.color.red));
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
             }
@@ -190,13 +194,17 @@ public class Vote_date_and_time extends AppCompatActivity {
 
     public void backVote() {
         Extend_MyHelper.UpdateStateToDb(transId, "7", Vote_date_and_time.this);
-        Intent intent = new Intent(Vote_date_and_time.this, MainAttendent.class);
-        intent.putExtra("id", id + "");
-        intent.putExtra("eid", eId + "");
-        intent.putExtra("email", email + "");
-        intent.putExtra("nameEvent", eName + "");
-        intent.putExtra("tab", 0 + "");
-        startActivity(intent);
+        Intent in = new Intent(this, Home.class);
+        in.putExtra("email", email + "");
+        in.putExtra("id", id + "");
+        startActivity(in);
+//        Intent intent = new Intent(Vote_date_and_time.this, MainAttendent.class);
+//        intent.putExtra("id", id + "");
+//        intent.putExtra("eid", eId + "");
+//        intent.putExtra("email", email + "");
+//        intent.putExtra("nameEvent", eName + "");
+//        intent.putExtra("tab", 0 + "");
+//        startActivity(intent);
     }
 
     public void backVote(View v) {

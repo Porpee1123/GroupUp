@@ -281,7 +281,11 @@ public class Vote_place extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             VotePlace(ItemId);
                             Extend_MyHelper.UpdateStateToDb(transId, "10", Vote_place.this);
-                            finish();
+                            Intent in = new Intent(Vote_place.this, Home.class);
+                            in.putExtra("email", email + "");
+                            in.putExtra("id", id + "");
+                            startActivity(in);
+//                            finish();
                         }
                     });
                     viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
@@ -296,6 +300,7 @@ public class Vote_place extends AppCompatActivity {
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                     LinearLayout.LayoutParams layoutParams2 = (LinearLayout.LayoutParams) btnNegative.getLayoutParams();
                     layoutParams.weight = 10;
+                    btnNegative.setTextColor(getResources().getColor(R.color.red));
                     btnPositive.setLayoutParams(layoutParams);
                     btnNegative.setLayoutParams(layoutParams);
                 }

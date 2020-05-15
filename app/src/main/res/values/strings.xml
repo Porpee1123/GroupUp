@@ -202,4 +202,5 @@
     <string name="approve">accept</string>
     <string name="unapprove">eject</string>
     <string name="priceperpeople">price per people :</string>
+    <string name="set_money">Set price</string>
 </resources>

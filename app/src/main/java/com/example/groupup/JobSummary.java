@@ -310,8 +310,11 @@ public class JobSummary extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Extend_MyHelper.UpdateStateToDb(transId, 12 + "", JobSummary.this);
                         Extend_MyHelper.UpdateAllState(eId,"13","2",JobSummary.this);//ถ้ามีเช็คคนครบค่อยมาเปลี่ยนเอาอันนี้ออก
-                        finish();
-
+//                        finish();
+                        Intent in = new Intent(JobSummary.this, Home.class);
+                        in.putExtra("email", email + "");
+                        in.putExtra("id", id + "");
+                        startActivity(in);
                     }
                 });
                 viewDetail.show();
@@ -320,6 +323,7 @@ public class JobSummary extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
+                btnNegative.setTextColor(getResources().getColor(R.color.red));
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
             }
@@ -349,6 +353,7 @@ public class JobSummary extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
+                btnNegative.setTextColor(getResources().getColor(R.color.red));
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
 

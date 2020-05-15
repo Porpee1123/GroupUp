@@ -48,7 +48,11 @@
                     android:id="@+id/btn_closeVoteTime"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:alpha="0.7"
+                    android:background="@drawable/button"
+                    android:backgroundTint="@color/red"
                     android:text="ToggleButton"
+                    android:textColor="#FFFFFF"
                     android:textOff="@string/voteOff"
                     android:textOn="@string/voteOn"
                     android:textSize="12sp" />
@@ -86,7 +90,11 @@
                     android:id="@+id/btn_closeVotePlace"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:alpha="0.7"
+                    android:background="@drawable/button"
+                    android:backgroundTint="@color/red"
                     android:text="ToggleButton"
+                    android:textColor="#FFFFFF"
                     android:textOff="@string/voteOff"
                     android:textOn="@string/voteOn"
                     android:textSize="12sp" />

@@ -243,7 +243,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
                 Log.d("getTransIDByTrans", "eid " + eid);
                 final String userId = memberArray.get(position).get("user_id");
                 new Extend_MyHelper.SendHttpRequestTask(memberArray.get(position).get("bill_image").toString(), imgTheme, 350).execute();
-                getTransIDByTrans(memberArray.get(position).get("user_id"), eid, "2");
+                getTransIDByTrans(memberArray.get(position).get("user_id"), eid, "3");
                 btn_later.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -264,7 +264,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Extend_MyHelper.UpdateStateToDb(transId, "14", SlipCheck_waitCheck.this);
-                        getbillcheck();
+                        deletebill(userId, eid);
                         viewDetail.dismiss();
                         //แจ้งเตือนให้ผู้ใช้
                     }
@@ -321,6 +321,29 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
         url += "?uId=" + uid;
         url += "&eId=" + eid;
         url += "&stId=" + stid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                        getbillcheck();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+
+    }
+    public void deletebill(String uid, String eid) {
+        String url = "http://www.groupupdb.com/android/deletebill.php";
+        url += "?uId=" + uid;
+        url += "&eId=" + eid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

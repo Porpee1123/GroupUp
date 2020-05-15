@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -686,9 +687,12 @@ public class Head_Summary extends AppCompatActivity {
                     public void onResponse(String response) {
                         Extend_MyHelper.UpdateAllState(eId,"14","3",Head_Summary.this);
                         Extend_MyHelper.UpdateAllState(eId,"15","2",Head_Summary.this);
-
+                        Intent in = new Intent(Head_Summary.this, Home.class);
+                        in.putExtra("email", email + "");
+                        in.putExtra("id", id + "");
+                        startActivity(in);
 //                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
-                        finish();
+//                        finish();
                     }
                 },
                 new Response.ErrorListener() {

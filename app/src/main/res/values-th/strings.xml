@@ -19,7 +19,7 @@
     <string name="addFriends">เพิ่มเพื่อน</string>
     <string name="search_friends">ค้นหาด้วยอีเมล</string>
     <string name="search">ค้นหา</string>
-    <string name="search_theme">ค้นหาธีมร้านอาหาร</string>
+    <string name="search_theme">ค้นหารูปแบบร้านอาหาร</string>
     <string name="type_friends">ประเภทเพื่อน</string>
     <string name="title_activity_invite_friends">เพิ่มสมาชิก</string>
     <string name="invitations">คำเชิญ</string>
@@ -52,7 +52,7 @@
     <string name="priceRange">ราคาเฉลี่ยต่อคน</string>
     <string name="bath">บาท</string>
     <string name="phone">เบอร์โทรศัพท์</string>
-    <string name="select_theme">เลือกธีมงาน</string>
+    <string name="select_theme">เลือกรูปแบบสถานที่</string>
     <string name="numberOfSeats">จำนวนลูกค้าที่รองรับได้</string>
     <string name="seats">ที่นั่ง</string>
     <string name="deposite">มัดจำล่วงหน้า</string>
@@ -63,7 +63,7 @@
     <string name="err_input_id">กรุณากรอกไอดีส่วนตัว</string>
     <string name="submit_title">ผลการบันทึก</string>
     <string name="submit_result">บันทึกสำเร็จ</string>
-    <string name="theme">ธีมงาน</string>
+    <string name="theme">รูปแบบสถานที่</string>
     <string name="restaurant_type">ประเภทร้านอาหาร</string>
     <string name="coffee_tea">ร้านกาแฟ/ร้านชา</string>
     <string name="cafe">คาเฟ่</string>
@@ -201,5 +201,5 @@
     <string name="approve">ถูกต้อง</string>
     <string name="unapprove">ผิดพลาด</string>
     <string name="priceperpeople">ค่าใช้จ่ายต่อคน :</string>
-
+    <string name="set_money">กำหนดค่าใช้จ่าย</string>
 </resources>
