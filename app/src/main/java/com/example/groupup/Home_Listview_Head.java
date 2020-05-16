@@ -225,12 +225,13 @@ public class Home_Listview_Head extends AppCompatActivity {
     }
 
     public void checkVoteTime(final String eid) {
-        responseStr = new Home_Listview_Head.ResponseStr();
-
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/checkdatevotetime.php";
         url += "?eId=" + eid;
+        url += "&pri=" + "2";
+        url += "&stId=" + "8";
+//        Log.d("checkvote", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -247,21 +248,8 @@ public class Home_Listview_Head extends AppCompatActivity {
                                 map.put("used", c.getString("used"));
                                 MyArrList.add(map);
                             }
-                            int check = 0;
-                            for (int i = 0; i < MyArrList.size(); i++) {
-                                int c = Integer.parseInt(MyArrList.get(i).get("used"));
-                                if (c == 1) {
-                                    check = c;
-                                }
-                            }
-                            if (check != 1) {
-                                cVoteTime = Integer.parseInt(MyArrList.get(0).get("dd"));
-                                Log.d("checkvote", "hbcVoteTime " + cVotePlace);
-                                if (cVoteTime > 0) {
-                                    closeTime(eid);
-                                }
-                            }
-
+                            Log.d("checkvote", "UpdateAllState ");
+//                            Extend_MyHelper.UpdateAllState(eid,"8","2",Home_Listview_Attendant.this);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -279,12 +267,15 @@ public class Home_Listview_Head extends AppCompatActivity {
     }
 
     public void checkVotePlace(final String eid) {
-        responseStr = new Home_Listview_Head.ResponseStr();
-
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/checkdatevoteplace.php";
         url += "?eId=" + eid;
+        url += "&priH=" + "2";
+        url += "&stIdH=" + "10";
+        url += "&priA=" + "3";
+        url += "&stIdA=" + "11";
+        Log.d("checkvote", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -301,71 +292,27 @@ public class Home_Listview_Head extends AppCompatActivity {
                                 map.put("used", c.getString("used"));
                                 MyArrList.add(map);
                             }
-                            int check = 0;
-                            for (int i = 0; i < MyArrList.size(); i++) {
-                                int c = Integer.parseInt(MyArrList.get(i).get("used"));
-                                if (c == 1) {
-                                    check = c;
-                                }
-                            }
-//                            Log.d("checkvote","check "+check);
-                            if (check != 1) {
-                                cVotePlace = Integer.parseInt(MyArrList.get(0).get("dd"));
-                                Log.d("checkvote", "hbcVotePlace " + cVotePlace);
-                                if (cVotePlace > 0) {
-                                    closePlace(eid);
-                                }
-                            }
+//                            Extend_MyHelper.UpdateAllState(eid,"11","3",Home_Listview_Attendant.this);
+//                            Extend_MyHelper.UpdateAllState(eid,"10","2",Home_Listview_Attendant.this);
+//                            int check = 0;
+//                            for (int i = 0; i < place.size(); i++) {
+//                                int c = Integer.parseInt(place.get(i).get("used"));
+//                                if (c == 1) {
+//                                    check = c;
+//                                }
+//                            }
+//                            if (check != 1) {
+//                                cVotePlace = Integer.parseInt(place.get(0).get("dd"));
+//                                Log.d("checkvote", "abcVotePlace " + cVotePlace);
+//                                if (cVotePlace > 0) {
+//                                    closePlace(eid);
+//                                }
+//                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
-    public void closePlace(final String eid) {
-        Log.d("votedate", eid);
-        String url = "http://www.groupupdb.com/android/closeVotePlace.php";
-        url += "?eId=" + eid;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Extend_MyHelper.UpdateAllState(eid,"11","3",Home_Listview_Head.this);
-                        Extend_MyHelper.UpdateAllState(eid,"10","2",Home_Listview_Head.this);
-                        Toast.makeText(Home_Listview_Head.this, "Close Place Vote Complete", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
-    public void closeTime(final String eid) {
-        Log.d("votedate", eid);
-        String url = "http://www.groupupdb.com/android/closevotetime.php";
-        url += "?eId=" + eid;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Extend_MyHelper.UpdateAllState(eid,"8","2",Home_Listview_Head.this);
-                        Toast.makeText(Home_Listview_Head.this, "Close Time Vote Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {

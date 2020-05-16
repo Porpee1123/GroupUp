@@ -147,7 +147,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
     String name = "", id = "", email = "",uid="";
     static ListView listViewAttend;
     int cVoteTime, cVotePlace;
-    ArrayList<HashMap<String, String>> place, time;
+    ArrayList<HashMap<String, String>> place;
     static Home_Listview_Attendant.ItemsListAdapter2 myItemsListAdapter;
     List<Home_Listview_Attendant.Item2> items2 = new ArrayList<Home_Listview_Attendant.Item2>();
     ArrayList<HashMap<String, String>> memberArray;
@@ -159,7 +159,6 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         setContentView(R.layout.activity_attendant);
         listViewAttend = findViewById(R.id.listView_attend);
         place = new ArrayList<HashMap<String, String>>();
-        time = new ArrayList<HashMap<String, String>>();
         id = getIntent().getStringExtra("id");
         uid  = getIntent().getStringExtra("id");
         memberArray = new ArrayList<>();
@@ -248,6 +247,9 @@ public class Home_Listview_Attendant extends AppCompatActivity {
 
         String url = "http://www.groupupdb.com/android/checkdatevotetime.php";
         url += "?eId=" + eid;
+        url += "&pri=" + "2";
+        url += "&stId=" + "8";
+//        Log.d("checkvote", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -263,23 +265,9 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                                 map.put("datelastwait", c.getString("datelastwait"));
                                 map.put("used", c.getString("used"));
                                 MyArrList.add(map);
-                                time.add(map);
                             }
-                            int check = 0;
-                            for (int i = 0; i < time.size(); i++) {
-                                int c = Integer.parseInt(time.get(i).get("used"));
-                                if (c == 1) {
-                                    check = c;
-                                }
-                            }
-                            if (check != 1) {
-                                cVoteTime = Integer.parseInt(time.get(0).get("dd"));
-                                Log.d("checkvote", "abcVoteTime " + cVoteTime);
-                                if (cVoteTime > 0) {
-                                    closeTime(eid);
-                                }
-                            }
-
+                            Log.d("checkvote", "UpdateAllState ");
+//                            Extend_MyHelper.UpdateAllState(eid,"8","2",Home_Listview_Attendant.this);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -303,6 +291,11 @@ public class Home_Listview_Attendant extends AppCompatActivity {
 
         String url = "http://www.groupupdb.com/android/checkdatevoteplace.php";
         url += "?eId=" + eid;
+        url += "&priH=" + "2";
+        url += "&stIdH=" + "10";
+        url += "&priA=" + "3";
+        url += "&stIdA=" + "11";
+        Log.d("checkvote", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -320,20 +313,22 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                                 MyArrList.add(map);
                                 place.add(map);
                             }
-                            int check = 0;
-                            for (int i = 0; i < place.size(); i++) {
-                                int c = Integer.parseInt(place.get(i).get("used"));
-                                if (c == 1) {
-                                    check = c;
-                                }
-                            }
-                            if (check != 1) {
-                                cVotePlace = Integer.parseInt(place.get(0).get("dd"));
-                                Log.d("checkvote", "abcVotePlace " + cVotePlace);
-                                if (cVotePlace > 0) {
-                                    closePlace(eid);
-                                }
-                            }
+//                            Extend_MyHelper.UpdateAllState(eid,"11","3",Home_Listview_Attendant.this);
+//                            Extend_MyHelper.UpdateAllState(eid,"10","2",Home_Listview_Attendant.this);
+//                            int check = 0;
+//                            for (int i = 0; i < place.size(); i++) {
+//                                int c = Integer.parseInt(place.get(i).get("used"));
+//                                if (c == 1) {
+//                                    check = c;
+//                                }
+//                            }
+//                            if (check != 1) {
+//                                cVotePlace = Integer.parseInt(place.get(0).get("dd"));
+//                                Log.d("checkvote", "abcVotePlace " + cVotePlace);
+//                                if (cVotePlace > 0) {
+//                                    closePlace(eid);
+//                                }
+//                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -351,52 +346,6 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void closePlace(final String eid) {
-        Log.d("votedate", eid);
-        String url = "http://www.groupupdb.com/android/closeVotePlace.php";
-        url += "?eId=" + eid;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Extend_MyHelper.UpdateAllState(eid,"11","3",Home_Listview_Attendant.this);
-                        Extend_MyHelper.UpdateAllState(eid,"10","2",Home_Listview_Attendant.this);
-                        Toast.makeText(Home_Listview_Attendant.this, "Close Place Vote Complete", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
-    public void closeTime(final String eid) {
-        Log.d("votedate", eid);
-        String url = "http://www.groupupdb.com/android/closevotetime.php";
-        url += "?eId=" + eid;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Extend_MyHelper.UpdateAllState(eid,"8","2",Home_Listview_Attendant.this);
-                        Toast.makeText(Home_Listview_Attendant.this, "Close Time Vote Complete", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
-
     private void initItems2() {
         items2 = new ArrayList<Home_Listview_Attendant.Item2>();
         Log.d("pathimage", "memberArray " + memberArray.toString());
@@ -405,6 +354,8 @@ public class Home_Listview_Attendant extends AppCompatActivity {
             String eName = memberArray.get(i).get("events_name").toString();
             String sName = memberArray.get(i).get("states_name").toString();
             String eImage = memberArray.get(i).get("events_image").toString();
+            checkVoteTime(eid);
+            checkVotePlace(eid);
             Home_Listview_Attendant.Item2 item2 = new Home_Listview_Attendant.Item2(eName,eid,eImage,sName);
             items2.add(item2);
         }
@@ -420,6 +371,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 String eStatus = memberArray.get(position).get("states_name");
                 checkVotePlace(eId);
                 checkVoteTime(eId);
+                checkdategotoevent(eId);
                 Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
                 Intent intent = new Intent(Home_Listview_Attendant.this, MainAttendent.class);
                 intent.putExtra("id", uid + "");
@@ -430,5 +382,52 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    public void checkdategotoevent(final String eid) {
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/checkdategotoevent.php";
+        url += "?eId=" + eid;
+//        Log.d("checkvote","url "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("dd", c.getString("dd"));
+                                MyArrList.add(map);
+                            }
+                            String checkDate = MyArrList.get(0).get("dd");
+                            Log.d("checkvote","checkDate "+checkDate);
+                            int daetInt = Integer.parseInt(checkDate);
+                            if (daetInt == 0) {
+                                Log.d("checkvote","daetInt "+daetInt);
+                                //change to review
+                            } else if (daetInt == -3) {
+                                Log.d("checkvote","daetInt "+daetInt);
+                                //delete events
+                            }else {
+                                Log.d("checkvote","daetInt "+daetInt);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
