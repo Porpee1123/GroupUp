@@ -1,19 +1,24 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,22 +43,27 @@ public class Show_invitation_head extends AppCompatActivity {
         String ItemString;
         String Id;
         String ItemStatus;
+        String ItemTrans;
 
         //        Item(ImageView drawable, String t, boolean b){
-        Item2(String t, String i, String drawable, String Status) {
+        Item2(String t, String i, String drawable, String Status, String transId) {
             ItemDrawable = drawable;
             ItemString = t;
             Id = i;
             ItemStatus = Status;
+            ItemTrans = transId;
             Log.d("dataShow", "ItemDrawable " + ItemDrawable.toString());
         }
 
     }
+
     static class ViewHolder2 {
         ImageView icon;
         TextView text;
         ImageView Status;
+        ImageButton img_del;
     }
+
     public class ItemsListAdapter2 extends BaseAdapter {
         private ArrayList<Show_invitation_head.Item2> arraylist2;
         private Context context;
@@ -93,22 +103,52 @@ public class Show_invitation_head extends AppCompatActivity {
                 viewHolder2.icon = rowView.findViewById(R.id.rowImageView);
                 viewHolder2.text = rowView.findViewById(R.id.rowTextViewName);
                 viewHolder2.Status = rowView.findViewById(R.id.rowimageStatus);
+                viewHolder2.img_del = rowView.findViewById(R.id.img_del);
 
                 rowView.setTag(viewHolder2);
             } else {
                 viewHolder2 = (Show_invitation_head.ViewHolder2) rowView.getTag();
             }
             new Extend_MyHelper.SendHttpRequestTask(list2.get(position).ItemDrawable, viewHolder2.icon, 250).execute();
-
             final String itemStr = list2.get(position).ItemString;
+            final String itemTriD = list2.get(position).ItemTrans;
             viewHolder2.text.setText(itemStr);
             Log.d("dataShow", "ItemDrawable " + itemStr.toString());
             int state = Integer.parseInt(list2.get(position).ItemStatus);
-            if (state != 2){
+            if (state != 2) {
                 viewHolder2.Status.setImageResource(R.drawable.ic_tick);
             }
+            viewHolder2.img_del.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final AlertDialog viewDetail = new AlertDialog.Builder(Show_invitation_head.this).create();
+                    viewDetail.setTitle("ยืนยันการลบสมาชิก");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deletetransID(itemTriD);
+                        }
+                    });
+                    viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            viewDetail.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                    Button btnNegative = viewDetail.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    LinearLayout.LayoutParams layoutParams2 = (LinearLayout.LayoutParams) btnNegative.getLayoutParams();
+                    layoutParams.weight = 10;
+                    btnNegative.setTextColor(getResources().getColor(R.color.red));
+                    btnPositive.setLayoutParams(layoutParams);
+                    btnNegative.setLayoutParams(layoutParams);
+                }
+            });
             return rowView;
         }
+
         // Filter Class
         public void filter(String charText) {
             charText = charText.toLowerCase(Locale.getDefault());
@@ -126,12 +166,13 @@ public class Show_invitation_head extends AppCompatActivity {
             notifyDataSetChanged();
         }
     }
+
     //*******************************TextView with checkbox******************************************//
     String uid, eid, nameE, monS, monE, email;
     ListView list_Attend;
     static Show_invitation_head.ItemsListAdapter2 myItemsListAdapterHead;
     List<Show_invitation_head.Item2> items2 = new ArrayList<Show_invitation_head.Item2>();
-    ArrayList<HashMap<String, String>>  memberArray;
+    ArrayList<HashMap<String, String>> memberArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +198,7 @@ public class Show_invitation_head extends AppCompatActivity {
         });
 
     }
+
     public void getMemberShow() {
         memberArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -179,6 +221,7 @@ public class Show_invitation_head extends AppCompatActivity {
                                 map.put("user_id", c.getString("user_id"));
                                 map.put("states_id", c.getString("states_id"));
                                 map.put("user_email", c.getString("user_email"));
+                                map.put("trans_id", c.getString("trans_id"));
                                 MyArrList.add(map);
                                 memberArray.add(map);
                             }
@@ -209,11 +252,33 @@ public class Show_invitation_head extends AppCompatActivity {
             String uEmail = memberArray.get(i).get("user_email").toString();
             String uPhoto = memberArray.get(i).get("user_photo").toString();
             String sId = memberArray.get(i).get("states_id").toString();
-            Show_invitation_head.Item2 item2 = new Show_invitation_head.Item2(uName,uid,uPhoto,sId);
+            String trId = memberArray.get(i).get("trans_id").toString();
+            Show_invitation_head.Item2 item2 = new Show_invitation_head.Item2(uName, uid, uPhoto, sId, trId);
             items2.add(item2);
         }
         myItemsListAdapterHead = new Show_invitation_head.ItemsListAdapter2(this, items2);
         list_Attend.setAdapter(myItemsListAdapterHead);
-        Log.d("pathimage", items2.size()+"");
+        Log.d("pathimage", items2.size() + "");
+    }
+
+    public void deletetransID(String tid) {
+        String url = "http://www.groupupdb.com/android/deletetransid.php";
+        url += "?tId=" + tid;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.d("deleteDateOldDay", response);
+                        getMemberShow();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
