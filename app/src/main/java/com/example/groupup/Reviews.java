@@ -92,7 +92,7 @@ public class Reviews extends AppCompatActivity {
                             placeName = MyArrList.get(0).get("place_name");
                             tvName.setText(placeName);
                             getScorePeople();
-                            getTransIDByTrans(uid,eId,placeId);
+                            getTransIDByTrans(uid,eId,"3");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

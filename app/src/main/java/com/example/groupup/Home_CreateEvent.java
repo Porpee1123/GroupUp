@@ -76,6 +76,7 @@ public class Home_CreateEvent extends AppCompatActivity {
     ProgressDialog progressDialog ;
     private RequestQueue requestQueue;
     final int READ_EXTERNAL_PERMISSION_CODE = 1;
+    int img_click=0;
     ImageButton SelectImageGallery;
     String ServerUploadPath = "http://www.groupupdb.com/android/addimagecreategroup.php";
     Bitmap bitmap;
@@ -187,6 +188,12 @@ public class Home_CreateEvent extends AppCompatActivity {
         dialog.setTitle(R.string.err_title);
         dialog.setIcon(android.R.drawable.btn_star_big_on);
         dialog.setPositiveButton("Close", null);
+        if (img_click == 0) {
+            dialog.setMessage("กรุณาใส่รูปภาพ");
+            dialog.show();
+            SelectImageGallery.requestFocus();
+            return false;
+        }
         if (txtName.getText().length() == 0) {
             dialog.setMessage(R.string.err_input_name);
             dialog.show();
@@ -229,6 +236,7 @@ public class Home_CreateEvent extends AppCompatActivity {
             edt_nameAccount.requestFocus();
             return false;
         }
+
         String url = "http://www.groupupdb.com/android/creategroup.php";
         url += "?sName=" + txtName.getText().toString();
         url += "&sStart=" + spst.getSelectedItemPosition() + "";
@@ -481,7 +489,7 @@ public class Home_CreateEvent extends AppCompatActivity {
             try {
 
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-
+                img_click = 1;
                 Bitmap dstBmp;
                 if (bitmap.getWidth() >= bitmap.getHeight()) {
 

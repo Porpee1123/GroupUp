@@ -334,7 +334,7 @@ public class MainAttendent extends AppCompatActivity {
                             String state = MyArrList.get(0).get("states_id");
                             int stateId = Integer.parseInt(state);
                             Log.d("checktrans", "state  Mega " + state);
-                            if (stateId == 6 || stateId == 9 || stateId == 11 || stateId == 14 || stateId == 17) {
+                            if (stateId == 6 || stateId == 9 || stateId == 11 || stateId == 14 || stateId == 17 || stateId == 18) {
                                 tv_maga.setVisibility(View.GONE);
                                 img_mega.setVisibility(View.GONE);
                             } else {

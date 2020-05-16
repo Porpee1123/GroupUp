@@ -65,53 +65,6 @@ public class Extend_MyHelper {
         //////////////////////check status internet///////////////////////
     }
 
-    public static ArrayList getEventStatusPriorty(String uid, String eid, String pri, Context context) {
-        final ArrayList allId = new ArrayList(); //format = eid:statusid:priority->0:1:2
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/getidintran.php";
-        url += "?sId=" + uid;//ร  อเอาIdหรือ email จากfirebase
-        url += "&eId=" + eid;
-        url += "&pri=" + pri;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            HashMap<String, String> map = null;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("trans_id", c.getString("trans_id"));
-                                map.put("user_id", c.getString("user_id"));
-                                map.put("events_id", c.getString("events_id"));
-                                map.put("states_id", c.getString("states_id"));
-                                map.put("pri_id", c.getString("pri_id"));
-                                map.put("states_name", c.getString("states_name"));
-                                MyArrList.add(map);
-                            }
-                            allId.add(MyArrList.get(0).get("events_id"));
-                            allId.add(MyArrList.get(0).get("states_id"));
-                            allId.add(MyArrList.get(0).get("pri_id"));
-                            allId.add(MyArrList.get(0).get("states_name"));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(stringRequest);
-        return allId;
-    }
-
     public static void deleteCache(Context context) {
         try {
             File dir = context.getCacheDir();
@@ -192,42 +145,6 @@ public class Extend_MyHelper {
                     public void onResponse(String response) {
                         Log.d("updatedb", response);
 //                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(stringRequest);
-    }
-   public  static void checkPeopleConfirmEvent(String eId, Context context, final TextView edt) {
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        final String[] state = {""};
-        String url = "http://www.groupupdb.com/android/checkpeopleacceptevent.php";
-        url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            HashMap<String, String> map = null;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("num", c.getString("num"));
-                                MyArrList.add(map);
-                            }
-                            state[0] = MyArrList.get(0).get("num");
-                            edt.setText(state[0]);
-                            Log.d("checkStatus",state[0]);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
                     }
                 },
                 new Response.ErrorListener() {

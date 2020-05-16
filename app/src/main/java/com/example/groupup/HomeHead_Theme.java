@@ -93,7 +93,7 @@ public class HomeHead_Theme extends AppCompatActivity {
         checkVisible = true;//close custom
         Log.d("wait",wait);
 //        calwait(3);
-        getTransIDByTrans(id, eid, "3");
+        getTransIDByTrans(id, eid, "2");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

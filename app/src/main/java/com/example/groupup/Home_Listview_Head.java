@@ -142,6 +142,7 @@ public class Home_Listview_Head extends AppCompatActivity {
     Home_Listview_Head.ResponseStr responseStr = new Home_Listview_Head.ResponseStr();
     String email = "", id = "",uid = "";
     int cVoteTime, cVotePlace;
+    private RequestQueue requestQueue;
     static ListView listViewHeader;
     static Home_Listview_Head.ItemsListAdapter2 myItemsListAdapter;
     List<Home_Listview_Head.Item2> items2 = new ArrayList<Home_Listview_Head.Item2>();
@@ -262,8 +263,9 @@ public class Home_Listview_Head extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
 
     public void checkVotePlace(final String eid) {
@@ -321,8 +323,9 @@ public class Home_Listview_Head extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
 
     private void initItems2() {
@@ -333,6 +336,10 @@ public class Home_Listview_Head extends AppCompatActivity {
             String eName = memberArray.get(i).get("events_name").toString();
             String sName = memberArray.get(i).get("states_name").toString();
             String eImage = memberArray.get(i).get("events_image").toString();
+            checkVotePlace(eid);
+            checkVoteTime(eid);
+            checkdategotoevent(eid);
+
             Home_Listview_Head.Item2 item2 = new Home_Listview_Head.Item2(eName, eid, eImage, sName);
             items2.add(item2);
         }
@@ -347,10 +354,6 @@ public class Home_Listview_Head extends AppCompatActivity {
                 String eStatus = memberArray.get(position).get("states_name");
                 String ewait = memberArray.get(position).get("events_wait");
                 Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
-                checkVotePlace(eId);
-                checkVoteTime(eId);
-
-//                        checkCloseVote(eId);
                 Intent intent = new Intent(Home_Listview_Head.this, HomeHead_Appointment.class);
                 intent.putExtra("id", uid + "");
                 intent.putExtra("eid", eId + "");
@@ -363,113 +366,33 @@ public class Home_Listview_Head extends AppCompatActivity {
             }
         });
     }
-//    public void getbillcheck() {
-//        memberArray.clear();
-//        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-//        String url = "http://www.groupupdb.com/android/getbillcheck.php";
-//        url += "?eId=" + eid;
-//        url += "&stId=" + "1";
-//        Log.d("position", "stringRequest  " + url);
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            HashMap<String, String> map;
-//                            JSONArray data = new JSONArray(response.toString());
-//                            for (int i = 0; i < data.length(); i++) {
-//                                JSONObject c = data.getJSONObject(i);
-//                                map = new HashMap<String, String>();
-//                                map.put("bill_id", c.getString("bill_id"));
-//                                map.put("user_id", c.getString("user_id"));
-//                                map.put("statusbill_id", c.getString("statusbill_id"));
-//                                map.put("bill_image", c.getString("bill_image"));
-//                                map.put("statusname", c.getString("statusname"));
-//                                map.put("user_names", c.getString("user_names"));
-//                                map.put("user_email", c.getString("user_email"));
-//                                map.put("user_photo", c.getString("user_photo"));
-//                                MyArrList.add(map);
-//                                memberArray.add(map);
-//                            }
-//                            initItems2();
-//                            Log.d("pathimage", "get MyArrList " + MyArrList.toString());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-//                    }
-//                });
+    public void checkdategotoevent(final String eid) {
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/checkdategotoevent.php";
+        url += "?eId=" + eid;
+        Log.d("checkdategotoevent","url "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        queue.add(stringRequest);
-//    }
-//
-//    private void initItems2() {
-//        items2 = new ArrayList<Home_Listview_Head.Item2>();
-//        Log.d("pathimage", "memberArray " + memberArray.toString());
-//        for (int i = 0; i < memberArray.size(); i++) {
-//            String uid = memberArray.get(i).get("user_id").toString();
-//            String uName = memberArray.get(i).get("user_names").toString();
-//            String uEmail = memberArray.get(i).get("user_email").toString();
-//            String uPhoto = memberArray.get(i).get("user_photo").toString();
-//            String bId = memberArray.get(i).get("bill_id").toString();
-//            String sbId = memberArray.get(i).get("statusbill_id").toString();
-//            String bImage = memberArray.get(i).get("bill_image").toString();
-//            String sbName = memberArray.get(i).get("statusname").toString();
-//            Home_Listview_Head.Item2 item2 = new Home_Listview_Head.Item2(uName, uid, uPhoto, sbId, sbName);
-//            items2.add(item2);
-//        }
-//        myItemsListAdapter = new Home_Listview_Head.ItemsListAdapter2(this, items2);
-//        slipCheck.setAdapter(myItemsListAdapter);
-//        Log.d("pathimage", items2.size() + "");
-//        slipCheck.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
-//                final AlertDialog viewDetail = new AlertDialog.Builder(Home_Listview_Head.this).create();
-//                View mView = getLayoutInflater().inflate(R.layout.layout_showbill_dialog, null);
-//                final TextView headTheme = mView.findViewById(R.id.userhead);
-//                final ImageView imgTheme = mView.findViewById(R.id.img_bill);
-//                final Button btn_cancle = mView.findViewById(R.id.btn_cancle);
-//                final Button btn_later = mView.findViewById(R.id.btn_later);
-//                final Button btn_confirm = mView.findViewById(R.id.btn_cofirm);
-//                headTheme.setText(memberArray.get(position).get("user_names").toString());
-//                Log.d("getTransIDByTrans", "uid " + memberArray.get(position).get("user_id"));
-//                Log.d("getTransIDByTrans", "eid " + eid);
-//                final String userId = memberArray.get(position).get("user_id");
-//                new Extend_MyHelper.SendHttpRequestTask(memberArray.get(position).get("bill_image").toString(), imgTheme, 350).execute();
-//                getTransIDByTrans(memberArray.get(position).get("user_id"), eid, "2");
-//                btn_later.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        viewDetail.dismiss();
-//                    }
-//                });
-//                btn_confirm.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Log.d("getTransIDByTrans", transId);
-//                        updatestatusbill(userId, eid, "2");
-//                        viewDetail.dismiss();
-//
-//                    }
-//                });
-//                btn_cancle.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Extend_MyHelper.UpdateStateToDb(transId, "11", Home_Listview_Head.this);
-//                        getbillcheck();
-//                        viewDetail.dismiss();
-//                        //แจ้งเตือนให้ผู้ใช้
-//                    }
-//                });
-//                viewDetail.setView(mView);
-//                viewDetail.show();
-//            }
-//        });
-//    }
+        uploadData(stringRequest);
+    }
+    public void uploadData(StringRequest s) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        } else {
+            requestQueue.add(s);
+        }
+    }
 }

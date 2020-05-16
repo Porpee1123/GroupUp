@@ -147,6 +147,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
     String name = "", id = "", email = "",uid="";
     static ListView listViewAttend;
     int cVoteTime, cVotePlace;
+    private RequestQueue requestQueue;
     ArrayList<HashMap<String, String>> place;
     static Home_Listview_Attendant.ItemsListAdapter2 myItemsListAdapter;
     List<Home_Listview_Attendant.Item2> items2 = new ArrayList<Home_Listview_Attendant.Item2>();
@@ -280,8 +281,9 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
 
     public void checkVotePlace(final String eid) {
@@ -342,8 +344,9 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+        uploadData(stringRequest);
     }
 
     private void initItems2() {
@@ -356,6 +359,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
             String eImage = memberArray.get(i).get("events_image").toString();
             checkVoteTime(eid);
             checkVotePlace(eid);
+            checkdategotoevent(eid);
             Home_Listview_Attendant.Item2 item2 = new Home_Listview_Attendant.Item2(eName,eid,eImage,sName);
             items2.add(item2);
         }
@@ -369,9 +373,9 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 String eName = memberArray.get(position).get("events_name");
                 String eId = memberArray.get(position).get("events_id");
                 String eStatus = memberArray.get(position).get("states_name");
-                checkVotePlace(eId);
-                checkVoteTime(eId);
-                checkdategotoevent(eId);
+//                checkVotePlace(eId);
+//                checkVoteTime(eId);
+//                checkdategotoevent(eId);
                 Log.d("footer", "id " + eId + "/ name " + eName + "/ status " + eStatus);
                 Intent intent = new Intent(Home_Listview_Attendant.this, MainAttendent.class);
                 intent.putExtra("id", uid + "");
@@ -387,37 +391,11 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/checkdategotoevent.php";
         url += "?eId=" + eid;
-//        Log.d("checkvote","url "+url);
+        Log.d("checkdategotoevent","url "+url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("dd", c.getString("dd"));
-                                MyArrList.add(map);
-                            }
-                            String checkDate = MyArrList.get(0).get("dd");
-                            Log.d("checkvote","checkDate "+checkDate);
-                            int daetInt = Integer.parseInt(checkDate);
-                            if (daetInt == 0) {
-                                Log.d("checkvote","daetInt "+daetInt);
-                                //change to review
-                            } else if (daetInt == -3) {
-                                Log.d("checkvote","daetInt "+daetInt);
-                                //delete events
-                            }else {
-                                Log.d("checkvote","daetInt "+daetInt);
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
                     }
                 },
@@ -427,7 +405,15 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+        uploadData(stringRequest);
+    }
+    public void uploadData(StringRequest s) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        } else {
+            requestQueue.add(s);
+        }
     }
 }
