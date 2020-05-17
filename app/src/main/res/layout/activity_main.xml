@@ -86,15 +86,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="getTokenRetieve"
                 android:text="get Token"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="startSubscribe"
-                android:text="subscribe"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
     </ScrollView>

@@ -44,7 +44,7 @@ public class Login extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     String customer;
     SignInButton signInButton;
-    String name ="",email="";
+    String name ="",email="",fcm="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ Extend_MyHelper.checkInternetLost(this);
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
         signInButton = findViewById(R.id.sign_in_button);
+        getTokenRetieve();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
             String channelId  = getString(R.string.default_notification_channel_id);
@@ -85,10 +86,12 @@ Extend_MyHelper.checkInternetLost(this);
                 @Override
                 public void onClick(View v) {
                     if (mAuth.getCurrentUser()!= null){
+                        Log.d(TAG, "mAuth.getCurrentUser()!= null");
                         Intent intent = new Intent(Login.this, Home.class);
                         intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
                         startActivity(intent);
                     }else {
+                        Log.d(TAG, "mAuth.getCurrentUser()= null");
                         signIn();
                     }
 
@@ -217,6 +220,7 @@ Extend_MyHelper.checkInternetLost(this);
         String url = "http://www.groupupdb.com/android/createuser.php";
         url += "?sName=" + name;
         url += "&sEmail=" + email;
+        url += "&fcm=" + fcm;
 //        Log.d("footer",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -238,23 +242,6 @@ Extend_MyHelper.checkInternetLost(this);
         queue.add(stringRequest);
         return true;
     }
-    public void startSubscribe(View v){
-        Log.d(TAG, "Subscribing to weather topic");
-        // [START subscribe_topics]
-        FirebaseMessaging.getInstance().subscribeToTopic("weather")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = getString(R.string.msg_subscribed);
-                        if (!task.isSuccessful()) {
-                            msg = getString(R.string.msg_subscribe_failed);
-                        }
-                        Log.d(TAG, msg);
-                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
-        // [END subscribe_topics]
-    }
     public void getTokenRetieve(View v){
         // Get token
         // [START retrieve_current_token]
@@ -272,6 +259,30 @@ Extend_MyHelper.checkInternetLost(this);
 
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg);
+                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        // [END retrieve_current_token]
+    }
+    public void getTokenRetieve(){
+        // Get token
+        // [START retrieve_current_token]
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        fcm =token;
                         Log.d(TAG, msg);
                         Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                     }
