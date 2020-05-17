@@ -7,8 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,29 +21,16 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
@@ -90,40 +75,44 @@ public class Extend_MyHelper {
             return false;
         }
     }
-   public static class SendHttpRequestTask extends AsyncTask<String, Void, Bitmap> {
-        String urlImg ;
+
+    public static class SendHttpRequestTask extends AsyncTask<String, Void, Bitmap> {
+        String urlImg;
         ImageView imb;
         float imgSize;
-        public SendHttpRequestTask(String url ,ImageView image,float size){
-            urlImg=url;
-            imb=image;
-            imgSize =size;
+
+        public SendHttpRequestTask(String url, ImageView image, float size) {
+            urlImg = url;
+            imb = image;
+            imgSize = size;
         }
-            @Override
-            protected Bitmap doInBackground(String... params) {
 
-                try {
-                    URL url = new URL(urlImg);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoInput(true);
-                    connection.connect();
-                    InputStream input = connection.getInputStream();
-                    Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                    Bitmap lbp = scaleDown(myBitmap, imgSize, false);
-                    Log.d("http123", connection.toString());
-                    return lbp;
+        @Override
+        protected Bitmap doInBackground(String... params) {
 
-                } catch (Exception e) {
-                    Log.d("http123", e.getMessage());
-                }
-                return null;
+            try {
+                URL url = new URL(urlImg);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                Bitmap lbp = scaleDown(myBitmap, imgSize, false);
+                Log.d("http123", connection.toString());
+                return lbp;
+
+            } catch (Exception e) {
+                Log.d("http123", e.getMessage());
             }
+            return null;
+        }
 
-            @Override
-            protected void onPostExecute(Bitmap result) {
-                imb.setImageBitmap(result);
-            }
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            imb.setImageBitmap(result);
+        }
     }
+
     public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
         float ratio = Math.min(
                 (float) maxImageSize / realImage.getWidth(),
@@ -135,7 +124,8 @@ public class Extend_MyHelper {
                 height, filter);
         return newBitmap;
     }
-    public  static void UpdateStateToDb(String transId, String statusId,Context context) {
+
+    public static void UpdateStateToDb(String transId, String statusId, Context context) {
         String url = "http://www.groupupdb.com/android/acceptEvent.php";
         url += "?tId=" + transId;
         url += "&stId=" + statusId;
@@ -156,7 +146,8 @@ public class Extend_MyHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
     }
-    public static String checkStatusTrans(String eId , String stateId, Context context, final TextView edt){
+
+    public static String checkStatusTrans(String eId, String stateId, Context context, final TextView edt) {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         final String[] state = {""};
         String url = "http://www.groupupdb.com/android/checkpeopleinstate.php";
@@ -177,7 +168,7 @@ public class Extend_MyHelper {
                             }
                             state[0] = MyArrList.get(0).get("num");
                             edt.setText(state[0]);
-                            Log.d("checkStatus",state[0]);
+                            Log.d("checkStatus", state[0]);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -194,11 +185,12 @@ public class Extend_MyHelper {
         queue.add(stringRequest);
         return state[0];
     }
-    public static String getDayFromDateString(String stringDate,String dateTimeFormat) {
-        String[] daysArray = new String[] {"อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"};
+
+    public static String getDayFromDateString(String stringDate, String dateTimeFormat) {
+        String[] daysArray = new String[]{"อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"};
         String day = "";
 
-        int dayOfWeek =0;
+        int dayOfWeek = 0;
         //dateTimeFormat = yyyy-MM-dd HH:mm:ss
         SimpleDateFormat formatter = new SimpleDateFormat(dateTimeFormat);
         Date date;
@@ -206,7 +198,7 @@ public class Extend_MyHelper {
             date = formatter.parse(stringDate);
             Calendar c = Calendar.getInstance();
             c.setTime(date);
-            dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-1;
+            dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - 1;
             if (dayOfWeek < 0) {
                 dayOfWeek += 7;
             }
@@ -217,7 +209,8 @@ public class Extend_MyHelper {
 
         return day;
     }
-    public  static void UpdateAllState(String eId, String statusId,String priId,Context context) {
+
+    public static void UpdateAllState(String eId, String statusId, String priId, Context context) {
         String url = "http://www.groupupdb.com/android/updateallstatusinevent.php";
         url += "?eid=" + eId;
         url += "&pri=" + priId;
@@ -239,14 +232,15 @@ public class Extend_MyHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
     }
-    public static String checkStatususer(String eId , String uid,String pri, Context context, final TextView edt){
+
+    public static String checkStatususer(String eId, String uid, String pri, Context context, final TextView edt) {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         final String[] state = {""};
         String url = "http://www.groupupdb.com/android/getStatusAppoint.php";
         url += "?eId=" + eId;//ร  อเอาIdหรือ email จากfirebase
         url += "&uId=" + uid;
         url += "&prId=" + pri;
-        Log.d("checkStatus","url "+url);
+        Log.d("checkStatus", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -261,8 +255,8 @@ public class Extend_MyHelper {
                                 MyArrList.add(map);
                             }
                             state[0] = MyArrList.get(0).get("states_name");
-                            edt.setText("สถานะ: "+state[0]);
-                            Log.d("checkStatus","status appoint "+state[0]);
+                            edt.setText("สถานะ: " + state[0]);
+                            Log.d("checkStatus", "status appoint " + state[0]);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -278,6 +272,32 @@ public class Extend_MyHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
         return state[0];
+    }
+
+    public static void sentInviteFCMPerson(String uId,String eId, String priId, String title, String body, String intent, Context context) {
+        String url = "http://www.groupupdb.com/android/fcm_request.php";
+        url += "?eid=" + eId;
+        url += "&uid=" + uId;
+        url += "&pri=" + priId;
+        url += "&title=" + title;
+        url += "&body=" + body;
+        url += "&intent=" + intent;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
     }
 
 }
