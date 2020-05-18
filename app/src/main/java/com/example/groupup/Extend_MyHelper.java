@@ -300,5 +300,30 @@ public class Extend_MyHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
     }
+    public static void sentInviteFCMPlace(String pId ,String title, String body, String intent, Context context) {
+        String url = "http://www.groupupdb.com/android/fcm_requestPlace.php";
+        url += "?pid=" + pId;
+        url += "&title=" + title;
+        url += "&body=" + body;
+        url += "&intent=" + intent;
+        Log.d("Extend Myhelper","url : "+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("updatedb", response);
+//                        Toast.makeText(Home_Alert.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
+    }
+
 
 }

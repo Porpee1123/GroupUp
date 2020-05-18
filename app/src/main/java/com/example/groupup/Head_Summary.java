@@ -337,6 +337,7 @@ public class Head_Summary extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String price = edt_price.getText().toString();
+                String pid = placeArray.get(0).get("place_id").toString();
                 if (price.length()==0){
                     final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Head_Summary.this).create();
                     viewDetail.setTitle("กรุณาระบุราคาต่อบุคคล");
@@ -352,7 +353,7 @@ public class Head_Summary extends AppCompatActivity {
                     layoutParams.weight = 15;
                     btnPositive.setLayoutParams(layoutParams);
                 }else{
-                    addPriceEvent(price);
+                    addPriceEvent(price,pid);
                 }
 
             }
@@ -678,7 +679,7 @@ public class Head_Summary extends AppCompatActivity {
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
-    public  void  addPriceEvent(String price){
+    public  void  addPriceEvent(String price, final String pid){
         String url = "http://www.groupupdb.com/android/updatepriceevent.php";
         url += "?eId=" + eId;
         url += "&price=" + price;
@@ -686,6 +687,7 @@ public class Head_Summary extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Extend_MyHelper.sentInviteFCMPlace(pid,"มีการจองสถานที่","กรุณาทำการตรวจสอบ","OPEN_ACTIVITY_1",Head_Summary.this);
                         Extend_MyHelper.sentInviteFCMPerson("0",eId,"3","แม่งานกำหนดค่าใช้จ่ายเสร็จสิ้น","กรุณาชำระเงินและอัปโหลดสลิปการโอนเงิน","OPEN_ACTIVITY_1",Head_Summary.this);
                         Extend_MyHelper.sentInviteFCMPerson("0",eId,"2","ตรวจสอบสลิปการโอนเงิน","รอการตรวจสอบการโอนเงินจากผู้เข้าร่วมงาน","OPEN_ACTIVITY_1",Head_Summary.this);
                         Extend_MyHelper.UpdateAllState(eId,"14","3",Head_Summary.this);
