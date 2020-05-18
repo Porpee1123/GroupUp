@@ -195,59 +195,6 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         frientArray = new ArrayList<>();
         Log.d("checkIntent",uid+" "+email+" "+eid+" ");
         getType();
-
-//        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this, "Friend is Dowloading", "Please Wait", false, false);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String string1) {
-//
-//                super.onPostExecute(string1);
-//                // Dismiss the progress dialog after done uploading.
-//
-////                shortCutAddFriend();
-////                setItemsListView();
-//                new CountDownTimer(300, 300) {
-//                    public void onFinish() {
-//                        initItems();
-//                        shortCutAddFriend();
-//                        setItemsListView();
-//                        progressDialog.dismiss();
-//                    }
-//
-//                    public void onTick(long millisUntilFinished) {
-//                    }
-//                }.start();
-//
-//                // Printing uploading success message coming from server on android app.
-////                Toast.makeText(InviteFriend_Attendant.this,string1,Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            protected String doInBackground(Void... params) {
-//                getType();
-//                getFriend();
-//                getFriendIDByTrans(uid, eid, 3 + "");
-////                initItems();
-//                return "Finish";
-//            }
-//        }
-//        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-//        AsyncTaskUploadClassOBJ.execute();
-//        new CountDownTimer(300, 300) {
-//            public void onFinish() {
-//                initItems();
-//                shortCutAddFriend();
-//                setItemsListView();
-//            }
-//
-//            public void onTick(long millisUntilFinished) {
-//            }
-//        }.start();
         btnConfirmAttendant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -373,6 +320,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                         str += i + " " + items.get(i).ItemString + "-" + fid + "\n";
                         Log.d("friend", "item : " + items.get(i).ItemString + "");
                         sentInviteToFriend(fid, eid);
+//                        Extend_MyHelper.sentInviteFCMPerson(fid,eid,"3","มีการเชิญเข้าร่วมงาน","ทดสอบจาก Android Studio","OPEN_ACTIVITY_1",InviteFriend_Attendant.this);
                     }
                 }
                 Log.d("friend", str);
@@ -576,7 +524,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
         shortCutAddFriend();
     }
 
-    public void sentInviteToFriend(String idInvite, String idEvent) {
+    public void sentInviteToFriend(final String idInvite, final String idEvent) {
         String url = "http://www.groupupdb.com/android/addFriendInvitationAttend.php";
         url += "?sId=" + idInvite;
         url += "&sEid=" + idEvent;
@@ -585,6 +533,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Extend_MyHelper.sentInviteFCMPerson(idInvite,idEvent,"3","มีการเชิญเข้าร่วมงาน","ทดสอบจาก Android Studio","OPEN_ACTIVITY_1",InviteFriend_Attendant.this);
                         //str = new String(response, StandardCharsets.UTF_8);
                         //String reader = new String(response, StandardCharsets.UTF_8);
                         try {

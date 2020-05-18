@@ -282,6 +282,7 @@ public class Extend_MyHelper {
         url += "&title=" + title;
         url += "&body=" + body;
         url += "&intent=" + intent;
+        Log.d("Extend Myhelper","url : "+url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

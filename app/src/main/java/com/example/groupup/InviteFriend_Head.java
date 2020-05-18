@@ -384,6 +384,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                         str += i + " " + items.get(i).ItemString + "-" + fid + "\n";
                         Log.d("friend", "item : " + items.get(i).ItemString + "");
                         sentInviteToFriend(fid, eid);
+//                        Extend_MyHelper.sentInviteFCMPerson(fid,eid,"3","มีการเชิญเข้าร่วมงาน","ทดสอบจาก Android Studio","OPEN_ACTIVITY_1",InviteFriend_Head.this);
                     }
                 }
                 Log.d("friend", str);
@@ -602,7 +603,7 @@ public class InviteFriend_Head extends AppCompatActivity {
         shortCutAddFriend();
     }
 
-    public void sentInviteToFriend(String idInvite, String idEvent) {
+    public void sentInviteToFriend(final String idInvite, final String idEvent) {
         String url = "http://www.groupupdb.com/android/addFriendInvitationHead.php";
         url += "?sId=" + idInvite;
         url += "&sEid=" + idEvent;
@@ -614,6 +615,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                         //str = new String(response, StandardCharsets.UTF_8);
                         //String reader = new String(response, StandardCharsets.UTF_8);
                         try {
+                            Extend_MyHelper.sentInviteFCMPerson(idInvite,idEvent,"2","มีการเชิญเข้าร่วมงาน","ทดสอบจาก Android Studio","OPEN_ACTIVITY_1",InviteFriend_Head.this);
                             String strStatusID = "0";
                             String strError = "Unknow Status!";
                             JSONObject c;
@@ -630,7 +632,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(InviteFriend_Head.this, "Submission Error!", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(InviteFriend_Head.this, "Submission Error!", Toast.LENGTH_LONG).show();
                         }
                     }
                 },

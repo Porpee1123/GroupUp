@@ -260,7 +260,7 @@ Extend_MyHelper.checkInternetLost(this);
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
-                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         // [END retrieve_current_token]
@@ -284,7 +284,7 @@ Extend_MyHelper.checkInternetLost(this);
                         String msg = getString(R.string.msg_token_fmt, token);
                         fcm =token;
                         Log.d(TAG, msg);
-                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         // [END retrieve_current_token]
