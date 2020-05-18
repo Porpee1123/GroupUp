@@ -284,6 +284,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
                         Log.d("getTransIDByTrans", transId);
                         Extend_MyHelper.UpdateStateToDb(transId, "16", SlipCheck_waitCheck.this);
                         updatestatusbill(userId, eid, "2");
+                        Extend_MyHelper.sentInviteFCMPerson(userId,eid,"3","ยืนยันการเข้าร่วมงาน","ตรวจสอบสลิปการโอนเงินถูกต้อง","OPEN_ACTIVITY_1",SlipCheck_waitCheck.this);
                         viewDetail.dismiss();
 
                     }
@@ -292,6 +293,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Extend_MyHelper.UpdateStateToDb(transId, "14", SlipCheck_waitCheck.this);
+                        Extend_MyHelper.sentInviteFCMPerson(userId,eid,"3","สลิปการโอนเงินผิดพลาด","กรุณาทำการอัปโหลดสลิปการโอนเงินอีกครั้งหรือเลือกชำระเงินสดเพื่อนชำระเงินภายในงาน","OPEN_ACTIVITY_1",SlipCheck_waitCheck.this);
                         deletebill(userId, eid);
                         viewDetail.dismiss();
                         //แจ้งเตือนให้ผู้ใช้

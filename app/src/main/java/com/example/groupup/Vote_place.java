@@ -281,6 +281,7 @@ public class Vote_place extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             VotePlace(ItemId);
                             Extend_MyHelper.UpdateStateToDb(transId, "10", Vote_place.this);
+                            Extend_MyHelper.sentInviteFCMPerson(id,eid,"3","การโหวตสถานที่เสร็จสิ้น","กรุณารอแม่งานทำการปิดโหวต","OPEN_ACTIVITY_1",Vote_place.this);
                             Intent in = new Intent(Vote_place.this, Home.class);
                             in.putExtra("email", email + "");
                             in.putExtra("id", id + "");

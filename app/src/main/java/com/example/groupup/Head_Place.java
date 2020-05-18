@@ -595,6 +595,7 @@ public class Head_Place extends AppCompatActivity {
                     for (int i=0;i<placeSelect.size();i++){
                         saveToVotePlace(placeSelect.get(i));
                     }
+                    Extend_MyHelper.sentInviteFCMPerson("0",eid,"3","เชิญเข้าร่วมโหวต","สถานที่","OPEN_ACTIVITY_1",Head_Place.this);
                     Extend_MyHelper.UpdateAllState(eid,"9","3",Head_Place.this);
                     Extend_MyHelper.UpdateAllState(eid,"9","2",Head_Place.this);
                     Intent in = new Intent(Head_Place.this, Home.class);

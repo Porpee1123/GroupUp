@@ -432,12 +432,14 @@ public class UploadSlip extends AppCompatActivity {
                                 Log.d("checkCon", "Cash");
                                 Extend_MyHelper.UpdateStateToDb(transId, 16 + "", UploadSlip.this);
                                 addBill(id, eId, "3");
+                                Extend_MyHelper.sentInviteFCMPerson(id,eId,"3","ยืนยันการเข้าร่วมงาน","คุณสามารถเข้าร่วมงานโดยชำระเงินภายในงาน","OPEN_ACTIVITY_1",UploadSlip.this);
                                 Intent in = new Intent(UploadSlip.this, Home.class);
                                 in.putExtra("email", email + "");
                                 in.putExtra("id", id + "");
                                 startActivity(in);
                             } else if (cTransfer == 1) {
                                 Log.d("checkCon", "Transfer");
+                                Extend_MyHelper.sentInviteFCMPerson("id",eId,"3","ยืนยันการเข้าร่วมงาน","กรุณารอแม่งานตรวจสอบสลิปการโอนเงิน","OPEN_ACTIVITY_1",UploadSlip.this);
                                 Extend_MyHelper.UpdateStateToDb(transId, 15 + "", UploadSlip.this);
                                 ImageUploadToServerFunction();
                             }

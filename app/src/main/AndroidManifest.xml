@@ -110,10 +110,6 @@
             android:configChanges="screenSize"
             android:screenOrientation="locked" />
         <activity
-            android:name=".HomeHead_Select_Date"
-            android:configChanges="screenSize"
-            android:screenOrientation="locked" />
-        <activity
             android:name=".Manage_calendar"
             android:configChanges="screenSize"
             android:screenOrientation="locked" />

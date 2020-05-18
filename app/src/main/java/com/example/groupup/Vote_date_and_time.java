@@ -194,6 +194,7 @@ public class Vote_date_and_time extends AppCompatActivity {
 
     public void backVote() {
         Extend_MyHelper.UpdateStateToDb(transId, "7", Vote_date_and_time.this);
+        Extend_MyHelper.sentInviteFCMPerson(id,eId,"3","การโหวตวันที่เวลาเสร็จสิ้น","กรุณารอแม่งานทำการปิดโหวต","OPEN_ACTIVITY_1",Vote_date_and_time.this);
         Intent in = new Intent(this, Home.class);
         in.putExtra("email", email + "");
         in.putExtra("id", id + "");

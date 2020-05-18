@@ -3,7 +3,6 @@ package com.example.groupup;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -39,7 +38,7 @@ import java.util.StringTokenizer;
 
 public class Head_Date extends AppCompatActivity {
     Head_Date.ResponseStr responseStr = new Head_Date.ResponseStr();
-    String uid, eid, nameE, monS, monE, email,wait;
+    String uid, eid, nameE, monS, monE, email, wait;
     CheckBox cb1, cb2, cb3, cb4, cb6;
     CalendarView cv;
     ArrayList<String> dataDB, dateSelect, timeDB, timeSelect;
@@ -81,7 +80,7 @@ public class Head_Date extends AppCompatActivity {
 //        getDate();
         checkPeopleEvent(eid);
 
-        Log.d("dateselect",uid+" "+email+" "+eid+" "+wait+" "+monS+" "+monE);
+        Log.d("dateselect", uid + " " + email + " " + eid + " " + wait + " " + monS + " " + monE);
         final int[] count = {0};
         final int maxLimit = 3;
         //set spinner time
@@ -336,7 +335,7 @@ public class Head_Date extends AppCompatActivity {
         conDateVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("wait",wait+"");
+                Log.d("wait", wait + "");
                 Log.d("dateSelect", dateSelect.toString() + " " + timeSelect.toString());
                 if (cb6Click == 99) {
                     Log.d("cb6Click", cb6Click + "");
@@ -377,8 +376,8 @@ public class Head_Date extends AppCompatActivity {
     }
 
     public void backAppoint() {
-        Extend_MyHelper.UpdateAllState(eid,"6","3",this);
-        Extend_MyHelper.UpdateAllState(eid,"6","2",this);
+        Extend_MyHelper.UpdateAllState(eid, "6", "3", this);
+        Extend_MyHelper.UpdateAllState(eid, "6", "2", this);
         Intent in = new Intent(Head_Date.this, Home.class);
         in.putExtra("email", email + "");
         in.putExtra("id", uid + "");
@@ -418,27 +417,27 @@ public class Head_Date extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 dataDB.add(MyArrList.get(i).get("2"));
                             }
-                            timeDB.add("11:00 - 13:59");
-                            timeDB.add("14:00 - 16:59");
-                            timeDB.add("17:00 - 19:59");
-                            timeDB.add("20:00 - 23:59");
-                            for (int i =0;i<dataDB.size();i++){
+                            timeDB.add("11:00-13:59");//ห้ามแก้ช่วงเวลา
+                            timeDB.add("14:00-16:59");//ห้ามแก้ช่วงเวลา
+                            timeDB.add("17:00-19:59");//ห้ามแก้ช่วงเวลา
+                            timeDB.add("20:00-23:59");//ห้ามแก้ช่วงเวลา
+                            for (int i = 0; i < dataDB.size(); i++) {
                                 StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
-                                String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i),"dd/MM/yyyy");
+                                String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i), "dd/MM/yyyy");
                                 while (st.hasMoreTokens()) {
                                     String d, m, y, date;
                                     String[] some_array = getResources().getStringArray(R.array.month);
                                     d = st.nextToken();
                                     m = st.nextToken();
                                     y = st.nextToken();
-                                    date = "วัน"+dayString+"ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
-                                    if (i==0){
+                                    date = "วัน" + dayString + "ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                                    if (i == 0) {
                                         cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                                    }else if (i==1){
+                                    } else if (i == 1) {
                                         cb2.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                                    }else if (i==2){
+                                    } else if (i == 2) {
                                         cb3.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                                    }else if (i==3){
+                                    } else if (i == 3) {
                                         cb4.setText(date + " ช่วงเวลา " + timeDB.get(i));
                                     }
 
@@ -511,11 +510,13 @@ public class Head_Date extends AppCompatActivity {
         url += "?vdid=" + s;//date
         url += "&vtid=" + time;//time
         url += "&eId=" + eid;
-        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+        url += "&dLw=" + calwait(Integer.parseInt(wait)) + "";
+        Log.d("cb6Click", "url " + url + "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("eventSelect", "getHeadSelectCal " + response);
 //                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -528,16 +529,19 @@ public class Head_Date extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void setVoteDateRandomforUser() {
         String url = "http://www.groupupdb.com/android/addvotedateforuser.php";
         url += "?vdid=" + "random";//date
         url += "&vtid=" + "random";//time
         url += "&eId=" + eid;
-        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+        url += "&dLw=" + calwait(Integer.parseInt(wait)) + "";
+        Log.d("cb6Click", "url random " + url + "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Extend_MyHelper.sentInviteFCMPerson("0", eid, "3", "เชิญเข้าร่วมโหวต", "วันที่", "OPEN_ACTIVITY_1", Head_Date.this);
 //                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -607,15 +611,16 @@ public class Head_Date extends AppCompatActivity {
                 return dateNumber;
         }
     }
-    public String calwait(int wait){
+
+    public String calwait(int wait) {
         Calendar cal = Calendar.getInstance();
         Date today1 = cal.getTime();
         cal.add(Calendar.DATE, wait); // to get previous year add -1
         Date nextYear1 = cal.getTime();
         DateFormat simpleNoHour = new SimpleDateFormat("yyyy-MM-dd");
         simpleNoHour.format(nextYear1);
-        Log.d("wait",nextYear1+"");
-        return simpleNoHour.format(nextYear1)+"";
+        Log.d("wait", nextYear1 + "");
+        return simpleNoHour.format(nextYear1) + "";
     }
 
     public void getnumcal(final int people) {
@@ -640,15 +645,15 @@ public class Head_Date extends AppCompatActivity {
                             }
                             String numcal = MyArrList.get(0).get("numdate");
                             String numcalmax = MyArrList.get(0).get("numdatemax");
-                            Log.d("tab","numcalb : "+ numcal);
-                            int waitTime = (Integer.parseInt(numcal)*4)+4;
-                            Log.d("tab","numcal : "+ waitTime + " "+ numcalmax);
+                            Log.d("tab", "numcalb : " + numcal);
+                            int waitTime = (Integer.parseInt(numcal) * 4) + 4;
+                            Log.d("tab", "numcal : " + waitTime + " " + numcalmax);
                             if (people > 5) {
-                                Log.d("MyHelper","people > 5");
+                                Log.d("MyHelper", "people > 5");
                                 getDate();
                             } else {
-                                Log.d("MyHelper","people < 5");
-                                getDateless5(waitTime+"",numcalmax);
+                                Log.d("MyHelper", "people < 5");
+                                getDateless5(waitTime + "", numcalmax);
                             }
 
 
@@ -667,13 +672,14 @@ public class Head_Date extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void getDateless5(String numWait,String max) {
+
+    public void getDateless5(String numWait, String max) {
         responseStr = new Head_Date.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/showtimeforvotelessfive.php";
         url += "?eid=" + eid;
-        url += "&wait=" + numWait+"";
-        url += "&max=" + max+"";
+        url += "&wait=" + numWait + "";
+        url += "&max=" + max + "";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -691,27 +697,27 @@ public class Head_Date extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 dataDB.add(MyArrList.get(i).get("daforcheck"));
                             }
-                            timeDB.add("11:00 - 13:59");
-                            timeDB.add("14:00 - 16:59");
-                            timeDB.add("17:00 - 19:59");
-                            timeDB.add("20:00 - 23:59");
-                            for (int i =0;i<dataDB.size();i++){
+                            timeDB.add("11:00-13:59");//ห้ามแก้ช่วงเวลา
+                            timeDB.add("14:00-16:59");//ห้ามแก้ช่วงเวลา
+                            timeDB.add("17:00-19:59");//ห้ามแก้ช่วงเวลา
+                            timeDB.add("20:00-23:59");//ห้ามแก้ช่วงเวลา
+                            for (int i = 0; i < dataDB.size(); i++) {
                                 StringTokenizer st = new StringTokenizer(dataDB.get(i), "/");
-                                String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i),"dd/MM/yyyy");
+                                String dayString = Extend_MyHelper.getDayFromDateString(dataDB.get(i), "dd/MM/yyyy");
                                 while (st.hasMoreTokens()) {
                                     String d, m, y, date;
                                     String[] some_array = getResources().getStringArray(R.array.month);
                                     d = st.nextToken();
                                     m = st.nextToken();
                                     y = st.nextToken();
-                                    date = "วัน"+dayString+"ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
-                                    if (i==0){
+                                    date = "วัน" + dayString + "ที่ " + d + " " + some_array[Integer.parseInt(m)] + " " + y;
+                                    if (i == 0) {
                                         cb1.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                                    }else if (i==1){
+                                    } else if (i == 1) {
                                         cb2.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                                    }else if (i==2){
+                                    } else if (i == 2) {
                                         cb3.setText(date + " ช่วงเวลา " + timeDB.get(i));
-                                    }else if (i==3){
+                                    } else if (i == 3) {
                                         cb4.setText(date + " ช่วงเวลา " + timeDB.get(i));
                                     }
 
@@ -720,7 +726,7 @@ public class Head_Date extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("dateselect", "lessfive "+MyArrList.toString());
+                        Log.d("dateselect", "lessfive " + MyArrList.toString());
                     }
                 },
                 new Response.ErrorListener() {
@@ -733,6 +739,7 @@ public class Head_Date extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
+
     public void getEvent() {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -764,7 +771,7 @@ public class Head_Date extends AppCompatActivity {
                                 MyArrList.add(map);
                             }
                             wait = MyArrList.get(0).get("events_wait");
-                            Log.d("tab","wait : "+ wait);
+                            Log.d("tab", "wait : " + wait);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -780,6 +787,7 @@ public class Head_Date extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void checkPeopleEvent(String eId) {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/checkpeopleinevent.php";
@@ -798,7 +806,7 @@ public class Head_Date extends AppCompatActivity {
                                 map.put("sumtran", c.getString("sumtran"));
                                 MyArrList.add(map);
                             }
-                           String peopleInEvent = MyArrList.get(0).get("sumtran");
+                            String peopleInEvent = MyArrList.get(0).get("sumtran");
                             Log.d("MyHelper", "peopleInEvent " + peopleInEvent);
                             final int people = Integer.parseInt(peopleInEvent);
                             getnumcal(people);

@@ -103,8 +103,10 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Extend_MyHelper.sentInviteFCMPerson("0",eid,"3","โหวตสถานที่ปิดแล้ว","กรุณายืนยันการเข้าร่วม","OPEN_ACTIVITY_1",HomeHead_Appointment_Date_And_Place.this);
                         Extend_MyHelper.UpdateAllState(eid, "11", "3", HomeHead_Appointment_Date_And_Place.this);
                         Extend_MyHelper.UpdateAllState(eid, "10", "2", HomeHead_Appointment_Date_And_Place.this);
+
                         Toast.makeText(HomeHead_Appointment_Date_And_Place.this, "Close Place Vote Complete", Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -126,6 +128,7 @@ public class HomeHead_Appointment_Date_And_Place extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Extend_MyHelper.sentInviteFCMPerson("0",eid,"2","โหวตเวลาปิดแล้ว ถึงเวลาเลือกสถานที่","วันที่","OPEN_ACTIVITY_1",HomeHead_Appointment_Date_And_Place.this);
                         Extend_MyHelper.UpdateAllState(eid, "8", "2", HomeHead_Appointment_Date_And_Place.this);
                         Toast.makeText(HomeHead_Appointment_Date_And_Place.this, "Close Time Vote Complete", Toast.LENGTH_SHORT).show();
                     }

@@ -232,6 +232,9 @@ public class Home_Listview_Head extends AppCompatActivity {
         url += "?eId=" + eid;
         url += "&pri=" + "2";
         url += "&stId=" + "8";
+        url += "&title=" + "โหวตเวลาปิดแล้ว";
+        url += "&body=" + "ถึงเวลาเลือกสถานที่";
+        url += "&intent=" + "OPEN_ACTIVITY_1";
 //        Log.d("checkvote", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -277,6 +280,9 @@ public class Home_Listview_Head extends AppCompatActivity {
         url += "&stIdH=" + "10";
         url += "&priA=" + "3";
         url += "&stIdA=" + "11";
+        url += "&title=" + "โหวตสถานที่ปิดแล้ว";
+        url += "&body=" + "ถึงเวลาสรุปงาน";
+        url += "&intent=" + "OPEN_ACTIVITY_1";
         Log.d("checkvote", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
