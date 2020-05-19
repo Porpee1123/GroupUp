@@ -241,7 +241,7 @@ public class MainAttendent extends AppCompatActivity {
                                 @Override
                                 protected void onPreExecute() {
                                     super.onPreExecute();
-                                    progressDialog = ProgressDialog.show(MainAttendent.this, "Note is Uploading", "Please Wait", false, false);
+                                    progressDialog = ProgressDialog.show(MainAttendent.this, "กำลังอัปโหลดโน๊ต", "กรุณารอซักครู่", false, false);
                                 }
 
                                 @Override

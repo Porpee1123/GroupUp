@@ -177,7 +177,7 @@ public class ManageFriend extends AppCompatActivity {
 //            @Override
 //            protected void onPreExecute() {
 //                super.onPreExecute();
-//                progressDialog = ProgressDialog.show(ManageFriend.this, "Friend is Dowloading", "Please Wait", false, false);
+//                progressDialog = ProgressDialog.show(ManageFriend.this, "Friend is Dowloading", "กรุณารอซักครู่", false, false);
 //            }
 //
 //            @Override
@@ -223,7 +223,7 @@ public class ManageFriend extends AppCompatActivity {
                                 @Override
                                 protected void onPreExecute() {
                                     super.onPreExecute();
-                                    progressDialog = ProgressDialog.show(ManageFriend.this, "Type name is Uploading", "Please Wait", false, false);
+                                    progressDialog = ProgressDialog.show(ManageFriend.this, "กำลังอัปโหลดประเภทเพื่อน", "กรุณารอซักครู่", false, false);
                                 }
 
                                 @Override
@@ -447,7 +447,7 @@ public class ManageFriend extends AppCompatActivity {
                             @Override
                             protected void onPreExecute() {
                                 super.onPreExecute();
-                                progressDialog = ProgressDialog.show(ManageFriend.this, "Deleting friend", "Please Wait", false, false);
+                                progressDialog = ProgressDialog.show(ManageFriend.this, "กำลังลบเพื่อน", "กรุณารอซักครู่", false, false);
                             }
 
                             @Override
@@ -485,7 +485,7 @@ public class ManageFriend extends AppCompatActivity {
                             @Override
                             protected void onPreExecute() {
                                 super.onPreExecute();
-                                progressDialog = ProgressDialog.show(ManageFriend.this, "Deleting All Friend", "Please Wait", false, false);
+                                progressDialog = ProgressDialog.show(ManageFriend.this, "กำลังลบรายชื่อเพื่อนทั้งหมด", "กรุณารอซักครู่", false, false);
                             }
 
                             @Override
@@ -552,7 +552,7 @@ public class ManageFriend extends AppCompatActivity {
                             @Override
                             protected void onPreExecute() {
                                 super.onPreExecute();
-                                progressDialog = ProgressDialog.show(ManageFriend.this, "Deleting friend", "Please Wait", false, false);
+                                progressDialog = ProgressDialog.show(ManageFriend.this, "กำลังลบเพื่อน", "กรุณารอซักครู่", false, false);
                             }
 
                             @Override
@@ -589,7 +589,7 @@ public class ManageFriend extends AppCompatActivity {
                             @Override
                             protected void onPreExecute() {
                                 super.onPreExecute();
-                                progressDialog = ProgressDialog.show(ManageFriend.this, "Deleting All Friend", "Please Wait", false, false);
+                                progressDialog = ProgressDialog.show(ManageFriend.this, "กำลังลบรายชื่อเพื่อนทั้งหมด", "กรุณารอซักครู่", false, false);
                             }
 
                             @Override

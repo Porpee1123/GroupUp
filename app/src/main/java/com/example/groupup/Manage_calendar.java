@@ -376,7 +376,7 @@ public class Manage_calendar extends AppCompatActivity {
 
                                 super.onPreExecute();
 
-                                progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
+                                progressDialog = ProgressDialog.show(Manage_calendar.this, "กำลังอัปโหลดปฏิทิน", "กรุณารอซักครู่", false, false);
 
                             }
 
@@ -464,7 +464,7 @@ public class Manage_calendar extends AppCompatActivity {
 
                                 super.onPreExecute();
 
-                                progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
+                                progressDialog = ProgressDialog.show(Manage_calendar.this, "กำลังอัปโหลดปฏิทิน", "กรุณารอซักครู่", false, false);
                             }
 
                             @Override
@@ -1393,7 +1393,7 @@ public class Manage_calendar extends AppCompatActivity {
                     protected void onPreExecute() {
                         super.onPreExecute();
 //                        checkdateforcal(dateString,dateInYear);
-                        progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
+                        progressDialog = ProgressDialog.show(Manage_calendar.this, "กำลังอัปโหลดปฏิทิน", "กรุณารอซักครู่", false, false);
                     }
 
                     @Override
@@ -1738,7 +1738,7 @@ public class Manage_calendar extends AppCompatActivity {
 
                 super.onPreExecute();
 
-                progressDialog = ProgressDialog.show(Manage_calendar.this, "Calendar is Uploading", "Please Wait", false, false);
+                progressDialog = ProgressDialog.show(Manage_calendar.this, "กำลังอัปโหลดปฏิทิน", "กรุณารอซักครู่", false, false);
             }
 
             @Override

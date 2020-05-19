@@ -564,7 +564,7 @@ public class Home_CreateEvent extends AppCompatActivity {
             protected void onPreExecute() {
 
                 super.onPreExecute();
-//                progressDialog = ProgressDialog.show(Home_CreateEvent.this, "Image is Uploading", "Please Wait", false, false);
+//                progressDialog = ProgressDialog.show(Home_CreateEvent.this, "กำลังอัปโหลดข้อมูล", "กรุณารอซักครู่", false, false);
             }
 
             @Override

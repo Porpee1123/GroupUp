@@ -687,7 +687,7 @@ public class Head_Summary extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Extend_MyHelper.sentInviteFCMPlace(pid,"มีการจองสถานที่","กรุณาทำการตรวจสอบ","OPEN_ACTIVITY_1",Head_Summary.this);
+                        Extend_MyHelper.sentInviteFCMPlace(pid,"มีการยืนยันการจองสถานที่ ","โดย "+nameE+" กรุณาทำการตรวจสอบ","OPEN_ACTIVITY_1",Head_Summary.this);
                         Extend_MyHelper.sentInviteFCMPerson("0",eId,"3","แม่งานกำหนดค่าใช้จ่ายเสร็จสิ้น","กรุณาชำระเงินและอัปโหลดสลิปการโอนเงิน","OPEN_ACTIVITY_1",Head_Summary.this);
                         Extend_MyHelper.sentInviteFCMPerson("0",eId,"2","ตรวจสอบสลิปการโอนเงิน","รอการตรวจสอบการโอนเงินจากผู้เข้าร่วมงาน","OPEN_ACTIVITY_1",Head_Summary.this);
                         Extend_MyHelper.UpdateAllState(eId,"14","3",Head_Summary.this);

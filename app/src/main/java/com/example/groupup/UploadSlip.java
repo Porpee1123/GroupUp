@@ -216,7 +216,7 @@ public class UploadSlip extends AppCompatActivity {
             protected void onPreExecute() {
 
                 super.onPreExecute();
-                progressDialog = ProgressDialog.show(UploadSlip.this, "Image is Uploading", "Please Wait", false, false);
+                progressDialog = ProgressDialog.show(UploadSlip.this, "กำลังอัปโหลดข้อมูล", "กรุณารอซักครู่", false, false);
             }
 
             @Override

@@ -215,7 +215,7 @@ public class InviteFriend_Head extends AppCompatActivity {
 //            @Override
 //            protected void onPreExecute() {
 //                super.onPreExecute();
-//                progressDialog = ProgressDialog.show(InviteFriend_Head.this, "Friend is Dowloading", "Please Wait", false, false);
+//                progressDialog = ProgressDialog.show(InviteFriend_Head.this, "Friend is Dowloading", "กรุณารอซักครู่", false, false);
 //            }
 //
 //            @Override
@@ -350,7 +350,7 @@ public class InviteFriend_Head extends AppCompatActivity {
 
                 super.onPreExecute();
 
-                progressDialog = ProgressDialog.show(InviteFriend_Head.this, "Calendar is Uploading", "Please Wait", false, false);
+                progressDialog = ProgressDialog.show(InviteFriend_Head.this, "กำลังอัปโหลดเพื่อน", "กรุณารอซักครู่", false, false);
             }
 
             @Override

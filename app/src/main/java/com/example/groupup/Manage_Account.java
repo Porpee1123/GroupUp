@@ -200,7 +200,7 @@ public class Manage_Account extends AppCompatActivity {
                 protected void onPreExecute() {
 
                     super.onPreExecute();
-                    progressDialog = ProgressDialog.show(Manage_Account.this, "Image is Uploading", "Please Wait", false, false);
+                    progressDialog = ProgressDialog.show(Manage_Account.this, "กำลังอัปโหลดข้อมูล", "กรุณารอซักครู่", false, false);
                     name = txtName.getText().toString();
                 }
 
@@ -241,7 +241,7 @@ public class Manage_Account extends AppCompatActivity {
 
                     super.onPreExecute();
                     name = txtName.getText().toString();
-                    progressDialog = ProgressDialog.show(Manage_Account.this, "Image is Uploading", "Please Wait", false, false);
+                    progressDialog = ProgressDialog.show(Manage_Account.this, "กำลังอัปโหลดข้อมูล", "กรุณารอซักครู่", false, false);
                 }
 
                 @Override

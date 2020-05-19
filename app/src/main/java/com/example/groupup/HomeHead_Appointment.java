@@ -141,7 +141,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
                         @Override
                         protected void onPreExecute() {
                             super.onPreExecute();
-                            progressDialog = ProgressDialog.show(HomeHead_Appointment.this, "Deleting All Friend", "Please Wait", false, false);
+                            progressDialog = ProgressDialog.show(HomeHead_Appointment.this, "กำลังลบรายชื่อเพื่อนทั้งหมด", "กรุณารอซักครู่", false, false);
                         }
 
                         @Override
@@ -190,7 +190,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
                                 @Override
                                 protected void onPreExecute() {
                                     super.onPreExecute();
-                                    progressDialog = ProgressDialog.show(HomeHead_Appointment.this, "Note is Uploading", "Please Wait", false, false);
+                                    progressDialog = ProgressDialog.show(HomeHead_Appointment.this, "กำลังอัปโหลดโน๊ต", "กรุณารอซักครู่", false, false);
                                 }
 
                                 @Override

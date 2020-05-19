@@ -294,7 +294,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
 
                 super.onPreExecute();
 
-                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this, "Calendar is Uploading", "Please Wait", false, false);
+                progressDialog = ProgressDialog.show(InviteFriend_Attendant.this, "กำลังอัปโหลดเพื่อน", "กรุณารอซักครู่", false, false);
             }
 
             @Override
