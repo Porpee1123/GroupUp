@@ -1,17 +1,23 @@
 package com.example.groupup;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,18 +37,103 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainAttendent extends AppCompatActivity {
+    //*******************************TextView with checkbox******************************************//
+
+    public class Item2 {
+        String ItemDrawable;
+        String ItemString;
+        String Id;
+        String ItemStatus;
+
+        //        Item(ImageView drawable, String t, boolean b){
+        Item2(String t, String i, String drawable, String Status) {
+            ItemDrawable = drawable;
+            ItemString = t;
+            Id = i;
+            ItemStatus = Status;
+        }
+
+    }
+
+    static class ViewHolder2 {
+        ImageView icon;
+        TextView text;
+        ImageView Status;
+    }
+
+    public class ItemsListAdapter2 extends BaseAdapter {
+        private ArrayList<MainAttendent.Item2> arraylist2;
+        private Context context;
+        private List<MainAttendent.Item2> list2;
+
+        ItemsListAdapter2(Context c, List<MainAttendent.Item2> l) {
+            context = c;
+            list2 = l;
+            arraylist2 = new ArrayList<MainAttendent.Item2>();
+            arraylist2.addAll(l);
+        }
+
+        @Override
+        public int getCount() {
+            return list2.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list2.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View rowView = convertView;
+
+            // reuse views
+            MainAttendent.ViewHolder2 viewHolder2 = new MainAttendent.ViewHolder2();
+            if (rowView == null) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                rowView = inflater.inflate(R.layout.layout_member, null);
+                viewHolder2.icon = rowView.findViewById(R.id.rowImageView);
+                viewHolder2.text = rowView.findViewById(R.id.rowTextViewName);
+                viewHolder2.Status = rowView.findViewById(R.id.rowimageStatus);
+
+                rowView.setTag(viewHolder2);
+            } else {
+                viewHolder2 = (MainAttendent.ViewHolder2) rowView.getTag();
+            }
+            new Extend_MyHelper.SendHttpRequestTask(list2.get(position).ItemDrawable, viewHolder2.icon, 250).execute();
+            final String itemStr = list2.get(position).ItemString;
+            viewHolder2.text.setText(itemStr);
+            int state = Integer.parseInt(list2.get(position).ItemStatus);
+            if (state != 2) {
+                viewHolder2.Status.setImageResource(R.drawable.ic_tick);
+            }
+            return rowView;
+        }
+    }
+
+
+    //***********************************************************************************************//
     String nEvent = "", id = "", eid = "", email = "", state = "";
+    List<MainAttendent.Item2> items2 = new ArrayList<MainAttendent.Item2>();
+    static MainAttendent.ItemsListAdapter2 myItemsListAdapter2;
     LocalActivityManager mLocalActivityManager;
     TabHost tabHost;
     TextView nHead;
-    ImageButton btn_note;
+    ImageButton btn_note,btn_friend;
     String note;
     int tab = 0;
     TextView tv_maga;
     ImageView img_mega;
     ProgressDialog progressDialog;
+    ArrayList<HashMap<String, String>>  memberArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +150,10 @@ public class MainAttendent extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         tab = Integer.parseInt(getIntent().getStringExtra("tab"));
         nHead.setText(nEvent);
+        memberArray = new ArrayList<>();
         tabHost = (TabHost) findViewById(R.id.tabhost);
         btn_note = findViewById(R.id.btn_noteAttend);
+        btn_friend =findViewById(R.id.btn_seeFriend);
         tv_maga = findViewById(R.id.tv_Megaphone);
         img_mega = findViewById(R.id.img_Megaphone);
         tabHost.setup(mLocalActivityManager);
@@ -104,6 +197,25 @@ public class MainAttendent extends AppCompatActivity {
             @Override
             public void onTabChanged(String tabId) {
                 updateTabs();
+            }
+        });
+        btn_friend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog viewDetail = new AlertDialog.Builder(MainAttendent.this).create();
+                View mView = getLayoutInflater().inflate(R.layout.layout_showmember, null);
+                ListView list = mView.findViewById(R.id.list_ShowMember);
+                TextView numPeople = mView.findViewById(R.id.shownum_people);
+                ImageButton btnClose = mView.findViewById(R.id.showbutton_btnClose);
+                getMemberShow(list, eid, numPeople);
+                btnClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewDetail.dismiss();
+                    }
+                });
+                viewDetail.setView(mView);
+                viewDetail.show();
             }
         });
         btn_note.setOnClickListener(new View.OnClickListener() {
@@ -354,5 +466,63 @@ public class MainAttendent extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+    }
+    public void getMemberShow(final ListView list, String eid, final TextView tv) {
+        memberArray.clear();
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        String url = "http://www.groupupdb.com/android/getmemberforalert.php";
+        url += "?eId=" + eid;
+        Log.d("position", "stringRequest  " + url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_photo", c.getString("user_photo"));
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("states_id", c.getString("states_id"));
+                                map.put("user_email", c.getString("user_email"));
+                                MyArrList.add(map);
+                                memberArray.add(map);
+                            }
+                            initItems2(list);
+                            tv.setText("จำนวนสมาชิกปัจจุบัน " + memberArray.size() + " คน");
+                            Log.d("pathimage", "get MyArrList " + MyArrList.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+    private void initItems2(ListView list) {
+        items2 = new ArrayList<MainAttendent.Item2>();
+        Log.d("pathimage", "memberArray " + memberArray.toString());
+        for (int i = 0; i < memberArray.size(); i++) {
+            String uid = memberArray.get(i).get("user_id").toString();
+            String uName = memberArray.get(i).get("user_names").toString();
+            String uEmail = memberArray.get(i).get("user_email").toString();
+            String uPhoto = memberArray.get(i).get("user_photo").toString();
+            String sId = memberArray.get(i).get("states_id").toString();
+            MainAttendent.Item2 item2 = new MainAttendent.Item2(uName, uid, uPhoto, sId);
+            items2.add(item2);
+        }
+        myItemsListAdapter2 = new MainAttendent.ItemsListAdapter2(this, items2);
+        list.setAdapter(myItemsListAdapter2);
+        Log.d("pathimage", items2.toString());
     }
 }
