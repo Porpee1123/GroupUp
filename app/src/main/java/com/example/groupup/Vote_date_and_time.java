@@ -174,7 +174,7 @@ public class Vote_date_and_time extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        VoteDate(dateDB.get(3), timeDB.get(3));
+                        VoteDate("random", "random");
                         backVote();
 
                     }

@@ -99,7 +99,7 @@ public class MainAttendent extends AppCompatActivity {
             MainAttendent.ViewHolder2 viewHolder2 = new MainAttendent.ViewHolder2();
             if (rowView == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                rowView = inflater.inflate(R.layout.layout_member, null);
+                rowView = inflater.inflate(R.layout.layout_membernodelete, null);
                 viewHolder2.icon = rowView.findViewById(R.id.rowImageView);
                 viewHolder2.text = rowView.findViewById(R.id.rowTextViewName);
                 viewHolder2.Status = rowView.findViewById(R.id.rowimageStatus);

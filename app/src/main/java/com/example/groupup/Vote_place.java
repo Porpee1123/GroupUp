@@ -750,7 +750,7 @@ public class Vote_place extends AppCompatActivity {
             } else if (Integer.parseInt(date.get(i)) == 7) {
                 day += "อาทิตย์ ";
             } else if (Integer.parseInt(date.get(i)) == 8) {
-                day += "วันเสาร์อาทิตย์ ";
+                day += "เสาร์ - อาทิตย์ ";
             } else if (Integer.parseInt(date.get(i)) == 9) {
                 day += "จันทร์ - ศุกร์ ";
             } else if (Integer.parseInt(date.get(i)) == 10) {

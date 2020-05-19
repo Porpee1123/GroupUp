@@ -87,7 +87,7 @@ public class Manage_Account extends AppCompatActivity {
                 }
             }
         });
-        new Extend_MyHelper.SendHttpRequestTask(photo,SelectImageGallery,400).execute();
+        new Extend_MyHelper.SendHttpRequestTask(photo,SelectImageGallery,250).execute();
 
         EditText edt_name = findViewById(R.id.name);
         EditText edt_email = findViewById(R.id.email);
