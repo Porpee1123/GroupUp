@@ -384,7 +384,6 @@ public class InviteFriend_Head extends AppCompatActivity {
                         str += i + " " + items.get(i).ItemString + "-" + fid + "\n";
                         Log.d("friend", "item : " + items.get(i).ItemString + "");
                         sentInviteToFriend(fid, eid);
-//                        Extend_MyHelper.sentInviteFCMPerson(fid,eid,"3","มีการเชิญเข้าร่วมงาน","ทดสอบจาก Android Studio","OPEN_ACTIVITY_1",InviteFriend_Head.this);
                     }
                 }
                 Log.d("friend", str);
@@ -615,7 +614,7 @@ public class InviteFriend_Head extends AppCompatActivity {
                         //str = new String(response, StandardCharsets.UTF_8);
                         //String reader = new String(response, StandardCharsets.UTF_8);
                         try {
-                            Extend_MyHelper.sentInviteFCMPerson(idInvite,idEvent,"2","มีการเชิญเข้าร่วมงาน","ทดสอบจาก Android Studio","OPEN_ACTIVITY_1",InviteFriend_Head.this);
+                            Extend_MyHelper.sentInviteFCMPerson(idInvite,idEvent,"2","คำเชิญแม่งาน","คุณได้รับคำเชิญเป็นแม่งาน","OPEN_ACTIVITY_1",InviteFriend_Head.this);
                             String strStatusID = "0";
                             String strError = "Unknow Status!";
                             JSONObject c;

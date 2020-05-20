@@ -320,7 +320,6 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                         str += i + " " + items.get(i).ItemString + "-" + fid + "\n";
                         Log.d("friend", "item : " + items.get(i).ItemString + "");
                         sentInviteToFriend(fid, eid);
-//                        Extend_MyHelper.sentInviteFCMPerson(fid,eid,"3","มีการเชิญเข้าร่วมงาน","ทดสอบจาก Android Studio","OPEN_ACTIVITY_1",InviteFriend_Attendant.this);
                     }
                 }
                 Log.d("friend", str);
@@ -533,7 +532,7 @@ public class InviteFriend_Attendant extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Extend_MyHelper.sentInviteFCMPerson(idInvite,idEvent,"3","มีการเชิญเข้าร่วมงาน","ทดสอบจาก Android Studio","OPEN_ACTIVITY_1",InviteFriend_Attendant.this);
+                        Extend_MyHelper.sentInviteFCMPerson(idInvite,idEvent,"3","คำเชิญผู้เข้าร่วมงาน","คุณได้รับคำเชิญเป็นผู้เข้าร่วมงาน","OPEN_ACTIVITY_1",InviteFriend_Attendant.this);
                         //str = new String(response, StandardCharsets.UTF_8);
                         //String reader = new String(response, StandardCharsets.UTF_8);
                         try {

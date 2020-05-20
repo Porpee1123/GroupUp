@@ -308,7 +308,7 @@ public class JobSummary extends AppCompatActivity {
                 viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Extend_MyHelper.sentInviteFCMPerson(id,eId,"3","ยืนยันการเข้าร่วมเสร็จสิ้น","กรุณารอแม่งานกำหนดค่าใช้จ่าย","OPEN_ACTIVITY_1",JobSummary.this);
+                        Extend_MyHelper.sentInviteFCMPerson(id,eId,"3","ยืนยันการเข้าร่วมงานเสร็จสิ้น","กรุณารอแม่งานทำการกำหนดค่าใช้จ่าย","OPEN_ACTIVITY_1",JobSummary.this);
                         Extend_MyHelper.UpdateStateToDb(transId, 12 + "", JobSummary.this);
                         Extend_MyHelper.UpdateAllState(eId,"13","2",JobSummary.this);//ถ้ามีเช็คคนครบค่อยมาเปลี่ยนเอาอันนี้ออก
 //                        finish();

@@ -284,7 +284,7 @@ public class SlipCheck_waitCheck extends AppCompatActivity {
                         Log.d("getTransIDByTrans", transId);
                         Extend_MyHelper.UpdateStateToDb(transId, "16", SlipCheck_waitCheck.this);
                         updatestatusbill(userId, eid, "2");
-                        Extend_MyHelper.sentInviteFCMPerson(userId,eid,"3","ยืนยันการเข้าร่วมงาน","ตรวจสอบสลิปการโอนเงินถูกต้อง","OPEN_ACTIVITY_1",SlipCheck_waitCheck.this);
+                        Extend_MyHelper.sentInviteFCMPerson(userId,eid,"3","ยืนยันการชำระเงิน","ตรวจสอบสลิปการโอนเงินถูกต้อง","OPEN_ACTIVITY_1",SlipCheck_waitCheck.this);
                         viewDetail.dismiss();
 
                     }

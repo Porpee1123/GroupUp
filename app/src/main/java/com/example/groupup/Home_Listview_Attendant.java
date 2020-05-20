@@ -250,10 +250,9 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         url += "?eId=" + eid;
         url += "&pri=" + "2";
         url += "&stId=" + "8";
-        url += "&title=" + "โหวตเวลาปิดแล้ว";
-        url += "&body=" + "ถึงเวลาเลือกสถานที่";
+        url += "&title=" + "โหวตเวลาปิดเสร็จสิ้น";
+        url += "&body=" + "ถึงเวลาเลือกสถานที่เพื่อการโหวต";
         url += "&intent=" + "OPEN_ACTIVITY_1";
-//        Extend_MyHelper.sentInviteFCMPerson("0",eid,"2","โหวตเวลาปิดแล้ว ถึงเวลาเลือกสถานที่","วันที่","OPEN_ACTIVITY_1",HomeHead_Appointment_Date_And_Place.this);
 //        Log.d("checkvote", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -302,8 +301,8 @@ public class Home_Listview_Attendant extends AppCompatActivity {
         url += "&priA=" + "3";
         url += "&stIdA=" + "11";
         url += "&uid=" + "0";
-        url += "&title=" + "โหวตสถานที่ปิดแล้ว";
-        url += "&body=" + "ถึงเวลาสรุปงาน";
+        url += "&title=" + "โหวตสถานที่ปิดเสร็จสิ้น";
+        url += "&body=" + "ถึงเวลายืนยันการเข้าร่วมงาน";
         url += "&intent=" + "OPEN_ACTIVITY_1";
         Log.d("checkvote", "url " + url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -410,7 +409,7 @@ public class Home_Listview_Attendant extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        Log.d("footer", "response gotoevent " + response);
                     }
                 },
                 new Response.ErrorListener() {

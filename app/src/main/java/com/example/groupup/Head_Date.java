@@ -541,7 +541,7 @@ public class Head_Date extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Extend_MyHelper.sentInviteFCMPerson("0", eid, "3", "เชิญเข้าร่วมโหวต", "วันที่", "OPEN_ACTIVITY_1", Head_Date.this);
+                        Extend_MyHelper.sentInviteFCMPerson("0", eid, "3", "ถึงเวลาโหวตวันที่", "กรุณาโหวตวันที่ที่ต้องการนัดหมาย", "OPEN_ACTIVITY_1", Head_Date.this);
 //                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
                     }
                 },

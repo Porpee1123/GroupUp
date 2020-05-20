@@ -620,9 +620,9 @@ public class Home_CreateEvent extends AppCompatActivity {
 
                 httpURLConnectionObject = (HttpURLConnection) url.openConnection();
 
-                httpURLConnectionObject.setReadTimeout(24000);
+                httpURLConnectionObject.setReadTimeout(240000);
 
-                httpURLConnectionObject.setConnectTimeout(24000);
+                httpURLConnectionObject.setConnectTimeout(240000);
 
                 httpURLConnectionObject.setRequestMethod("POST");
 

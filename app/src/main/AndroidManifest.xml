@@ -18,10 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Head_Summary">
-<!--            <intent-filter>-->
-<!--                <action android:name="OPEN_DETAIL_ACTIVITY" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--            </intent-filter>-->
         </activity>
         <activity android:name=".UploadSlip" />
         <activity android:name=".JobSummary" />
