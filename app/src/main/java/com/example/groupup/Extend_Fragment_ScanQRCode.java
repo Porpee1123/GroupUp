@@ -49,7 +49,7 @@ public class Extend_Fragment_ScanQRCode extends Fragment {
                         while (st.hasMoreTokens()){
                             qr.add(st.nextToken());
                         }
-                        Toast.makeText(getActivity(), "QR code = " + resultString, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity(), "QR code = " + resultString, Toast.LENGTH_LONG).show();
                         Log.d("QrTest", "QR code ==> " + resultString);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentMainFragment, new Extend_Fragment_ScanQRCode()).commit();
                         Intent intent = new Intent(getActivity(), ManageFriend_AddFriends.class);
