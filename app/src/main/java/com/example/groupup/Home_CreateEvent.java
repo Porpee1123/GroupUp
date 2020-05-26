@@ -212,39 +212,39 @@ public class Home_CreateEvent extends AppCompatActivity {
             sped.requestFocus();
             return false;
         }
-        if (spb.getSelectedItemId() == 0) {
-            dialog.setMessage("กรุณาเลือกธนาคาร");
-            dialog.show();
-            spb.requestFocus();
-            return false;
-        }
+//        if (spb.getSelectedItemId() == 0) {
+//            dialog.setMessage("กรุณาเลือกธนาคาร");
+//            dialog.show();
+//            spb.requestFocus();
+//            return false;
+//        }
         if (spst.getSelectedItemId() == sped.getSelectedItemId()) {
             dialog.setMessage("เดือนเริ่มต้นและสิ้นสุดไม่สามารถเป็นเดือนเดียวกันได้");
             dialog.show();
             sped.requestFocus();
             return false;
         }
-        if (edt_bank.getText().length() == 0) {
-            dialog.setMessage("กรุณากรอกหมายเลขบัญชีธนาคาร");
-            dialog.show();
-            edt_bank.requestFocus();
-            return false;
-        }
-        if (edt_nameAccount.getText().length() == 0) {
-            dialog.setMessage("กรุณากรอกชื่อบัญชีธนาคาร");
-            dialog.show();
-            edt_nameAccount.requestFocus();
-            return false;
-        }
+//        if (edt_bank.getText().length() == 0) {
+//            dialog.setMessage("กรุณากรอกหมายเลขบัญชีธนาคาร");
+//            dialog.show();
+//            edt_bank.requestFocus();
+//            return false;
+//        }
+//        if (edt_nameAccount.getText().length() == 0) {
+//            dialog.setMessage("กรุณากรอกชื่อบัญชีธนาคาร");
+//            dialog.show();
+//            edt_nameAccount.requestFocus();
+//            return false;
+//        }
 
         String url = "http://www.groupupdb.com/android/creategroup.php";
         url += "?sName=" + txtName.getText().toString();
         url += "&sStart=" + spst.getSelectedItemPosition() + "";
         url += "&sEnd=" + sped.getSelectedItemPosition() + "";
         url += "&sWait=" + spwa.getSelectedItem().toString();
-        url += "&sBank=" + spb.getSelectedItemPosition()+"";
-        url += "&sBankNo=" + edt_bank.getText().toString();
-        url += "&sBankAcc=" + edt_nameAccount.getText().toString();
+        url += "&sBank=" + "0";//spb.getSelectedItemPosition()+"";
+        url += "&sBankNo=" + "0";//edt_bank.getText().toString();
+        url += "&sBankAcc=" + "0";// edt_nameAccount.getText().toString();
         url += "&sProvi=" + name;
         url += "&sProid=" + id;
         String[] some_array = getResources().getStringArray(R.array.month);

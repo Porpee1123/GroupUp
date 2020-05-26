@@ -46,6 +46,7 @@ public class HomeHead_Appointment extends AppCompatActivity {
     EditText editText;
     ImageButton sentDetail,btn_note;
     ProgressDialog progressDialog;
+    private RequestQueue requestQueue;
     String[] some_array;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,8 +304,9 @@ public class HomeHead_Appointment extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
 
     protected void updateTabs() {
@@ -405,8 +407,9 @@ public class HomeHead_Appointment extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
     public void addNoteToDB(String note) {
         Log.d("detail", note);
@@ -426,8 +429,9 @@ public class HomeHead_Appointment extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
 
     public void checkStatususer(String eId , String uid, String pri){
@@ -468,8 +472,16 @@ public class HomeHead_Appointment extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+    }
+    public void uploadData(StringRequest s) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        } else {
+            requestQueue.add(s);
+        }
     }
 }
 

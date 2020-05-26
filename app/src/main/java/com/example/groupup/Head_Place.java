@@ -363,7 +363,7 @@ public class Head_Place extends AppCompatActivity {
                         if (count[0] == maxLimit && isChecked) {
                             buttonView.setChecked(false);
                             Toast.makeText(getApplicationContext(),
-                                    "สามารถเลือกได้สูงสุด 3 วัน", Toast.LENGTH_SHORT).show();
+                                    "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
                         } else if (isChecked) {
                             count[0]++;
                             placeSelect.add(ItemId);
@@ -384,6 +384,7 @@ public class Head_Place extends AppCompatActivity {
                             count[0]--;
                         }
                     }
+                    Log.d("checkCB",placeSelect.toString());
                 }
             });
             return rowView;
@@ -579,6 +580,7 @@ public class Head_Place extends AppCompatActivity {
             @Override
             public void onRefresh() {
 //                startActivity(getIntent());
+                placeSelect.clear();
                 getplace();
                 count[0]=0;
 //                refreshData(); // your code

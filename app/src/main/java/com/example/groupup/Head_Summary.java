@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -235,6 +237,8 @@ public class Head_Summary extends AppCompatActivity {
     String[] some_array;
     EditText edt_price ;
     Button btn_con,btn_showPlace;
+    EditText edt_bank,edt_nameAccount;
+    Spinner spb;
     private Head_Summary.SliderAdapterExample adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,8 +261,15 @@ public class Head_Summary extends AppCompatActivity {
         edt_price =findViewById(R.id.edt_price);
         btn_con = findViewById(R.id.btn_confirm_headsum);
         btn_showPlace = findViewById(R.id.btn_showPlace);
+        edt_bank = findViewById(R.id.edt_bankAccount);
+        edt_nameAccount = findViewById(R.id.edt_accountName);
+        spb = findViewById(R.id.spin_bank);
         Extend_MyHelper.checkStatusTrans(eId, "12", Head_Summary.this, tvPeople);
         some_array = getResources().getStringArray(R.array.facility);
+        ArrayAdapter<CharSequence> adb = ArrayAdapter.createFromResource(this, R.array.bank, android.R.layout.simple_spinner_item);
+        adb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spb.setAdapter(adb);
+        spb.setSelection(0);
         getJob();
         btn_showPlace.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,6 +349,10 @@ public class Head_Summary extends AppCompatActivity {
             public void onClick(View v) {
                 String price = edt_price.getText().toString();
                 String pid = placeArray.get(0).get("place_id").toString();
+                String bid = spb.getSelectedItemPosition()+"";
+                String bName = edt_bank.getText().toString();
+                String bAcc = edt_nameAccount.getText().toString();
+
                 if (price.length()==0){
                     final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Head_Summary.this).create();
                     viewDetail.setTitle("กรุณาระบุราคาต่อบุคคล");
@@ -352,8 +367,55 @@ public class Head_Summary extends AppCompatActivity {
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                     layoutParams.weight = 15;
                     btnPositive.setLayoutParams(layoutParams);
+                }else if (spb.getSelectedItemId() == 0){
+                    final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Head_Summary.this).create();
+                    viewDetail.setTitle("กรุณาเลือกธนาคาร");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "รับทราบ", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    spb.requestFocus();
+                    Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    layoutParams.weight = 15;
+                    btnPositive.setLayoutParams(layoutParams);
+                }
+                else if (edt_bank.getText().length() == 0){
+                    final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Head_Summary.this).create();
+                    viewDetail.setTitle("กรุณากรอกหมายเลขบัญชีธนาคาร");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "รับทราบ", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    edt_bank.requestFocus();
+                    Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    layoutParams.weight = 15;
+                    btnPositive.setLayoutParams(layoutParams);
+                }
+                else if (edt_nameAccount.getText().length() == 0){
+                    final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(Head_Summary.this).create();
+                    viewDetail.setTitle("กรุณากรอกชื่อบัญชีธนาคาร");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "รับทราบ", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    edt_nameAccount.requestFocus();
+                    Button btnPositive = viewDetail.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    layoutParams.weight = 15;
+                    btnPositive.setLayoutParams(layoutParams);
                 }else{
-                    addPriceEvent(price,pid);
+                    addPriceEvent(price,pid,bid,bName,bAcc);
                 }
 
             }
@@ -679,10 +741,14 @@ public class Head_Summary extends AppCompatActivity {
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
-    public  void  addPriceEvent(String price, final String pid){
+    public  void  addPriceEvent(String price, final String pid,String bid,String bName,String bAcc){
         String url = "http://www.groupupdb.com/android/updatepriceevent.php";
         url += "?eId=" + eId;
         url += "&price=" + price;
+        url += "&bId=" + bName;
+        url += "&bName=" + bid;
+        url += "&bAcc=" + bAcc;
+        Log.d("addPriceEvent", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

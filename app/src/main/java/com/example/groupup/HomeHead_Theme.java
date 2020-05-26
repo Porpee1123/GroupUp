@@ -57,6 +57,7 @@ public class HomeHead_Theme extends AppCompatActivity {
     ArrayList<String> themeSelect = new ArrayList<>();
     Button b, btn_con;
     LinearLayout lShort, lCus;
+    private RequestQueue requestQueue;
     ScrollView scrollView;
     ImageView img_minimal, img_classic, img_buffet, img_river, img_karaoke, img_sky, img_kid;
     boolean checkVisible;
@@ -1013,8 +1014,9 @@ public class HomeHead_Theme extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
         Log.d("themeSelect", "transid: " + transId);
 
         Extend_MyHelper.UpdateStateToDb(transId, 5 + "",this);
@@ -1059,8 +1061,9 @@ public class HomeHead_Theme extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        uploadData(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
     }
 
     public void checkCustomTheme(String idType) {
@@ -1257,5 +1260,11 @@ public class HomeHead_Theme extends AppCompatActivity {
         Log.d("wait",nextYear1+"");
         return simpleNoHour.format(nextYear1)+"";
     }
-
+    public void uploadData(StringRequest s) {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        } else {
+            requestQueue.add(s);
+        }
+    }
 }
