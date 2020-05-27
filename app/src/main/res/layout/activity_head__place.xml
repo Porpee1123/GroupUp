@@ -197,13 +197,19 @@
             </ListView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <View
+            android:id="@+id/lineOnSelect"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_de" />
+
         <HorizontalScrollView
             android:id="@+id/scrollSelect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -247,9 +253,10 @@
                     android:visibility="gone" />
 
                 <View
-                    android:id="@+id/view22"
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent" />
+                    android:id="@+id/lineSelect1"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black_de" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -291,9 +298,10 @@
                     android:visibility="gone" />
 
                 <View
-                    android:id="@+id/view23"
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent" />
+                    android:id="@+id/lineSelect2"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black_de" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -335,9 +343,10 @@
                     android:visibility="gone" />
 
                 <View
-                    android:id="@+id/view24"
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent" />
+                    android:id="@+id/lineSelect3"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black_de" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -379,9 +388,10 @@
                     android:visibility="gone" />
 
                 <View
-                    android:id="@+id/view21"
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent" />
+                    android:id="@+id/lineSelect4"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black_de" />
 
             </LinearLayout>
         </HorizontalScrollView>

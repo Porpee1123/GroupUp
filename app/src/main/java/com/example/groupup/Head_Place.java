@@ -1,22 +1,13 @@
 package com.example.groupup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
-
-import com.bumptech.glide.Glide;
-
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,8 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -41,12 +30,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -294,15 +287,17 @@ public class Head_Place extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d("checkCB", "cbCount " + cbCount);
-                    if(checkAlreadyClick(ItemId)){
+                    Log.d("checkCB", "placeDelPosition " + placeDelPosition);
+                    if (checkAlreadyClick(ItemId)) {
                         Toast.makeText(getApplicationContext(),
                                 "คุณไม่สามารถเลือกสถานที่ซ้ำได้", Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else {
                         if (placeDelPosition.size() == 0) {
                             scrollSelect.setVisibility(View.VISIBLE);
+                            lineOnSelect.setVisibility(View.VISIBLE);
                             if (cbCount <= 4) {
                                 placeSelect.add(ItemId);
-                                showCb(cbCount, list.get(position).ItemDrawable, ItemName,ItemId);
+                                showCb(cbCount, list.get(position).ItemDrawable, ItemName, ItemId);
                                 cbCount++;
                                 Log.d("checkCB", placeSelect.toString());
                                 Log.d("checkCB", placeDelPosition.toString());
@@ -311,12 +306,14 @@ public class Head_Place extends AppCompatActivity {
                                         "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            scrollSelect.setVisibility(View.VISIBLE);
+                            lineOnSelect.setVisibility(View.VISIBLE);
                             placeSelect.add(ItemId);
-                            showCb(placeDelPosition.get(0), list.get(position).ItemDrawable, ItemName,ItemId);
+                            showCb(placeDelPosition.get(0), list.get(position).ItemDrawable, ItemName, ItemId);
                             cbCount++;
                             placeDelPosition.remove(0);
-                            Log.d("checkCB","else "+ placeSelect.toString());
-                            Log.d("checkCB", "else "+ placeDelPosition.toString());
+                            Log.d("checkCB", "else " + placeSelect.toString());
+                            Log.d("checkCB", "else " + placeDelPosition.toString());
                         }
                     }
                 }
@@ -567,6 +564,7 @@ public class Head_Place extends AppCompatActivity {
     ImageButton imb_selPlace1, imb_selPlace2, imb_selPlace3, imb_selPlace4;
     TextView tv_selPlace1, tv_selPlace2, tv_selPlace3, tv_selPlace4;
     TextView tv_pid1, tv_pid2, tv_pid3, tv_pid4;
+    View lineSelect1, lineSelect2, lineSelect3, lineSelect4,lineOnSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -595,20 +593,31 @@ public class Head_Place extends AppCompatActivity {
         tv_pid2 = findViewById(R.id.tv_ItemId2);
         tv_pid3 = findViewById(R.id.tv_ItemId3);
         tv_pid4 = findViewById(R.id.tv_ItemId4);
+        lineSelect1 = findViewById(R.id.lineSelect1);
+        lineSelect2 = findViewById(R.id.lineSelect2);
+        lineSelect3 = findViewById(R.id.lineSelect3);
+        lineSelect4 = findViewById(R.id.lineSelect4);
+        lineOnSelect= findViewById(R.id.lineOnSelect);
         scrollSelect = findViewById(R.id.scrollSelect);
         img_selPlace1.setVisibility(View.INVISIBLE);
         imb_selPlace1.setVisibility(View.INVISIBLE);
+        lineSelect1.setVisibility(View.INVISIBLE);
         tv_selPlace1.setVisibility(View.INVISIBLE);
         img_selPlace2.setVisibility(View.INVISIBLE);
         imb_selPlace2.setVisibility(View.INVISIBLE);
         tv_selPlace2.setVisibility(View.INVISIBLE);
+        lineSelect2.setVisibility(View.INVISIBLE);
         img_selPlace3.setVisibility(View.INVISIBLE);
         imb_selPlace3.setVisibility(View.INVISIBLE);
         tv_selPlace3.setVisibility(View.INVISIBLE);
+        lineSelect3.setVisibility(View.INVISIBLE);
         img_selPlace4.setVisibility(View.INVISIBLE);
         imb_selPlace4.setVisibility(View.INVISIBLE);
         tv_selPlace4.setVisibility(View.INVISIBLE);
+        lineSelect4.setVisibility(View.INVISIBLE);
+
         scrollSelect.setVisibility(View.GONE);
+        lineOnSelect.setVisibility(View.GONE);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
@@ -715,7 +724,7 @@ public class Head_Place extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideCb(1);
-                removeArray(placeSelect,tv_pid1.getText().toString());
+                removeArray(placeSelect, tv_pid1.getText().toString());
 //                placeSelect.remove(0);
                 placeDelPosition.add(1);
                 cbCount--;
@@ -725,7 +734,7 @@ public class Head_Place extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideCb(2);
-                removeArray(placeSelect,tv_pid2.getText().toString());
+                removeArray(placeSelect, tv_pid2.getText().toString());
 //                placeSelect.remove(1);
                 placeDelPosition.add(2);
                 cbCount--;
@@ -735,7 +744,7 @@ public class Head_Place extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideCb(3);
-                removeArray(placeSelect,tv_pid3.getText().toString());
+                removeArray(placeSelect, tv_pid3.getText().toString());
 //                placeSelect.remove(2);
                 placeDelPosition.add(3);
                 cbCount--;
@@ -745,7 +754,7 @@ public class Head_Place extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideCb(4);
-                removeArray(placeSelect,tv_pid4.getText().toString());
+                removeArray(placeSelect, tv_pid4.getText().toString());
 //                placeSelect.remove(3);
                 placeDelPosition.add(4);
                 cbCount--;
@@ -1197,28 +1206,33 @@ public class Head_Place extends AppCompatActivity {
             img_selPlace1.setVisibility(View.GONE);
             imb_selPlace1.setVisibility(View.GONE);
             tv_selPlace1.setVisibility(View.GONE);
+            lineSelect1.setVisibility(View.GONE);
 
         } else if (count == 2) {
             img_selPlace2.setVisibility(View.GONE);
             imb_selPlace2.setVisibility(View.GONE);
             tv_selPlace2.setVisibility(View.GONE);
+            lineSelect2.setVisibility(View.GONE);
 
         } else if (count == 3) {
             img_selPlace3.setVisibility(View.GONE);
             imb_selPlace3.setVisibility(View.GONE);
             tv_selPlace3.setVisibility(View.GONE);
+            lineSelect3.setVisibility(View.GONE);
         } else if (count == 4) {
             img_selPlace4.setVisibility(View.GONE);
             imb_selPlace4.setVisibility(View.GONE);
             tv_selPlace4.setVisibility(View.GONE);
+            lineSelect4.setVisibility(View.GONE);
         }
     }
 
-    public void showCb(int count, String path, String name,String itemId) {
+    public void showCb(int count, String path, String name, String itemId) {
         if (count == 1) {
             img_selPlace1.setVisibility(View.VISIBLE);
             imb_selPlace1.setVisibility(View.VISIBLE);
             tv_selPlace1.setVisibility(View.VISIBLE);
+            lineSelect1.setVisibility(View.VISIBLE);
             new Extend_MyHelper.SendHttpRequestTask(path, img_selPlace1, 250).execute();
             tv_selPlace1.setText(name);
             tv_pid1.setText(itemId);
@@ -1226,6 +1240,7 @@ public class Head_Place extends AppCompatActivity {
             img_selPlace2.setVisibility(View.VISIBLE);
             imb_selPlace2.setVisibility(View.VISIBLE);
             tv_selPlace2.setVisibility(View.VISIBLE);
+            lineSelect2.setVisibility(View.VISIBLE);
             new Extend_MyHelper.SendHttpRequestTask(path, img_selPlace2, 250).execute();
             tv_selPlace2.setText(name);
             tv_pid2.setText(itemId);
@@ -1233,6 +1248,7 @@ public class Head_Place extends AppCompatActivity {
             img_selPlace3.setVisibility(View.VISIBLE);
             imb_selPlace3.setVisibility(View.VISIBLE);
             tv_selPlace3.setVisibility(View.VISIBLE);
+            lineSelect3.setVisibility(View.VISIBLE);
             new Extend_MyHelper.SendHttpRequestTask(path, img_selPlace3, 250).execute();
             tv_selPlace3.setText(name);
             tv_pid3.setText(itemId);
@@ -1240,11 +1256,13 @@ public class Head_Place extends AppCompatActivity {
             img_selPlace4.setVisibility(View.VISIBLE);
             imb_selPlace4.setVisibility(View.VISIBLE);
             tv_selPlace4.setVisibility(View.VISIBLE);
+            lineSelect4.setVisibility(View.VISIBLE);
             new Extend_MyHelper.SendHttpRequestTask(path, img_selPlace4, 250).execute();
             tv_selPlace4.setText(name);
             tv_pid4.setText(itemId);
         }
     }
+
     public boolean checkAlreadyClick(String id) {
         Log.d("placeselect", "id : " + id);
         Log.d("placeselect", "friendInDb : " + placeSelect.toString());
@@ -1257,7 +1275,8 @@ public class Head_Place extends AppCompatActivity {
 
         return false;
     }
-    public void removeArray(ArrayList<String> arr,String id) {
+
+    public void removeArray(ArrayList<String> arr, String id) {
         String number = "";
         for (int i = 0; i < arr.size(); i++) {
             if (id.equals(arr.get(i))) {
@@ -1265,8 +1284,9 @@ public class Head_Place extends AppCompatActivity {
             }
         }
         arr.remove(Integer.parseInt(number));
-        if (arr.size()==0){
+        if (arr.size() == 0) {
             scrollSelect.setVisibility(View.GONE);
+            lineOnSelect.setVisibility(View.GONE);
         }
     }
 //    public void ckeckCB(ArrayList<String> p){
