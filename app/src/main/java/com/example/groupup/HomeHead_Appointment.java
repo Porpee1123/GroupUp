@@ -304,9 +304,8 @@ public class HomeHead_Appointment extends AppCompatActivity {
                         Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
                     }
                 });
-        uploadData(stringRequest);
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     protected void updateTabs() {
