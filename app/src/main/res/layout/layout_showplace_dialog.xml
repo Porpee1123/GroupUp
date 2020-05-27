@@ -121,7 +121,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.1"
-                                    app:srcCompat="@drawable/ic_access_time_black_24dp" />
+                                    app:srcCompat="@drawable/ic_clock" />
 
                                 <TextView
                                     android:id="@+id/time"
@@ -158,7 +158,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.1"
-                                    app:srcCompat="@drawable/ic_phone_black_24dp" />
+                                    app:srcCompat="@drawable/ic_telephone" />
 
                                 <TextView
                                     android:id="@+id/phone"
@@ -195,7 +195,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.1"
-                                    app:srcCompat="@drawable/ic_attach_money_black_24dp" />
+                                    app:srcCompat="@drawable/ic_money" />
 
                                 <TextView
                                     android:id="@+id/priceRange"
@@ -234,7 +234,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.1"
-                                    app:srcCompat="@drawable/ic_wc_black_24dp" />
+                                    app:srcCompat="@drawable/ic_customer" />
 
                                 <TextView
                                     android:id="@+id/numberOfSeat"
