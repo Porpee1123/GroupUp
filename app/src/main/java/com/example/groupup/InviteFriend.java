@@ -119,17 +119,17 @@ Extend_MyHelper.checkInternetLost(this);
         mLocalActivityManager.dispatchResume();
     }
     public void backAppoint(View v) {
-//        Intent intent = new Intent(InviteFriend.this, HomeHead_Appointment.class);
-//        intent.putExtra("id", uid+"");
-//        intent.putExtra("email", email+"");
-//        intent.putExtra("eid",eid+"");
-//        intent.putExtra("nameEvent",nameE+"");
-//        intent.putExtra("mStart",monS+"");
-//        intent.putExtra("mEnd",monE+"");
-//        intent.putExtra("tab",0+"");
-//        tabHost.setCurrentTab(1);
-//        startActivity(intent);
-        finish();
+        Intent intent = new Intent(InviteFriend.this, HomeHead_Appointment.class);
+        intent.putExtra("id", uid+"");
+        intent.putExtra("email", email+"");
+        intent.putExtra("eid",eid+"");
+        intent.putExtra("nameEvent",nameE+"");
+        intent.putExtra("mStart",monS+"");
+        intent.putExtra("mEnd",monE+"");
+        intent.putExtra("tab",0+"");
+        tabHost.setCurrentTab(1);
+        startActivity(intent);
+//        finish();
     }
     public void search() {
         searchText.addTextChangedListener(new TextWatcher() {

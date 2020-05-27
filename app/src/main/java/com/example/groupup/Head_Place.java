@@ -12,7 +12,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+
 import com.bumptech.glide.Glide;
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -86,6 +88,7 @@ public class Head_Place extends AppCompatActivity {
             this.imageUrl = imageUrl;
         }
     }
+
     public class SliderAdapterExample extends
             SliderViewAdapter<SliderAdapterExample.SliderAdapterVH> {
 
@@ -161,6 +164,7 @@ public class Head_Place extends AppCompatActivity {
         }
 
     }
+
     //*******************************TextView with checkbox******************************************//
     public class Item {
         String ItemId;
@@ -198,7 +202,7 @@ public class Head_Place extends AppCompatActivity {
             ItemStartTime = sTime;
             ItemEndTime = eTime;
             ItemFaciString = showFacility(ItemFaci);
-            RatingString = Rating+"";
+            RatingString = Rating + "";
 
         }
 
@@ -317,11 +321,11 @@ public class Head_Place extends AppCompatActivity {
                     String[] some_arrayPrice = getResources().getStringArray(R.array.sppriceRange);
                     String[] some_arrayPeople = getResources().getStringArray(R.array.spnumberOfSeats);
                     getPlacePhotoPid(sId);
-                    rt.setNumStars (5);
+                    rt.setNumStars(5);
                     title.setText(sTitle);
                     detail.setText(sDetail);
-                    ArrayList<String> s =spiltGetDate(sDay);
-                    time.setText(showStringDay(s)+ " \n" + sSTime + " - " + sETime);
+                    ArrayList<String> s = spiltGetDate(sDay);
+                    time.setText(showStringDay(s) + " \n" + sSTime + " - " + sETime);
                     tel.setText(sTel);
                     price.setText(some_arrayPrice[Integer.parseInt(sPrice)]);
                     people.setText(some_arrayPeople[Integer.parseInt(sPeople)]);
@@ -343,7 +347,7 @@ public class Head_Place extends AppCompatActivity {
                             View mView = getLayoutInflater().inflate(R.layout.layout_showreview_dialog, null);
                             ImageButton btn_close = mView.findViewById(R.id.showbutton_btnClose);
                             ListView list = mView.findViewById(R.id.list_ShowReview);
-                            getReview(sId,list);
+                            getReview(sId, list);
                             btn_close.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -359,7 +363,7 @@ public class Head_Place extends AppCompatActivity {
             viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (count[0]==maxLimit-1){
+                    if (count[0] == maxLimit - 1) {
                         if (count[0] == maxLimit && isChecked) {
                             buttonView.setChecked(false);
                             Toast.makeText(getApplicationContext(),
@@ -371,8 +375,8 @@ public class Head_Place extends AppCompatActivity {
                             removePlace(ItemId);
                             count[0]--;
                         }
-                    }else {
-                        if (count[0] == maxLimit-1 && isChecked) {
+                    } else {
+                        if (count[0] == maxLimit - 1 && isChecked) {
                             buttonView.setChecked(false);
                             Toast.makeText(getApplicationContext(),
                                     "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
@@ -384,7 +388,7 @@ public class Head_Place extends AppCompatActivity {
                             count[0]--;
                         }
                     }
-                    Log.d("checkCB",placeSelect.toString());
+                    Log.d("checkCB", placeSelect.toString());
                 }
             });
             return rowView;
@@ -401,11 +405,10 @@ public class Head_Place extends AppCompatActivity {
                     if (wp.ItemName.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
-                    }
-                    else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
+                    } else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
-                    }else if (wp.RatingString.toLowerCase(Locale.getDefault())
+                    } else if (wp.RatingString.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
                     }
@@ -415,6 +418,7 @@ public class Head_Place extends AppCompatActivity {
             notifyDataSetChanged();
         }
     }
+
     public class Item2 {
         //        String ItemDrawable;
         String ItemName;
@@ -430,12 +434,14 @@ public class Head_Place extends AppCompatActivity {
         }
 
     }
+
     static class ViewHolder2 {
         //        ImageView icon;
         TextView tName;
         TextView tReview;
         RatingBar rtScore;
     }
+
     public class ItemsListAdapter2 extends BaseAdapter {
         private ArrayList<Head_Place.Item2> arraylist2;
         private Context context;
@@ -495,7 +501,7 @@ public class Head_Place extends AppCompatActivity {
     ArrayList<HashMap<String, String>> placeArray, placeImage;
     ProgressDialog progressDialog;
     ResponseStr responseStr = new ResponseStr();
-    String uid, eid, nameE, monS, monE, email,wait;
+    String uid, eid, nameE, monS, monE, email, wait;
     String[] some_array;
     Head_Place.ItemsListAdapter myItemsListAdapter;
     List<Head_Place.Item> items = new ArrayList<Head_Place.Item>();
@@ -504,13 +510,16 @@ public class Head_Place extends AppCompatActivity {
     List<Head_Place.Item2> items2 = new ArrayList<Head_Place.Item2>();
     ArrayList<HashMap<String, String>> placeReview;
     Head_Place.ItemsListAdapter2 myItemsListAdapter2;
-    ArrayAdapter<String> adpScore,adpFaci,adpPrice,adpPeople,adpTheme;
+    ArrayAdapter<String> adpScore, adpFaci, adpPrice, adpPeople, adpTheme;
     ArrayList<String> placeSelect;
-    Spinner sp_score,sp_faci,sp_price,sp_people,sp_theme;
+    Spinner sp_score, sp_faci, sp_price, sp_people, sp_theme;
     private SliderAdapterExample adapter;
     final int[] count = {0};
     Button btn_con;
-    EditText searchText ;
+    EditText searchText;
+    ImageView img_selPlace1, img_selPlace2, img_selPlace3, img_selPlace4;
+    ImageButton imb_selPlace1, imb_selPlace2, imb_selPlace3, imb_selPlace4;
+    TextView tv_selPlace1, tv_selPlace2, tv_selPlace3, tv_selPlace4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -520,18 +529,30 @@ public class Head_Place extends AppCompatActivity {
         sp_faci = findViewById(R.id.spinner_facility);
         sp_people = findViewById(R.id.spinner_seat);
         sp_price = findViewById(R.id.spinner_price);
-        sp_score =findViewById(R.id.spinner_score);
+        sp_score = findViewById(R.id.spinner_score);
         sp_theme = findViewById(R.id.spinner_theme);
         searchText = findViewById(R.id.searchTextPlace);
+        imb_selPlace1 = findViewById(R.id.row_img_del1);
+        imb_selPlace2 = findViewById(R.id.row_img_del2);
+        imb_selPlace3 = findViewById(R.id.row_img_del3);
+        imb_selPlace4 = findViewById(R.id.row_img_del4);
+        img_selPlace1 = findViewById(R.id.rowImageView1);
+        img_selPlace2 = findViewById(R.id.rowImageView2);
+        img_selPlace3 = findViewById(R.id.rowImageView3);
+        img_selPlace4 = findViewById(R.id.rowImageView4);
+        tv_selPlace1 = findViewById(R.id.rowTextViewName1);
+        tv_selPlace2 = findViewById(R.id.rowTextViewName2);
+        tv_selPlace3 = findViewById(R.id.rowTextViewName3);
+        tv_selPlace4 = findViewById(R.id.rowTextViewName4);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
-        wait ="";
+        wait = "";
         placeList = findViewById(R.id.listView_showPlace);
-        btn_con= findViewById(R.id.btn_conPlace);
+        btn_con = findViewById(R.id.btn_conPlace);
         placeArray = new ArrayList<>();
         placeImage = new ArrayList<>();
         placeSelect = new ArrayList<>();
@@ -566,7 +587,7 @@ public class Head_Place extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItemText = (String) parent.getItemAtPosition(position);
-               String typeChange = selectedItemText;
+                String typeChange = selectedItemText;
 
             }
 
@@ -582,7 +603,7 @@ public class Head_Place extends AppCompatActivity {
 //                startActivity(getIntent());
                 placeSelect.clear();
                 getplace();
-                count[0]=0;
+                count[0] = 0;
 //                refreshData(); // your code
                 pullToRefresh.setRefreshing(false);
             }
@@ -593,20 +614,20 @@ public class Head_Place extends AppCompatActivity {
         btn_con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (placeSelect.size()==4){
-                    for (int i=0;i<placeSelect.size();i++){
+                if (placeSelect.size() == 4) {
+                    for (int i = 0; i < placeSelect.size(); i++) {
                         saveToVotePlace(placeSelect.get(i));
                     }
-                    Extend_MyHelper.sentInviteFCMPerson("0",eid,"3","ถึงเวลาโหวตสถานที่","กรุณาโหวตสถานที่ที่ต้องการนัดหมาย","OPEN_ACTIVITY_1",Head_Place.this);
-                    Extend_MyHelper.UpdateAllState(eid,"9","3",Head_Place.this);
-                    Extend_MyHelper.UpdateAllState(eid,"9","2",Head_Place.this);
+                    Extend_MyHelper.sentInviteFCMPerson("0", eid, "3", "ถึงเวลาโหวตสถานที่", "กรุณาโหวตสถานที่ที่ต้องการนัดหมาย", "OPEN_ACTIVITY_1", Head_Place.this);
+                    Extend_MyHelper.UpdateAllState(eid, "9", "3", Head_Place.this);
+                    Extend_MyHelper.UpdateAllState(eid, "9", "2", Head_Place.this);
                     Intent in = new Intent(Head_Place.this, Home.class);
                     in.putExtra("email", email + "");
                     in.putExtra("id", uid + "");
                     startActivity(in);
 //                    saveToVotePlaceRandom();
 //                    finish();
-                }else {
+                } else {
                     final AlertDialog viewDetail = new AlertDialog.Builder(Head_Place.this).create();
 
                     viewDetail.setTitle("กรุณาเลือก 4 ตัวเลือก");
@@ -627,16 +648,16 @@ public class Head_Place extends AppCompatActivity {
     }
 
     public void backAppoint(View v) {
-//        Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
-//        intent.putExtra("id", uid+"");
-//        intent.putExtra("email", email+"");
-//        intent.putExtra("eid",eid+"");
-//        intent.putExtra("nameEvent",nameE+"");
-//        intent.putExtra("mStart",monS+"");
-//        intent.putExtra("mEnd",monE+"");
-//        intent.putExtra("tab",1+"");
-//        startActivity(intent);
-        finish();
+        Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
+        intent.putExtra("id", uid+"");
+        intent.putExtra("email", email+"");
+        intent.putExtra("eid",eid+"");
+        intent.putExtra("nameEvent",nameE+"");
+        intent.putExtra("mStart",monS+"");
+        intent.putExtra("mEnd",monE+"");
+        intent.putExtra("tab",1+"");
+        startActivity(intent);
+//        finish();
     }
 
     public String showFacility(String d) {
@@ -658,7 +679,7 @@ public class Head_Place extends AppCompatActivity {
 
     public void getplace() {
         responseStr = new Head_Place.ResponseStr();
-placeArray.clear();
+        placeArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getplaceforHeader.php";
         url += "?eId=" + eid;
@@ -734,7 +755,7 @@ placeArray.clear();
                                 placeImage.add(map);
                                 adapter = new SliderAdapterExample(Head_Place.this);
                                 sliderView.setSliderAdapter(adapter);
-                                renewItems(sliderView,placeImage);
+                                renewItems(sliderView, placeImage);
                                 sliderView.setIndicatorAnimation(IndicatorAnimations.THIN_WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                                 sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
                                 sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
@@ -810,14 +831,16 @@ placeArray.clear();
         }
 
     }
-    public ArrayList spiltGetDate(String s){
+
+    public ArrayList spiltGetDate(String s) {
         ArrayList<String> arrayList = new ArrayList<>();
-        StringTokenizer st = new StringTokenizer(s,":");
-        while (st.hasMoreTokens()){
+        StringTokenizer st = new StringTokenizer(s, ":");
+        while (st.hasMoreTokens()) {
             arrayList.add(st.nextToken());
         }
         return arrayList;
     }
+
     public String showStringDay(ArrayList<String> date) {
         String day = "";
         for (int i = 0; i < date.size(); i++) {
@@ -846,34 +869,38 @@ placeArray.clear();
         }
         return day;
     }
-    public void renewItems(View view,ArrayList<HashMap<String, String>> image) {
+
+    public void renewItems(View view, ArrayList<HashMap<String, String>> image) {
         List<SliderItem> sliderItemList = new ArrayList<>();
-        for (int i =0;i<image.size();i++){
+        for (int i = 0; i < image.size(); i++) {
             SliderItem sliderItem = new SliderItem();
             sliderItem.setImageUrl(image.get(i).get("photoplace_path"));
-            Log.d("photoplace_path",image.get(i).get("photoplace_path"));
-            int count = i+1;
-            sliderItem.setDescription(count+"");
+            Log.d("photoplace_path", image.get(i).get("photoplace_path"));
+            int count = i + 1;
+            sliderItem.setDescription(count + "");
             sliderItemList.add(sliderItem);
         }
         adapter.renewItems(sliderItemList);
     }
+
     public void removePlace(String id) {
         String number = "";
         for (int i = 0; i < placeSelect.size(); i++) {
             if (id.equals(placeSelect.get(i))) {
                 number = i + "";
             }
-        }if (number!=""){
+        }
+        if (number != "") {
             placeSelect.remove(Integer.parseInt(number));
         }
         Log.d("dateselect", placeSelect.toString());
     }
-    public void saveToVotePlace(String pid){
-        Log.d("saveToVotePlace",pid);
+
+    public void saveToVotePlace(String pid) {
+        Log.d("saveToVotePlace", pid);
         String url = "http://www.groupupdb.com/android/addplaceforvote.php";
         url += "?pid=" + pid;
-        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+        url += "&dLw=" + calwait(Integer.parseInt(wait)) + "";
         url += "&eid=" + eid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -891,10 +918,11 @@ placeArray.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public void saveToVotePlaceRandom(){
+
+    public void saveToVotePlaceRandom() {
         String url = "http://www.groupupdb.com/android/addplaceforvote.php";
         url += "?pid=" + "random";
-        url += "&dLw=" + calwait(Integer.parseInt(wait))+"";
+        url += "&dLw=" + calwait(Integer.parseInt(wait)) + "";
         url += "&eid=" + eid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -912,16 +940,18 @@ placeArray.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
-    public String calwait(int wait){
+
+    public String calwait(int wait) {
         Calendar cal = Calendar.getInstance();
         Date today1 = cal.getTime();
         cal.add(Calendar.DATE, wait); // to get previous year add -1
         Date nextYear1 = cal.getTime();
         DateFormat simpleNoHour = new SimpleDateFormat("yyyy-MM-dd");
         simpleNoHour.format(nextYear1);
-        Log.d("wait",nextYear1+"");
-        return simpleNoHour.format(nextYear1)+"";
+        Log.d("wait", nextYear1 + "");
+        return simpleNoHour.format(nextYear1) + "";
     }
+
     public void getEvent() {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -953,7 +983,7 @@ placeArray.clear();
                                 MyArrList.add(map);
                             }
                             wait = MyArrList.get(0).get("events_wait");
-                            Log.d("tab","wait : "+ wait);
+                            Log.d("tab", "wait : " + wait);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -969,6 +999,7 @@ placeArray.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void search() {
         searchText.addTextChangedListener(new TextWatcher() {
 
@@ -993,6 +1024,7 @@ placeArray.clear();
         });
 
     }
+
     public void getReview(String pid, final ListView listView) {
         placeReview.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -1046,13 +1078,54 @@ placeArray.clear();
             String detail = placeReview.get(i).get("review_detail").toString();
             String score = placeReview.get(i).get("review_score").toString();
             String pId = placeReview.get(i).get("place_id").toString();
-            Head_Place.Item2 item2 = new Head_Place.Item2(name,detail,score);
+            Head_Place.Item2 item2 = new Head_Place.Item2(name, detail, score);
             items2.add(item2);
         }
         myItemsListAdapter2 = new Head_Place.ItemsListAdapter2(this, items2);
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
+
+    public void hideCb(int count) {
+        if (count == 1) {
+            img_selPlace1.setVisibility(View.GONE);
+            imb_selPlace1.setVisibility(View.GONE);
+            tv_selPlace1.setVisibility(View.GONE);
+        } else if (count == 2) {
+            img_selPlace2.setVisibility(View.GONE);
+            imb_selPlace2.setVisibility(View.GONE);
+            tv_selPlace2.setVisibility(View.GONE);
+        } else if (count == 3) {
+            img_selPlace3.setVisibility(View.GONE);
+            imb_selPlace3.setVisibility(View.GONE);
+            tv_selPlace3.setVisibility(View.GONE);
+        } else if (count == 4) {
+            img_selPlace4.setVisibility(View.GONE);
+            imb_selPlace4.setVisibility(View.GONE);
+            tv_selPlace4.setVisibility(View.GONE);
+        }
+    }
+
+    public void showCb(int count) {
+        if (count == 1) {
+            img_selPlace1.setVisibility(View.VISIBLE);
+            imb_selPlace1.setVisibility(View.VISIBLE);
+            tv_selPlace1.setVisibility(View.VISIBLE);
+        } else if (count == 2) {
+            img_selPlace2.setVisibility(View.VISIBLE);
+            imb_selPlace2.setVisibility(View.VISIBLE);
+            tv_selPlace2.setVisibility(View.VISIBLE);
+        } else if (count == 3) {
+            img_selPlace3.setVisibility(View.VISIBLE);
+            imb_selPlace3.setVisibility(View.VISIBLE);
+            tv_selPlace3.setVisibility(View.VISIBLE);
+        } else if (count == 4) {
+            img_selPlace4.setVisibility(View.VISIBLE);
+            imb_selPlace4.setVisibility(View.VISIBLE);
+            tv_selPlace4.setVisibility(View.VISIBLE);
+        }
+    }
+
 //    public void ckeckCB(ArrayList<String> p){
 //        Head_Place.ViewHolder viewHolder = new Head_Place.ViewHolder();
 //        LayoutInflater inflater = ((Activity) this).getLayoutInflater();
