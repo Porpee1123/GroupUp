@@ -627,16 +627,16 @@ public class Head_Place extends AppCompatActivity {
     }
 
     public void backAppoint(View v) {
-        Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
-        intent.putExtra("id", uid+"");
-        intent.putExtra("email", email+"");
-        intent.putExtra("eid",eid+"");
-        intent.putExtra("nameEvent",nameE+"");
-        intent.putExtra("mStart",monS+"");
-        intent.putExtra("mEnd",monE+"");
-        intent.putExtra("tab",1+"");
-        startActivity(intent);
-//        finish();
+//        Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
+//        intent.putExtra("id", uid+"");
+//        intent.putExtra("email", email+"");
+//        intent.putExtra("eid",eid+"");
+//        intent.putExtra("nameEvent",nameE+"");
+//        intent.putExtra("mStart",monS+"");
+//        intent.putExtra("mEnd",monE+"");
+//        intent.putExtra("tab",1+"");
+//        startActivity(intent);
+        finish();
     }
 
     public String showFacility(String d) {
