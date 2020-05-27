@@ -31,6 +31,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -298,6 +299,7 @@ public class Head_Place extends AppCompatActivity {
                                 "คุณไม่สามารถเลือกสถานที่ซ้ำได้", Toast.LENGTH_SHORT).show();
                     }else{
                         if (placeDelPosition.size() == 0) {
+                            scrollSelect.setVisibility(View.VISIBLE);
                             if (cbCount <= 4) {
                                 placeSelect.add(ItemId);
                                 showCb(cbCount, list.get(position).ItemDrawable, ItemName,ItemId);
@@ -547,6 +549,7 @@ public class Head_Place extends AppCompatActivity {
     Head_Place.ItemsListAdapter myItemsListAdapter;
     List<Head_Place.Item> items = new ArrayList<Head_Place.Item>();
     ListView placeList;
+    HorizontalScrollView scrollSelect;
     SliderView sliderView;
     List<Head_Place.Item2> items2 = new ArrayList<Head_Place.Item2>();
     ArrayList<HashMap<String, String>> placeReview;
@@ -592,6 +595,7 @@ public class Head_Place extends AppCompatActivity {
         tv_pid2 = findViewById(R.id.tv_ItemId2);
         tv_pid3 = findViewById(R.id.tv_ItemId3);
         tv_pid4 = findViewById(R.id.tv_ItemId4);
+        scrollSelect = findViewById(R.id.scrollSelect);
         img_selPlace1.setVisibility(View.INVISIBLE);
         imb_selPlace1.setVisibility(View.INVISIBLE);
         tv_selPlace1.setVisibility(View.INVISIBLE);
@@ -604,6 +608,7 @@ public class Head_Place extends AppCompatActivity {
         img_selPlace4.setVisibility(View.INVISIBLE);
         imb_selPlace4.setVisibility(View.INVISIBLE);
         tv_selPlace4.setVisibility(View.INVISIBLE);
+        scrollSelect.setVisibility(View.GONE);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
@@ -1189,23 +1194,23 @@ public class Head_Place extends AppCompatActivity {
 
     public void hideCb(int count) {
         if (count == 1) {
-            img_selPlace1.setVisibility(View.INVISIBLE);
-            imb_selPlace1.setVisibility(View.INVISIBLE);
-            tv_selPlace1.setVisibility(View.INVISIBLE);
+            img_selPlace1.setVisibility(View.GONE);
+            imb_selPlace1.setVisibility(View.GONE);
+            tv_selPlace1.setVisibility(View.GONE);
 
         } else if (count == 2) {
-            img_selPlace2.setVisibility(View.INVISIBLE);
-            imb_selPlace2.setVisibility(View.INVISIBLE);
-            tv_selPlace2.setVisibility(View.INVISIBLE);
+            img_selPlace2.setVisibility(View.GONE);
+            imb_selPlace2.setVisibility(View.GONE);
+            tv_selPlace2.setVisibility(View.GONE);
 
         } else if (count == 3) {
-            img_selPlace3.setVisibility(View.INVISIBLE);
-            imb_selPlace3.setVisibility(View.INVISIBLE);
-            tv_selPlace3.setVisibility(View.INVISIBLE);
+            img_selPlace3.setVisibility(View.GONE);
+            imb_selPlace3.setVisibility(View.GONE);
+            tv_selPlace3.setVisibility(View.GONE);
         } else if (count == 4) {
-            img_selPlace4.setVisibility(View.INVISIBLE);
-            imb_selPlace4.setVisibility(View.INVISIBLE);
-            tv_selPlace4.setVisibility(View.INVISIBLE);
+            img_selPlace4.setVisibility(View.GONE);
+            imb_selPlace4.setVisibility(View.GONE);
+            tv_selPlace4.setVisibility(View.GONE);
         }
     }
 
@@ -1260,6 +1265,9 @@ public class Head_Place extends AppCompatActivity {
             }
         }
         arr.remove(Integer.parseInt(number));
+        if (arr.size()==0){
+            scrollSelect.setVisibility(View.GONE);
+        }
     }
 //    public void ckeckCB(ArrayList<String> p){
 //        Head_Place.ViewHolder viewHolder = new Head_Place.ViewHolder();
