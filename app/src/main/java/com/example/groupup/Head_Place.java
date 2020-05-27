@@ -216,6 +216,7 @@ public class Head_Place extends AppCompatActivity {
         RatingBar rating;
         CheckBox checkbox;
         Button seedetail;
+        Button selectPlace;
     }
 
     public class ItemsListAdapter extends BaseAdapter {
@@ -262,6 +263,7 @@ public class Head_Place extends AppCompatActivity {
                 viewHolder.rating = rowView.findViewById(R.id.rowRatingHeadPlace);
                 viewHolder.checkbox = rowView.findViewById(R.id.rowCheckboxHeadPlace);
                 viewHolder.seedetail = rowView.findViewById(R.id.rowButtonSeeDetail);
+                viewHolder.selectPlace = rowView.findViewById(R.id.rowButtonPlaceSelect);
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (Head_Place.ViewHolder) rowView.getTag();
@@ -269,7 +271,7 @@ public class Head_Place extends AppCompatActivity {
             new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
 
             final int maxLimit = 4;
-
+//            Log.d("checkCB", "list " + list.toString());
             final String ItemName = list.get(position).ItemName;
             final String ItemDest = list.get(position).ItemDest;
             final String ItemFaci = list.get(position).ItemFaci;
@@ -287,6 +289,36 @@ public class Head_Place extends AppCompatActivity {
             viewHolder.rating.setRating(ItemRating);
             viewHolder.description.setText(ItemDest);
             viewHolder.facility.setText(showFacility(ItemFaci));
+            viewHolder.selectPlace.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("checkCB", "cbCount " + cbCount);
+                    if(checkAlreadyClick(ItemId)){
+                        Toast.makeText(getApplicationContext(),
+                                "คุณไม่สามารถเลือกสถานที่ซ้ำได้", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if (placeDelPosition.size() == 0) {
+                            if (cbCount <= 4) {
+                                placeSelect.add(ItemId);
+                                showCb(cbCount, list.get(position).ItemDrawable, ItemName,ItemId);
+                                cbCount++;
+                                Log.d("checkCB", placeSelect.toString());
+                                Log.d("checkCB", placeDelPosition.toString());
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            placeSelect.add(ItemId);
+                            showCb(placeDelPosition.get(0), list.get(position).ItemDrawable, ItemName,ItemId);
+                            cbCount++;
+                            placeDelPosition.remove(0);
+                            Log.d("checkCB","else "+ placeSelect.toString());
+                            Log.d("checkCB", "else "+ placeDelPosition.toString());
+                        }
+                    }
+                }
+            });
             viewHolder.seedetail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -360,37 +392,46 @@ public class Head_Place extends AppCompatActivity {
                     });
                 }
             });
-            viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (count[0] == maxLimit - 1) {
-                        if (count[0] == maxLimit && isChecked) {
-                            buttonView.setChecked(false);
-                            Toast.makeText(getApplicationContext(),
-                                    "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
-                        } else if (isChecked) {
-                            count[0]++;
-                            placeSelect.add(ItemId);
-                        } else if (!isChecked) {
-                            removePlace(ItemId);
-                            count[0]--;
-                        }
-                    } else {
-                        if (count[0] == maxLimit - 1 && isChecked) {
-                            buttonView.setChecked(false);
-                            Toast.makeText(getApplicationContext(),
-                                    "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
-                        } else if (isChecked) {
-                            count[0]++;
-                            placeSelect.add(ItemId);
-                        } else if (!isChecked) {
-                            removePlace(ItemId);
-                            count[0]--;
-                        }
-                    }
-                    Log.d("checkCB", placeSelect.toString());
-                }
-            });
+
+//            viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (count[0] == maxLimit - 1) {
+//                        if (count[0] == maxLimit && isChecked) {
+//                            buttonView.setChecked(false);
+//                            Toast.makeText(getApplicationContext(),
+//                                    "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
+//                        } else if (isChecked) {
+//                            showCb(cbCount);
+//                            count[0]++;
+//                            cbCount++;
+//                            placeSelect.add(ItemId);
+//                        } else if (!isChecked) {
+//                            hideCb(cbCount);
+//                            removePlace(ItemId);
+//                            count[0]--;
+//                            cbCount--;
+//                        }
+//                    } else {
+//                        if (count[0] == maxLimit - 1 && isChecked) {
+//                            buttonView.setChecked(false);
+//                            Toast.makeText(getApplicationContext(),
+//                                    "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
+//                        } else if (isChecked) {
+//                            showCb(cbCount);
+//                            count[0]++;
+//                            cbCount++;
+//                            placeSelect.add(ItemId);
+//                        } else if (!isChecked) {
+//                            hideCb(cbCount);
+//                            removePlace(ItemId);
+//                            count[0]--;
+//                            cbCount--;
+//                        }
+//                    }
+//                    Log.d("checkCB", placeSelect.toString());
+//                }
+//            });
             return rowView;
         }
 
@@ -512,14 +553,17 @@ public class Head_Place extends AppCompatActivity {
     Head_Place.ItemsListAdapter2 myItemsListAdapter2;
     ArrayAdapter<String> adpScore, adpFaci, adpPrice, adpPeople, adpTheme;
     ArrayList<String> placeSelect;
+    ArrayList<Integer> placeDelPosition;
     Spinner sp_score, sp_faci, sp_price, sp_people, sp_theme;
     private SliderAdapterExample adapter;
     final int[] count = {0};
+    int cbCount = 1;
     Button btn_con;
     EditText searchText;
     ImageView img_selPlace1, img_selPlace2, img_selPlace3, img_selPlace4;
     ImageButton imb_selPlace1, imb_selPlace2, imb_selPlace3, imb_selPlace4;
     TextView tv_selPlace1, tv_selPlace2, tv_selPlace3, tv_selPlace4;
+    TextView tv_pid1, tv_pid2, tv_pid3, tv_pid4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -544,6 +588,22 @@ public class Head_Place extends AppCompatActivity {
         tv_selPlace2 = findViewById(R.id.rowTextViewName2);
         tv_selPlace3 = findViewById(R.id.rowTextViewName3);
         tv_selPlace4 = findViewById(R.id.rowTextViewName4);
+        tv_pid1 = findViewById(R.id.tv_ItemId1);
+        tv_pid2 = findViewById(R.id.tv_ItemId2);
+        tv_pid3 = findViewById(R.id.tv_ItemId3);
+        tv_pid4 = findViewById(R.id.tv_ItemId4);
+        img_selPlace1.setVisibility(View.INVISIBLE);
+        imb_selPlace1.setVisibility(View.INVISIBLE);
+        tv_selPlace1.setVisibility(View.INVISIBLE);
+        img_selPlace2.setVisibility(View.INVISIBLE);
+        imb_selPlace2.setVisibility(View.INVISIBLE);
+        tv_selPlace2.setVisibility(View.INVISIBLE);
+        img_selPlace3.setVisibility(View.INVISIBLE);
+        imb_selPlace3.setVisibility(View.INVISIBLE);
+        tv_selPlace3.setVisibility(View.INVISIBLE);
+        img_selPlace4.setVisibility(View.INVISIBLE);
+        imb_selPlace4.setVisibility(View.INVISIBLE);
+        tv_selPlace4.setVisibility(View.INVISIBLE);
         uid = getIntent().getStringExtra("id");
         email = getIntent().getStringExtra("email");
         eid = getIntent().getStringExtra("eid");
@@ -557,6 +617,7 @@ public class Head_Place extends AppCompatActivity {
         placeImage = new ArrayList<>();
         placeSelect = new ArrayList<>();
         placeReview = new ArrayList<>();
+        placeDelPosition = new ArrayList<>();
         some_array = getResources().getStringArray(R.array.facility);
         progressDialog = new ProgressDialog(Head_Place.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
@@ -645,17 +706,57 @@ public class Head_Place extends AppCompatActivity {
 
             }
         });
+        imb_selPlace1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideCb(1);
+                removeArray(placeSelect,tv_pid1.getText().toString());
+//                placeSelect.remove(0);
+                placeDelPosition.add(1);
+                cbCount--;
+            }
+        });
+        imb_selPlace2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideCb(2);
+                removeArray(placeSelect,tv_pid2.getText().toString());
+//                placeSelect.remove(1);
+                placeDelPosition.add(2);
+                cbCount--;
+            }
+        });
+        imb_selPlace3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideCb(3);
+                removeArray(placeSelect,tv_pid3.getText().toString());
+//                placeSelect.remove(2);
+                placeDelPosition.add(3);
+                cbCount--;
+            }
+        });
+        imb_selPlace4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideCb(4);
+                removeArray(placeSelect,tv_pid4.getText().toString());
+//                placeSelect.remove(3);
+                placeDelPosition.add(4);
+                cbCount--;
+            }
+        });
     }
 
     public void backAppoint(View v) {
         Intent intent = new Intent(Head_Place.this, HomeHead_Appointment.class);
-        intent.putExtra("id", uid+"");
-        intent.putExtra("email", email+"");
-        intent.putExtra("eid",eid+"");
-        intent.putExtra("nameEvent",nameE+"");
-        intent.putExtra("mStart",monS+"");
-        intent.putExtra("mEnd",monE+"");
-        intent.putExtra("tab",1+"");
+        intent.putExtra("id", uid + "");
+        intent.putExtra("email", email + "");
+        intent.putExtra("eid", eid + "");
+        intent.putExtra("nameEvent", nameE + "");
+        intent.putExtra("mStart", monS + "");
+        intent.putExtra("mEnd", monE + "");
+        intent.putExtra("tab", 1 + "");
         startActivity(intent);
 //        finish();
     }
@@ -1088,44 +1189,78 @@ public class Head_Place extends AppCompatActivity {
 
     public void hideCb(int count) {
         if (count == 1) {
-            img_selPlace1.setVisibility(View.GONE);
-            imb_selPlace1.setVisibility(View.GONE);
-            tv_selPlace1.setVisibility(View.GONE);
+            img_selPlace1.setVisibility(View.INVISIBLE);
+            imb_selPlace1.setVisibility(View.INVISIBLE);
+            tv_selPlace1.setVisibility(View.INVISIBLE);
+
         } else if (count == 2) {
-            img_selPlace2.setVisibility(View.GONE);
-            imb_selPlace2.setVisibility(View.GONE);
-            tv_selPlace2.setVisibility(View.GONE);
+            img_selPlace2.setVisibility(View.INVISIBLE);
+            imb_selPlace2.setVisibility(View.INVISIBLE);
+            tv_selPlace2.setVisibility(View.INVISIBLE);
+
         } else if (count == 3) {
-            img_selPlace3.setVisibility(View.GONE);
-            imb_selPlace3.setVisibility(View.GONE);
-            tv_selPlace3.setVisibility(View.GONE);
+            img_selPlace3.setVisibility(View.INVISIBLE);
+            imb_selPlace3.setVisibility(View.INVISIBLE);
+            tv_selPlace3.setVisibility(View.INVISIBLE);
         } else if (count == 4) {
-            img_selPlace4.setVisibility(View.GONE);
-            imb_selPlace4.setVisibility(View.GONE);
-            tv_selPlace4.setVisibility(View.GONE);
+            img_selPlace4.setVisibility(View.INVISIBLE);
+            imb_selPlace4.setVisibility(View.INVISIBLE);
+            tv_selPlace4.setVisibility(View.INVISIBLE);
         }
     }
 
-    public void showCb(int count) {
+    public void showCb(int count, String path, String name,String itemId) {
         if (count == 1) {
             img_selPlace1.setVisibility(View.VISIBLE);
             imb_selPlace1.setVisibility(View.VISIBLE);
             tv_selPlace1.setVisibility(View.VISIBLE);
+            new Extend_MyHelper.SendHttpRequestTask(path, img_selPlace1, 250).execute();
+            tv_selPlace1.setText(name);
+            tv_pid1.setText(itemId);
         } else if (count == 2) {
             img_selPlace2.setVisibility(View.VISIBLE);
             imb_selPlace2.setVisibility(View.VISIBLE);
             tv_selPlace2.setVisibility(View.VISIBLE);
+            new Extend_MyHelper.SendHttpRequestTask(path, img_selPlace2, 250).execute();
+            tv_selPlace2.setText(name);
+            tv_pid2.setText(itemId);
         } else if (count == 3) {
             img_selPlace3.setVisibility(View.VISIBLE);
             imb_selPlace3.setVisibility(View.VISIBLE);
             tv_selPlace3.setVisibility(View.VISIBLE);
+            new Extend_MyHelper.SendHttpRequestTask(path, img_selPlace3, 250).execute();
+            tv_selPlace3.setText(name);
+            tv_pid3.setText(itemId);
         } else if (count == 4) {
             img_selPlace4.setVisibility(View.VISIBLE);
             imb_selPlace4.setVisibility(View.VISIBLE);
             tv_selPlace4.setVisibility(View.VISIBLE);
+            new Extend_MyHelper.SendHttpRequestTask(path, img_selPlace4, 250).execute();
+            tv_selPlace4.setText(name);
+            tv_pid4.setText(itemId);
         }
     }
+    public boolean checkAlreadyClick(String id) {
+        Log.d("placeselect", "id : " + id);
+        Log.d("placeselect", "friendInDb : " + placeSelect.toString());
+        for (int j = 0; j < placeSelect.size(); j++) {
+            String fdb = placeSelect.get(j);
+            if (fdb.equals(id)) {
+                return true;
+            }
+        }
 
+        return false;
+    }
+    public void removeArray(ArrayList<String> arr,String id) {
+        String number = "";
+        for (int i = 0; i < arr.size(); i++) {
+            if (id.equals(arr.get(i))) {
+                number = i + "";
+            }
+        }
+        arr.remove(Integer.parseInt(number));
+    }
 //    public void ckeckCB(ArrayList<String> p){
 //        Head_Place.ViewHolder viewHolder = new Head_Place.ViewHolder();
 //        LayoutInflater inflater = ((Activity) this).getLayoutInflater();
