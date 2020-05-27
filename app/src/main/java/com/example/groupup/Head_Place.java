@@ -372,7 +372,7 @@ public class Head_Place extends AppCompatActivity {
                             count[0]--;
                         }
                     }else {
-                        if (count[0] == maxLimit && isChecked) {
+                        if (count[0] == maxLimit-1 && isChecked) {
                             buttonView.setChecked(false);
                             Toast.makeText(getApplicationContext(),
                                     "สามารถเลือกได้สูงสุด 4 ตัวเลือก", Toast.LENGTH_SHORT).show();
@@ -593,7 +593,7 @@ public class Head_Place extends AppCompatActivity {
         btn_con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (count[0]==4){
+                if (placeSelect.size()==4){
                     for (int i=0;i<placeSelect.size();i++){
                         saveToVotePlace(placeSelect.get(i));
                     }
@@ -609,7 +609,7 @@ public class Head_Place extends AppCompatActivity {
                 }else {
                     final AlertDialog viewDetail = new AlertDialog.Builder(Head_Place.this).create();
 
-                    viewDetail.setTitle("กรุณาเลือกให้ครบ 4 ตัวเลือก");
+                    viewDetail.setTitle("กรุณาเลือก 4 ตัวเลือก");
                     viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "ยืนยัน", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -864,8 +864,9 @@ placeArray.clear();
             if (id.equals(placeSelect.get(i))) {
                 number = i + "";
             }
+        }if (number!=""){
+            placeSelect.remove(Integer.parseInt(number));
         }
-        placeSelect.remove(Integer.parseInt(number));
         Log.d("dateselect", placeSelect.toString());
     }
     public void saveToVotePlace(String pid){
@@ -1052,5 +1053,27 @@ placeArray.clear();
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
+//    public void ckeckCB(ArrayList<String> p){
+//        Head_Place.ViewHolder viewHolder = new Head_Place.ViewHolder();
+//        LayoutInflater inflater = ((Activity) this).getLayoutInflater();
+//        rowView = inflater.inflate(R.layout.layout_head_selectplace, null);
+//        viewHolder.icon = rowView.findViewById(R.id.rowImageViewHeadPlace);
+//        viewHolder.text = rowView.findViewById(R.id.rowPlaceNameHeadPlace);
+//        viewHolder.description = rowView.findViewById(R.id.rowDescriptionHeadPlace);
+//        viewHolder.facility = rowView.findViewById(R.id.rowFacilityHeadPlace);
+//        viewHolder.rating = rowView.findViewById(R.id.rowRatingHeadPlace);
+//        viewHolder.checkbox = rowView.findViewById(R.id.rowCheckboxHeadPlace);
+//        for (int i =0;i<placeArray.size();i++){
+//            for (int j=0;j<p.size();j++){
+//                if (placeArray.get(i).equals(p.get(j))){
+//                    viewHolder.checkbox.setChecked(true);
+//                }else {
+//                    viewHolder.checkbox.setChecked(false);
+//                }
+//
+//            }
+//        }
+//
+//    }
 
 }
