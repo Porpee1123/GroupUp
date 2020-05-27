@@ -155,7 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_date_range_black_24dp" />
+                        app:srcCompat="@drawable/ic_calendar" />
 
                     <TextView
                         android:id="@+id/textView11"
@@ -194,7 +194,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_date_range_black_24dp" />
+                        app:srcCompat="@drawable/ic_calendar" />
 
                     <TextView
                         android:id="@+id/textView10"
@@ -233,7 +233,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_timer_black_24dp" />
+                        app:srcCompat="@drawable/ic_time" />
 
                     <TextView
                         android:id="@+id/waitTime"
@@ -281,7 +281,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="clip_horizontal|center"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_account_balance_black_24dp" />
+                        app:srcCompat="@drawable/ic_bank" />
 
                     <TextView
                         android:id="@+id/textView28"
@@ -343,7 +343,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="clip_horizontal|center"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_attach_money_black_24dp" />
+                        app:srcCompat="@drawable/ic_money" />
 
                     <TextView
                         android:id="@+id/textView27"
